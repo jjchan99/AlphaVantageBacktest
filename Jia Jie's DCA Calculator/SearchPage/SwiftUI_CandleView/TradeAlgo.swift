@@ -22,8 +22,6 @@ struct TradeAlgo {
     let data: [OHLC]
     let movingAverage: [Double]
     let lineGraph: LineGraph
-    let test: String = "test"
-    
     
 }
 

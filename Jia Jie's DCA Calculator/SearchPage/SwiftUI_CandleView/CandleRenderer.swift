@@ -65,7 +65,7 @@ struct CandleRenderer {
         stick.move(to: .init(x: xPosition, y: position.high))
         stick.addLine(to: .init(x: xPosition, y: position.low))
     
-        
+//        print("candle: x: \(xPosition)")
         
         return .init(data: data, body: body, stick: stick)
     }

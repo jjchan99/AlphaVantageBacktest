@@ -97,18 +97,19 @@ struct LineGraph {
         var pointArray: [CGPoint] = []
         var path = Path()
         var area = Path()
-        
-        for index in 0..<data.count {
+        let width = width - (2 * padding)
+        for index in data.indices {
      
         let pillars = width / CGFloat(data.count - 1)
                 
-        let xPosition: CGFloat = index == 0 ? padding : pillars * CGFloat(index) + padding
+        let xPosition: CGFloat = index == 0 ? padding : (pillars * CGFloat(index)) + padding
         let yPosition = getYPosition(range: range, index: index)
 
         if index == 0 {
-            pointArray.append(CGPoint(x: padding, y: yPosition))
-            path.move(to: CGPoint(x: padding, y: yPosition))
-            area.move(to: CGPoint(x: padding, y: yPosition))
+            pointArray.append(CGPoint(x: xPosition, y: yPosition))
+            path.move(to: CGPoint(x: xPosition, y: yPosition))
+            area.move(to: CGPoint(x: xPosition, y: yPosition))
+            
         } else {
             pointArray.append(CGPoint(x: xPosition, y: yPosition))
             path.addLine(to: CGPoint(x: xPosition, y: yPosition))
@@ -122,6 +123,8 @@ struct LineGraph {
             area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((data[0] / range)))) * height))
             area.closeSubpath()
         }
+            
+//            print("tradeAlgo: x: \(xPosition)")
     }
     return (path, area, pointArray)
     }

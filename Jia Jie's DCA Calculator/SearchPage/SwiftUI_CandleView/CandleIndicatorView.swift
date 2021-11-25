@@ -32,13 +32,13 @@ struct CandleIndicatorView: View {
                         let lowerBound: CGFloat = 0
                         let upperBound = viewModel.width * CGFloat(data.count) / CGFloat(data.count + 1)
                         guard x >= lowerBound && x <= upperBound else { return }
-                        print(x)
+//                        print(x)
                         offset = x
                         let open = CandleIndicator(height: viewModel.height, width: viewModel.width, dataToDisplay: data).updateIndicator(xPos: x, didUpdate: { index in
                             viewModel.selectedIndex = index
                         }).data.open
                         display = "\(open)"
-                        print("title: \(display)")
+//                        print("title: \(display)")
                     }))
         .frame(width: viewModel.width, height: viewModel.height)
       

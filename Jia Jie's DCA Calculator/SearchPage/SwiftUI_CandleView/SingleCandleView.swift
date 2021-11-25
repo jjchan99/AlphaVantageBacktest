@@ -12,15 +12,16 @@ struct SingleCandleView: View {
     @EnvironmentObject var viewModel: CandleViewModel
     
     func getSpacing() -> CGFloat {
-        let maxWidth = 0.03 * viewModel.width
-        var spacing = (1/3) * (viewModel.width / CGFloat(viewModel.candles!.count - 1)) > maxWidth ? maxWidth : (1/3) * (viewModel.width / CGFloat(viewModel.candles!.count - 1))
-        spacing = (viewModel.width / CGFloat(viewModel.candles!.count - 1)) <= 5.0 ? 1 : spacing
+        let width: CGFloat = viewModel.width - (2 * viewModel.padding)
+        let maxWidth = 0.03 * width
+        var spacing = (1/3) * (width / CGFloat(viewModel.candles!.count - 1)) > maxWidth ? maxWidth : (1/3) * (width / CGFloat(viewModel.candles!.count - 1))
+        spacing = (width / CGFloat(viewModel.candles!.count - 1)) <= 5.0 ? 1 : spacing
 //        print("spacing: \(spacing)")
         return spacing
     }
     
     @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
-       
+        let width: CGFloat = viewModel.width - (2 * viewModel.padding)
         let candles = viewModel.candles
         let color: Color = candles![idx].data.green ? Color.green : Color.red
         let range = viewModel.renderer!.dependencies.analysis.range
@@ -28,18 +29,16 @@ struct SingleCandleView: View {
         let scaleFactor = viewModel.height / shareOfHeight
         
         let candles = viewModel.candles
-        let pillars = viewModel.width / CGFloat(viewModel.candles!.count - 1)
+        let xStretch: CGFloat = 20 / getSpacing()
+        let pillars = width / CGFloat(viewModel.candles!.count - 1)
+        
         let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
-        let x: CGFloat = 0
-        let y: CGFloat = 0
-//        let xStretch: CGFloat = 20 / getSpacing()
-     
-       
-      
+    
+        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
         let y = scaleFactor * -CGFloat((abs(candles![idx].data.high - viewModel.renderer!.dependencies.analysis.max)) / viewModel.renderer!.dependencies.analysis.range) * viewModel.height
         
-        let stick = candle.stick.applying(.init(scaleX: 1, y: scaleFactor))
-        let body = candle.body.applying(.init(scaleX: 1, y: scaleFactor))
+        let stick = candle.stick.applying(.init(scaleX: xStretch, y: scaleFactor))
+        let body = candle.body.applying(.init(scaleX: xStretch, y: scaleFactor))
         
         color
             .mask(body)

@@ -63,6 +63,7 @@
 		1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE85274E86450076F449 /* TradingVolumeView.swift */; };
 		1D92AE88274E879A0076F449 /* BarGraphRendererV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE87274E879A0076F449 /* BarGraphRendererV2.swift */; };
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
+		1DB20751274FDCE60015B1B7 /* ChartLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */; };
 		1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413526F1E857001FBC77 /* DCAResultModel.swift */; };
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
 		1DC3C9D4273BAFF200900600 /* CandleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D3273BAFF200900600 /* CandleViewController.swift */; };
@@ -166,6 +167,7 @@
 		1D92AE85274E86450076F449 /* TradingVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingVolumeView.swift; sourceTree = "<group>"; };
 		1D92AE87274E879A0076F449 /* BarGraphRendererV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphRendererV2.swift; sourceTree = "<group>"; };
 		1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleView.swift; sourceTree = "<group>"; };
+		1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibrary.swift; sourceTree = "<group>"; };
 		1DB5413526F1E857001FBC77 /* DCAResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultModel.swift; sourceTree = "<group>"; };
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		1DC3C9D3273BAFF200900600 /* CandleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewController.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */,
 				1D06C6B12744125D00374255 /* CandleIndicatorView.swift */,
 				1DC3C9E0273BC13000900600 /* CandleRenderer.swift */,
+				1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */,
 				1DF696D8274E57AC00261EB6 /* TradeAlgo.swift */,
 				1D92AE87274E879A0076F449 /* BarGraphRendererV2.swift */,
 				1D06C6AF27440DC900374255 /* CandleIndicator.swift */,
@@ -567,6 +570,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DB20751274FDCE60015B1B7 /* ChartLibrary.swift in Sources */,
 				1D1210262736E1F100B58B67 /* FinancialsViewController.swift in Sources */,
 				1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */,
 				1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */,

@@ -188,7 +188,7 @@ struct ChartMetaAnalysis {
         let yHigh = CGFloat((abs(high - highLow.max)) / range) * heightBounds
         let yLow = CGFloat((abs(low - highLow.max)) / range) * heightBounds
         let yClose = CGFloat((abs(close - highLow.max)) / range) * heightBounds
-//        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
+        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }
     

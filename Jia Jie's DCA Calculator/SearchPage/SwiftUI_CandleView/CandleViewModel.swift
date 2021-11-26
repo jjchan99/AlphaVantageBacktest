@@ -27,11 +27,7 @@ class CandleViewModel: ObservableObject {
     let width: CGFloat = .init(420).wScaled()
     let barHeight: CGFloat = .init(45).hScaled()
     
-    @Published var charts: ChartLibrary? {
-        didSet {
-            charts!.iterateOverData()
-        }
-    }
+    @Published var charts: ChartLibrary?
     
     @Published var selectedIndex: Int?
     

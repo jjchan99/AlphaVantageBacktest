@@ -41,7 +41,7 @@ struct SimpleMovingAverageCalculator {
         self.max = average > max ? average : max
         self.min = average < min ? average : min
         array.append(average)
-        
+//        print("Average for \(queue.count) numbers \(queue) is \(average)")
     }
     
     

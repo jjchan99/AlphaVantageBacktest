@@ -77,7 +77,7 @@ struct ChartLibrary {
     private mutating func renderBarPath(index: Int) {
 
         let xPosition = getXPosition(index: index)
-        let yPosition = analysis.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index)
+        let yPosition = analysis.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index) - (0.05 * specifications.specifications[.bar]!.height)
         
         volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
         volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
@@ -188,7 +188,7 @@ struct ChartMetaAnalysis {
         let yHigh = CGFloat((abs(high - highLow.max)) / range) * heightBounds
         let yLow = CGFloat((abs(low - highLow.max)) / range) * heightBounds
         let yClose = CGFloat((abs(close - highLow.max)) / range) * heightBounds
-        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
+//        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }
     

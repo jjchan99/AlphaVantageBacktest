@@ -61,11 +61,12 @@ class CandleViewController: UIViewController {
         
         guard let count = count else { fatalError() }
         for idx in 0...count {
+            let index = idx
             let idx = count - idx
             guard idx <= sorted.count - 1 else { break }
             array.append(.init(meta: daily!.meta!, stamp: sorted[idx].key, open: sorted[idx].value.open, high: sorted[idx].value.high, low: sorted[idx].value.low, close: sorted[idx].value.close, adjustedClose: sorted[idx].value.adjustedClose, volume: sorted[idx].value.volume, dividendAmount: sorted[idx].value.dividendAmount, splitCoefficient: sorted[idx].value.splitCoefficient))
     
-            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: idx)
+            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: index)
             metaAnalyze(data: Double(sorted[idx].value.high)!, previousMax: &maxHigh)
             metaAnalyze(data: Double(sorted[idx].value.low)!, previousMin: &minLow)
             metaAnalyze(data: Double(sorted[idx].value.volume)!, previousMax: &maxVolume, previousMin: &minVolume)

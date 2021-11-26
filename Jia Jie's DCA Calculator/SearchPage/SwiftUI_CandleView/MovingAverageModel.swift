@@ -9,33 +9,16 @@ import Foundation
 import CoreGraphics
 import SwiftUI
 
-struct TradeAlgo {
+struct SimpleMovingAverageCalculator {
     
-    //MARK: DEPENDENCIES
-    init(data: [OHLC], width: CGFloat, height: CGFloat) {
-        self.data = data
-        var avg = SimpleMovingAverage(data: data, window: 200)
-        self.movingAverage = avg.movingAverage()
-        self.lineGraph = .init(data: self.movingAverage, height: height, width: width, max: avg.max, min: avg.min)
-    }
-    
-    let data: [OHLC]
-    let movingAverage: [Double]
-    let lineGraph: LineGraph
-    
-}
-
-struct SimpleMovingAverage {
-    
-    let data: [OHLC]
     let window: Int
     var windowSum: Double = 0
     var queue: [Double] = []
     var max: Double = 0
     var min: Double = .infinity
+    var array: [Double] = []
     
-    init(data: [OHLC], window: Int) {
-        self.data = data
+    init(window: Int) {
         self.window = window
     }
     
@@ -46,22 +29,18 @@ struct SimpleMovingAverage {
         return first
     }
     
-    mutating func movingAverage() -> [Double] {
-        
-        var array: [Double] = []
-        for index in 0..<data.count {
-            windowSum += Double(data[index].adjustedClose)!
-            queue.append(Double(data[index].adjustedClose)!)
-            let window = index < self.window ? index + 1 : self.window
-            if index >= window {
-                windowSum -= dequeue()
-            }
-            let average = Double(windowSum) / Double(window)
-            self.max = average > max ? average : max
-            self.min = average < min ? average : min
-            array.append(average)
+    mutating func movingAverage(data: Double, index: Int) {
+    
+        windowSum += data
+        queue.append(data)
+        let window = index < self.window ? index + 1 : self.window
+        if index >= window {
+            windowSum -= dequeue()
         }
-        return array
+        let average = Double(windowSum) / Double(window)
+        self.max = average > max ? average : max
+        self.min = average < min ? average : min
+        array.append(average)
         
     }
     

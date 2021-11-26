@@ -84,7 +84,7 @@ struct CandleRenderer {
 }
 
 struct Candle {
-    let data: CandleOHLC
+    let data: OHLC
     let body: Path
     let stick: Path
 }

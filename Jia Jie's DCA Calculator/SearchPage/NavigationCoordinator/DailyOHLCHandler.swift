@@ -164,6 +164,14 @@ struct OHLC {
     static func == (lhs: OHLC, rhs: OHLC) -> Bool {
         return lhs.stamp == rhs.stamp && lhs.meta.symbol == rhs.meta.symbol
     }
+    
+    func green() -> Bool {
+        return close > open
+    }
+    
+    func range() -> Double {
+        return Double(high!)! - Double(low!)!
+    }
 }
 
 extension DailyOHLCHandler {

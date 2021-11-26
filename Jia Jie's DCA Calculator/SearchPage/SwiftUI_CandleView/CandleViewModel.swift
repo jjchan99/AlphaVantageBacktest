@@ -20,8 +20,6 @@ class CandleViewModel: ObservableObject {
     @Published var sorted: [OHLC]? {
         didSet {
             self.id = UUID()
-            
-            
         }
     }
     
@@ -29,7 +27,11 @@ class CandleViewModel: ObservableObject {
     let width: CGFloat = .init(420).wScaled()
     let barHeight: CGFloat = .init(45).hScaled()
     
-    @Published var charts: ChartLibrary?
+    @Published var charts: ChartLibrary? {
+        didSet {
+            charts!.iterateOverData()
+        }
+    }
     
     @Published var selectedIndex: Int?
     

@@ -70,11 +70,11 @@ struct ChartLibrary {
         }
     }
     
-    mutating func getXPosition(index: Int) -> CGFloat {
+    private mutating func getXPosition(index: Int) -> CGFloat {
         return index == 0 ? specifications.padding : (columns * CGFloat(index)) + specifications.padding
     }
     
-    mutating func renderBarPath(index: Int) {
+    private mutating func renderBarPath(index: Int) {
 
         let xPosition = getXPosition(index: index)
         let yPosition = analysis.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index)
@@ -87,7 +87,7 @@ struct ChartLibrary {
         volumeChart.closeSubpath()
     }
     
-    mutating func renderLinePath(index: Int) {
+    private mutating func renderLinePath(index: Int) {
        let xPosition = getXPosition(index: index)
        let yPosition = analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
        
@@ -110,7 +110,7 @@ struct ChartLibrary {
         }
     }
     
-    mutating func renderCandlePath(index: Int) {
+    private mutating func renderCandlePath(index: Int) {
         var stick = Path()
         var body = Path()
         let xPosition = getXPosition(index: index)

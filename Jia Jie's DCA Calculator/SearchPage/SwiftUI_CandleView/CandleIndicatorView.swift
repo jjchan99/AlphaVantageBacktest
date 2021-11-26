@@ -28,7 +28,7 @@ struct CandleIndicatorView: View {
         .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ gesture in
                         let x = gesture.location.x
-                        guard let data = viewModel.candles else { return }
+                        guard let data = viewModel.charts?.candles else { return }
                         let lowerBound: CGFloat = 0
                         let upperBound = viewModel.width * CGFloat(data.count) / CGFloat(data.count + 1)
                         guard x >= lowerBound && x <= upperBound else { return }

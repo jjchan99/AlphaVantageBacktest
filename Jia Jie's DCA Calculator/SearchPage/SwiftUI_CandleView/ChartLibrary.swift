@@ -134,8 +134,8 @@ struct ChartLibrary {
 
 struct ChartSpecifications {
     
-    init(padding: CGFloat, set: ([Charts: (height: CGFloat, width: CGFloat)]) -> ()) {
-        set(self.specifications)
+    init(padding: CGFloat, set: (inout [Charts: (height: CGFloat, width: CGFloat)]) -> ()) {
+        set(&self.specifications)
         self.padding = padding
     }
     

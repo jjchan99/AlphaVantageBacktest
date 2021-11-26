@@ -33,33 +33,30 @@ class CandleViewController: UIViewController {
         view.addSubview(hc!.view)
         hc!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "hc")
         let dependencies = OHLC(mode: .days5)
-        viewModel.sorted = dependencies.OHLC
-        viewModel.OHLCMeta = dependencies.meta
-        viewModel.tradingAlgo = .init(data: dependencies.OHLC, width: viewModel.width, height: viewModel.height)
-        viewModel.barGraphRendererV2 = .init(data: dependencies.OHLC, height: viewModel.barHeight, width: viewModel.width, min: dependencies.meta.minVolume, max: dependencies.meta.maxVolume)
+        
         
         viewModel.modeChanged = { [unowned self] mode in
             print("You pressed the button")
             let dependencies = OHLC(mode: mode)
-            viewModel.sorted = dependencies.OHLC
-            viewModel.OHLCMeta = dependencies.meta
-            viewModel.tradingAlgo = .init(data: dependencies.OHLC, width: viewModel.width, height: viewModel.height)
-            viewModel.barGraphRendererV2 = .init(data: dependencies.OHLC, height: viewModel.barHeight, width: viewModel.width, min: dependencies.meta.minVolume, max: dependencies.meta.maxVolume)
             
         }
         view.backgroundColor = .white
     }
     
-    func OHLC(mode: CandleMode) -> (OHLC: [OHLC], meta: OHLCMeta) {
+    func OHLC(mode: CandleMode) {
         guard let sorted = sorted else { fatalError() }
         var array: [OHLC] = []
         var book = AlgorithmBook()
         let key = getMode(mode: mode)
         let count = book.binarySearch(sorted, key: key, range: 0..<sorted.count)
+        
+        var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
+        
         var maxVolume: Double = 0
         var minVolume: Double = .infinity
-        var maxClose: Double = 0
-        var minClose: Double = .infinity
+    
+        var maxHigh: Double = 0
+        var minLow: Double = .infinity
         
         
         guard let count = count else { fatalError() }
@@ -67,10 +64,17 @@ class CandleViewController: UIViewController {
             let idx = count - idx
             guard idx <= sorted.count - 1 else { break }
             array.append(.init(meta: daily!.meta!, stamp: sorted[idx].key, open: sorted[idx].value.open, high: sorted[idx].value.high, low: sorted[idx].value.low, close: sorted[idx].value.close, adjustedClose: sorted[idx].value.adjustedClose, volume: sorted[idx].value.volume, dividendAmount: sorted[idx].value.dividendAmount, splitCoefficient: sorted[idx].value.splitCoefficient))
-            metaAnalyze(data: Double(sorted[idx].value.close)!, previousMax: &maxClose, previousMin: &minClose)
+    
+            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: idx)
+            metaAnalyze(data: Double(sorted[idx].value.close)!, previousMax: &maxHigh, previousMin: &minLow)
             metaAnalyze(data: Double(sorted[idx].value.volume)!, previousMax: &maxVolume, previousMin: &minVolume)
         }
-        return ((array, .init(maxVolume: maxVolume, minVolume: minVolume, maxClose: maxClose, minClose: minClose)))
+        
+        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
+            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
+            dict[.line] = (height: viewModel.height, width: viewModel.width)
+            dict[.candle] = (height: viewModel.height, width: viewModel.width)
+        }), data: array, movingAverage: movingAverageCalculator.array, analysis: .init(data: array, movingAverageData: movingAverageCalculator.array, tradingVolume: .init(max: maxVolume, min: minVolume, range: nil), movingAverage: .init(max: movingAverageCalculator.max, min: movingAverageCalculator.min, range: nil), highLow: .init(max: maxHigh, min: minLow, range: nil)))
     }
     
     private func metaAnalyze(data: Double, previousMax: inout Double, previousMin: inout Double) {

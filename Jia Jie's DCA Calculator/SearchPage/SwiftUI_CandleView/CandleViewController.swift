@@ -37,8 +37,8 @@ class CandleViewController: UIViewController {
         
         viewModel.modeChanged = { [unowned self] mode in
             print("You pressed the button")
+            viewModel.selectedIndex = 0
             OHLC(mode: mode)
-            
         }
         view.backgroundColor = .white
     }

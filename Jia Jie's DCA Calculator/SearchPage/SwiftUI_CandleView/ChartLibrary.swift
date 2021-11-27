@@ -50,7 +50,7 @@ struct ChartLibrary {
     }()
     
     lazy var spacing: CGFloat = {
-        var spacing = (1/3) * columns > maxWidth ? maxWidth : (1/3) * columns
+        var spacing = (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
         spacing = columns <= 5.0 ? 1 : spacing
         return spacing
     }()

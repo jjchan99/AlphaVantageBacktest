@@ -17,11 +17,7 @@ enum CandleMode {
 
 class CandleViewModel: ObservableObject {
     
-    @Published var sorted: [OHLC]? {
-        didSet {
-            self.id = UUID()
-        }
-    }
+    @Published var sorted: [OHLC]?
     
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()
@@ -32,8 +28,6 @@ class CandleViewModel: ObservableObject {
     @Published var selectedIndex: Int?
     
     @Published var modeChanged: ((CandleMode) -> ())?
-    
-    @Published var id = UUID()
     
     lazy var padding: CGFloat = 0.05 * width
     

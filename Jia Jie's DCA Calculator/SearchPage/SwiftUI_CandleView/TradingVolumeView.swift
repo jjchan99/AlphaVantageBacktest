@@ -15,9 +15,9 @@ struct TradingVolumeView: View {
     
     var body: some View {
         ZStack {
-        if viewModel.barGraphRendererV2 != nil {
+        if viewModel.charts != nil {
             Color.gray
-                .mask(viewModel.volumeGraph)
+                .mask(viewModel.charts!.volumeChart)
         }
         }
     }

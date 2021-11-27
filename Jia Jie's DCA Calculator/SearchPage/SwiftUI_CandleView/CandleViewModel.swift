@@ -18,17 +18,18 @@ enum CandleMode {
 class CandleViewModel: ObservableObject {
     
     @Published var sorted: [OHLC]? {
-        didSet { self.id = UUID() }
+        didSet {
+            self.id = UUID()
+        }
     }
     
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()
+    let barHeight: CGFloat = .init(45).hScaled()
+    
+    @Published var charts: ChartLibrary?
     
     @Published var selectedIndex: Int?
-    
-    @Published var renderer: CandleRenderer?
-    @Published var barGraphRendererV2: BarGraphRendererV2?
-    @Published var candles: [Candle]?
     
     @Published var modeChanged: ((CandleMode) -> ())?
     
@@ -36,14 +37,8 @@ class CandleViewModel: ObservableObject {
     
     lazy var padding: CGFloat = 0.05 * width
     
-    @Published var tradingAlgo: TradeAlgo?
     
-    @Published var OHLCMeta: OHLCMeta?
-    
-    @Published var volumeGraph: Path?
-    @Published var movingAverageGraph: Path?
-    
-    let barHeight: CGFloat = .init(45).hScaled()
+   
     
     
     
@@ -51,9 +46,4 @@ class CandleViewModel: ObservableObject {
     
 }
 
-struct OHLCMeta {
-    let maxVolume: Double
-    let minVolume: Double
-    let maxClose: Double
-    let minClose: Double
-}
+

@@ -17,26 +17,24 @@ struct CandleView: View {
     let lightRed: Color = .init(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
     
     func scaleFactor(_ a: CGFloat) -> CGFloat {
-        let sf = a / (CGFloat(viewModel.candles!.count) / 5)
+        let sf = a / (CGFloat(viewModel.sorted!.count) / 5)
         return sf < 1 ? 1 : sf
     }
  
     var body: some View {
         ZStack {
-        if viewModel.candles != nil {
+        if viewModel.charts != nil {
             
             VStack {
             CandleModeView().environmentObject(viewModel)
 
                 ZStack {
-            ForEach(0..<viewModel.candles!.count, id: \.self) { idx in
-                    let candles = viewModel.candles!
-                    let color: Color = candles[idx].data.green ? darkGreen : darkRed
-                    let selectedColor: Color = candles[idx].data.green ? lightGreen : lightRed
+                ForEach(0..<viewModel.sorted!.count, id: \.self) { idx in
+                    let candles = viewModel.charts!.candles
+                    let color: Color = candles[idx].data.green() ? darkGreen : darkRed
+                    let selectedColor: Color = candles[idx].data.green() ? lightGreen : lightRed
                     let selected: Bool = idx == viewModel.selectedIndex
               
-                   
-               
                 if !selected {
                     color
                         .mask(candles[idx].body)
@@ -55,47 +53,31 @@ struct CandleView: View {
                     candles[idx].stick
                         .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
                         .fill(selectedColor)
-                    
                 }
                 
                 }
                .overlay(
                 MovingAverageView().environmentObject(viewModel)
                 )
-          
-            SingleCandleView()
-                .environmentObject(viewModel)
-                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
-                .position(y: viewModel.height * 2)
+
+//            SingleCandleView()
+//                .environmentObject(viewModel)
+//                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
+//                .position(y: viewModel.height * 2)
             }
-                
+
             TradingVolumeView().environmentObject(viewModel)
                 .frame(width: viewModel.width, height: viewModel.height)
                 .overlay(CandleIndicatorView()
                     .environmentObject(viewModel)
                 )
-              
-                
             }
-            
-           
-
         } else {
             Text("Nothing to show...")
         }
         }
-        .onAppear(perform: {
-            viewModel.renderer = CandleRenderer(sorted: viewModel.sorted!, height: viewModel.height, width: viewModel.width)
-            viewModel.candles = viewModel.renderer!.render()
-            viewModel.movingAverageGraph = viewModel.tradingAlgo!.lineGraph.render().path
-            viewModel.volumeGraph = viewModel.barGraphRendererV2!.render()
-        })
         .onChange(of: viewModel.id, perform: { _ in
-            viewModel.renderer = CandleRenderer(sorted: viewModel.sorted!, height: viewModel.height, width: viewModel.width)
-            viewModel.candles = viewModel.renderer!.render()
             viewModel.selectedIndex = 0
-            viewModel.movingAverageGraph = viewModel.tradingAlgo!.lineGraph.render().path
-            viewModel.volumeGraph = viewModel.barGraphRendererV2!.render()
         })
        
     }

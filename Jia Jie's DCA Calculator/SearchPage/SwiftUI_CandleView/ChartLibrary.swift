@@ -132,6 +132,30 @@ struct ChartLibrary {
     
 }
 
+extension ChartLibrary {
+    private mutating func getControlPoints(index: Int) -> (CGPoint, CGPoint)? {
+        var points: [Int: CGPoint] = [:]
+        for idx in index - 1...index + 2 {
+            let withinRange = data.indices.contains(index)
+            if withinRange {
+                points[idx] = CGPoint(x: getXPosition(index: idx), y: analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: idx))
+            }
+        }
+        
+        if points[index-1] == nil {
+            let calc = ControlPoint(centerPoint: points[index + 1]!, previousPoint: points[index]!, nextPoint: points[index + 2]!)
+            return ((calc.staticControlPoints().staticPoint1, calc.translateControlPoints().controlPoint1))
+        } else if points[index + 2] == nil {
+            let calc = ControlPoint(centerPoint: points[index]!, previousPoint: points[index - 1]!, nextPoint: points[index + 1]!)
+            return ((calc.translateControlPoints().controlPoint2, calc.staticControlPoints().staticPoint2))
+        } else {
+            let CP1Calc = ControlPoint(centerPoint: points[index]!, previousPoint: points[index - 1]!, nextPoint: points[index + 1]!)
+            let CP2Calc = ControlPoint(centerPoint: points[index + 1]!, previousPoint: points[index]!, nextPoint: points[index + 2]!)
+            return ((CP1Calc.translateControlPoints().controlPoint2, CP2Calc.translateControlPoints().controlPoint1))
+        }
+    }
+}
+
 struct ChartSpecifications {
     
     init(padding: CGFloat, set: (inout [Charts: (height: CGFloat, width: CGFloat)]) -> ()) {

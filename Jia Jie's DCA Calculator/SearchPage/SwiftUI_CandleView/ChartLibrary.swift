@@ -56,7 +56,7 @@ struct ChartLibrary {
     }()
     
     lazy var maxWidth: CGFloat = {
-        0.03 * adjustedWidth
+        0.06 * adjustedWidth
     }()
     
     //MARK: ALL-IN-ONE RENDER

@@ -216,3 +216,41 @@ struct ChartMetaAnalysis {
         }()
     }
 }
+
+
+struct ControlPoint {
+    
+    let scaleFactor: CGFloat = 0.7
+    
+    init(centerPoint: CGPoint, previousPoint: CGPoint, nextPoint: CGPoint) {
+        self.centerPoint = centerPoint
+        self.previousPoint = previousPoint
+        self.nextPoint = nextPoint
+    }
+    
+    let centerPoint: CGPoint
+    let previousPoint: CGPoint
+    let nextPoint: CGPoint
+    
+    func getControlPoints() -> (controlPoint1: CGPoint, controlPoint2: CGPoint) {
+        let x1 = previousPoint.x + (centerPoint.x - previousPoint.x) * scaleFactor
+        let y1 = previousPoint.y + (centerPoint.y - previousPoint.y) * scaleFactor
+        let controlPoint1: CGPoint = .init(x: x1, y: y1)
+        
+        let x2 = centerPoint.x + (nextPoint.x - centerPoint.x) * (1 - scaleFactor)
+        let y2 = centerPoint.y + (nextPoint.y - centerPoint.y) * (1 - scaleFactor)
+        let controlPoint2: CGPoint = .init(x: x2, y: y2)
+        return (controlPoint1, controlPoint2)
+    }
+    
+    func translateControlPoints(_ cp: (controlPoint1: CGPoint, controlPoint2: CGPoint)) -> (controlPoint1: CGFloat, controlPoint2: CGFloat){
+        let MM: CGPoint = .init(x: 2 * centerPoint.x - cp.controlPoint1.x, y: 2 * centerPoint.y - cp.controlPoint1.y)
+        let NN: CGPoint = .init(x: 2 * centerPoint.x - cp.controlPoint2.x, y: 2 * centerPoint.y - cp.controlPoint2.y)
+        
+        let translatedControlPoint1 = CGPoint(x: (NN.x + cp.controlPoint1.x)/2, y: (NN.y + cp.controlPoint1.y)/2)
+        let translatedControlPoint2 = CGPoint(x: (MM.x + cp.controlPoint2.x)/2, y: (MM.y + cp.controlPoint2.y)/2)
+        
+        return ((translatedControlPoint1, translatedControlPoint2))
+    }
+    
+}

@@ -35,8 +35,6 @@ struct CandleView: View {
                     let selectedColor: Color = candles[idx].data.green() ? lightGreen : lightRed
                     let selected: Bool = idx == viewModel.selectedIndex
               
-                   
-               
                 if !selected {
                     color
                         .mask(candles[idx].body)
@@ -55,31 +53,25 @@ struct CandleView: View {
                     candles[idx].stick
                         .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
                         .fill(selectedColor)
-                    
                 }
                 
                 }
                .overlay(
                 MovingAverageView().environmentObject(viewModel)
                 )
-          
+
             SingleCandleView()
                 .environmentObject(viewModel)
                 .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
                 .position(y: viewModel.height * 2)
             }
-                
+
             TradingVolumeView().environmentObject(viewModel)
                 .frame(width: viewModel.width, height: viewModel.height)
                 .overlay(CandleIndicatorView()
                     .environmentObject(viewModel)
                 )
-              
-                
             }
-            
-           
-
         } else {
             Text("Nothing to show...")
         }

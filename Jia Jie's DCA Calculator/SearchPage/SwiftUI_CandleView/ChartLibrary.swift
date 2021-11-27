@@ -90,16 +90,20 @@ struct ChartLibrary {
     private mutating func renderLinePath(index: Int) {
        let xPosition = getXPosition(index: index)
        let yPosition = analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
+       let indexPoint = CGPoint(x: xPosition, y: yPosition)
        
        if index == 0 {
-        movingAverageChart.points.append(CGPoint(x: xPosition, y: yPosition))
-        movingAverageChart.path.move(to: CGPoint(x: xPosition, y: yPosition))
-        movingAverageChart.area.move(to: CGPoint(x: xPosition, y: yPosition))
+        movingAverageChart.points.append(indexPoint)
+        movingAverageChart.path.move(to: indexPoint)
+        movingAverageChart.area.move(to: indexPoint)
             
         } else {
-            movingAverageChart.points.append(CGPoint(x: xPosition, y: yPosition))
-            movingAverageChart.path.addLine(to: CGPoint(x: xPosition, y: yPosition))
-            movingAverageChart.area.addLine(to: CGPoint(x: xPosition, y: yPosition))
+            let controlPoints = getControlPoints(index: index-1)
+            
+            
+            movingAverageChart.points.append(indexPoint)
+            movingAverageChart.path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
+            movingAverageChart.area.addLine(to: indexPoint)
         }
 
         if index == data.count {
@@ -133,10 +137,10 @@ struct ChartLibrary {
 }
 
 extension ChartLibrary {
-    private mutating func getControlPoints(index: Int) -> (CGPoint, CGPoint)? {
+    private mutating func getControlPoints(index: Int) -> (CGPoint, CGPoint) {
         var points: [Int: CGPoint] = [:]
         for idx in index - 1...index + 2 {
-            let withinRange = data.indices.contains(index)
+            let withinRange = data.indices.contains(idx)
             if withinRange {
                 points[idx] = CGPoint(x: getXPosition(index: idx), y: analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: idx))
             }

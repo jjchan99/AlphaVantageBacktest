@@ -95,10 +95,10 @@ class CandleViewController: UIViewController {
             book.resetIndex()
             let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
             
-        let rangeOf5Days: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf5DaysAgo }
-        let rangeOf1Month: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf1MonthAgo }
-        let rangeOf3Months: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf3MonthsAgo }
-        let rangeOf6Months: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf6MonthsAgo }
+        let rangeOf5Days: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf5DaysAgo }
+        let rangeOf1Month: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf1MonthAgo }
+        let rangeOf3Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf3MonthsAgo }
+        let rangeOf6Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf6MonthsAgo }
         
         let updateDict: (CandleMode, Int) -> Void = { [unowned self] period, index in
             metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: statsLookUp[.tradingVolume]![period]!.max, previousMin: statsLookUp[.tradingVolume]![period]!.min) { newMax, newMin in
@@ -134,24 +134,27 @@ class CandleViewController: UIViewController {
                 var average: Double!
                 movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations) { avg in average = avg }
 
-                if rangeOf6Months(index) {
+                if rangeOf6Months(iterations) {
                     updateDict(.months6, index)
                     updateDependencies(.months6, index, average)
                 }
-                if rangeOf3Months(index) {
+                if rangeOf3Months(iterations) {
                     updateDict(.months3, index)
                     updateDependencies(.months3, index, average)
                 }
-                if rangeOf1Month(index) {
+                if rangeOf1Month(iterations) {
                     updateDict(.months1, index)
                     updateDependencies(.months1, index, average)
                 }
-                if rangeOf5Days(index) {
+                if rangeOf5Days(iterations) {
                     updateDict(.days5, index)
                     updateDependencies(.days5, index, average)
                 }
                 
             }
+        
+//        print("Inspect: \(dataDependencies[.months6]!.OHLC.count)")
+//        print("Inspect: \(dataDependencies[.days5]!.OHLC.count)")
             Log.queue(action: "DONE DICT")
         }
     

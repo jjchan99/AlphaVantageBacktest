@@ -104,7 +104,8 @@ class CandleViewController: UIViewController {
             for index in 0..<sorted.count {
                 let iterations = index
                 let index = sorted.count - 1 - index
-                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations)
+                var average: Double!
+                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations) { avg in average = avg }
                 
                 if rangeOf6Months(index) {
                     metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months6]!.max, previousMin: &statsLookUp![.tradingVolume]![.months6]!.min)
@@ -115,6 +116,7 @@ class CandleViewController: UIViewController {
                     metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months6]!.max)
                     
                     dataDependencies![.months6]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
+                    dataDependencies![.months6]!.movingAverage.append(average)
                 }
                 if rangeOf3Months(index) {
                     metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months3]!.max, previousMin: &statsLookUp![.tradingVolume]![.months3]!.min)
@@ -125,6 +127,7 @@ class CandleViewController: UIViewController {
                     metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months3]!.max)
                     
                     dataDependencies![.months3]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
+                    dataDependencies![.months3]!.movingAverage.append(average)
                 }
                 if rangeOf1Month(index) {
                     metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months1]!.max, previousMin: &statsLookUp![.tradingVolume]![.months1]!.min)
@@ -135,7 +138,7 @@ class CandleViewController: UIViewController {
                     metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months1]!.max)
                     
                     dataDependencies![.months1]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
-                    
+                    dataDependencies![.months1]!.movingAverage.append(average)
                 }
                 if rangeOf5Days(index) {
                     metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.days5]!.max, previousMin: &statsLookUp![.tradingVolume]![.days5]!.min)
@@ -146,7 +149,7 @@ class CandleViewController: UIViewController {
                     metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.days5]!.max)
                     
                     dataDependencies![.days5]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
-                    
+                    dataDependencies![.days5]!.movingAverage.append(average)
                 }
                 
             }

@@ -66,11 +66,18 @@ class CandleViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func test() {
+        viewModel.sorted = dataDependencies[.days5]!.OHLC
+        Log.queue(action: "test")
+    }
+    
     override func viewDidLoad() {
         hc = UIHostingController(rootView: AnyView(CandleView().environmentObject(viewModel)))
         view.addSubview(hc!.view)
         hc!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "hc")
         iterateAndGetDependencies()
+        OHLC(mode: .days5)
+      
         //MARK: DICT CHANGES WILL NOT BE REFELCTED UNTIL VIEWDIDLOAD IS FINISHED. THREAD SAFETY MECHANISM
         viewModel.modeChanged = { [unowned self] mode in
             print("You pressed the button")
@@ -173,6 +180,8 @@ class CandleViewController: UIViewController {
             dict[.candle] = (height: viewModel.height, width: viewModel.width)
         }), data: OHLC, movingAverage: movingAverageData, analysis: .init(data: OHLC, movingAverageData: movingAverageData, tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min, range: nil), movingAverage: .init(max: movingAverage.max, min: movingAverage.min, range: nil), highLow: .init(max: highLow.max, min: highLow.min, range: nil)))
         viewModel.charts!.iterateOverData()
+        
+        Log.queue(action: "I expect the app to crash")
     }
     
     private func metaAnalyze(data: Double, previousMax: Double, previousMin: Double, completion: (Double, Double) -> Void) {

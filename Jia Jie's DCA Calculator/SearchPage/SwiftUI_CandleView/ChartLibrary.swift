@@ -98,12 +98,15 @@ struct ChartLibrary {
         movingAverageChart.area.move(to: indexPoint)
             
         } else {
+         
+            if data.count < 3 {
+                movingAverageChart.path.addLine(to: indexPoint)
+            } else {
             let controlPoints = getControlPoints(index: index-1)
-            
-            
             movingAverageChart.points.append(indexPoint)
             movingAverageChart.path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
             movingAverageChart.area.addLine(to: indexPoint)
+            }
         }
 
         if index == data.count {

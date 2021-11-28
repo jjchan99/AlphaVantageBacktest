@@ -12,12 +12,34 @@ import Combine
 
 class CandleViewController: UIViewController {
     
+    private enum StatisticsMode {
+        case tradingVolume, highLow, movingAverage
+    }
+    
     let symbol: String
     let viewModel = CandleViewModel()
     var hc: UIHostingController<AnyView>?
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
     var sorted: [(key: String, value: TimeSeriesDaily)]?
+    
+    //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
+    let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
+    let monthsAgo1 = Date.init(timeIntervalSinceNow: -86400 * 31)
+    let monthsAgo3 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 3) - 86400)
+    let monthsAgo6 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 6) - 86400)
+    
+    lazy var dateLookUp: [CandleMode : String] = {
+        let dict: [CandleMode: String] = [
+            .days5 : getDate(mode: .days5),
+            .months1 : getDate(mode: .months1),
+            .months3 : getDate(mode: .months3),
+            .months6 : getDate(mode: .months6)
+        ]
+        return dict
+    }()
+    
+    private var statsLookUp: [CandleMode: [StatisticsMode: MaxMinRange]]?
     
     init(symbol: String) {
         self.symbol = symbol
@@ -43,41 +65,42 @@ class CandleViewController: UIViewController {
         view.backgroundColor = .white
     }
     
+    
     func OHLC(mode: CandleMode) {
-        guard let sorted = sorted else { fatalError() }
-        var array: [OHLC] = []
-        var book = AlgorithmBook()
-        let key = getMode(mode: mode)
-        let count = book.binarySearch(sorted, key: key, range: 0..<sorted.count)
-        
-        var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
-        
-        var maxVolume: Double = 0
-        var minVolume: Double = .infinity
-    
-        var maxHigh: Double = 0
-        var minLow: Double = .infinity
-        
-        
-        guard let count = count else { fatalError() }
-        for idx in 0...count {
-            let index = idx
-            let idx = count - idx
-            guard idx <= sorted.count - 1 else { break }
-            array.append(.init(meta: daily!.meta!, stamp: sorted[idx].key, open: sorted[idx].value.open, high: sorted[idx].value.high, low: sorted[idx].value.low, close: sorted[idx].value.close, adjustedClose: sorted[idx].value.adjustedClose, volume: sorted[idx].value.volume, dividendAmount: sorted[idx].value.dividendAmount, splitCoefficient: sorted[idx].value.splitCoefficient))
-    
-            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: index)
-            metaAnalyze(data: Double(sorted[idx].value.high)!, previousMax: &maxHigh)
-            metaAnalyze(data: Double(sorted[idx].value.low)!, previousMin: &minLow)
-            metaAnalyze(data: Double(sorted[idx].value.volume)!, previousMax: &maxVolume, previousMin: &minVolume)
-        }
-        viewModel.sorted = array
-        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
-            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
-            dict[.line] = (height: viewModel.height, width: viewModel.width)
-            dict[.candle] = (height: viewModel.height, width: viewModel.width)
-        }), data: array, movingAverage: movingAverageCalculator.array, analysis: .init(data: array, movingAverageData: movingAverageCalculator.array, tradingVolume: .init(max: maxVolume, min: minVolume, range: nil), movingAverage: .init(max: movingAverageCalculator.max, min: movingAverageCalculator.min, range: nil), highLow: .init(max: maxHigh, min: minLow, range: nil)))
-        viewModel.charts!.iterateOverData()
+//        guard let sorted = sorted else { fatalError() }
+//        var array: [OHLC] = []
+//        var book = AlgorithmBook()
+//        let key = getMode(mode: mode)
+//        let count = book.binarySearch(sorted, key: key, range: 0..<sorted.count)
+//
+//        var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
+//
+//        var maxVolume: Double = 0
+//        var minVolume: Double = .infinity
+//
+//        var maxHigh: Double = 0
+//        var minLow: Double = .infinity
+//
+//
+//        guard let count = count else { fatalError() }
+//        for idx in 0...count {
+//            let index = idx
+//            let idx = count - idx
+//            guard idx <= sorted.count - 1 else { break }
+//            array.append(.init(meta: daily!.meta!, stamp: sorted[idx].key, open: sorted[idx].value.open, high: sorted[idx].value.high, low: sorted[idx].value.low, close: sorted[idx].value.close, adjustedClose: sorted[idx].value.adjustedClose, volume: sorted[idx].value.volume, dividendAmount: sorted[idx].value.dividendAmount, splitCoefficient: sorted[idx].value.splitCoefficient))
+//
+//            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: index)
+//            metaAnalyze(data: Double(sorted[idx].value.high)!, previousMax: &maxHigh)
+//            metaAnalyze(data: Double(sorted[idx].value.low)!, previousMin: &minLow)
+//            metaAnalyze(data: Double(sorted[idx].value.volume)!, previousMax: &maxVolume, previousMin: &minVolume)
+//        }
+//        viewModel.sorted = array
+//        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
+//            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
+//            dict[.line] = (height: viewModel.height, width: viewModel.width)
+//            dict[.candle] = (height: viewModel.height, width: viewModel.width)
+//        }), data: array, movingAverage: movingAverageCalculator.array, analysis: .init(data: array, movingAverageData: movingAverageCalculator.array, tradingVolume: .init(max: maxVolume, min: minVolume, range: nil), movingAverage: .init(max: movingAverageCalculator.max, min: movingAverageCalculator.min, range: nil), highLow: .init(max: maxHigh, min: minLow, range: nil)))
+//        viewModel.charts!.iterateOverData()
     }
     
     private func metaAnalyze(data: Double, previousMax: inout Double, previousMin: inout Double) {
@@ -102,31 +125,27 @@ class CandleViewController: UIViewController {
     }
     
     
-    private func getMode(mode: CandleMode) -> String {
+    private func getDate(mode: CandleMode) -> String {
         switch mode {
         case .days5:
-            let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
             let year = Calendar.current.component(.year, from: daysAgo5)
             let month = Calendar.current.component(.month, from: daysAgo5)
             let day = Calendar.current.component(.day, from: daysAgo5)
             return constructKey(month: month, year: year, day: day)
             
         case .months1:
-            let monthsAgo1 = Date.init(timeIntervalSinceNow: -86400 * 31)
             let year = Calendar.current.component(.year, from: monthsAgo1)
             let month = Calendar.current.component(.month, from: monthsAgo1)
             let day = Calendar.current.component(.day, from: monthsAgo1)
             return constructKey(month: month, year: year, day: day)
         
         case .months3:
-            let monthsAgo3 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 3) - 86400)
             let year = Calendar.current.component(.year, from: monthsAgo3)
             let month = Calendar.current.component(.month, from: monthsAgo3)
             let day = Calendar.current.component(.day, from: monthsAgo3)
             return constructKey(month: month, year: year, day: day)
             
         case .months6:
-            let monthsAgo6 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 6) - 86400)
             let year = Calendar.current.component(.year, from: monthsAgo6)
             let month = Calendar.current.component(.month, from: monthsAgo6)
             let day = Calendar.current.component(.day, from: monthsAgo6)
@@ -134,7 +153,11 @@ class CandleViewController: UIViewController {
         }
     }
     
-   
-    
-   
+    private struct MaxMinRange {
+        let max: Double
+        let min: Double
+        lazy var range: Double = {
+            max - min
+        }()
+    }
 }

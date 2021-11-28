@@ -34,4 +34,8 @@ struct AlgorithmBook {
             }
         }
     }
+    
+    mutating func resetIndex() {
+        closestIndex = nil
+    }
 }

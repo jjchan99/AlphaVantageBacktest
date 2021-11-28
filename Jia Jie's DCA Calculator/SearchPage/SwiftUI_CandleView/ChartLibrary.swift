@@ -181,9 +181,9 @@ struct ChartMetaAnalysis {
     
     
     //MARK: STATISTICAL META DATA
-    var tradingVolume: TradingVolume
-    var movingAverage: MovingAverage
-    var highLow: HighLow
+    var tradingVolume: MaxMinRange
+    var movingAverage: MaxMinRange
+    var highLow: MaxMinRange
     
     
     //MARK: MODE SELECTION
@@ -220,23 +220,7 @@ struct ChartMetaAnalysis {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    internal struct TradingVolume {
-        let max: Double
-        let min: Double
-        lazy var range: Double = {
-            max - min
-        }()
-    }
-    
-    internal struct MovingAverage {
-        let max: Double
-        let min: Double
-        lazy var range: Double = {
-            max - min
-        }()
-    }
-    
-    internal struct HighLow {
+    internal struct MaxMinRange {
         let max: Double
         let min: Double
         lazy var range: Double = {

@@ -55,6 +55,7 @@ class CandleViewController: UIViewController {
         hc = UIHostingController(rootView: AnyView(CandleView().environmentObject(viewModel)))
         view.addSubview(hc!.view)
         hc!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "hc")
+        iterateAndGetDependencies()
         OHLC(mode: .days5)
         
         
@@ -67,16 +68,21 @@ class CandleViewController: UIViewController {
     }
     
     func initalizeStatsLookUpDict() {
-        for cases in StatisticsMode.allCases {
-            for mode in CandleMode.allCases {
-            statsLookUp = [cases : [mode : .init(max: 0, min: .infinity, range: nil)]]
-        }
+        var nestedDict: [CandleMode: MaxMinRange] = [:]
+        statsLookUp = [:]
+        
+        for mode in CandleMode.allCases {
+            nestedDict[mode] = .init(max: 0, min: .infinity, range: nil)
+            for cases in StatisticsMode.allCases {
+                statsLookUp![cases] = nestedDict
+            }
     }
     }
     
     func initializeDependenciesDict() {
+        dataDependencies = [:]
         for cases in CandleMode.allCases {
-            dataDependencies = [cases : .init(OHLC: [], movingAverage: [])]
+            dataDependencies![cases] = .init(OHLC: [], movingAverage: [])
         }
     }
     

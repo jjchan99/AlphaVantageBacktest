@@ -188,7 +188,25 @@ struct ChartMetaAnalysis {
     var movingAverage: MaxMinRange
     var highLow: MaxMinRange
     
+    lazy var ultimateMaxMinRange: MaxMinRange = {
+        
+        let ultimateMax: Double = {
+            return highLow.max > movingAverage.max ? highLow.max : movingAverage.max
+        }()
+        
+        let ultimateMin: Double = {
+            return highLow.min < movingAverage.min ? highLow.min : movingAverage.min
+        }()
     
+        let ultimateRange: Double = {
+            let lowerBound = highLow.min < movingAverage.min ? highLow.min : movingAverage.min
+            let upperBound = highLow.max > movingAverage.max ? highLow.max : movingAverage.max
+            return upperBound - lowerBound
+        }()
+        
+        return .init(max: ultimateMax, min: ultimateMin, range: ultimateRange)
+    }()
+   
     //MARK: MODE SELECTION
     enum Mode {
         case tradingVolume, movingAverage

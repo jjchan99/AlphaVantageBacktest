@@ -66,11 +66,6 @@ class CandleViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func test() {
-        viewModel.sorted = dataDependencies[.days5]!.OHLC
-        Log.queue(action: "test")
-    }
-    
     override func viewDidLoad() {
         hc = UIHostingController(rootView: AnyView(CandleView().environmentObject(viewModel)))
         view.addSubview(hc!.view)

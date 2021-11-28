@@ -16,38 +16,38 @@ struct SingleCandleView: View {
     }
     
     @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
-        let width: CGFloat = viewModel.charts!.adjustedWidth
-        let candles: [Candle] = viewModel.charts!.candles
-        let color: Color = candles[idx].data.green() ? Color.green : Color.red
-        let range = viewModel.charts!.analysis.highLow.range
-        let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
-        let scaleFactor = viewModel.height / shareOfHeight
-        
-        let xStretch: CGFloat = 20 / getSpacing()
-        let pillars = viewModel.charts!.columns
-        
-        let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
-    
-        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
-        let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - range)) / range) * viewModel.height
-        
-        let stick = candle.stick.applying(.init(scaleX: xStretch, y: scaleFactor))
-        let body = candle.body.applying(.init(scaleX: xStretch, y: scaleFactor))
-        
-        color
-            .mask(body)
-            .offset(x: x)
-            .offset(y: y)
-        body
-            .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
-            .fill(color)
-            .offset(x: x)
-            .offset(y: y)
-        stick
-            .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
-            .fill(color)
-            .offset(x: x)
-            .offset(y: y)
+//        let width: CGFloat = viewModel.charts!.adjustedWidth
+//        let candles: [Candle] = viewModel.charts!.candles
+//        let color: Color = candles[idx].data.green() ? Color.green : Color.red
+//        let range = viewModel.charts!.analysis.highLow.range
+//        let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
+//        let scaleFactor = viewModel.height / shareOfHeight
+//
+//        let xStretch: CGFloat = 20 / getSpacing()
+//        let pillars = viewModel.charts!.columns
+//
+//        let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
+//
+//        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
+//        let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - range)) / range) * viewModel.height
+//
+//        let stick = candle.stick.applying(.init(scaleX: xStretch, y: scaleFactor))
+//        let body = candle.body.applying(.init(scaleX: xStretch, y: scaleFactor))
+//
+//        color
+//            .mask(body)
+//            .offset(x: x)
+//            .offset(y: y)
+//        body
+//            .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+//            .fill(color)
+//            .offset(x: x)
+//            .offset(y: y)
+//        stick
+//            .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+//            .fill(color)
+//            .offset(x: x)
+//            .offset(y: y)
         
     }
     

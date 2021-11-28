@@ -60,10 +60,10 @@ struct CandleView: View {
                 MovingAverageView().environmentObject(viewModel)
                 )
 
-//            SingleCandleView()
-//                .environmentObject(viewModel)
-//                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
-//                .position(y: viewModel.height * 2)
+            SingleCandleView()
+                .environmentObject(viewModel)
+                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
+                .position(y: viewModel.height * 2)
             }
 
             TradingVolumeView().environmentObject(viewModel)

@@ -39,7 +39,7 @@ class CandleViewController: UIViewController {
         return dict
     }()
     
-    private var statsLookUp: [CandleMode: [StatisticsMode: MaxMinRange]]?
+    private var statsLookUp: [StatisticsMode: [CandleMode: MaxMinRange]]?
     
     init(symbol: String) {
         self.symbol = symbol
@@ -64,6 +64,32 @@ class CandleViewController: UIViewController {
         }
         view.backgroundColor = .white
     }
+    
+    func iterateAndGetDependencies() {
+            guard let sorted = sorted else { fatalError() }
+            var array: [OHLC] = []
+            var book = AlgorithmBook()
+            let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)
+            book.resetIndex()
+            let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)
+            book.resetIndex()
+            let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)
+            book.resetIndex()
+            let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)
+            
+            var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
+            
+            for index in 0..<sorted.count {
+                let reverseIdx = sorted.count - 1 - index
+                movingAverageCalculator.movingAverage(data: Double(sorted[reverseIdx].value.adjustedClose)!, index: index)
+                
+                
+                
+            }
+            
+            
+            
+        }
     
     
     func OHLC(mode: CandleMode) {

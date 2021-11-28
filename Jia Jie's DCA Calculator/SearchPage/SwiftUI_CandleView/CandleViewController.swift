@@ -40,6 +40,7 @@ class CandleViewController: UIViewController {
     }()
     
     private var statsLookUp: [StatisticsMode: [CandleMode: MaxMinRange]]?
+    private var dataDependencies: [CandleMode: DataDependencies]?
     
     init(symbol: String) {
         self.symbol = symbol
@@ -73,9 +74,16 @@ class CandleViewController: UIViewController {
     }
     }
     
+    func initializeDependenciesDict() {
+        for cases in CandleMode.allCases {
+            dataDependencies = [cases : .init(OHLC: [], movingAverage: [])]
+        }
+    }
+    
     func iterateAndGetDependencies() {
         guard let sorted = sorted else { fatalError() }
             initalizeStatsLookUpDict()
+            initializeDependenciesDict()
             var array: [OHLC] = []
             var book = AlgorithmBook()
             var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
@@ -94,19 +102,50 @@ class CandleViewController: UIViewController {
         let rangeOf6Months: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf6MonthsAgo }
         
             for index in 0..<sorted.count {
-                let reverseIdx = sorted.count - 1 - index
-                movingAverageCalculator.movingAverage(data: Double(sorted[reverseIdx].value.adjustedClose)!, index: index)
+                let iterations = index
+                let index = sorted.count - 1 - index
+                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations)
                 
                 if rangeOf6Months(index) {
+                    metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months6]!.max, previousMin: &statsLookUp![.tradingVolume]![.months6]!.min)
+                    metaAnalyze(data: Double(sorted[index].value.high)!, previousMax: &statsLookUp![.highLow]![.months6]!.max)
+                    metaAnalyze(data: Double(sorted[index].value.low)!, previousMin: &statsLookUp![.highLow]![.months6]!.min)
                     
+                    metaAnalyze(data: movingAverageCalculator.min, previousMin: &statsLookUp![.movingAverage]![.months6]!.min)
+                    metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months6]!.max)
+                    
+                    dataDependencies![.months6]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
                 }
                 if rangeOf3Months(index) {
+                    metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months3]!.max, previousMin: &statsLookUp![.tradingVolume]![.months3]!.min)
+                    metaAnalyze(data: Double(sorted[index].value.high)!, previousMax: &statsLookUp![.highLow]![.months3]!.max)
+                    metaAnalyze(data: Double(sorted[index].value.low)!, previousMin: &statsLookUp![.highLow]![.months3]!.min)
                     
+                    metaAnalyze(data: movingAverageCalculator.min, previousMin: &statsLookUp![.movingAverage]![.months3]!.min)
+                    metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months3]!.max)
+                    
+                    dataDependencies![.months3]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
                 }
                 if rangeOf1Month(index) {
+                    metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.months1]!.max, previousMin: &statsLookUp![.tradingVolume]![.months1]!.min)
+                    metaAnalyze(data: Double(sorted[index].value.high)!, previousMax: &statsLookUp![.highLow]![.months1]!.max)
+                    metaAnalyze(data: Double(sorted[index].value.low)!, previousMin: &statsLookUp![.highLow]![.months1]!.min)
+                    
+                    metaAnalyze(data: movingAverageCalculator.min, previousMin: &statsLookUp![.movingAverage]![.months1]!.min)
+                    metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.months1]!.max)
+                    
+                    dataDependencies![.months1]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
                     
                 }
                 if rangeOf5Days(index) {
+                    metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: &statsLookUp![.tradingVolume]![.days5]!.max, previousMin: &statsLookUp![.tradingVolume]![.days5]!.min)
+                    metaAnalyze(data: Double(sorted[index].value.high)!, previousMax: &statsLookUp![.highLow]![.days5]!.max)
+                    metaAnalyze(data: Double(sorted[index].value.low)!, previousMin: &statsLookUp![.highLow]![.days5]!.min)
+                    
+                    metaAnalyze(data: movingAverageCalculator.min, previousMin: &statsLookUp![.movingAverage]![.days5]!.min)
+                    metaAnalyze(data: movingAverageCalculator.max, previousMin: &statsLookUp![.movingAverage]![.days5]!.max)
+                    
+                    dataDependencies![.days5]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
                     
                 }
                 
@@ -202,10 +241,15 @@ class CandleViewController: UIViewController {
     }
     
     private struct MaxMinRange {
-        let max: Double
-        let min: Double
+        var max: Double
+        var min: Double
         lazy var range: Double = {
             max - min
         }()
+    }
+    
+    struct DataDependencies {
+        var OHLC: [OHLC] = []
+        var movingAverage: [Double] = []
     }
 }

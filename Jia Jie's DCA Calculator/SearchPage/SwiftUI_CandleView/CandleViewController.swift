@@ -157,40 +157,19 @@ class CandleViewController: UIViewController {
     
     
     func OHLC(mode: CandleMode) {
-//        guard let sorted = sorted else { fatalError() }
-//        var array: [OHLC] = []
-//        var book = AlgorithmBook()
-//        let key = getMode(mode: mode)
-//        let count = book.binarySearch(sorted, key: key, range: 0..<sorted.count)
-//
-//        var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
-//
-//        var maxVolume: Double = 0
-//        var minVolume: Double = .infinity
-//
-//        var maxHigh: Double = 0
-//        var minLow: Double = .infinity
-//
-//
-//        guard let count = count else { fatalError() }
-//        for idx in 0...count {
-//            let index = idx
-//            let idx = count - idx
-//            guard idx <= sorted.count - 1 else { break }
-//            array.append(.init(meta: daily!.meta!, stamp: sorted[idx].key, open: sorted[idx].value.open, high: sorted[idx].value.high, low: sorted[idx].value.low, close: sorted[idx].value.close, adjustedClose: sorted[idx].value.adjustedClose, volume: sorted[idx].value.volume, dividendAmount: sorted[idx].value.dividendAmount, splitCoefficient: sorted[idx].value.splitCoefficient))
-//
-//            movingAverageCalculator.movingAverage(data: Double(sorted[idx].value.adjustedClose)!, index: index)
-//            metaAnalyze(data: Double(sorted[idx].value.high)!, previousMax: &maxHigh)
-//            metaAnalyze(data: Double(sorted[idx].value.low)!, previousMin: &minLow)
-//            metaAnalyze(data: Double(sorted[idx].value.volume)!, previousMax: &maxVolume, previousMin: &minVolume)
-//        }
-//        viewModel.sorted = array
-//        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
-//            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
-//            dict[.line] = (height: viewModel.height, width: viewModel.width)
-//            dict[.candle] = (height: viewModel.height, width: viewModel.width)
-//        }), data: array, movingAverage: movingAverageCalculator.array, analysis: .init(data: array, movingAverageData: movingAverageCalculator.array, tradingVolume: .init(max: maxVolume, min: minVolume, range: nil), movingAverage: .init(max: movingAverageCalculator.max, min: movingAverageCalculator.min, range: nil), highLow: .init(max: maxHigh, min: minLow, range: nil)))
-//        viewModel.charts!.iterateOverData()
+        let OHLC = dataDependencies![mode]!.OHLC
+        let movingAverageData = dataDependencies![mode]!.movingAverage
+        let tradingVolume = statsLookUp![.tradingVolume]![mode]!
+        let movingAverage = statsLookUp![.movingAverage]![mode]!
+        let highLow = statsLookUp![.highLow]![mode]!
+        
+        viewModel.sorted = OHLC
+        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
+            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
+            dict[.line] = (height: viewModel.height, width: viewModel.width)
+            dict[.candle] = (height: viewModel.height, width: viewModel.width)
+        }), data: OHLC, movingAverage: movingAverageData, analysis: .init(data: OHLC, movingAverageData: movingAverageData, tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min, range: nil), movingAverage: .init(max: movingAverage.max, min: movingAverage.min, range: nil), highLow: .init(max: highLow.max, min: highLow.min, range: nil)))
+        viewModel.charts!.iterateOverData()
     }
     
     private func metaAnalyze(data: Double, previousMax: inout Double, previousMin: inout Double) {

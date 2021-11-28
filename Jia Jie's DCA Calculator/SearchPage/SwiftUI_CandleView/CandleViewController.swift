@@ -12,7 +12,7 @@ import Combine
 
 class CandleViewController: UIViewController {
     
-    private enum StatisticsMode {
+    private enum StatisticsMode: CaseIterable {
         case tradingVolume, highLow, movingAverage
     }
     
@@ -65,20 +65,37 @@ class CandleViewController: UIViewController {
         view.backgroundColor = .white
     }
     
+    func initalizeStatsLookUpDict() {
+        for cases in StatisticsMode.allCases {
+            for mode in CandleMode.allCases {
+            statsLookUp = [cases : [mode : .init(max: 0, min: .infinity, range: nil)]]
+        }
+    }
+    }
+    
     func iterateAndGetDependencies() {
-            guard let sorted = sorted else { fatalError() }
+        guard let sorted = sorted else { fatalError() }
+            initalizeStatsLookUpDict()
             var array: [OHLC] = []
             var book = AlgorithmBook()
-            let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)
-            book.resetIndex()
-            let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)
-            book.resetIndex()
-            let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)
-            book.resetIndex()
-            let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)
-            
             var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
+        
+            let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
+            book.resetIndex()
+            let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
+            book.resetIndex()
+            let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
+            book.resetIndex()
+            let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
             
+        let rangeOf5Days = sorted.count - 1 - indexPositionOf5DaysAgo
+        let rangeOf1Month = sorted.count - 1 - indexPositionOf1MonthAgo
+        let rangeOf3Months = sorted.count - 1 - indexPositionOf3MonthsAgo
+        let rangeOf6Months = sorted.count - 1 - indexPositionOf6MonthsAgo
+        
+        
+        
+        
             for index in 0..<sorted.count {
                 let reverseIdx = sorted.count - 1 - index
                 movingAverageCalculator.movingAverage(data: Double(sorted[reverseIdx].value.adjustedClose)!, index: index)

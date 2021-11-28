@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CandleMode {
+enum CandleMode: CaseIterable {
     case days5
     case months1
     case months3

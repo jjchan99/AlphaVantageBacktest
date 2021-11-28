@@ -88,24 +88,29 @@ class CandleViewController: UIViewController {
             book.resetIndex()
             let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
             
-        let rangeOf5Days = sorted.count - 1 - indexPositionOf5DaysAgo
-        let rangeOf1Month = sorted.count - 1 - indexPositionOf1MonthAgo
-        let rangeOf3Months = sorted.count - 1 - indexPositionOf3MonthsAgo
-        let rangeOf6Months = sorted.count - 1 - indexPositionOf6MonthsAgo
-        
-        
-        
+        let rangeOf5Days: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf5DaysAgo }
+        let rangeOf1Month: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf1MonthAgo }
+        let rangeOf3Months: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf3MonthsAgo }
+        let rangeOf6Months: (Int) -> (Bool) = { idx in return idx < sorted.count - 1 - indexPositionOf6MonthsAgo }
         
             for index in 0..<sorted.count {
                 let reverseIdx = sorted.count - 1 - index
                 movingAverageCalculator.movingAverage(data: Double(sorted[reverseIdx].value.adjustedClose)!, index: index)
                 
-                
+                if rangeOf6Months(index) {
+                    
+                }
+                if rangeOf3Months(index) {
+                    
+                }
+                if rangeOf1Month(index) {
+                    
+                }
+                if rangeOf5Days(index) {
+                    
+                }
                 
             }
-            
-            
-            
         }
     
     

@@ -113,10 +113,10 @@ class CandleViewController: UIViewController {
                     statsLookUp[.highLow]![period]!.min = newMin
                 }
 
-                metaAnalyze(data: movingAverageCalculator.min, previousMin: statsLookUp[.movingAverage]![period]!.min) { newMin in
+                metaAnalyze(data: dataDependencies[period]!.movingAverage.last!, previousMin: statsLookUp[.movingAverage]![period]!.min) { newMin in
                     statsLookUp[.movingAverage]![period]!.min = newMin
                 }
-                metaAnalyze(data: movingAverageCalculator.max, previousMax: statsLookUp[.movingAverage]![period]!.max) { newMax in
+                metaAnalyze(data: dataDependencies[period]!.movingAverage.last!, previousMax: statsLookUp[.movingAverage]![period]!.max) { newMax in
                     statsLookUp[.movingAverage]![period]!.max = newMax
                 }
             }
@@ -137,20 +137,24 @@ class CandleViewController: UIViewController {
                 movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations) { avg in average = avg }
 
                 if rangeOf6Months(iterations) {
-                    updateDict(.months6, index)
                     updateDependencies(.months6, index, average)
+                    updateDict(.months6, index)
+                   
                 }
                 if rangeOf3Months(iterations) {
-                    updateDict(.months3, index)
                     updateDependencies(.months3, index, average)
+                    updateDict(.months3, index)
+                
                 }
                 if rangeOf1Month(iterations) {
-                    updateDict(.months1, index)
                     updateDependencies(.months1, index, average)
+                    updateDict(.months1, index)
+                
                 }
                 if rangeOf5Days(iterations) {
-                    updateDict(.days5, index)
                     updateDependencies(.days5, index, average)
+                    updateDict(.days5, index)
+                
                 }
                 
             }

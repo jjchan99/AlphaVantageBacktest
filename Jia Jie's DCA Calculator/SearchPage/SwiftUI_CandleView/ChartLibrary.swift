@@ -220,23 +220,23 @@ struct ChartMetaAnalysis {
             let scaled = CGFloat(share) * heightBounds
             return scaled
         case .movingAverage:
-            let deviation = abs(movingAverageData[index] - movingAverage.max)
-            let share = deviation / movingAverage.range
+            let deviation = abs(movingAverageData[index] - ultimateMaxMinRange.max)
+            let share = deviation / ultimateMaxMinRange.range
             let scaled = CGFloat(share) * heightBounds
             return scaled
         }
     }
     
     mutating func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
-        let range = highLow.range
+        let range = ultimateMaxMinRange.range
         let open = Double(data[index].open)!
         let high = Double(data[index].high!)!
         let low = Double(data[index].low!)!
         let close = Double(data[index].close)!
-        let yOpen = CGFloat((abs(open - highLow.max)) / range) * heightBounds
-        let yHigh = CGFloat((abs(high - highLow.max)) / range) * heightBounds
-        let yLow = CGFloat((abs(low - highLow.max)) / range) * heightBounds
-        let yClose = CGFloat((abs(close - highLow.max)) / range) * heightBounds
+        let yOpen = CGFloat((abs(open - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yHigh = CGFloat((abs(high - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yLow = CGFloat((abs(low - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yClose = CGFloat((abs(close - ultimateMaxMinRange.max)) / range) * heightBounds
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }

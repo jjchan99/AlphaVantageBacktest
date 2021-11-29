@@ -26,7 +26,7 @@ struct ChartLibrary {
     let movingAverage: [Double]
     
     //MARK: BOUND DEPENDENCIES
-    var analysis: ChartMetaAnalysis
+    private(set) var analysis: ChartMetaAnalysis
     
     //MARK: OUTPUT
     private(set) var candles: [Candle] = []
@@ -38,26 +38,20 @@ struct ChartLibrary {
         self.data = data
         self.movingAverage = movingAverage
         self.analysis = analysis
+        
+        self.adjustedWidth = specifications.specifications[.line]!.width - (2 * specifications.padding)
+        self.columns = adjustedWidth / CGFloat(data.count - 1)
+        self.maxWidth = 0.06 * adjustedWidth
+        self.spacing = columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
     
-    lazy var columns: CGFloat = {
-        let columns = adjustedWidth / CGFloat(data.count - 1)
-        return columns
-    }()
+    let columns: CGFloat
     
-    lazy var adjustedWidth: CGFloat = {
-        specifications.specifications[.line]!.width - (2 * specifications.padding)
-    }()
+    let adjustedWidth: CGFloat
     
-    lazy var spacing: CGFloat = {
-        var spacing = (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
-        spacing = columns <= 5.0 ? 1 : spacing
-        return spacing
-    }()
+    let spacing: CGFloat
     
-    lazy var maxWidth: CGFloat = {
-        0.06 * adjustedWidth
-    }()
+    let maxWidth: CGFloat
     
     //MARK: ALL-IN-ONE RENDER
     mutating func iterateOverData() {

@@ -173,12 +173,13 @@ class CandleViewController: UIViewController {
         let highLow = statsLookUp[.highLow]![mode]!
         
         viewModel.sorted = OHLC
-        viewModel.charts = .init(specifications: .init(padding: viewModel.padding, set: { dict in
+        var charts: ChartLibrary = .init(specifications: .init(padding: viewModel.padding, set: { dict in
             dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
             dict[.line] = (height: viewModel.height, width: viewModel.width)
             dict[.candle] = (height: viewModel.height, width: viewModel.width)
         }), data: OHLC, movingAverage: movingAverageData, analysis: .init(data: OHLC, movingAverageData: movingAverageData, tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min, range: nil), movingAverage: .init(max: movingAverage.max, min: movingAverage.min, range: nil), highLow: .init(max: highLow.max, min: highLow.min, range: nil)))
-        viewModel.charts!.iterateOverData()
+        charts.iterateOverData()
+        viewModel.charts = charts
         
         Log.queue(action: "I expect the app to crash")
     }

@@ -15,7 +15,7 @@ struct SingleCandleView: View {
         viewModel.charts!.spacing
     }
     
-    func offsetX(idx: Int) -> CGFloat {
+    private func offsetX(idx: Int) -> CGFloat {
     let columns: CGFloat = viewModel.charts!.columns
     let xPosition = idx == 0 ? viewModel.padding : (columns * CGFloat(idx)) + viewModel.padding
         
@@ -23,24 +23,33 @@ struct SingleCandleView: View {
     return x
     }
     
+    private func transform(idx: Int) -> CGPoint {
+        let candles: [Candle] = viewModel.charts!.candles
+        let range = viewModel.charts!.analysis.ultimateMaxMinRange.range
+        let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
+        let scaleFactor = viewModel.height / shareOfHeight
+        let xStretch: CGFloat = 20 / getSpacing()
+        let pillars = viewModel.charts!.columns
+        
+        let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
+        
+        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
+        let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - range)) / range) * viewModel.height
+        return .init(x: x, y: y)
+    }
+    
     
     @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
       
         let candles: [Candle] = viewModel.charts!.candles
         let color: Color = candles[idx].data.green() ? Color.green : Color.red
-//        let range = viewModel.charts!.analysis.ultimateMaxMinRange.range
-//        let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
-//        let scaleFactor = viewModel.height / shareOfHeight
-//        let xStretch: CGFloat = 20 / getSpacing()
-//        let pillars = viewModel.charts!.columns
-//
-//        let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
-//
-//        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
-//        let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - range)) / range) * viewModel.height
+//        let transform = transform(idx: idx)
 
-        let stick = candle.stick
+//        let stick = candle.stick.applying(.init(scaleX: transform.x, y: transform.y))
+//        let body = candle.body.applying(.init(scaleX: transform.x, y: transform.y))
+        
         let body = candle.body
+        let stick = candle.stick
         
       
         color

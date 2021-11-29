@@ -26,7 +26,7 @@ struct ChartLibrary {
     let movingAverage: [Double]
     
     //MARK: BOUND DEPENDENCIES
-    private(set) var analysis: ChartMetaAnalysis
+    let analysis: ChartMetaAnalysis
     
     //MARK: OUTPUT
     private(set) var candles: [Candle] = []
@@ -172,17 +172,12 @@ struct ChartSpecifications {
 
 struct ChartMetaAnalysis {
     
-    //MARK: DATA DEPENDENCIES
-    let data: [OHLC]
-    let movingAverageData: [Double]
-    
-    
-    //MARK: STATISTICAL META DATA
-    var tradingVolume: MaxMinRange
-    var movingAverage: MaxMinRange
-    var highLow: MaxMinRange
-    
-    lazy var ultimateMaxMinRange: MaxMinRange = {
+    init(data: [OHLC], movingAverageData: [Double], tradingVolume: ChartMetaAnalysis.MaxMinRange, movingAverage: ChartMetaAnalysis.MaxMinRange, highLow: ChartMetaAnalysis.MaxMinRange) {
+        self.data = data
+        self.movingAverageData = movingAverageData
+        self.tradingVolume = tradingVolume
+        self.movingAverage = movingAverage
+        self.highLow = highLow
         
         let ultimateMax: Double = {
             return highLow.max > movingAverage.max ? highLow.max : movingAverage.max
@@ -191,22 +186,28 @@ struct ChartMetaAnalysis {
         let ultimateMin: Double = {
             return highLow.min < movingAverage.min ? highLow.min : movingAverage.min
         }()
-    
-        let ultimateRange: Double = {
-            let lowerBound = highLow.min < movingAverage.min ? highLow.min : movingAverage.min
-            let upperBound = highLow.max > movingAverage.max ? highLow.max : movingAverage.max
-            return upperBound - lowerBound
-        }()
         
-        return .init(max: ultimateMax, min: ultimateMin, range: ultimateRange)
-    }()
+        self.ultimateMaxMinRange = .init(max: ultimateMax, min: ultimateMin)
+    }
+    
+    //MARK: DATA DEPENDENCIES
+    let data: [OHLC]
+    let movingAverageData: [Double]
+    
+    
+    //MARK: STATISTICAL META DATA
+    let tradingVolume: MaxMinRange
+    let movingAverage: MaxMinRange
+    let highLow: MaxMinRange
+    
+    let ultimateMaxMinRange: MaxMinRange
    
     //MARK: MODE SELECTION
     enum Mode {
         case tradingVolume, movingAverage
     }
     
-    mutating func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
+    func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
         switch mode {
         case .tradingVolume:
             let deviation = abs(Double(data[index].volume!)! - tradingVolume.max)
@@ -221,7 +222,7 @@ struct ChartMetaAnalysis {
         }
     }
     
-    mutating func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+    func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let range = ultimateMaxMinRange.range
         let open = Double(data[index].open)!
         let high = Double(data[index].high!)!
@@ -238,9 +239,9 @@ struct ChartMetaAnalysis {
     internal struct MaxMinRange {
         let max: Double
         let min: Double
-        lazy var range: Double = {
+        var range: Double {
             max - min
-        }()
+        }
     }
 }
 

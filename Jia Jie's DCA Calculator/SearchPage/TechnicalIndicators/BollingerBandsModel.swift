@@ -28,10 +28,24 @@ struct BollingerBandCalculator {
         
         let standardDeviation: Double? = {
             guard let simpleMovingAverage = simpleMovingAverage else { return nil }
-           
-            
+            return movingAverageCalculator.stdev(avg: simpleMovingAverage)
         }()
         
+        let upperBollingerBand: Double? = {
+            guard let simpleMovingAverage = simpleMovingAverage, let standardDeviation = standardDeviation else { return nil }
+            return simpleMovingAverage + standardDeviation * 2
+        }()
+        
+        let lowerBollingerBand: Double? = {
+            guard let simpleMovingAverage = simpleMovingAverage, let standardDeviation = standardDeviation else { return nil }
+            return simpleMovingAverage - standardDeviation * 2
+        }()
+        
+        return .init(simpleMovingAverage: simpleMovingAverage, standardDeviation: standardDeviation, upperBollingerBand: upperBollingerBand, lowerBollingerBand: lowerBollingerBand)
+    }
+    
+    mutating func append(indexData: Double) {
+        array.append(generate(indexData: indexData))
     }
     
     

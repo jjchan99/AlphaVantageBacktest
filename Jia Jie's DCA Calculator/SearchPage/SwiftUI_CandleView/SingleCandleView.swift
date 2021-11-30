@@ -11,28 +11,43 @@ import SwiftUI
 struct SingleCandleView: View {
     @EnvironmentObject var viewModel: CandleViewModel
     
-    func getSpacing() -> CGFloat {
-        viewModel.charts!.spacing
+    private func getOffset(idx: Int) -> CGPoint {
+    let candles: [Candle] = viewModel.charts!.candles
+    let range = viewModel.charts!.analysis.highLow.range
+    let max = viewModel.charts!.analysis.highLow.max
+    let ultimateRange = viewModel.charts!.analysis.ultimateMaxMinRange.range
+    let ultimateMax = viewModel.charts!.analysis.ultimateMaxMinRange.max
+        
+    let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
+    let columns: CGFloat = viewModel.charts!.columns
+    let xPosition = idx == 0 ? viewModel.padding : (columns * CGFloat(idx)) + viewModel.padding
+    let scaleFactor = viewModel.height / shareOfHeight
+    let x: CGFloat = -1 * xPosition
+    let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - ultimateMax)) / ultimateRange) * viewModel.height
+        return .init(x: x, y: y)
     }
     
-    @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
-        let width: CGFloat = viewModel.charts!.adjustedWidth
+    private func transform(idx: Int) -> CGPoint {
         let candles: [Candle] = viewModel.charts!.candles
-        let color: Color = candles[idx].data.green() ? Color.green : Color.red
         let range = viewModel.charts!.analysis.highLow.range
         let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
         let scaleFactor = viewModel.height / shareOfHeight
-        
-        let xStretch: CGFloat = 20 / getSpacing()
-        let pillars = viewModel.charts!.columns
-        
-        let xPosition = idx == 0 ? viewModel.padding : (pillars * CGFloat(idx)) + viewModel.padding
+        let xStretch: CGFloat = 20 / viewModel.charts!.spacing
+        return .init(x: xStretch, y: scaleFactor)
+    }
     
-        let x: CGFloat = -1 * xPosition * xStretch + (0.05 * viewModel.width)
-        let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - range)) / range) * viewModel.height
-        
-        let stick = candle.stick.applying(.init(scaleX: xStretch, y: scaleFactor))
-        let body = candle.body.applying(.init(scaleX: xStretch, y: scaleFactor))
+    
+    @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
+      
+        let candles: [Candle] = viewModel.charts!.candles
+        let color: Color = candles[idx].data.green() ? Color.green : Color.red
+        let transform = transform(idx: idx)
+        let getOffset = getOffset(idx: idx)
+        let x = transform.x * getOffset.x + (0.05 * viewModel.width)
+        let y = getOffset.y
+
+        let stick = candle.stick.applying(.init(scaleX: transform.x, y: transform.y))
+        let body = candle.body.applying(.init(scaleX: transform.x, y: transform.y))
         
         color
             .mask(body)

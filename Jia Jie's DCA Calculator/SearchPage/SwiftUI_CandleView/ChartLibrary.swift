@@ -26,7 +26,7 @@ struct ChartLibrary {
     let movingAverage: [Double]
     
     //MARK: BOUND DEPENDENCIES
-    var analysis: ChartMetaAnalysis
+    let analysis: ChartMetaAnalysis
     
     //MARK: OUTPUT
     private(set) var candles: [Candle] = []
@@ -38,26 +38,20 @@ struct ChartLibrary {
         self.data = data
         self.movingAverage = movingAverage
         self.analysis = analysis
+        
+        self.adjustedWidth = specifications.specifications[.line]!.width - (2 * specifications.padding)
+        self.columns = adjustedWidth / CGFloat(data.count - 1)
+        self.maxWidth = 0.06 * adjustedWidth
+        self.spacing = columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
     
-    lazy var columns: CGFloat = {
-        let columns = adjustedWidth / CGFloat(data.count - 1)
-        return columns
-    }()
+    let columns: CGFloat
     
-    lazy var adjustedWidth: CGFloat = {
-        specifications.specifications[.line]!.width - (2 * specifications.padding)
-    }()
+    let adjustedWidth: CGFloat
     
-    lazy var spacing: CGFloat = {
-        var spacing = (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
-        spacing = columns <= 5.0 ? 1 : spacing
-        return spacing
-    }()
+    let spacing: CGFloat
     
-    lazy var maxWidth: CGFloat = {
-        0.06 * adjustedWidth
-    }()
+    let maxWidth: CGFloat
     
     //MARK: ALL-IN-ONE RENDER
     mutating func iterateOverData() {
@@ -98,12 +92,15 @@ struct ChartLibrary {
         movingAverageChart.area.move(to: indexPoint)
             
         } else {
+         
+            if data.count < 3 {
+                movingAverageChart.path.addLine(to: indexPoint)
+            } else {
             let controlPoints = getControlPoints(index: index-1)
-            
-            
             movingAverageChart.points.append(indexPoint)
             movingAverageChart.path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
             movingAverageChart.area.addLine(to: indexPoint)
+            }
         }
 
         if index == data.count {
@@ -175,23 +172,42 @@ struct ChartSpecifications {
 
 struct ChartMetaAnalysis {
     
+    init(data: [OHLC], movingAverageData: [Double], tradingVolume: ChartMetaAnalysis.MaxMinRange, movingAverage: ChartMetaAnalysis.MaxMinRange, highLow: ChartMetaAnalysis.MaxMinRange) {
+        self.data = data
+        self.movingAverageData = movingAverageData
+        self.tradingVolume = tradingVolume
+        self.movingAverage = movingAverage
+        self.highLow = highLow
+        
+        let ultimateMax: Double = {
+            return highLow.max > movingAverage.max ? highLow.max : movingAverage.max
+        }()
+        
+        let ultimateMin: Double = {
+            return highLow.min < movingAverage.min ? highLow.min : movingAverage.min
+        }()
+        
+        self.ultimateMaxMinRange = .init(max: ultimateMax, min: ultimateMin)
+    }
+    
     //MARK: DATA DEPENDENCIES
     let data: [OHLC]
     let movingAverageData: [Double]
     
     
     //MARK: STATISTICAL META DATA
-    var tradingVolume: TradingVolume
-    var movingAverage: MovingAverage
-    var highLow: HighLow
+    let tradingVolume: MaxMinRange
+    let movingAverage: MaxMinRange
+    let highLow: MaxMinRange
     
-    
+    let ultimateMaxMinRange: MaxMinRange
+   
     //MARK: MODE SELECTION
     enum Mode {
         case tradingVolume, movingAverage
     }
     
-    mutating func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
+    func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
         switch mode {
         case .tradingVolume:
             let deviation = abs(Double(data[index].volume!)! - tradingVolume.max)
@@ -199,49 +215,33 @@ struct ChartMetaAnalysis {
             let scaled = CGFloat(share) * heightBounds
             return scaled
         case .movingAverage:
-            let deviation = abs(movingAverageData[index] - movingAverage.max)
-            let share = deviation / movingAverage.range
+            let deviation = abs(movingAverageData[index] - ultimateMaxMinRange.max)
+            let share = deviation / ultimateMaxMinRange.range
             let scaled = CGFloat(share) * heightBounds
             return scaled
         }
     }
     
-    mutating func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
-        let range = highLow.range
+    func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+        let range = ultimateMaxMinRange.range
         let open = Double(data[index].open)!
         let high = Double(data[index].high!)!
         let low = Double(data[index].low!)!
         let close = Double(data[index].close)!
-        let yOpen = CGFloat((abs(open - highLow.max)) / range) * heightBounds
-        let yHigh = CGFloat((abs(high - highLow.max)) / range) * heightBounds
-        let yLow = CGFloat((abs(low - highLow.max)) / range) * heightBounds
-        let yClose = CGFloat((abs(close - highLow.max)) / range) * heightBounds
+        let yOpen = CGFloat((abs(open - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yHigh = CGFloat((abs(high - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yLow = CGFloat((abs(low - ultimateMaxMinRange.max)) / range) * heightBounds
+        let yClose = CGFloat((abs(close - ultimateMaxMinRange.max)) / range) * heightBounds
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    internal struct TradingVolume {
+    internal struct MaxMinRange {
         let max: Double
         let min: Double
-        lazy var range: Double = {
+        var range: Double {
             max - min
-        }()
-    }
-    
-    internal struct MovingAverage {
-        let max: Double
-        let min: Double
-        lazy var range: Double = {
-            max - min
-        }()
-    }
-    
-    internal struct HighLow {
-        let max: Double
-        let min: Double
-        lazy var range: Double = {
-            max - min
-        }()
+        }
     }
 }
 

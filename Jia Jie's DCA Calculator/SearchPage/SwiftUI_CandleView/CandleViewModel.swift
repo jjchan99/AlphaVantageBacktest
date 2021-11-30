@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CandleMode {
+enum CandleMode: CaseIterable {
     case days5
     case months1
     case months3
@@ -23,7 +23,9 @@ class CandleViewModel: ObservableObject {
     let width: CGFloat = .init(420).wScaled()
     let barHeight: CGFloat = .init(45).hScaled()
     
-    @Published var charts: ChartLibrary?
+    @Published var charts: ChartLibrary? { didSet {
+        Log.queue(action: "Charts are ready")
+    }}
     
     @Published var selectedIndex: Int?
     

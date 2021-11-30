@@ -29,7 +29,7 @@ struct SimpleMovingAverageCalculator {
         return first
     }
     
-    mutating func movingAverage(data: Double, index: Int) {
+    mutating func movingAverage(data: Double, index: Int, completion: (Double) -> Void) {
     
         windowSum += data
         queue.append(data)
@@ -42,6 +42,7 @@ struct SimpleMovingAverageCalculator {
         self.min = average < min ? average : min
         array.append(average)
 //        print("Average for \(queue.count) numbers \(queue) is \(average)")
+        completion(average)
     }
 
 }

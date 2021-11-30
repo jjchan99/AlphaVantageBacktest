@@ -29,11 +29,12 @@ struct SimpleMovingAverageCalculator {
         return first
     }
     
-    mutating func movingAverage(data: Double, index: Int, completion: (Double) -> Void) {
+    mutating func movingAverage(data: Double, completion: (Double) -> Void) {
     
         windowSum += data
         queue.append(data)
-        let window = index < self.window ? index + 1 : self.window
+        let index = array.count
+        let window = index < self.window ? index : self.window
         if index >= window {
             windowSum -= dequeue()
         }

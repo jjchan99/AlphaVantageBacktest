@@ -63,6 +63,7 @@
 		1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE85274E86450076F449 /* TradingVolumeView.swift */; };
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
+		1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF22756659500055702 /* BollingerBandsModel.swift */; };
 		1DB20751274FDCE60015B1B7 /* ChartLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */; };
 		1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413526F1E857001FBC77 /* DCAResultModel.swift */; };
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
@@ -167,6 +168,7 @@
 		1D92AE85274E86450076F449 /* TradingVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingVolumeView.swift; sourceTree = "<group>"; };
 		1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleView.swift; sourceTree = "<group>"; };
 		1DA32BF02756172900055702 /* RSIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSIModel.swift; sourceTree = "<group>"; };
+		1DA32BF22756659500055702 /* BollingerBandsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BollingerBandsModel.swift; sourceTree = "<group>"; };
 		1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibrary.swift; sourceTree = "<group>"; };
 		1DB5413526F1E857001FBC77 /* DCAResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultModel.swift; sourceTree = "<group>"; };
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -366,6 +368,8 @@
 			isa = PBXGroup;
 			children = (
 				1DA32BF02756172900055702 /* RSIModel.swift */,
+				1DA32BF22756659500055702 /* BollingerBandsModel.swift */,
+				1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */,
 			);
 			path = TechnicalIndicators;
 			sourceTree = "<group>";
@@ -424,7 +428,6 @@
 				1D06C6B12744125D00374255 /* CandleIndicatorView.swift */,
 				1DC3C9E0273BC13000900600 /* CandleModel.swift */,
 				1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */,
-				1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */,
 				1D06C6AF27440DC900374255 /* CandleIndicator.swift */,
 			);
 			path = SwiftUI_CandleView;
@@ -628,6 +631,7 @@
 				1D06C6B027440DCA00374255 /* CandleIndicator.swift in Sources */,
 				1D85ED59270B67A600D6D4C1 /* Double+Extensions.swift in Sources */,
 				1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */,
+				1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */,
 				1DDE4AEF271DDC0300858560 /* IndicatorModel.swift in Sources */,
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
 				1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */,

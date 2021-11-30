@@ -50,9 +50,8 @@ struct SimpleMovingAverageCalculator {
 
 extension SimpleMovingAverageCalculator {
     func stdev(avg: Double) -> Double {
-        self.queue.reduce(0.0) { result, element in
-            result + (((element - avg) ^^ 2) / Double(self.queue.count - 1))
-        }.squareRoot()
+      let v = self.queue.reduce(0, { $0 + (($1-avg) ^^ 2) })
+      return sqrt(v / Double(self.queue.count - 1))
     }
 }
 

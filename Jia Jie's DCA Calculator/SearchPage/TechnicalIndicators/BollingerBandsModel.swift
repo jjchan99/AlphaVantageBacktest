@@ -19,19 +19,18 @@ struct BollingerBandCalculator {
     
     private mutating func generate(indexData: Double) -> BollingerBand {
         let simpleMovingAverage: Double? = {
-            var avg: Double!
+            var avg: Double?
             movingAverageCalculator.movingAverage(data: indexData) { average in
-                avg = average
+                avg = array.count >= window ? average : nil
             }
-            return
-                array.count >= window ?
-                avg
-                : nil
+            return avg
         }()
         
         let standardDeviation: Double? = {
+            guard let simpleMovingAverage = simpleMovingAverage else { return nil }
+           
             
-        }
+        }()
         
     }
     
@@ -48,3 +47,5 @@ struct BollingerBandCalculator {
     }
     
 }
+
+

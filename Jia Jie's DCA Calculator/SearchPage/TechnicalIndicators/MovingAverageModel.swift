@@ -47,3 +47,17 @@ struct SimpleMovingAverageCalculator {
     }
 
 }
+
+extension SimpleMovingAverageCalculator {
+    func stdev(avg: Double) -> Double {
+        self.queue.reduce(0.0) { result, element in
+            result + (((element - avg) ^^ 2) / Double(self.queue.count - 1))
+        }.squareRoot()
+    }
+}
+
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+func ^^ (radix: Double, power: Double) -> Double {
+    return (pow(radix, power))
+}

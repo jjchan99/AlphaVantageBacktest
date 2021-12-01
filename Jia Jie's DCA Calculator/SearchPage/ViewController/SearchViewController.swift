@@ -133,7 +133,7 @@ class SearchViewController: UITableViewController {
                     view.isUserInteractionEnabled = true
                     spinner.removeFromSuperview()
                 } else {
-                coordinator?.RawDCAData = value
+                coordinator!.rawDataDaily = value
                 completion()
                 self.searchBarText = nil
                 searchController.searchBar.text = nil
@@ -157,9 +157,9 @@ class SearchViewController: UITableViewController {
         let type = dependencies!.type
         self.indexPath = indexPath
         self.subscribeToDaily(query: symbol) { [unowned self] in
-                self.coordinator!.pushCalculatorVC(name: name, symbol: symbol, type: type)
-                view.isUserInteractionEnabled = true
-                spinner.removeFromSuperview()
+        self.coordinator!.start(name: name, symbol: symbol, type: type)
+        view.isUserInteractionEnabled = true
+        spinner.removeFromSuperview()
         }
         
     }

@@ -16,7 +16,7 @@ extension Coordinator {
     func start() {}
 }
 
-extension Coordinator where Self: CalculatorCoordinator {
+extension Coordinator where Self: PageCoordinator {
     func start(name: String, symbol: String, type: String) {}
 }
 

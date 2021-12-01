@@ -15,7 +15,7 @@ class CalculatorViewController: UIViewController {
     
     //MARK: SWIFTUI
     let viewModel = GraphViewModel()
-    var hostingController: GraphHostingController<AnyView>?
+    var hostingController: UIHostingController<AnyView>?
     var subscribers = Set<AnyCancellable>()
 
     //MARK: VIEWS
@@ -43,7 +43,7 @@ class CalculatorViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        hostingController = GraphHostingController(rootView: AnyView(
+        hostingController = UIHostingController(rootView: AnyView(
            graphView
              .environmentObject(viewModel)
         )

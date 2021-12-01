@@ -12,11 +12,9 @@ import Combine
 class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     var childCoordinators: [Coordinator] = []
     
-    var RawDCAData: Daily?
+    var rawDataDaily: Daily?
     
     var subscribers = Set<AnyCancellable>()
-    
-    var handler: DailyOHLCHandler?
     
     var navigationController: UINavigationController
     
@@ -31,21 +29,15 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
         navigationController.pushViewController(vc, animated: false)
     }
     
-    func pushCalculatorVC(name: String, symbol: String, type: String) {
-        Log.queue(action: "pushCalculatorVC")
-        let child = CalculatorCoordinator(navigationController: navigationController)
-        childCoordinators.append(child)
-        child.parentCoordinator = self
-        handler = DailyOHLCHandler(daily: RawDCAData!)
-        child.sortedData = handler!.getMonthlyOHLC()
-//        print("Inspect daily for 2021-10-29: \(RawDCAData!.timeSeries!["2021-10-29"]!)")
-//        print("Inspect daily for 2021-11-01: \(RawDCAData!.timeSeries!["2021-11-01"]!)")
-//        print("Inspect daily for 2021-10-01: \(RawDCAData!.timeSeries!["2021-10-01"]!)")
-//        print("Inspect daily for 2021-09-01: \(RawDCAData!.timeSeries!["2021-09-01"]!)")
-//        print("Inspect daily for 2021-08-02: \(RawDCAData!.timeSeries!["2021-08-02"]!)")
-        child.populatePickerData()
-        child.childCoordinators = self.childCoordinators
-        child.start(name: name, symbol: symbol, type: type)
+    func start(name: String, symbol: String, type: String) {
+       let child = PageCoordinator(navigationController: navigationController)
+       childCoordinators.append(child)
+       child.parentCoordinator = self
+       child.name = name
+       child.symbol = symbol
+       child.type = type
+       child.rawDataDaily = rawDataDaily
+       child.start(name: name, symbol: symbol, type: type)
     }
     
     func childDidExit(_ child: Coordinator?) {
@@ -72,8 +64,7 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
         
         //MARK: VIEWCONTROLLER WAS POPPED
         if let vc = fromViewController as? PageViewController {
-            let calculatorVC = vc.collection![0] as! CalculatorViewController
-            childDidExit(calculatorVC.coordinator)
+            childDidExit(vc.coordinator)
         } else {
             fatalError()
         }

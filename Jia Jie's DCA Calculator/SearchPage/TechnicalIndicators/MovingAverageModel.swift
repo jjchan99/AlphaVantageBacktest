@@ -29,11 +29,12 @@ struct SimpleMovingAverageCalculator {
         return first
     }
     
-    mutating func movingAverage(data: Double, index: Int, completion: (Double) -> Void) {
+    mutating func movingAverage(data: Double, completion: (Double) -> Void) {
     
         windowSum += data
         queue.append(data)
-        let window = index < self.window ? index + 1 : self.window
+        let index = array.count
+        let window = index < self.window ? index : self.window
         if index >= window {
             windowSum -= dequeue()
         }
@@ -45,4 +46,17 @@ struct SimpleMovingAverageCalculator {
         completion(average)
     }
 
+}
+
+extension SimpleMovingAverageCalculator {
+    func stdev(avg: Double) -> Double {
+      let v = self.queue.reduce(0, { $0 + (($1-avg) ^^ 2) })
+      return sqrt(v / Double(self.queue.count - 1))
+    }
+}
+
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+func ^^ (radix: Double, power: Double) -> Double {
+    return (pow(radix, power))
 }

@@ -27,6 +27,7 @@ struct ChartLibrary {
     
     //MARK: BOUND DEPENDENCIES
     let analysis: ChartMetaAnalysis
+    let yPositionFactory: YPositionFactory
     
     //MARK: OUTPUT
     private(set) var candles: [Candle] = []
@@ -38,6 +39,7 @@ struct ChartLibrary {
         self.data = data
         self.movingAverage = movingAverage
         self.analysis = analysis
+        self.yPositionFactory = .init(analysis: analysis, data: data, movingAverageData: movingAverage)
         
         self.adjustedWidth = specifications.specifications[.line]!.width - (2 * specifications.padding)
         self.columns = adjustedWidth / CGFloat(data.count - 1)
@@ -71,7 +73,7 @@ struct ChartLibrary {
     private mutating func renderBarPath(index: Int) {
 
         let xPosition = getXPosition(index: index)
-        let yPosition = analysis.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index) - (0.05 * specifications.specifications[.bar]!.height)
+        let yPosition = yPositionFactory.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index) - (0.05 * specifications.specifications[.bar]!.height)
         
         volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
         volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
@@ -83,7 +85,7 @@ struct ChartLibrary {
     
     private mutating func renderLinePath(index: Int) {
        let xPosition = getXPosition(index: index)
-       let yPosition = analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
+       let yPosition = yPositionFactory.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        
        if index == 0 {
@@ -115,7 +117,7 @@ struct ChartLibrary {
         var stick = Path()
         var body = Path()
         let xPosition = getXPosition(index: index)
-        let yPosition = analysis.getYPosition(heightBounds: specifications.specifications[.candle]!.height, index: index)
+        let yPosition = yPositionFactory.getYPosition(heightBounds: specifications.specifications[.candle]!.height, index: index)
         let green = data[index].green()
         
         body.move(to: .init(x: xPosition - (0.5 * spacing), y: green ? yPosition.close : yPosition.open))
@@ -139,7 +141,7 @@ extension ChartLibrary {
         for idx in index - 1...index + 2 {
             let withinRange = data.indices.contains(idx)
             if withinRange {
-                points[idx] = CGPoint(x: getXPosition(index: idx), y: analysis.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: idx))
+                points[idx] = CGPoint(x: getXPosition(index: idx), y: yPositionFactory.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: idx))
             }
         }
         
@@ -172,9 +174,7 @@ struct ChartSpecifications {
 
 struct ChartMetaAnalysis {
     
-    init(data: [OHLC], movingAverageData: [Double], tradingVolume: ChartMetaAnalysis.MaxMinRange, movingAverage: ChartMetaAnalysis.MaxMinRange, highLow: ChartMetaAnalysis.MaxMinRange) {
-        self.data = data
-        self.movingAverageData = movingAverageData
+    init(tradingVolume: ChartMetaAnalysis.MaxMinRange, movingAverage: ChartMetaAnalysis.MaxMinRange, highLow: ChartMetaAnalysis.MaxMinRange) {
         self.tradingVolume = tradingVolume
         self.movingAverage = movingAverage
         self.highLow = highLow
@@ -190,11 +190,6 @@ struct ChartMetaAnalysis {
         self.ultimateMaxMinRange = .init(max: ultimateMax, min: ultimateMin)
     }
     
-    //MARK: DATA DEPENDENCIES
-    let data: [OHLC]
-    let movingAverageData: [Double]
-    
-    
     //MARK: STATISTICAL META DATA
     let tradingVolume: MaxMinRange
     let movingAverage: MaxMinRange
@@ -202,95 +197,36 @@ struct ChartMetaAnalysis {
     
     let ultimateMaxMinRange: MaxMinRange
    
-    //MARK: MODE SELECTION
-    enum Mode {
-        case tradingVolume, movingAverage
-    }
-    
-    func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
-        switch mode {
-        case .tradingVolume:
-            let deviation = abs(Double(data[index].volume!)! - tradingVolume.max)
-            let share = deviation / tradingVolume.range
-            let scaled = CGFloat(share) * heightBounds
-            return scaled
-        case .movingAverage:
-            let deviation = abs(movingAverageData[index] - ultimateMaxMinRange.max)
-            let share = deviation / ultimateMaxMinRange.range
-            let scaled = CGFloat(share) * heightBounds
-            return scaled
+    struct MaxMinRange {
+      
+        enum ChartType {
+            case allNegative
+            case allPositive
+            case negativePositive
         }
-    }
-    
-    func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
-        let range = ultimateMaxMinRange.range
-        let open = Double(data[index].open)!
-        let high = Double(data[index].high!)!
-        let low = Double(data[index].low!)!
-        let close = Double(data[index].close)!
-        let yOpen = CGFloat((abs(open - ultimateMaxMinRange.max)) / range) * heightBounds
-        let yHigh = CGFloat((abs(high - ultimateMaxMinRange.max)) / range) * heightBounds
-        let yLow = CGFloat((abs(low - ultimateMaxMinRange.max)) / range) * heightBounds
-        let yClose = CGFloat((abs(close - ultimateMaxMinRange.max)) / range) * heightBounds
-//        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
-        return ((yOpen, yHigh, yLow, yClose))
-    }
-    
-    internal struct MaxMinRange {
+        
         let max: Double
         let min: Double
         var range: Double {
             max - min
         }
+        var type: ChartType {
+            let allNegativeOrAllPositive: ChartType = min < 0 && max < 0 ? .allNegative : .allPositive
+            let chartType: ChartType = min < 0 && max >= 0 ? .negativePositive : allNegativeOrAllPositive
+            return chartType
+        }
     }
 }
 
-
-struct ControlPoint {
-    
-    let scaleFactor: CGFloat = 0.7
-    
-    init(centerPoint: CGPoint, previousPoint: CGPoint, nextPoint: CGPoint) {
-        self.centerPoint = centerPoint
-        self.previousPoint = previousPoint
-        self.nextPoint = nextPoint
+extension ChartMetaAnalysis.MaxMinRange {
+    func getZeroPosition(height: CGFloat) -> CGFloat {
+        switch type {
+        case .allNegative:
+            return 0
+        case .allPositive:
+            return height
+        case .negativePositive:
+            return ( CGFloat((range + min)/range) * height )
+        }
     }
-    
-    let centerPoint: CGPoint
-    let previousPoint: CGPoint
-    let nextPoint: CGPoint
-    
-    func staticControlPoints() -> (staticPoint1: CGPoint, staticPoint2: CGPoint) {
-        let x1 = previousPoint.x + (centerPoint.x - previousPoint.x) * (1 - scaleFactor)
-        let y1 = previousPoint.y + (centerPoint.y - previousPoint.y) * (1 - scaleFactor)
-        let controlPoint1: CGPoint = .init(x: x1, y: y1)
-        
-        let x2 = centerPoint.x + (nextPoint.x - centerPoint.x) * (scaleFactor)
-        let y2 = centerPoint.y + (nextPoint.y - centerPoint.y) * (scaleFactor)
-        let controlPoint2: CGPoint = .init(x: x2, y: y2)
-        return (controlPoint1, controlPoint2)
-    }
-    
-    private func getControlPoints() -> (controlPoint1: CGPoint, controlPoint2: CGPoint) {
-        let x1 = previousPoint.x + (centerPoint.x - previousPoint.x) * scaleFactor
-        let y1 = previousPoint.y + (centerPoint.y - previousPoint.y) * scaleFactor
-        let controlPoint1: CGPoint = .init(x: x1, y: y1)
-        
-        let x2 = centerPoint.x + (nextPoint.x - centerPoint.x) * (1 - scaleFactor)
-        let y2 = centerPoint.y + (nextPoint.y - centerPoint.y) * (1 - scaleFactor)
-        let controlPoint2: CGPoint = .init(x: x2, y: y2)
-        return (controlPoint1, controlPoint2)
-    }
-    
-    func translateControlPoints() -> (controlPoint1: CGPoint, controlPoint2: CGPoint) {
-        let cp = getControlPoints()
-        let MM: CGPoint = .init(x: 2 * centerPoint.x - cp.controlPoint1.x, y: 2 * centerPoint.y - cp.controlPoint1.y)
-        let NN: CGPoint = .init(x: 2 * centerPoint.x - cp.controlPoint2.x, y: 2 * centerPoint.y - cp.controlPoint2.y)
-        
-        let translatedControlPoint1 = CGPoint(x: (NN.x + cp.controlPoint1.x)/2, y: (NN.y + cp.controlPoint1.y)/2)
-        let translatedControlPoint2 = CGPoint(x: (MM.x + cp.controlPoint2.x)/2, y: (MM.y + cp.controlPoint2.y)/2)
-        
-        return ((controlPoint1: translatedControlPoint1, controlPoint2: translatedControlPoint2))
-    }
-    
 }

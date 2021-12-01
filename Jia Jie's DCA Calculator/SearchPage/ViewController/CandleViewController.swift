@@ -134,7 +134,7 @@ class CandleViewController: UIViewController {
                 let iterations = index
                 let index = sorted.count - 1 - index
                 var average: Double!
-                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!, index: iterations) { avg in average = avg }
+                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!) { avg in average = avg }
 
                 if rangeOf6Months(iterations) {
                     updateDependencies(.months6, index, average)
@@ -177,7 +177,7 @@ class CandleViewController: UIViewController {
             dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
             dict[.line] = (height: viewModel.height, width: viewModel.width)
             dict[.candle] = (height: viewModel.height, width: viewModel.width)
-        }), data: OHLC, movingAverage: movingAverageData, analysis: .init(data: OHLC, movingAverageData: movingAverageData, tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min), movingAverage: .init(max: movingAverage.max, min: movingAverage.min), highLow: .init(max: highLow.max, min: highLow.min)))
+        }), data: OHLC, movingAverage: movingAverageData, analysis: .init(tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min), movingAverage: .init(max: movingAverage.max, min: movingAverage.min), highLow: .init(max: highLow.max, min: highLow.min)))
         charts.iterateOverData()
         viewModel.charts = charts
         

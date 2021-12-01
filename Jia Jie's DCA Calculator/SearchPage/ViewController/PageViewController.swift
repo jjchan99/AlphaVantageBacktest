@@ -10,6 +10,7 @@ import UIKit
 class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     var collection: [UIViewController]?
+    var coordinator: PageCoordinator?
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = collection?.firstIndex(of: viewController), index > 0 else { return nil }

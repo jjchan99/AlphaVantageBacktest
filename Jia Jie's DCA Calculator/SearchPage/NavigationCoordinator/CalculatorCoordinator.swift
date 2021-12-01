@@ -11,8 +11,7 @@ import Combine
 
 class CalculatorCoordinator: NSObject, Coordinator {
     
-    weak var parentCoordinator: NavigationCoordinator?
-    var childCoordinators: [Coordinator] = []
+    weak var parentCoordinator: PageCoordinator?
     var navigationController: UINavigationController
     
     //MARK: PICKER DATA AND DISPLAY
@@ -36,32 +35,29 @@ class CalculatorCoordinator: NSObject, Coordinator {
         self.navigationController = navigationController
     }
     
-    deinit {
-        parentCoordinator!.RawDCAData = nil
-    }
-    
-    func start(name: String, symbol: String, type: String) {
-        let vc = CalculatorViewController(name: name, symbol: symbol, type: type)
-        vc.view.backgroundColor = .white
-        //vc.view.layer.insertSublayer(ColorFactory.gradient(vc.view), at: 0)
-        vc.navigationItem.largeTitleDisplayMode = .never
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.setValue(true, forKey: "hidesShadow")
-        vc.coordinator = self
-        vc.dateView.datePicker.delegate = self
-        
-        let pc = PageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: .none)
-        let fc = FinancialsViewController(symbol: symbol)
-        let cc = CandleViewController(symbol: symbol)
-        cc.daily = parentCoordinator!.RawDCAData!
-        cc.sorted = cc.daily!.timeSeries!.sorted { $0.key > $1.key }
-        pc.setViewControllers([vc], direction: .forward, animated: false) { _ in }
-        pc.collection = [vc, fc, cc]
-        navigationController.pushViewController(pc, animated: false)
-    }
+//    func start(name: String, symbol: String, type: String) {
+//        let vc = CalculatorViewController(name: name, symbol: symbol, type: type)
+//        vc.view.backgroundColor = .white
+//        //vc.view.layer.insertSublayer(ColorFactory.gradient(vc.view), at: 0)
+//        vc.navigationItem.largeTitleDisplayMode = .never
+//        navigationController.navigationBar.isTranslucent = false
+//        navigationController.navigationBar.setValue(true, forKey: "hidesShadow")
+//        vc.coordinator = self
+//        vc.dateView.datePicker.delegate = self
+//
+//        let pc = PageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: .none)
+//        let fc = FinancialsViewController(symbol: symbol)
+//        let cc = CandleViewController(symbol: symbol)
+//        cc.daily = parentCoordinator!.RawDCAData!
+//        cc.sorted = cc.daily!.timeSeries!.sorted { $0.key > $1.key }
+//        pc.setViewControllers([vc], direction: .forward, animated: false) { _ in }
+//        pc.collection = [vc, fc, cc]
+//        navigationController.pushViewController(pc, animated: false)
+//    }
     
     func populatePickerData() {
-        let handler = parentCoordinator!.handler!
+        let handler = parentCoordinator!.dailyToMonthlyHandler!
+        sortedData = handler.getMonthlyOHLC()
         let value = handler.returnPickerData(self.sortedData!)
         self.yearArray = value.yearArray
         self.monthArray = value.monthArray

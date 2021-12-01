@@ -11,10 +11,10 @@ import SwiftUI
 struct CandleView: View {
     @EnvironmentObject var viewModel: CandleViewModel
     
-    let darkGreen: Color = .init(#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1))
-    let darkRed: Color = .init(#colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1))
-    let lightGreen: Color = .init(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
-    let lightRed: Color = .init(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
+    let darkGreen: Color = .init(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
+    let darkRed: Color = .init(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
+    let lightGreen: Color = .init(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))
+    let lightRed: Color = .init(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))
     
     func scaleFactor(_ a: CGFloat) -> CGFloat {
         let sf = a / (CGFloat(viewModel.sorted!.count) / 5)

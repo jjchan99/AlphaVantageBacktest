@@ -18,6 +18,7 @@ class CandleViewController: UIViewController {
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
     var sorted: [(key: String, value: TimeSeriesDaily)]?
+    var coordinator: CandleCoordinator?
     
     //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
     let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
@@ -33,38 +34,6 @@ class CandleViewController: UIViewController {
             .months6 : getDate(mode: .months6)
         ]
         return dict
-    }()
-    
-    private var statsLookUp: [StatisticsMode: [CandleMode: MaxMinRange]] = {
-        var nestedDict: [CandleMode: MaxMinRange] = [:]
-        var statsLookUpCopy: [StatisticsMode: [CandleMode: MaxMinRange]] = [:]
-        
-        for mode in CandleMode.allCases {
-            nestedDict[mode] = .init(max: 0, min: .infinity, range: nil)
-            for cases in StatisticsMode.allCases {
-                statsLookUpCopy[cases] = nestedDict
-            }
-    }
-        
-        return statsLookUpCopy
-    }()
-    
-    private var percentageChangeDependencies: [CandleMode: PercentageChange] = [:]
-    
-    private var movingAverageDependencies: [CandleMode: [Double]] = {
-        var dataDependenciesCopy: [CandleMode: [Double]] = [:]
-        for cases in CandleMode.allCases {
-            dataDependenciesCopy[cases] = []
-        }
-        return dataDependenciesCopy
-    }()
-    
-    private var OHLCDependencies: [CandleMode: [OHLC]] = {
-        var dataDependenciesCopy: [CandleMode: [OHLC]] = [:]
-        for cases in CandleMode.allCases {
-            dataDependenciesCopy[cases] = []
-        }
-        return dataDependenciesCopy
     }()
     
     init(symbol: String) {
@@ -95,6 +64,7 @@ class CandleViewController: UIViewController {
     func iterateAndGetDependencies() {
         //MARK: THIS METHOD HAS EXCLUSIVE ACCESS TO THE DICTIONARY
         guard let sorted = sorted else { fatalError() }
+        guard let coordinator = coordinator else { fatalError() }
     
             var book = AlgorithmBook()
             var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
@@ -112,41 +82,6 @@ class CandleViewController: UIViewController {
         let rangeOf3Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf3MonthsAgo }
         let rangeOf6Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf6MonthsAgo }
         
-        let updateStats: (CandleMode, Int) -> Void = { [unowned self] period, index in
-            metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: statsLookUp[.tradingVolume]![period]!.max, previousMin: statsLookUp[.tradingVolume]![period]!.min) { newMax, newMin in
-                    statsLookUp[.tradingVolume]![period]!.max = newMax
-                    statsLookUp[.tradingVolume]![period]!.min = newMin
-                
-                metaAnalyze(data: Double(sorted[index].value.high)!, previousMax: statsLookUp[.highLow]![period]!.max) { newMax in statsLookUp[.highLow]![period]!.max = newMax
-                }
-                metaAnalyze(data: Double(sorted[index].value.low)!, previousMin: statsLookUp[.highLow]![period]!.min) { newMin in
-                    statsLookUp[.highLow]![period]!.min = newMin
-                }
-
-                metaAnalyze(data: movingAverageDependencies[period]!.last!, previousMin: statsLookUp[.movingAverage]![period]!.min) { newMin in
-                    statsLookUp[.movingAverage]![period]!.min = newMin
-                }
-                metaAnalyze(data: movingAverageDependencies[period]!.last!, previousMax: statsLookUp[.movingAverage]![period]!.max) { newMax in
-                    statsLookUp[.movingAverage]![period]!.max = newMax
-                }
-            }
-        }
-        
-        let updateMovingAverage: (CandleMode, Double) -> Void = { [unowned self] period, average in
-            movingAverageDependencies[period]!.append(average)
-        }
-        
-        let updateOHLCArray: (CandleMode, Int) -> Void = { [unowned self] period, index in
-            OHLCDependencies[period]!.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient, percentageChange: percentageChangeDependencies[period]?.percentageChangeArray.last))
-        }
-        
-        let updatePercentageChange: (CandleMode, Int) -> Void = { [unowned self] period, index in
-            guard percentageChangeDependencies[period] != nil else { percentageChangeDependencies[period] = .init(first: Double(sorted[index].value.close)!)
-                return
-            }
-            percentageChangeDependencies[period]!.percentageChange(new: Double(sorted[index].value.close)!)
-        }
-        
         //MARK: TEST WRITE
 //        statsLookUp[.tradingVolume]![.months6]!.max = 1
         
@@ -157,31 +92,31 @@ class CandleViewController: UIViewController {
                 movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!) { avg in average = avg }
 
                 if rangeOf6Months(iterations) {
-                    updatePercentageChange(.months6, index)
-                    updateMovingAverage(.months6, average)
-                    updateOHLCArray(.months6, index)
-                    updateStats(.months6, index)
+                    coordinator.updatePercentageChange(period: .months6, index: index)
+                    coordinator.updateMovingAverage(period: .months6, average: average)
+                    coordinator.updateOHLCArray(period: .months6, index: index)
+                    coordinator.updateStats(period: .months6, index: index)
                    
                 }
                 if rangeOf3Months(iterations) {
-                    updatePercentageChange(.months3, index)
-                    updateMovingAverage(.months3, average)
-                    updateOHLCArray(.months3, index)
-                    updateStats(.months3, index)
+                    coordinator.updatePercentageChange(period: .months3, index: index)
+                    coordinator.updateMovingAverage(period: .months3, average: average)
+                    coordinator.updateOHLCArray(period: .months3, index: index)
+                    coordinator.updateStats(period: .months3, index: index)
                 
                 }
                 if rangeOf1Month(iterations) {
-                    updatePercentageChange(.months1, index)
-                    updateMovingAverage(.months1, average)
-                    updateOHLCArray(.months1, index)
-                    updateStats(.months1, index)
+                    coordinator.updatePercentageChange(period: .months1, index: index)
+                    coordinator.updateMovingAverage(period: .months1, average: average)
+                    coordinator.updateOHLCArray(period: .months1, index: index)
+                    coordinator.updateStats(period: .months1, index: index)
                 
                 }
                 if rangeOf5Days(iterations) {
-                    updatePercentageChange(.days5, index)
-                    updateMovingAverage(.days5, average)
-                    updateOHLCArray(.days5, index)
-                    updateStats(.days5, index)
+                    coordinator.updatePercentageChange(period: .days5, index: index)
+                    coordinator.updateMovingAverage(period: .days5, average: average)
+                    coordinator.updateOHLCArray(period: .days5, index: index)
+                    coordinator.updateStats(period: .days5, index: index)
                 
                 }
                 
@@ -194,11 +129,13 @@ class CandleViewController: UIViewController {
     
     
     func OHLC(mode: CandleMode) {
-        let OHLC = OHLCDependencies[mode]!
-        let movingAverageData = movingAverageDependencies[mode]!
-        let tradingVolume = statsLookUp[.tradingVolume]![mode]!
-        let movingAverage = statsLookUp[.movingAverage]![mode]!
-        let highLow = statsLookUp[.highLow]![mode]!
+        guard let coordinator = coordinator else { fatalError() }
+        
+        let OHLC = coordinator.OHLCDependencies[mode]!
+        let movingAverageData = coordinator.movingAverageDependencies[mode]!
+        let tradingVolume = coordinator.statsLookUp[.tradingVolume]![mode]!
+        let movingAverage = coordinator.statsLookUp[.movingAverage]![mode]!
+        let highLow = coordinator.statsLookUp[.highLow]![mode]!
         
         viewModel.sorted = OHLC
         var charts: ChartLibrary = .init(specifications: .init(padding: viewModel.padding, set: { dict in

@@ -49,10 +49,20 @@ class CandleViewController: UIViewController {
         return statsLookUpCopy
     }()
     
-    private var dataDependencies: [CandleMode: DataDependencies] = {
-        var dataDependenciesCopy: [CandleMode: DataDependencies] = [:]
+    private var percentageChangeDependencies: [CandleMode: PercentageChange] = [:]
+    
+    private var movingAverageDependencies: [CandleMode: [Double]] = {
+        var dataDependenciesCopy: [CandleMode: [Double]] = [:]
         for cases in CandleMode.allCases {
-            dataDependenciesCopy[cases] = .init(OHLC: [], movingAverage: [])
+            dataDependenciesCopy[cases] = []
+        }
+        return dataDependenciesCopy
+    }()
+    
+    private var OHLCDependencies: [CandleMode: [OHLC]] = {
+        var dataDependenciesCopy: [CandleMode: [OHLC]] = [:]
+        for cases in CandleMode.allCases {
+            dataDependenciesCopy[cases] = []
         }
         return dataDependenciesCopy
     }()
@@ -102,7 +112,7 @@ class CandleViewController: UIViewController {
         let rangeOf3Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf3MonthsAgo }
         let rangeOf6Months: (Int) -> (Bool) = { idx in return idx > sorted.count - 1 - indexPositionOf6MonthsAgo }
         
-        let updateDict: (CandleMode, Int) -> Void = { [unowned self] period, index in
+        let updateStats: (CandleMode, Int) -> Void = { [unowned self] period, index in
             metaAnalyze(data: Double(sorted[index].value.volume)!, previousMax: statsLookUp[.tradingVolume]![period]!.max, previousMin: statsLookUp[.tradingVolume]![period]!.min) { newMax, newMin in
                     statsLookUp[.tradingVolume]![period]!.max = newMax
                     statsLookUp[.tradingVolume]![period]!.min = newMin
@@ -113,18 +123,28 @@ class CandleViewController: UIViewController {
                     statsLookUp[.highLow]![period]!.min = newMin
                 }
 
-                metaAnalyze(data: dataDependencies[period]!.movingAverage.last!, previousMin: statsLookUp[.movingAverage]![period]!.min) { newMin in
+                metaAnalyze(data: movingAverageDependencies[period]!.last!, previousMin: statsLookUp[.movingAverage]![period]!.min) { newMin in
                     statsLookUp[.movingAverage]![period]!.min = newMin
                 }
-                metaAnalyze(data: dataDependencies[period]!.movingAverage.last!, previousMax: statsLookUp[.movingAverage]![period]!.max) { newMax in
+                metaAnalyze(data: movingAverageDependencies[period]!.last!, previousMax: statsLookUp[.movingAverage]![period]!.max) { newMax in
                     statsLookUp[.movingAverage]![period]!.max = newMax
                 }
             }
         }
         
-        let updateDependencies: (CandleMode, Int, Double) -> Void = { [unowned self] period, index, average in
-            dataDependencies[period]!.OHLC.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient))
-            dataDependencies[period]!.movingAverage.append(average)
+        let updateMovingAverage: (CandleMode, Double) -> Void = { [unowned self] period, average in
+            movingAverageDependencies[period]!.append(average)
+        }
+        
+        let updateOHLCArray: (CandleMode, Int) -> Void = { [unowned self] period, index in
+            OHLCDependencies[period]!.append(.init(meta: daily!.meta!, stamp: sorted[index].key, open: sorted[index].value.open, high: sorted[index].value.high, low: sorted[index].value.low, close: sorted[index].value.close, adjustedClose: sorted[index].value.adjustedClose, volume: sorted[index].value.volume, dividendAmount: sorted[index].value.dividendAmount, splitCoefficient: sorted[index].value.splitCoefficient, percentageChange: percentageChangeDependencies[period]?.percentageChangeArray.last))
+        }
+        
+        let updatePercentageChange: (CandleMode, Int) -> Void = { [unowned self] period, index in
+            guard percentageChangeDependencies[period] != nil else { percentageChangeDependencies[period] = .init(first: Double(sorted[index].value.close)!)
+                return
+            }
+            percentageChangeDependencies[period]!.percentageChange(new: Double(sorted[index].value.close)!)
         }
         
         //MARK: TEST WRITE
@@ -137,23 +157,31 @@ class CandleViewController: UIViewController {
                 movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!) { avg in average = avg }
 
                 if rangeOf6Months(iterations) {
-                    updateDependencies(.months6, index, average)
-                    updateDict(.months6, index)
+                    updatePercentageChange(.months6, index)
+                    updateMovingAverage(.months6, average)
+                    updateOHLCArray(.months6, index)
+                    updateStats(.months6, index)
                    
                 }
                 if rangeOf3Months(iterations) {
-                    updateDependencies(.months3, index, average)
-                    updateDict(.months3, index)
+                    updatePercentageChange(.months3, index)
+                    updateMovingAverage(.months3, average)
+                    updateOHLCArray(.months3, index)
+                    updateStats(.months3, index)
                 
                 }
                 if rangeOf1Month(iterations) {
-                    updateDependencies(.months1, index, average)
-                    updateDict(.months1, index)
+                    updatePercentageChange(.months1, index)
+                    updateMovingAverage(.months1, average)
+                    updateOHLCArray(.months1, index)
+                    updateStats(.months1, index)
                 
                 }
                 if rangeOf5Days(iterations) {
-                    updateDependencies(.days5, index, average)
-                    updateDict(.days5, index)
+                    updatePercentageChange(.days5, index)
+                    updateMovingAverage(.days5, average)
+                    updateOHLCArray(.days5, index)
+                    updateStats(.days5, index)
                 
                 }
                 
@@ -166,8 +194,8 @@ class CandleViewController: UIViewController {
     
     
     func OHLC(mode: CandleMode) {
-        let OHLC = dataDependencies[mode]!.OHLC
-        let movingAverageData = dataDependencies[mode]!.movingAverage
+        let OHLC = OHLCDependencies[mode]!
+        let movingAverageData = movingAverageDependencies[mode]!
         let tradingVolume = statsLookUp[.tradingVolume]![mode]!
         let movingAverage = statsLookUp[.movingAverage]![mode]!
         let highLow = statsLookUp[.highLow]![mode]!
@@ -244,11 +272,6 @@ class CandleViewController: UIViewController {
     }
     
   
-}
-
-struct DataDependencies {
-    var OHLC: [OHLC] = []
-    var movingAverage: [Double] = []
 }
 
 struct MaxMinRange {

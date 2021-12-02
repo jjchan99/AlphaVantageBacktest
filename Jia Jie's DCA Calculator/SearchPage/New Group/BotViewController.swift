@@ -11,15 +11,64 @@ import UIKit
 class BotCoordinator: NSObject, Coordinator {
     
     let sorted: [OHLC]
+    let symbol: String
     
-    var bot: TradeBot? { didSet {
-        let todaysDate = Date(timeIntervalSinceNow: 0)
-        if sorted.last?.stamp != todaysDate {
+    
+//    var bot: TradeBot? { didSet {
+//        let todaysDate = Date().string(format: "yyyy-MM-dd")
+//        if sorted.last!.stamp != todaysDate {
+//
+//        } else {
+//            bot?.database.
+//        }
+//    }
+     
+  
+}
+
+struct OHLCFactory {
+    
+    let symbol: String
+    
+    init(symbol: String) {
+        self.symbol = symbol
+    }
+    
+    func fetchDaily(completion: @escaping (Daily) -> Void) {
+        CandleAPI().fetchDaily(symbol)
+            .sink { value in
+                switch value {
+                case let .failure(error):
+                    print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { value in
+                if value.timeSeries == nil {
+                    print(value.note)
+                } else {
+                  completion(value)
+                }
+            }
+    }
+    
+    func fetchIntraday() {
+        
+    }
+    
+    
+    func generateIndicators(indicator: TechnicalIndicators) {
+        switch indicator {
+        case .movingAverage(period: <#T##Int#>):
             
-        } else {
+        case .RSI(value: <#T##Double#>):
+            
+        case .bollingerBands(lowerBounds: <#T##Double#>, upperBounds: <#T##Double#>):
+            
             
         }
     }
+    
 }
 
 class BotViewController: UIViewController {

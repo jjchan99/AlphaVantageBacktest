@@ -19,6 +19,8 @@
 		1D12102F2736FA4200B58B67 /* ROEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D12102E2736FA4200B58B67 /* ROEView.swift */; };
 		1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1210302736FE4000B58B67 /* FinancialModel.swift */; };
 		1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D187F6E2738468500F4B594 /* PieChartRenderer.swift */; };
+		1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDCE2758D9C80061A7AD /* TradeBot.swift */; };
+		1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */; };
 		1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1A016727325493005449A2 /* ScaleFactor.swift */; };
 		1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D20600E26F71837007EA13F /* CalculatorViewController.swift */; };
 		1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425AF27575E49003A9755 /* ControlPoints.swift */; };
@@ -35,7 +37,10 @@
 		1D260F6D27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */; };
 		1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */; };
 		1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573726F2DB0700B40E2B /* TableViewCell.swift */; };
+		1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */; };
+		1D2E4AA72757DDA0002729E4 /* CandleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA62757DDA0002729E4 /* CandleCoordinator.swift */; };
 		1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D32802C2701C1AB00C60A6C /* Animations.swift */; };
+		1D469FA22758AC800073978D /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D469FA12758AC800073978D /* BackgroundView.swift */; };
 		1D54094B274815DE004D0501 /* AlgorithmBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D54094A274815DE004D0501 /* AlgorithmBook.swift */; };
 		1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */; };
 		1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */; };
@@ -120,6 +125,8 @@
 		1D12102E2736FA4200B58B67 /* ROEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROEView.swift; sourceTree = "<group>"; };
 		1D1210302736FE4000B58B67 /* FinancialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialModel.swift; sourceTree = "<group>"; };
 		1D187F6E2738468500F4B594 /* PieChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
+		1D18DDCE2758D9C80061A7AD /* TradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBot.swift; sourceTree = "<group>"; };
+		1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAccount.swift; sourceTree = "<group>"; };
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
 		1D20600E26F71837007EA13F /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		1D2425AF27575E49003A9755 /* ControlPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPoints.swift; sourceTree = "<group>"; };
@@ -142,7 +149,10 @@
 		1D260F6E27117E5500099DA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsModel.swift; sourceTree = "<group>"; };
 		1D29573726F2DB0700B40E2B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChangeModel.swift; sourceTree = "<group>"; };
+		1D2E4AA62757DDA0002729E4 /* CandleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleCoordinator.swift; sourceTree = "<group>"; };
 		1D32802C2701C1AB00C60A6C /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		1D469FA12758AC800073978D /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1D54094A274815DE004D0501 /* AlgorithmBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmBook.swift; sourceTree = "<group>"; };
 		1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyConstraints.swift; sourceTree = "<group>"; };
 		1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLabelsView.swift; sourceTree = "<group>"; };
@@ -233,6 +243,15 @@
 				1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */,
 			);
 			path = SwiftUI_FinancialsView;
+			sourceTree = "<group>";
+		};
+		1D18DDCD2758D9B30061A7AD /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		1D2425AE27575DEE003A9755 /* Charts */ = {
@@ -344,6 +363,7 @@
 				1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */,
 				1D2425B327576566003A9755 /* PageCoordinator.swift */,
 				1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */,
+				1D2E4AA62757DDA0002729E4 /* CandleCoordinator.swift */,
 			);
 			path = NavigationCoordinator;
 			sourceTree = "<group>";
@@ -375,6 +395,7 @@
 				1D3BF6FF26FF7C5800528646 /* ViewController */,
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
+				1D18DDCD2758D9B30061A7AD /* New Group */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
 			path = SearchPage;
@@ -385,6 +406,7 @@
 			children = (
 				1DA32BF02756172900055702 /* RSIModel.swift */,
 				1DA32BF22756659500055702 /* BollingerBandsModel.swift */,
+				1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */,
 				1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */,
 			);
 			path = TechnicalIndicators;
@@ -435,6 +457,7 @@
 			children = (
 				1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */,
 				1DC3C9D8273BB10900900600 /* CandleView.swift */,
+				1D469FA12758AC800073978D /* BackgroundView.swift */,
 				1D92AE83274E86150076F449 /* MovingAverageView.swift */,
 				1D92AE85274E86450076F449 /* TradingVolumeView.swift */,
 				1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */,
@@ -615,6 +638,7 @@
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
+				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
@@ -623,6 +647,7 @@
 				1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */,
 				1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */,
 				1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */,
+				1D2E4AA72757DDA0002729E4 /* CandleCoordinator.swift in Sources */,
 				1D25E33626EDF85A00EA4225 /* TimeSeriesMonthlyAdjustedModel.swift in Sources */,
 				1D12102F2736FA4200B58B67 /* ROEView.swift in Sources */,
 				1DD26EE3272C536600BEDF32 /* DateIndicatorModel.swift in Sources */,
@@ -633,13 +658,16 @@
 				1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */,
 				1D6B9362271D641F009B012E /* GraphRendererModel.swift in Sources */,
 				1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */,
+				1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */,
 				1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */,
+				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
 				1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */,
 				1D2425B227575EB1003A9755 /* YPositionFactory.swift in Sources */,
 				1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */,
 				1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */,
 				1D911E542732E1C800444991 /* HomeViewController.swift in Sources */,
+				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
 				1DC3C9DB273BB1DA00900600 /* IntradayModel.swift in Sources */,
 				1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */,

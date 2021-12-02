@@ -48,8 +48,14 @@ class PageCoordinator: NSObject, Coordinator {
         pageVC.coordinator = self
         let financialsVC = FinancialsViewController(symbol: symbol)
         let candleVC = CandleViewController(symbol: symbol)
+        
+        
+        let sorted = rawDataDaily.timeSeries!.sorted { $0.key > $1.key }
+        let candleCoordinator = CandleCoordinator(sorted: sorted, daily: rawDataDaily)
+        childCoordinators.append(candleCoordinator)
+        candleVC.coordinator = candleCoordinator
         candleVC.daily = rawDataDaily
-        candleVC.sorted = candleVC.daily!.timeSeries!.sorted { $0.key > $1.key }
+        candleVC.sorted = sorted
         pageVC.setViewControllers([candleVC], direction: .forward, animated: false) { _ in }
         pageVC.collection = [candleVC, calculatorVC, financialsVC]
         navigationController.pushViewController(pageVC, animated: false)

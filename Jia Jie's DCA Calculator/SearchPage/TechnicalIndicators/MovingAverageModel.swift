@@ -34,7 +34,7 @@ struct SimpleMovingAverageCalculator {
         windowSum += data
         queue.append(data)
         let index = array.count
-        let window = index < self.window ? index : self.window
+        let window = index < self.window ? index + 1 : self.window
         if index >= window {
             windowSum -= dequeue()
         }

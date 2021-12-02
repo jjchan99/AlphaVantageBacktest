@@ -11,10 +11,8 @@ import SwiftUI
 struct CandleView: View {
     @EnvironmentObject var viewModel: CandleViewModel
     
-    let darkGreen: Color = .init(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1))
-    let darkRed: Color = .init(#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1))
-    let lightGreen: Color = .init(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))
-    let lightRed: Color = .init(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1))
+    let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
+    let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
     
     func scaleFactor(_ a: CGFloat) -> CGFloat {
         let sf = a / (CGFloat(viewModel.sorted!.count) / 5)
@@ -25,41 +23,31 @@ struct CandleView: View {
         ZStack {
         if viewModel.charts != nil {
             
-            VStack {
+            VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
-
+              
                 ZStack {
                 ForEach(0..<viewModel.sorted!.count, id: \.self) { idx in
                     let candles = viewModel.charts!.candles
-                    let color: Color = candles[idx].data.green() ? darkGreen : darkRed
-                    let selectedColor: Color = candles[idx].data.green() ? lightGreen : lightRed
-                    let selected: Bool = idx == viewModel.selectedIndex
-              
-                if !selected {
-                    color
-                        .mask(candles[idx].body)
-                    candles[idx].body
-                        .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                        .fill(color)
-                    candles[idx].stick
-                        .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                        .fill(color)
-                } else {
-                    selectedColor
-                        .mask(candles[idx].body)
-                    candles[idx].body
-                        .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                        .fill(selectedColor)
-                    candles[idx].stick
-                        .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                        .fill(selectedColor)
-                }
+                    let color: Color = candles[idx].data.green() ? green : red
+                
+                color
+                    .mask(candles[idx].body)
+                candles[idx].body
+                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
+                    .fill(color)
+                candles[idx].stick
+                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
+                    .fill(color)
+                
                 
                 }
-               .overlay(
-                MovingAverageView().environmentObject(viewModel)
-                )
-
+          
+            MovingAverageView().environmentObject(viewModel)
+                    
+            BackgroundView().environmentObject(viewModel)
+                
+                    
             SingleCandleView()
                 .environmentObject(viewModel)
                 .frame(width: viewModel.width, height: viewModel.height, alignment: .center)

@@ -26,7 +26,7 @@ struct CandleAPI {
     private func fetchURL(type: type, query: String) -> URL? {
         switch type {
         case .intraday:
-            return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(query)&interval=5min&apikey=\(key0)")
+            return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(query)&interval=5min&apikey=\(key0)&outputsize=full")
         case .daily:
             return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=\(query)&outputsize=full&apikey=\(key1)")
         }

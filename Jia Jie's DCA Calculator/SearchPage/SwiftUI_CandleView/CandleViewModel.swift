@@ -22,14 +22,18 @@ class CandleViewModel: ObservableObject {
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()
     let barHeight: CGFloat = .init(45).hScaled()
+    lazy var heightScaledForSingleCandleView: CGFloat = 0.5 * width
     
     @Published var charts: ChartLibrary? { didSet {
         Log.queue(action: "Charts are ready")
+        indicator = .init(height: height, width: width, dataToDisplay: charts!.candles)
     }}
     
     @Published var selectedIndex: Int?
     
     @Published var modeChanged: ((CandleMode) -> ())?
+    
+    @Published var indicator: CandleIndicator?
     
     lazy var padding: CGFloat = 0.05 * width
     

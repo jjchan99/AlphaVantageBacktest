@@ -22,6 +22,7 @@ class CandleViewModel: ObservableObject {
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()
     let barHeight: CGFloat = .init(45).hScaled()
+    lazy var heightScaledForSingleCandleView: CGFloat = 0.5 * width
     
     @Published var charts: ChartLibrary? { didSet {
         Log.queue(action: "Charts are ready")

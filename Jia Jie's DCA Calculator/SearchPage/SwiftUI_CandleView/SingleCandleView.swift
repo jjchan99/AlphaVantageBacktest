@@ -44,7 +44,7 @@ struct SingleCandleView: View {
         let color: Color = candles[idx].data.green() ? green : red
         let transform = transform(idx: idx)
         let getOffset = getOffset(idx: idx)
-        let x = transform.x * getOffset.x + (0.05 * viewModel.width)
+        let x = transform.x * getOffset.x + (viewModel.width - viewModel.padding)
         let y = getOffset.y
 
         let stick = candle.stick.applying(.init(scaleX: transform.x, y: transform.y))

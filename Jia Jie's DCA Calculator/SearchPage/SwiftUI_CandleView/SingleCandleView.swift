@@ -11,6 +11,9 @@ import SwiftUI
 struct SingleCandleView: View {
     @EnvironmentObject var viewModel: CandleViewModel
     
+    let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
+    let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
+    
     private func getOffset(idx: Int) -> CGPoint {
     let candles: [Candle] = viewModel.charts!.candles
     let range = viewModel.charts!.analysis.highLow.range
@@ -40,7 +43,7 @@ struct SingleCandleView: View {
     @ViewBuilder func buildCandle(candle: Candle, idx: Int) -> some View {
       
         let candles: [Candle] = viewModel.charts!.candles
-        let color: Color = candles[idx].data.green() ? Color.green : Color.red
+        let color: Color = candles[idx].data.green() ? green : red
         let transform = transform(idx: idx)
         let getOffset = getOffset(idx: idx)
         let x = transform.x * getOffset.x + (0.05 * viewModel.width)

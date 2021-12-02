@@ -14,13 +14,12 @@ struct BackgroundView: View {
     
     var body: some View {
         ForEach(0..<4) { idx in
-                Line().path(in: CGRect(x: viewModel.padding * 0.5, y: viewModel.height/5 * CGFloat(idx), width: viewModel.width, height: 0))
+                Line().path(in: CGRect(x: viewModel.padding * 0.5, y: viewModel.height/4 * CGFloat(idx), width: viewModel.width, height: 0))
                 .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
                 .frame(height: 1)
-                .opacity(0.5)
+                .opacity(0.2)
             }
             .position(x: viewModel.width * 0.5, y: 0)
-        
     }
     
 }

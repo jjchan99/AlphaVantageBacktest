@@ -12,6 +12,7 @@ struct TradingVolumeView: View {
     
     @EnvironmentObject var viewModel: CandleViewModel
     var render: Path?
+
     
     var body: some View {
         ZStack {

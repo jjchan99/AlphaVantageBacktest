@@ -12,15 +12,14 @@ struct CandleIndicatorView: View {
     
     @EnvironmentObject var viewModel: CandleViewModel
     @State var offset: CGFloat = 0
-    @State var display: String = ""
     
     var body: some View {
         ZStack {
-        Rectangle()
-            .position(x: -viewModel.width / 2, y: viewModel.height / 2)
-            .frame(width: 10, height: viewModel.height, alignment: .leading)
-            .opacity(0)
-            .offset(x: offset)
+//        Rectangle()
+//            .position(x: -viewModel.width / 2, y: viewModel.height / 2)
+//            .frame(width: 10, height: viewModel.height, alignment: .leading)
+//            .opacity(0)
+//            .offset(x: offset)
         }
         .frame(width: viewModel.width, height: viewModel.height)
         .contentShape(Rectangle())
@@ -34,11 +33,7 @@ struct CandleIndicatorView: View {
                         guard x >= lowerBound && x <= upperBound else { return }
 //                        print(x)
                         offset = x
-                        let open = CandleIndicator(height: viewModel.height, width: viewModel.width, dataToDisplay: data).updateIndicator(xPos: x, didUpdate: { index in
-                            viewModel.selectedIndex = index
-                        }).data.open
-                        display = "\(open)"
-//                        print("title: \(display)")
+                        viewModel.selectedIndex = viewModel.indicator!.updateIndicator(xPos: x)
                     }))
         .frame(width: viewModel.width, height: viewModel.height)
       

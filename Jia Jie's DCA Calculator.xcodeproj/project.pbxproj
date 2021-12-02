@@ -38,6 +38,7 @@
 		1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */; };
 		1D2E4AA72757DDA0002729E4 /* CandleCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA62757DDA0002729E4 /* CandleCoordinator.swift */; };
 		1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D32802C2701C1AB00C60A6C /* Animations.swift */; };
+		1D469FA22758AC800073978D /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D469FA12758AC800073978D /* BackgroundView.swift */; };
 		1D54094B274815DE004D0501 /* AlgorithmBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D54094A274815DE004D0501 /* AlgorithmBook.swift */; };
 		1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */; };
 		1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */; };
@@ -147,6 +148,7 @@
 		1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChangeModel.swift; sourceTree = "<group>"; };
 		1D2E4AA62757DDA0002729E4 /* CandleCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleCoordinator.swift; sourceTree = "<group>"; };
 		1D32802C2701C1AB00C60A6C /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		1D469FA12758AC800073978D /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		1D54094A274815DE004D0501 /* AlgorithmBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmBook.swift; sourceTree = "<group>"; };
 		1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyConstraints.swift; sourceTree = "<group>"; };
 		1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLabelsView.swift; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 			children = (
 				1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */,
 				1DC3C9D8273BB10900900600 /* CandleView.swift */,
+				1D469FA12758AC800073978D /* BackgroundView.swift */,
 				1D92AE83274E86150076F449 /* MovingAverageView.swift */,
 				1D92AE85274E86450076F449 /* TradingVolumeView.swift */,
 				1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */,
@@ -621,6 +624,7 @@
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
+				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,

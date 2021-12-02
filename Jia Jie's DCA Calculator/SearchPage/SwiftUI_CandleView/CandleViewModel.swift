@@ -25,11 +25,14 @@ class CandleViewModel: ObservableObject {
     
     @Published var charts: ChartLibrary? { didSet {
         Log.queue(action: "Charts are ready")
+        indicator = .init(height: height, width: width, dataToDisplay: charts!.candles)
     }}
     
     @Published var selectedIndex: Int?
     
     @Published var modeChanged: ((CandleMode) -> ())?
+    
+    @Published var indicator: CandleIndicator?
     
     lazy var padding: CGFloat = 0.05 * width
     

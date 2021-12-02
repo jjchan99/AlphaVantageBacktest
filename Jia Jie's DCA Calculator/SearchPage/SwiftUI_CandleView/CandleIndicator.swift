@@ -20,10 +20,8 @@ struct CandleIndicator {
         self.dataToDisplay = dataToDisplay
     }
     
-    func updateIndicator(xPos: CGFloat, didUpdate: (Int) -> ()) -> Candle {
-          
+    func updateIndicator(xPos: CGFloat) -> Int {
             let index: CGFloat = xPos / (width / CGFloat(dataToDisplay.count + 1))
-            didUpdate(Int(floor(index)))
-            return dataToDisplay[Int(floor(index))]
+            return Int(floor(index))
     }
 }

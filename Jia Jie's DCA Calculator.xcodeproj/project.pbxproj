@@ -21,6 +21,8 @@
 		1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D187F6E2738468500F4B594 /* PieChartRenderer.swift */; };
 		1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDCE2758D9C80061A7AD /* TradeBot.swift */; };
 		1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */; };
+		1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD6275932940061A7AD /* BotViewController.swift */; };
+		1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD8275932BB0061A7AD /* BotViewModel.swift */; };
 		1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1A016727325493005449A2 /* ScaleFactor.swift */; };
 		1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D20600E26F71837007EA13F /* CalculatorViewController.swift */; };
 		1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425AF27575E49003A9755 /* ControlPoints.swift */; };
@@ -127,6 +129,8 @@
 		1D187F6E2738468500F4B594 /* PieChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
 		1D18DDCE2758D9C80061A7AD /* TradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBot.swift; sourceTree = "<group>"; };
 		1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAccount.swift; sourceTree = "<group>"; };
+		1D18DDD6275932940061A7AD /* BotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewController.swift; sourceTree = "<group>"; };
+		1D18DDD8275932BB0061A7AD /* BotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewModel.swift; sourceTree = "<group>"; };
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
 		1D20600E26F71837007EA13F /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		1D2425AF27575E49003A9755 /* ControlPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPoints.swift; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 			children = (
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
 				1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */,
+				1D18DDD6275932940061A7AD /* BotViewController.swift */,
+				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
 			);
 			path = "New Group";
 			sourceTree = "<group>";
@@ -644,6 +650,7 @@
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,
+				1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */,
 				1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */,
 				1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */,
 				1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */,
@@ -669,6 +676,7 @@
 				1D911E542732E1C800444991 /* HomeViewController.swift in Sources */,
 				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
+				1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */,
 				1DC3C9DB273BB1DA00900600 /* IntradayModel.swift in Sources */,
 				1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */,
 				1D911E502732878900444991 /* CustomTabView.swift in Sources */,

@@ -76,6 +76,4 @@ struct Account {
 
 struct TradeBotDatabase {
     var technicalIndicators: [TechnicalIndicators: [Double]]
-    var intraday: Intraday
-    //MARK: intraday key is "2021-11-10 15:40:00"
 }

@@ -16,12 +16,10 @@ struct SingleCandleView: View {
     
     private func getOffset(idx: Int) -> CGPoint {
     let candles: [Candle] = viewModel.charts!.candles
-    let range = viewModel.charts!.analysis.highLow.range
-    let max = viewModel.charts!.analysis.highLow.max
     let ultimateRange = viewModel.charts!.analysis.ultimateMaxMinRange.range
     let ultimateMax = viewModel.charts!.analysis.ultimateMaxMinRange.max
         
-    let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
+    let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(ultimateRange) * viewModel.height
     let columns: CGFloat = viewModel.charts!.columns
     let xPosition = idx == 0 ? viewModel.padding : (columns * CGFloat(idx)) + viewModel.padding
     let scaleFactor = viewModel.height / shareOfHeight
@@ -32,7 +30,7 @@ struct SingleCandleView: View {
     
     private func transform(idx: Int) -> CGPoint {
         let candles: [Candle] = viewModel.charts!.candles
-        let range = viewModel.charts!.analysis.highLow.range
+        let range = viewModel.charts!.analysis.ultimateMaxMinRange.range
         let shareOfHeight = CGFloat(candles[idx].data.range()) / CGFloat(range) * viewModel.height
         let scaleFactor = viewModel.height / shareOfHeight
         let xStretch: CGFloat = 20 / viewModel.charts!.spacing

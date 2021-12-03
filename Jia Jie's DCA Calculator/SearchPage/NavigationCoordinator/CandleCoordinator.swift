@@ -70,6 +70,8 @@ class CandleCoordinator: NSObject, Coordinator {
         return dataDependenciesCopy
     }()
     
+    
+    
    
     
 }

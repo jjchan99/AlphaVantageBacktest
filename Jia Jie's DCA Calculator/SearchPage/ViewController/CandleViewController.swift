@@ -65,9 +65,9 @@ class CandleViewController: UIViewController {
     
     func testBot() {
         let condition: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .buy)
-        let condition2: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .sell)
+//        let condition2: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .sell)
                 
-        var bot = TradeBot(budget: 10000, account: .init(cash: 10000, accumulatedShares: 0), conditions: [condition, condition2], database: .init(technicalIndicators: [.movingAverage(period: 200): coordinator!.movingAverageDependencies[.months6]!]))
+        var bot = TradeBot(budget: 10000, account: .init(cash: 10000, accumulatedShares: 0), conditions: [condition], database: .init(technicalIndicators: [.movingAverage(period: 200): coordinator!.movingAverageDependencies[.months6]!]))
                 
         for data in coordinator!.OHLCDependencies[.months6]! {
                     bot.evaluate(latest: data)

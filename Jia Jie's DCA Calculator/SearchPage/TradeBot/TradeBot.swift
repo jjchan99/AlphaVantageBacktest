@@ -42,8 +42,8 @@ struct TradeBot {
     let budget: Double
     var account: Account
     let conditions: [EvaluationCondition]
-    let cashBuyPercetange: Double = 1
-    let sharesSellPercetange: Double = 1
+    let cashBuyPercentage: Double = 1
+    let sharesSellPercentage: Double = 1
     var database: TradeBotDatabase
     
     enum AboveOrBelow: Int, CustomStringConvertible {
@@ -90,12 +90,12 @@ struct TradeBot {
                 switch conditions.buyOrSell {
                 case .buy:
                     print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
-                    account.accumulatedShares += account.decrement(cashBuyPercetange * account.cash) / close
-                    account.cash = account.cash * (1 - cashBuyPercetange)
+                    account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
+                    account.cash = account.cash * (1 - cashBuyPercentage)
                 case .sell:
                     print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
-                    account.cash += account.accumulatedShares * close * sharesSellPercetange
-                    account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercetange)
+                    account.cash += account.accumulatedShares * close * sharesSellPercentage
+                    account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
                 }
             } else {
                     

@@ -58,6 +58,10 @@ struct BollingerBandCalculator {
         var standardDeviation: Double?
         var upperBollingerBand: Double?
         var lowerBollingerBand: Double?
+        func valueAtPercent(percent: Double) -> Double? {
+            guard upperBollingerBand != nil, lowerBollingerBand != nil else { return nil }
+            return ( upperBollingerBand! - lowerBollingerBand! ) * percent
+        }
     }
     
 }

@@ -10,6 +10,21 @@ import CloudKit
 import Combine
 
 class CloudKitUtility {
+    enum CloudKitError: String, LocalizedError {
+        case iCloudAccountNotFound
+        case iCloudAccountNotDetermined
+        case iCloudAccountRestricted
+        case iCloudAccountUnknown
+        case iCloudApplicationPermissionNotGranted
+        case iCloudCouldNotFetchUserRecordID
+        case iCloudCouldNotDiscoverUser
+    }
+    
+}
+
+// MARK: USER FUNCTIONS
+
+extension CloudKitUtility {
     static private func getiCloudStatus(completion: @escaping (Result<Bool, Error>) -> ()) {
         CKContainer.default().accountStatus { status, error in
                 switch status {
@@ -93,27 +108,41 @@ class CloudKitUtility {
             }
         }
     }
-    
-    enum CloudKitError: String, LocalizedError {
-        case iCloudAccountNotFound
-        case iCloudAccountNotDetermined
-        case iCloudAccountRestricted
-        case iCloudAccountUnknown
-        case iCloudApplicationPermissionNotGranted
-        case iCloudCouldNotFetchUserRecordID
-        case iCloudCouldNotDiscoverUser
-    }
-    
-    
-    
-    func createBot() {
-        let record = CKRecord(recordType: "TradeBot")
-        record.setValuesForKeys([
-            "budget": 10000,
-            "cash": 10000,
-            "accumulatedShares": 0,
-            
-        ])
-    }
 
+}
+
+// MARK: CRUD FUNCTIONS
+
+extension CloudKitUtility {
+    
+    static func fetch(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil) {
+        let operation = createOperation(predicate: predicate, recordType: recordType, sortDescriptors: sortDescriptors, resultsLimit: resultsLimit)
+        
+        // Get items in query
+        var returnedItems: TradeBot
+        
+        
+        
+        add(operation: operation)
+    }
+    
+    static private func createOperation(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil) -> CKQueryOperation {
+        let query = CKQuery(recordType: recordType, predicate: predicate)
+        query.sortDescriptors = sortDescriptors
+        let queryOperation = CKQueryOperation(query: query)
+        if let limit = resultsLimit {
+        queryOperation.resultsLimit = limit
+        }
+        return queryOperation
+    }
+    
+    static private func addRecordMatchedBlock(operation: CKQueryOperation) {
+        if #available(iOS 15.0, *) {
+            
+        }
+    }
+    
+    static private func add(operation: CKDatabaseOperation) {
+        CKContainer.default().privateCloudDatabase.add(operation)
+    }
 }

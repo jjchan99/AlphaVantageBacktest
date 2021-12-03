@@ -21,6 +21,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "\(period) period RSI value of \(value)"
         }
     }
+    
 }
 
 import Foundation

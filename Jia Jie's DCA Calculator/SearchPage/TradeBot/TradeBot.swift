@@ -8,17 +8,28 @@
 enum TechnicalIndicators: Hashable, CustomStringConvertible {
     
     case movingAverage(period: Int),
-         bollingerBands(lowerBounds: Double, upperBounds: Double),
+         bollingerBands(percentage: Double),
          RSI(period: Int, value: Double)
     
     var description: String {
         switch self {
         case let .movingAverage(period: period):
             return ("\(period) day moving average")
-        case let .bollingerBands(lowerBounds: lower, upperBounds: upper):
-            return "bollinger band with lower bound \(lower) and upper bound \(upper)"
+        case let .bollingerBands(percentage: percentage):
+            return ("\(percentage)%B")
         case let .RSI(period: period, value: value):
             return "\(period) period RSI value of \(value)"
+        }
+    }
+    
+    var rawValue: Double {
+        switch self {
+        case let .movingAverage(period: period):
+            return Double(period)
+        case let .bollingerBands(percentage: percentage):
+            return percentage
+        case let .RSI(period: period, value: value):
+            return 69
         }
     }
     

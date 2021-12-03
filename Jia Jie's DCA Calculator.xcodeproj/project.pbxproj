@@ -52,6 +52,7 @@
 		1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A227006D93004BBC50 /* TitleView.swift */; };
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
+		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -166,6 +167,8 @@
 		1D72D2A227006D93004BBC50 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactoryProtocol.swift; sourceTree = "<group>"; };
 		1D72D2A62700D01E004BBC50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
+		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -216,6 +219,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +281,7 @@
 				1D260F5D27117CF300099DA8 /* Jia Jie's DCA CalculatorTests */,
 				1D260F6B27117E5500099DA8 /* Jia Jie's DCA CalculatorUITests */,
 				1D25E31B26EDD83A00EA4225 /* Products */,
+				1D784B00275A493700F91392 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -293,6 +298,7 @@
 		1D25E31C26EDD83A00EA4225 /* Jia Jie's DCA Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */,
 				1D911E4A2732842600444991 /* SearchPage */,
 				1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */,
 				1D911E4D2732867300444991 /* TabViewController.swift */,
@@ -362,6 +368,14 @@
 			path = GraphRendererModel;
 			sourceTree = "<group>";
 		};
+		1D784B00275A493700F91392 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1D784B01275A493700F91392 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1D8021D526FF039B0004F668 /* NavigationCoordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -401,7 +415,7 @@
 				1D3BF6FF26FF7C5800528646 /* ViewController */,
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
-				1DFDEC3F275A1FE200776CA8 /* CoreData */,
+				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
 				1D18DDCD2758D9B30061A7AD /* TradeBot */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
@@ -497,11 +511,11 @@
 			path = AccessoryViews;
 			sourceTree = "<group>";
 		};
-		1DFDEC3F275A1FE200776CA8 /* CoreData */ = {
+		1DFDEC3F275A1FE200776CA8 /* CloudKit */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = CoreData;
+			path = CloudKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -884,6 +898,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Jia Jie's DCA Calculator/Jia Jie's DCA Calculator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
@@ -904,6 +919,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Jia Jie's DCA Calculator/Jia Jie's DCA Calculator.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;

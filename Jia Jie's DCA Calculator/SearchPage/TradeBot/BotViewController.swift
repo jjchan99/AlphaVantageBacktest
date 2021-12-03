@@ -13,17 +13,28 @@ class BotCoordinator: NSObject, Coordinator {
     let sorted: [OHLC]
     let symbol: String
 
+    var bot: TradeBot? { didSet {
+        //MARK: SEND TO DATABASE
+        
+        //1. The bot
+        
+        
+        //2. Data for persistence
+        
+    }
 
-//    var bot: TradeBot? { didSet {
-//        let todaysDate = Date().string(format: "yyyy-MM-dd")
-//        if sorted.last!.stamp != todaysDate {
-//
-//        } else {
-//            bot?.database.
-//        }
-//    }
 
-
+}
+    
+struct BotDataDependencies {
+    let stamp: String
+    let open: Double
+    let high: Double
+    let low: Double
+    let close: Double
+    let movingAverage: Double
+    let bollingerBand: Double
+    let RSI: Double
 }
 
 //struct OHLCFactory {

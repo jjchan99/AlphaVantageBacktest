@@ -48,7 +48,7 @@ class SearchViewController: UITableViewController {
         let backBarButtton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtton
         
-        subscribeToIntraday(query: "TSLA", completion: {})
+   
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -114,31 +114,6 @@ class SearchViewController: UITableViewController {
                     spinner.removeFromSuperview()
                 } else {
                 coordinator!.rawDataDaily = value
-                completion()
-                self.searchBarText = nil
-                searchController.searchBar.text = nil
-                }
-            }
-            .store(in: &coordinator!.subscribers)
-    }
-    
-    func subscribeToIntraday(query: String, completion: @escaping () -> ()) {
-        CandleAPI().fetchIntraday(query)
-            .sink { [unowned self] value in
-                switch value {
-                case let .failure(error):
-                    print(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [unowned self] value in
-                if value.timeSeries == nil {
-                    print(value.note)
-                    view.isUserInteractionEnabled = true
-                    spinner.removeFromSuperview()
-                } else {
-                print("Intraday: \(value)")
-                print("Intraday count: \(value.timeSeries!.count)")
                 completion()
                 self.searchBarText = nil
                 searchController.searchBar.text = nil

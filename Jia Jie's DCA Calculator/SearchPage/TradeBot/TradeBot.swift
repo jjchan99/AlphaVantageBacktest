@@ -31,6 +31,7 @@ struct TradeBot {
     let conditions: [EvaluationCondition]
     let cashBuyPercetange: Double = 1
     let sharesSellPercetange: Double = 1
+    var database: TradeBotDatabase
     
     enum AboveOrBelow: CustomStringConvertible {
         case priceAbove, priceBelow
@@ -65,8 +66,6 @@ struct TradeBot {
         }
         case buy, sell
     }
-    
-    var database: TradeBotDatabase
     
     mutating func evaluate(latest: OHLC) {
         let close = Double(latest.close)!

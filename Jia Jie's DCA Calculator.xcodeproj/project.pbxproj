@@ -20,7 +20,6 @@
 		1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1210302736FE4000B58B67 /* FinancialModel.swift */; };
 		1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D187F6E2738468500F4B594 /* PieChartRenderer.swift */; };
 		1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDCE2758D9C80061A7AD /* TradeBot.swift */; };
-		1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */; };
 		1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD6275932940061A7AD /* BotViewController.swift */; };
 		1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD8275932BB0061A7AD /* BotViewModel.swift */; };
 		1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1A016727325493005449A2 /* ScaleFactor.swift */; };
@@ -129,7 +128,6 @@
 		1D1210302736FE4000B58B67 /* FinancialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialModel.swift; sourceTree = "<group>"; };
 		1D187F6E2738468500F4B594 /* PieChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
 		1D18DDCE2758D9C80061A7AD /* TradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBot.swift; sourceTree = "<group>"; };
-		1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAccount.swift; sourceTree = "<group>"; };
 		1D18DDD6275932940061A7AD /* BotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewController.swift; sourceTree = "<group>"; };
 		1D18DDD8275932BB0061A7AD /* BotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewModel.swift; sourceTree = "<group>"; };
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
-				1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */,
 				1D18DDD6275932940061A7AD /* BotViewController.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
@@ -677,7 +674,6 @@
 				1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */,
 				1D6B9362271D641F009B012E /* GraphRendererModel.swift in Sources */,
 				1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */,
-				1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */,
 				1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */,
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,

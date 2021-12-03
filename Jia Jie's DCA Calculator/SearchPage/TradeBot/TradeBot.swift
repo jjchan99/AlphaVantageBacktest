@@ -5,10 +5,21 @@
 //  Created by Jia Jie Chan on 2/12/21.
 //
 
-enum TechnicalIndicators: Hashable {
+enum TechnicalIndicators: Hashable, CustomStringConvertible {
     case movingAverage(period: Int),
          bollingerBands(lowerBounds: Double, upperBounds: Double),
-         RSI(value: Double)
+         RSI(period: Int, value: Double)
+    
+    var description: String {
+        switch self {
+        case let .movingAverage(period: period):
+            return ("\(period) day moving average")
+        case let .bollingerBands(lowerBounds: lower, upperBounds: upper):
+            return "bollinger band with lower bound \(lower) and upper bound \(upper)"
+        case let .RSI(period: period, value: value):
+            return "\(period) period RSI value of \(value)"
+        }
+    }
 }
 
 import Foundation
@@ -19,8 +30,17 @@ struct TradeBot {
     var account: Account
     let conditions: [EvaluationCondition]
     
-    enum AboveOrBelow {
+    enum AboveOrBelow: CustomStringConvertible {
         case priceAbove, priceBelow
+        
+        var description: String {
+        switch self {
+        case .priceAbove:
+            return "above"
+        case .priceBelow:
+            return "below"
+        }
+        }
         
         func evaluate(_ price: Double, _ technicalIndicator: Double) -> Bool {
             switch self {
@@ -32,7 +52,15 @@ struct TradeBot {
         }
     }
     
-    enum BuyOrSell {
+    enum BuyOrSell: CustomStringConvertible {
+        var description: String {
+            switch self {
+            case .buy:
+                return "buy"
+            case .sell:
+                return "sell"
+            }
+        }
         case buy, sell
     }
     
@@ -47,10 +75,15 @@ struct TradeBot {
             if conditions.aboveOrBelow.evaluate(close, database.technicalIndicators[conditions.technicalIndicator]!.last!) {
                 switch conditions.buyOrSell {
                 case .buy:
+                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.accumulatedShares += account.decrement(0.1 * account.cash) / close
                 case .sell:
+                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.cash += account.accumulatedShares * close
+                    account.accumulatedShares = 0
                 }
+            } else {
+                    
             }
         }
     }

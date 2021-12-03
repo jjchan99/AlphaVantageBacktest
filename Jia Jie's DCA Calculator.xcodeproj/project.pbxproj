@@ -20,7 +20,8 @@
 		1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1210302736FE4000B58B67 /* FinancialModel.swift */; };
 		1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D187F6E2738468500F4B594 /* PieChartRenderer.swift */; };
 		1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDCE2758D9C80061A7AD /* TradeBot.swift */; };
-		1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */; };
+		1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD6275932940061A7AD /* BotViewController.swift */; };
+		1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D18DDD8275932BB0061A7AD /* BotViewModel.swift */; };
 		1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1A016727325493005449A2 /* ScaleFactor.swift */; };
 		1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D20600E26F71837007EA13F /* CalculatorViewController.swift */; };
 		1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425AF27575E49003A9755 /* ControlPoints.swift */; };
@@ -93,6 +94,7 @@
 		1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6327183898005C7CB7 /* IndicatorView.swift */; };
 		1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */; };
 		1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */; };
+		1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,7 +128,8 @@
 		1D1210302736FE4000B58B67 /* FinancialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialModel.swift; sourceTree = "<group>"; };
 		1D187F6E2738468500F4B594 /* PieChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
 		1D18DDCE2758D9C80061A7AD /* TradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBot.swift; sourceTree = "<group>"; };
-		1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAccount.swift; sourceTree = "<group>"; };
+		1D18DDD6275932940061A7AD /* BotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewController.swift; sourceTree = "<group>"; };
+		1D18DDD8275932BB0061A7AD /* BotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotViewModel.swift; sourceTree = "<group>"; };
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
 		1D20600E26F71837007EA13F /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		1D2425AF27575E49003A9755 /* ControlPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPoints.swift; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		1DF13C6327183898005C7CB7 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
 		1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchModeButtonView.swift; sourceTree = "<group>"; };
 		1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageModel.swift; sourceTree = "<group>"; };
+		1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotAccountCorodinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,13 +249,15 @@
 			path = SwiftUI_FinancialsView;
 			sourceTree = "<group>";
 		};
-		1D18DDCD2758D9B30061A7AD /* New Group */ = {
+		1D18DDCD2758D9B30061A7AD /* TradeBot */ = {
 			isa = PBXGroup;
 			children = (
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
-				1D18DDD02758DDFC0061A7AD /* TradeAccount.swift */,
+				1D18DDD6275932940061A7AD /* BotViewController.swift */,
+				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
+				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
 			);
-			path = "New Group";
+			path = TradeBot;
 			sourceTree = "<group>";
 		};
 		1D2425AE27575DEE003A9755 /* Charts */ = {
@@ -395,7 +401,8 @@
 				1D3BF6FF26FF7C5800528646 /* ViewController */,
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
-				1D18DDCD2758D9B30061A7AD /* New Group */,
+				1DFDEC3F275A1FE200776CA8 /* CoreData */,
+				1D18DDCD2758D9B30061A7AD /* TradeBot */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
 			path = SearchPage;
@@ -488,6 +495,13 @@
 				1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */,
 			);
 			path = AccessoryViews;
+			sourceTree = "<group>";
+		};
+		1DFDEC3F275A1FE200776CA8 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -638,12 +652,14 @@
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
+				1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */,
 				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,
+				1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */,
 				1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */,
 				1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */,
 				1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */,
@@ -658,7 +674,6 @@
 				1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */,
 				1D6B9362271D641F009B012E /* GraphRendererModel.swift in Sources */,
 				1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */,
-				1D18DDD12758DDFC0061A7AD /* TradeAccount.swift in Sources */,
 				1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */,
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
@@ -669,6 +684,7 @@
 				1D911E542732E1C800444991 /* HomeViewController.swift in Sources */,
 				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
+				1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */,
 				1DC3C9DB273BB1DA00900600 /* IntradayModel.swift in Sources */,
 				1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */,
 				1D911E502732878900444991 /* CustomTabView.swift in Sources */,

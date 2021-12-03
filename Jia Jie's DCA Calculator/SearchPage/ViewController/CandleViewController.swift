@@ -18,7 +18,7 @@ class CandleViewController: UIViewController {
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
     var sorted: [(key: String, value: TimeSeriesDaily)]?
-    var coordinator: CandleCoordinator?
+    weak var coordinator: CandleCoordinator?
     
     //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
     let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
@@ -59,7 +59,23 @@ class CandleViewController: UIViewController {
             OHLC(mode: mode)
         }
         view.backgroundColor = .white
+        
+        testBot()
     }
+    
+    func testBot() {
+        let condition: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .buy)
+//        let condition2: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .sell)
+                
+        var bot = TradeBot(budget: 10000, account: .init(cash: 10000, accumulatedShares: 0), conditions: [condition], database: .init(technicalIndicators: [.movingAverage(period: 200): coordinator!.movingAverageDependencies[.months6]!]))
+                
+        for data in coordinator!.OHLCDependencies[.months6]! {
+                    bot.evaluate(latest: data)
+        }
+        print("Bot account at the end is: \(bot.account)")
+    }
+
+    
     
     func iterateAndGetDependencies() {
         //MARK: THIS METHOD HAS EXCLUSIVE ACCESS TO THE DICTIONARY

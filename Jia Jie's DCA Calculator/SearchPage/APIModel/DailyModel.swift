@@ -17,6 +17,10 @@ struct Daily: Codable {
         case timeSeries = "Time Series (Daily)"
         case note = "Note"
     }
+    
+    lazy var sorted = {
+        timeSeries?.sorted { $0.key > $1.key }
+    }()
 }
 
 public struct Meta: Codable {

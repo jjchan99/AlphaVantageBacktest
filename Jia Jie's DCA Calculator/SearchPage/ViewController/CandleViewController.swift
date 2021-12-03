@@ -18,7 +18,7 @@ class CandleViewController: UIViewController {
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
     var sorted: [(key: String, value: TimeSeriesDaily)]?
-    var coordinator: CandleCoordinator?
+    weak var coordinator: CandleCoordinator?
     
     //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
     let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)

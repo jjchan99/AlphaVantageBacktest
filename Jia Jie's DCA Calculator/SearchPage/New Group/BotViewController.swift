@@ -1,31 +1,31 @@
-////
-////  BotViewController.swift
-////  Jia Jie's DCA Calculator
-////
-////  Created by Jia Jie Chan on 3/12/21.
-////
 //
-//import Foundation
-//import UIKit
+//  BotViewController.swift
+//  Jia Jie's DCA Calculator
 //
-//class BotCoordinator: NSObject, Coordinator {
+//  Created by Jia Jie Chan on 3/12/21.
 //
-//    let sorted: [OHLC]
-//    let symbol: String
+
+import Foundation
+import UIKit
+
+class BotCoordinator: NSObject, Coordinator {
+
+    let sorted: [OHLC]
+    let symbol: String
+
+
+//    var bot: TradeBot? { didSet {
+//        let todaysDate = Date().string(format: "yyyy-MM-dd")
+//        if sorted.last!.stamp != todaysDate {
 //
-//
-////    var bot: TradeBot? { didSet {
-////        let todaysDate = Date().string(format: "yyyy-MM-dd")
-////        if sorted.last!.stamp != todaysDate {
-////
-////        } else {
-////            bot?.database.
-////        }
-////    }
-//
-//
-//}
-//
+//        } else {
+//            bot?.database.
+//        }
+//    }
+
+
+}
+
 //struct OHLCFactory {
 //
 //    let symbol: String
@@ -70,18 +70,18 @@
 //    }
 //
 //}
-//
-//class BotViewController: UIViewController {
-//
-//    var viewModel: BotViewModel
-//    var coordinator: BotCoordinator
-//
-//    override func viewDidLoad() {
-//        viewModel.createBotButtonTapped = { [unowned self] in
-//            coordinator.bot = viewModel.createBot()
-//        }
-//    }
-//
-//
-//
-//}
+
+class BotViewController: UIViewController {
+
+    var viewModel: BotViewModel
+    var coordinator: BotCoordinator
+
+    override func viewDidLoad() {
+        viewModel.createBotButtonTapped = { [unowned self] in
+            coordinator.bot = viewModel.createBot()
+        }
+    }
+
+
+
+}

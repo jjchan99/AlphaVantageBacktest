@@ -6,6 +6,7 @@
 //
 
 enum TechnicalIndicators: Hashable, CustomStringConvertible {
+    
     case movingAverage(period: Int),
          bollingerBands(lowerBounds: Double, upperBounds: Double),
          RSI(period: Int, value: Double)
@@ -33,7 +34,7 @@ struct TradeBot {
     let sharesSellPercetange: Double = 1
     var database: TradeBotDatabase
     
-    enum AboveOrBelow: CustomStringConvertible {
+    enum AboveOrBelow: Int, CustomStringConvertible {
         case priceAbove, priceBelow
         
         var description: String {
@@ -55,7 +56,7 @@ struct TradeBot {
         }
     }
     
-    enum BuyOrSell: CustomStringConvertible {
+    enum BuyOrSell: Int, CustomStringConvertible {
         var description: String {
             switch self {
             case .buy:

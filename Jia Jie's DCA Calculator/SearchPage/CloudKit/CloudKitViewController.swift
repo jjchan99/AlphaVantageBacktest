@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import CloudKit
 import UIKit
+import Combine
 
 class CloudKitViewController: UIViewController {
     
@@ -15,12 +15,13 @@ class CloudKitViewController: UIViewController {
     var error: String = ""
     var userName: String = ""
     var permission: Bool = false
+    var subscribers = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getiCloudStatus()
         requestPermission()
-        fetchiCloudUserRecordID()
+        getCurrentUserName()
     }
     
     required init?(coder: NSCoder) {
@@ -28,50 +29,37 @@ class CloudKitViewController: UIViewController {
     }
     
     func requestPermission() {
-        CKContainer.default().requestApplicationPermission([.userDiscoverability]) { [unowned self] status, error in
-            DispatchQueue.main.async {
-                if status == .granted {
-                    self.permission = true
-                }
-            }
-        }
+        CloudKitUtility.requestApplicationPermission()
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                
+            } receiveValue: { [unowned self] value in
+                self.permission = value
+            }.store(in: &subscribers)
     }
     
     private func getiCloudStatus() {
-        CKContainer.default().accountStatus { status, error in
-            DispatchQueue.main.async {
-                switch status {
-                case .available:
+        CloudKitUtility.getiCloudStatus()
+            .receive(on: DispatchQueue.main)
+            .sink { [unowned self] completion in
+                switch completion {
+                case .finished:
                     break
-                case .noAccount:
-                    break
-                case .couldNotDetermine:
-                    break
-                case .restricted:
-                    break
-                @unknown default:
-                    break
+                case let .failure(error):
+                    self.error = error.localizedDescription
                 }
-            }
-        }
+            } receiveValue: { [unowned self] value in
+                self.isSignedInToiCloud = value
+            }.store(in: &subscribers)
     }
     
-    func fetchiCloudUserRecordID() {
-        CKContainer.default().fetchUserRecordID { [unowned self] id, error in
-            if let id = id {
-                discoveriCloudUser(id: id)
-            }
-        }
-    }
-    
-    func discoveriCloudUser(id: CKRecord.ID) {
-        CKContainer.default().discoverUserIdentity(withUserRecordID: id) { [unowned self] id, error in
-            DispatchQueue.main.async {
-                if let name = id?.nameComponents?.givenName {
-                    self.userName = name
-                }
-            }
-            
-        }
+    func getCurrentUserName() {
+        CloudKitUtility.discoverUserIdentity()
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+                
+            } receiveValue: { [unowned self] value in
+                self.userName = value
+            }.store(in: &subscribers)
     }
 }

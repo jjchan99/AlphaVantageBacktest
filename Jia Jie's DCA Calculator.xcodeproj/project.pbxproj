@@ -54,6 +54,7 @@
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
+		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -171,6 +172,7 @@
 		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
+		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -517,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				1D784B03275A4C7600F91392 /* CloudKitViewController.swift */,
+				1D784B07275A68F600F91392 /* CloudKitUtility.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -678,6 +681,7 @@
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,
 				1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */,
+				1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */,
 				1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */,
 				1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */,
 				1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */,

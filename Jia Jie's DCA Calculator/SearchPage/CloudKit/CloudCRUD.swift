@@ -15,6 +15,9 @@ class CloudCRUD {
             "budget": 10000,
             "cash": 10000,
             "accumulatedShares": 0,
+            "conditions": ,
+            "cashBuyPercentage": 0,
+            "sharesSellPercentage": 0
             
         ])
     }

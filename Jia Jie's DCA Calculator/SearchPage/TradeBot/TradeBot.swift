@@ -44,7 +44,6 @@ struct TradeBot {
     let conditions: [EvaluationCondition]
     let cashBuyPercentage: Double = 1
     let sharesSellPercentage: Double = 1
-    var database: TradeBotDatabase
     
     enum AboveOrBelow: Int, CustomStringConvertible {
         case priceAbove, priceBelow
@@ -80,20 +79,32 @@ struct TradeBot {
         case buy, sell
     }
     
-    mutating func evaluate(latest: OHLC) {
-        let close = Double(latest.close)!
+    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double {
+        switch i {
+        case .movingAverage:
+            return element.movingAverage
+        case .RSI:
+            return element.RSI
+        case let .bollingerBands(percentage: b):
+            return element.valueAtPercent(percent: b)
+        }
+    }
+    
+    mutating func evaluate(latest: OHLCCloudElement) {
+        let close = latest.close
         
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        
         for conditions in self.conditions {
-            if conditions.aboveOrBelow.evaluate(close, database.technicalIndicators[conditions.technicalIndicator]!.last!) {
+            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
+            
+            if conditions.aboveOrBelow.evaluate(close, xxx) {
                 switch conditions.buyOrSell {
                 case .buy:
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
+                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     account.cash = account.cash * (1 - cashBuyPercentage)
                 case .sell:
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(database.technicalIndicators[conditions.technicalIndicator]!.last!). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
+                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.cash += account.accumulatedShares * close * sharesSellPercentage
                     account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
                 }
@@ -122,6 +133,18 @@ struct Account {
     }
 }
 
-struct TradeBotDatabase {
-    var technicalIndicators: [TechnicalIndicators: [Double]]
+struct OHLCCloudElement {
+    var stamp: String
+    var open: Double
+    var high: Double
+    var low: Double
+    var close: Double
+    var RSI: Double
+    var movingAverage: Double
+    var standardDeviation: Double
+    var upperBollingerBand: Double
+    var lowerBollingerBand: Double
+    func valueAtPercent(percent: Double) -> Double {
+        return ( upperBollingerBand - lowerBollingerBand ) * percent
+    }
 }

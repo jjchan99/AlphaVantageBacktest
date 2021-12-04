@@ -54,7 +54,6 @@
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
-		1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B09275A74EC00F91392 /* CloudCRUD.swift */; };
 		1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */; };
 		1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
@@ -174,7 +173,6 @@
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
 		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
-		1D784B09275A74EC00F91392 /* CloudCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCRUD.swift; sourceTree = "<group>"; };
 		1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
 		1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCCloudElement.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -525,7 +523,6 @@
 			children = (
 				1D784B03275A4C7600F91392 /* CloudKitViewController.swift */,
 				1D784B07275A68F600F91392 /* CloudKitUtility.swift */,
-				1D784B09275A74EC00F91392 /* CloudCRUD.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -734,7 +731,6 @@
 				1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */,
 				1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */,
 				1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */,
-				1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */,
 				1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */,
 				1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */,
 				1D6D33DC27077063009A86EA /* Date+Extensions.swift in Sources */,

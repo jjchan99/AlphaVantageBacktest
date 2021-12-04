@@ -52,6 +52,14 @@ struct TradeBot: CloudKitInterchangeable {
         
     }
     
+    func update() -> Self? {
+        let record = self.record
+        //DO STUFF WITH THE RECORD
+        
+        
+        return TradeBot(record: record)
+    }
+    
     init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([

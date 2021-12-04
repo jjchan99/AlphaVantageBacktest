@@ -26,11 +26,9 @@ class OHLCDataManager {
     
     func addOHLCCloudElement(value: TimeSeriesDaily) {
         let close = Double(value.close)!
-        var average: Double!
-        movingAverageCalculator.movingAverage(data: close) { avg in
-            average = avg
-        }
+        movingAverageCalculator.generate(indexData: close)
         bollingerBandsCalculator.generate(indexData: close)
+        rsiCalculator?.generate(indexData: close)
         
     }
     

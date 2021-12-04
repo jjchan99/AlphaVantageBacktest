@@ -104,7 +104,7 @@ class CandleViewController: UIViewController {
             for index in 0..<sorted.count {
                 let iterations = index
                 let index = sorted.count - 1 - index
-                var average: Double = movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!)
+                var average: Double = movingAverageCalculator.generate(data: Double(sorted[index].value.adjustedClose)!)
 
                 if rangeOf6Months(iterations) {
                     coordinator.updatePercentageChange(period: .months6, index: index)

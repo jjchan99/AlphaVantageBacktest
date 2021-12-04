@@ -29,7 +29,7 @@ struct SimpleMovingAverageCalculator {
         return first
     }
     
-    mutating func movingAverage(data: Double) -> Double {
+    mutating func generate(indexData data: Double) -> Double {
     
         windowSum += data
         queue.append(data)

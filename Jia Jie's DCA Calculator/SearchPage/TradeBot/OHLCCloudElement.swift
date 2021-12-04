@@ -8,21 +8,39 @@
 import Foundation
 
 struct OHLCCloudElement {
-    var stamp: String
-    var open: Double
-    var high: Double
-    var low: Double
-    var close: Double
-    var RSI: Double
-    var movingAverage: Double
-    var standardDeviation: Double
-    var upperBollingerBand: Double
-    var lowerBollingerBand: Double
-    func valueAtPercent(percent: Double) -> Double {
-        return ( upperBollingerBand - lowerBollingerBand ) * percent
+    let information: String
+    let symbol: String
+    let lastRefreshed: String
+    let outputSize: String
+    let timeZone: String
+    
+    let stamp: String
+    let open: Double
+    let high: Double
+    let low: Double
+    let close: Double
+    let adjustedClose: Double
+    let volume: Double
+    let dividendAmount: Double
+    let splitCoefficient: Double
+    let percentageChange: Double
+    
+    let RSI: Double?
+    let movingAverage: Double
+    let standardDeviation: Double?
+    let upperBollingerBand: Double?
+    let lowerBollingerBand: Double?
+    
+    func valueAtPercent(percent: Double) -> Double? {
+        guard upperBollingerBand != nil, lowerBollingerBand != nil else { return nil }
+        return ( upperBollingerBand! - lowerBollingerBand! ) * percent
     }
     func green() -> Bool {
         return close > open
+    }
+    
+    func range() -> Double {
+        return high - low
     }
 }
 

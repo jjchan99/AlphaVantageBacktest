@@ -266,6 +266,7 @@
 		1D18DDCD2758D9B30061A7AD /* TradeBot */ = {
 			isa = PBXGroup;
 			children = (
+				1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1D18DDD6275932940061A7AD /* BotViewController.swift */,
@@ -528,7 +529,6 @@
 				1D784B03275A4C7600F91392 /* CloudKitViewController.swift */,
 				1D784B07275A68F600F91392 /* CloudKitUtility.swift */,
 				1D784B09275A74EC00F91392 /* CloudCRUD.swift */,
-				1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";

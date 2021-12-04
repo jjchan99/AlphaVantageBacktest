@@ -41,36 +41,40 @@ class GraphManager: OHLCManager {
         return placeholder
     }()
     
-    
-    
-    
-    func a() {
-    var book = AlgorithmBook()
-
-    let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
-    book.resetIndex()
-    let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
-    book.resetIndex()
-    let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
-    book.resetIndex()
-    let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
-    
-    let rangeOf5Days: (Int) -> (Bool) = { idx in
-        return idx > sorted.count - 1 - indexPositionOf5DaysAgo
-    }
+    init(sorted: [(key: String, value: TimeSeriesDaily)]) {
+        self.sorted = sorted
         
-    let rangeOf1Month: (Int) -> (Bool) = { idx in
-        return idx > sorted.count - 1 - indexPositionOf1MonthAgo
-    }
+        var book = AlgorithmBook()
+        let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
+        book.resetIndex()
+        let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
+        book.resetIndex()
+        let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
+        book.resetIndex()
+        let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
         
-    let rangeOf3Months: (Int) -> (Bool) = { idx in
-        return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
-    }
+        rangeOf5Days = { idx in
+            return idx > sorted.count - 1 - indexPositionOf5DaysAgo
+        }
         
-    let rangeOf6Months: (Int) -> (Bool) = {idx in
-        return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
+        rangeOf1Month = { idx in
+            return idx > sorted.count - 1 - indexPositionOf1MonthAgo
+        }
+            
+        rangeOf3Months = { idx in
+            return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
+        }
+            
+        rangeOf6Months = {idx in
+            return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
+        }
     }
-    }
+    
+    
+    let rangeOf5Days: (Int) -> (Bool)
+    let rangeOf1Month: (Int) -> (Bool)
+    let rangeOf3Months: (Int) -> (Bool)
+    let rangeOf6Months: (Int) -> (Bool)
     
     //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
     let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)

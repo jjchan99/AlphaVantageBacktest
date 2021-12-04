@@ -34,12 +34,17 @@ class GraphManager: OHLCManager {
 
 class OHLCStatisticsManager {
     enum Metric: CaseIterable {
-        case movingAverage, bollingerBands, RSI, highLow
+        case movingAverage, upperBollingerBand, lowerBollingerBand, RSI, high, low
     }
     
-    var maxMinRange: [CandleMode: [Metric: ChartMetaAnalysis.MaxMinRange]] = {
-        var nestedDict: [Metric: ChartMetaAnalysis.MaxMinRange] = [:]
-        var placeholder: [CandleMode: [Metric: ChartMetaAnalysis.MaxMinRange]] = [:]
+    struct MaxMinRange {
+        var max: Double
+        var min: Double
+    }
+    
+    var maxMinRange: [CandleMode: [Metric: OHLCStatisticsManager.MaxMinRange]] = {
+        var nestedDict: [Metric: OHLCStatisticsManager.MaxMinRange] = [:]
+        var placeholder: [CandleMode: [Metric: OHLCStatisticsManager.MaxMinRange]] = [:]
             for cases in CandleMode.allCases {
                 for m in Metric.allCases {
                     nestedDict[m] = .init(max: 0, min: .infinity)
@@ -49,7 +54,7 @@ class OHLCStatisticsManager {
         return placeholder
     }()
     
-    private func newMaxNewMin(data: Double, previousMax: Double, previousMin: Double) -> (newMax: Double, newMin: Double) {
+    private func newMaxNewMin(evaluate data: Double, previousMax: Double, previousMin: Double) -> (newMax: Double, newMin: Double) {
         let newMax = data > previousMax ? data : previousMax
         let newMin = data < previousMin ? data : previousMin
         
@@ -59,21 +64,29 @@ class OHLCStatisticsManager {
         return ((newMax, newMin))
     }
     
-    private func newMax(data: Double, previousMax: Double) -> Double {
-        let newMax = data > previousMax ? data : previousMax
-//        previousMax = newMax
-        return newMax
-    }
-    
-    private func newMin(data: Double, previousMin: Double) -> Double {
-        let newMin = data < previousMin ? data : previousMin
-//        previousMin = newMin
-        return newMin
-    }
-    
-    func evaluate(period: CandleMode, value: TimeSeriesDaily) {
+    func evaluate(period: CandleMode, value: OHLCCloudElement) {
         for m in Metric.allCases {
-            maxMinRange[period]![m]
+            guard let evaluate = getValueFromMetric(metric: m, value: value) else { continue }
+            let result = newMaxNewMin(evaluate: evaluate, previousMax: maxMinRange[period]![m]!.max, previousMin: maxMinRange[period]![m]!.min)
+            maxMinRange[period]![m]!.max = result.newMax
+            maxMinRange[period]![m]!.min = result.newMin
+        }
+    }
+    
+    func getValueFromMetric(metric: Metric, value: OHLCCloudElement) -> Double? {
+        switch metric {
+        case .high:
+            return value.high
+        case .low:
+            return value.low
+        case .movingAverage:
+            return value.movingAverage
+        case .RSI:
+            return value.RSI
+        case .upperBollingerBand:
+            return value.upperBollingerBand
+        case .lowerBollingerBand:
+            return value.lowerBollingerBand
         }
     }
 }

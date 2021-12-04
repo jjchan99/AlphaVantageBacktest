@@ -171,4 +171,8 @@ extension CloudKitUtility {
     static private func add(operation: CKDatabaseOperation) {
         CKContainer.default().privateCloudDatabase.add(operation)
     }
+    
+    static func add() {
+        
+    }
 }

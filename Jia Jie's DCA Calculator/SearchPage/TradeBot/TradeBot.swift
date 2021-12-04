@@ -44,11 +44,31 @@ struct TradeBot: CloudKitInterchangeable {
     let budget: Double
     var account: Account
     let conditions: [EvaluationCondition]
-    let cashBuyPercentage: Double = 1
-    let sharesSellPercentage: Double = 1
+    let cashBuyPercentage: Double
+    let sharesSellPercentage: Double
+    let record: CKRecord
     
     init?(record: CKRecord) {
         
+    }
+    
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double) {
+        self.budget = budget
+        self.account = account
+        self.conditions = conditions
+        self.cashBuyPercentage = cashBuyPercentage
+        self.sharesSellPercentage = sharesSellPercentage
+        
+        let record = CKRecord(recordType: "TradeBot")
+                record.setValuesForKeys([
+                    "budget": 10000,
+                    "cash": 10000,
+                    "accumulatedShares": 0,
+                    "conditions": 3,
+                    "cashBuyPercentage": 0,
+                    "sharesSellPercentage": 0
+                ])
+        self.record = record
     }
 
     enum AboveOrBelow: Int, CustomStringConvertible {

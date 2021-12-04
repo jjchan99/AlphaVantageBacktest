@@ -22,8 +22,7 @@ struct ChartLibrary {
     let specifications: ChartSpecifications
     
     //MARK: DATA DEPENDENCIES
-    let data: [OHLC]
-    let movingAverage: [Double]
+    let data: [OHLCCloudElement]
     
     //MARK: BOUND DEPENDENCIES
     let analysis: ChartMetaAnalysis
@@ -34,12 +33,11 @@ struct ChartLibrary {
     private(set) var volumeChart = Path()
     private(set) var movingAverageChart: (path: Path, area: Path, points: [CGPoint]) = (path: Path(), area: Path(), points: [])
     
-    init(specifications: ChartSpecifications, data: [OHLC], movingAverage: [Double], analysis: ChartMetaAnalysis) {
+    init(specifications: ChartSpecifications, data: [OHLCCloudElement], analysis: ChartMetaAnalysis) {
         self.specifications = specifications
         self.data = data
-        self.movingAverage = movingAverage
         self.analysis = analysis
-        self.yPositionFactory = .init(analysis: analysis, data: data, movingAverageData: movingAverage)
+        self.yPositionFactory = .init(analysis: analysis, data: data)
         
         self.adjustedWidth = specifications.specifications[.line]!.width - (2 * specifications.padding)
         self.columns = adjustedWidth / CGFloat(data.count - 1)
@@ -108,7 +106,7 @@ struct ChartLibrary {
         if index == data.count {
             movingAverageChart.area.addLine(to: CGPoint(x: xPosition, y: specifications.specifications[.line]!.height))
             movingAverageChart.area.addLine(to: CGPoint(x: 0, y: specifications.specifications[.line]!.height))
-            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((movingAverage[0] / analysis.movingAverage.range)))) * specifications.specifications[.line]!.height))
+            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((data[0].movingAverage / analysis.movingAverage.range)))) * specifications.specifications[.line]!.height))
             movingAverageChart.area.closeSubpath()
         }
     }

@@ -12,13 +12,11 @@ struct YPositionFactory {
     let analysis: ChartMetaAnalysis
     
     //MARK: DATA DEPENDENCIES
-    let data: [OHLC]
-    let movingAverageData: [Double]
+    let data: [OHLCCloudElement]
     
-    init(analysis: ChartMetaAnalysis, data: [OHLC], movingAverageData: [Double]) {
+    init(analysis: ChartMetaAnalysis, data: [OHLCCloudElement]) {
         self.analysis = analysis
         self.data = data
-        self.movingAverageData = movingAverageData
     }
     
     enum Mode {
@@ -28,12 +26,12 @@ struct YPositionFactory {
     func getYPosition(mode: Mode, heightBounds: CGFloat, index: Int) -> CGFloat {
         switch mode {
         case .tradingVolume:
-            let deviation = abs(Double(data[index].volume!)! - analysis.tradingVolume.max)
+            let deviation = abs(data[index].volume - analysis.tradingVolume.max)
             let share = deviation / analysis.tradingVolume.range
             let scaled = CGFloat(share) * heightBounds
             return scaled
         case .movingAverage:
-            let deviation = abs(movingAverageData[index] - analysis.ultimateMaxMinRange.max)
+            let deviation = abs(data[index].movingAverage - analysis.ultimateMaxMinRange.max)
             let share = deviation / analysis.ultimateMaxMinRange.range
             let scaled = CGFloat(share) * heightBounds
             return scaled
@@ -42,10 +40,10 @@ struct YPositionFactory {
     
     func getYPosition(heightBounds: CGFloat, index: Int) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let range = analysis.ultimateMaxMinRange.range
-        let open = Double(data[index].open)!
-        let high = Double(data[index].high!)!
-        let low = Double(data[index].low!)!
-        let close = Double(data[index].close)!
+        let open = data[index].open
+        let high = data[index].high
+        let low = data[index].low
+        let close = data[index].close
         let yOpen = CGFloat((abs(open - analysis.ultimateMaxMinRange.max)) / range) * heightBounds
         let yHigh = CGFloat((abs(high - analysis.ultimateMaxMinRange.max)) / range) * heightBounds
         let yLow = CGFloat((abs(low - analysis.ultimateMaxMinRange.max)) / range) * heightBounds

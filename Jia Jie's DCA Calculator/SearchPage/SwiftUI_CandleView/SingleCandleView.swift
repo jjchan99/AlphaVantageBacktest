@@ -24,7 +24,7 @@ struct SingleCandleView: View {
     let xPosition = idx == 0 ? viewModel.padding : (columns * CGFloat(idx)) + viewModel.padding
     let scaleFactor = viewModel.height / shareOfHeight
     let x: CGFloat = -1 * xPosition
-    let y = scaleFactor * -CGFloat((abs(Double(candles[idx].data.high!)! - ultimateMax)) / ultimateRange) * viewModel.height
+    let y = scaleFactor * -CGFloat((abs(candles[idx].data.high - ultimateMax)) / ultimateRange) * viewModel.height
         return .init(x: x, y: y)
     }
     
@@ -78,8 +78,8 @@ struct SingleCandleView: View {
                 VStack(alignment: .trailing) {
                     Text("stamp: \(candles[idx!].data.stamp)")
                     Text("open: \(candles[idx!].data.open)")
-                    Text("high: \(candles[idx!].data.high!)")
-                    Text("low: \(candles[idx!].data.low!)")
+                    Text("high: \(candles[idx!].data.high)")
+                    Text("low: \(candles[idx!].data.low)")
                     Text("close: \(candles[idx!].data.close)")
                     Text("change: \(candles[idx!].data.percentageChange ?? 0)")
                     }

@@ -24,7 +24,7 @@ class FetchLatest: OHLCManager {
     
 }
 
-class GraphManager: OHLCManager {
+class GraphManager: NSObject, OHLCManager, Coordinator {
     func iterate() {
         for idx in 0..<sorted.count {
             let iterations = idx
@@ -53,7 +53,7 @@ class GraphManager: OHLCManager {
         }
     }
     
-    let sorted: [(key: String, value: TimeSeriesDaily)] = []
+    let sorted: [(key: String, value: TimeSeriesDaily)]
     let technicalManager = OHLCTechnicalManager(window: 200)
     let statisticsManager = OHLCStatisticsManager()
     
@@ -67,38 +67,31 @@ class GraphManager: OHLCManager {
     
     init(sorted: [(key: String, value: TimeSeriesDaily)]) {
         self.sorted = sorted
-        
-        var book = AlgorithmBook()
-        let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
-        book.resetIndex()
-        let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
-        book.resetIndex()
-        let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
-        book.resetIndex()
-        let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
-        
-        rangeOf5Days = { [unowned self] idx in
-            return idx > sorted.count - 1 - indexPositionOf5DaysAgo
-        }
-        
-        rangeOf1Month = { [unowned self] idx in
-            return idx > sorted.count - 1 - indexPositionOf1MonthAgo
-        }
-            
-        rangeOf3Months = { [unowned self] idx in
-            return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
-        }
-            
-        rangeOf6Months = { [unowned self] idx in
-            return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
-        }
     }
     
     
-    let rangeOf5Days: (Int) -> (Bool)
-    let rangeOf1Month: (Int) -> (Bool)
-    let rangeOf3Months: (Int) -> (Bool)
-    let rangeOf6Months: (Int) -> (Bool)
+    lazy var rangeOf5Days: (Int) -> (Bool) = { [unowned self] idx in
+        var book = AlgorithmBook()
+        let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
+        return idx > sorted.count - 1 - indexPositionOf5DaysAgo
+    }
+    
+    lazy var rangeOf1Month: (Int) -> (Bool) = { [unowned self] idx in
+        var book = AlgorithmBook()
+        let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
+        return idx > sorted.count - 1 - indexPositionOf1MonthAgo
+    }
+    lazy var rangeOf3Months: (Int) -> (Bool) = { [unowned self] idx in
+        var book = AlgorithmBook()
+        let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
+        return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
+    }
+    
+    lazy var rangeOf6Months: (Int) -> (Bool) = { [unowned self] idx in
+        var book = AlgorithmBook()
+        let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
+        return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
+    }
     
     //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
     let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
@@ -155,7 +148,7 @@ class GraphManager: OHLCManager {
 
 class OHLCStatisticsManager {
     enum Metric: CaseIterable {
-        case movingAverage, upperBollingerBand, lowerBollingerBand, RSI, high, low
+        case movingAverage, upperBollingerBand, lowerBollingerBand, RSI, high, low, tradingVolume
     }
     
     struct MaxMinRange {
@@ -208,6 +201,8 @@ class OHLCStatisticsManager {
             return value.upperBollingerBand
         case .lowerBollingerBand:
             return value.lowerBollingerBand
+        case .tradingVolume:
+            return value.volume
         }
     }
 }

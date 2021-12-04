@@ -17,7 +17,7 @@ enum CandleMode: CaseIterable {
 
 class CandleViewModel: ObservableObject {
     
-    @Published var sorted: [OHLC]?
+    @Published var sorted: [OHLCCloudElement]?
     
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()

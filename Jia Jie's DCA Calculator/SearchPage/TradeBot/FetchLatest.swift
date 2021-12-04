@@ -40,6 +40,89 @@ class GraphManager: OHLCManager {
         }
         return placeholder
     }()
+    
+    
+    
+    
+    func a() {
+    var book = AlgorithmBook()
+
+    let indexPositionOf5DaysAgo = book.binarySearch(sorted, key: dateLookUp[.days5]!, range: 0..<sorted.count)!
+    book.resetIndex()
+    let indexPositionOf1MonthAgo = book.binarySearch(sorted, key: dateLookUp[.months1]!, range: 0..<sorted.count)!
+    book.resetIndex()
+    let indexPositionOf3MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months3]!, range: 0..<sorted.count)!
+    book.resetIndex()
+    let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
+    
+    let rangeOf5Days: (Int) -> (Bool) = { idx in
+        return idx > sorted.count - 1 - indexPositionOf5DaysAgo
+    }
+        
+    let rangeOf1Month: (Int) -> (Bool) = { idx in
+        return idx > sorted.count - 1 - indexPositionOf1MonthAgo
+    }
+        
+    let rangeOf3Months: (Int) -> (Bool) = { idx in
+        return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
+    }
+        
+    let rangeOf6Months: (Int) -> (Bool) = {idx in
+        return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
+    }
+    }
+    
+    //MARK: DATE IS INITIALIZED WHEN VC IS INITIALIZED
+    let daysAgo5 = Date.init(timeIntervalSinceNow: -86400 * 6)
+    let monthsAgo1 = Date.init(timeIntervalSinceNow: -86400 * 31)
+    let monthsAgo3 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 3) - 86400)
+    let monthsAgo6 = Date.init(timeIntervalSinceNow: -(86400 * 30 * 6) - 86400)
+    
+    lazy var dateLookUp: [CandleMode : String] = {
+        let dict: [CandleMode: String] = [
+            .days5 : getDate(mode: .days5),
+            .months1 : getDate(mode: .months1),
+            .months3 : getDate(mode: .months3),
+            .months6 : getDate(mode: .months6)
+        ]
+        return dict
+    }()
+    
+    private func getDate(mode: CandleMode) -> String {
+        switch mode {
+        case .days5:
+            let year = Calendar.current.component(.year, from: daysAgo5)
+            let month = Calendar.current.component(.month, from: daysAgo5)
+            let day = Calendar.current.component(.day, from: daysAgo5)
+            return constructKey(month: month, year: year, day: day)
+            
+        case .months1:
+            let year = Calendar.current.component(.year, from: monthsAgo1)
+            let month = Calendar.current.component(.month, from: monthsAgo1)
+            let day = Calendar.current.component(.day, from: monthsAgo1)
+            return constructKey(month: month, year: year, day: day)
+        
+        case .months3:
+            let year = Calendar.current.component(.year, from: monthsAgo3)
+            let month = Calendar.current.component(.month, from: monthsAgo3)
+            let day = Calendar.current.component(.day, from: monthsAgo3)
+            return constructKey(month: month, year: year, day: day)
+            
+        case .months6:
+            let year = Calendar.current.component(.year, from: monthsAgo6)
+            let month = Calendar.current.component(.month, from: monthsAgo6)
+            let day = Calendar.current.component(.day, from: monthsAgo6)
+            return constructKey(month: month, year: year, day: day)
+        }
+    }
+    
+    private func constructKey(month: Int, year: Int, day: Int) -> String {
+        
+        let day: String = day < 10 ? "0\(day)" : "\(day)"
+        let month: String = month < 10 ? "0\(month)" : "\(month)"
+        
+        return "\(year)-\(month)-\(day)"
+    }
 }
 
 class OHLCStatisticsManager {

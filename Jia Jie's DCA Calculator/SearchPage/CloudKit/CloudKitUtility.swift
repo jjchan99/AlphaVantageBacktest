@@ -11,6 +11,7 @@ import Combine
 
 protocol CloudKitInterchangeable {
     init?(record: CKRecord)
+    var record: CKRecord { get }
 }
 
 class CloudKitUtility {
@@ -172,7 +173,8 @@ extension CloudKitUtility {
         CKContainer.default().privateCloudDatabase.add(operation)
     }
     
-    static func add(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
+    static func add<T: CloudKitInterchangeable>(item: T, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let record = item.record
         save(record: record, completion: completion)
     }
     

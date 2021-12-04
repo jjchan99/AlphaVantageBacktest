@@ -39,7 +39,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
 
 import Foundation
 
-struct TradeBot {
+struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account

@@ -9,6 +9,10 @@ import Foundation
 import CloudKit
 import Combine
 
+protocol CloudKitInterchangeable {
+    init?(record: CKRecord)
+}
+
 class CloudKitUtility {
     enum CloudKitError: String, LocalizedError {
         case iCloudAccountNotFound
@@ -115,13 +119,13 @@ extension CloudKitUtility {
 
 extension CloudKitUtility {
 
-    static func fetch(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil, completion: @escaping (_ items: TradeBot) -> Void) {
+    static func fetch<T: CloudKitInterchangeable>(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil, completion: @escaping (_ items: [T]) -> Void) {
         let operation = createOperation(predicate: predicate, recordType: recordType, sortDescriptors: sortDescriptors, resultsLimit: resultsLimit)
 
         // Get items in query
-        var returnedItems: TradeBot!
+        var returnedItems: [T] = []
         addRecordMatchedBlock(operation: operation) { item in
-            returnedItems = item
+            returnedItems.append(item)
         }
         
         addQueryResultBlock(operation: operation) { finished in
@@ -142,12 +146,11 @@ extension CloudKitUtility {
         return queryOperation
     }
 
-    static private func addRecordMatchedBlock(operation: CKQueryOperation, completion: @escaping (_ tradeBot: TradeBot) -> ()) {
+    static private func addRecordMatchedBlock<T: CloudKitInterchangeable>(operation: CKQueryOperation, completion: @escaping (_ tradeBot: T) -> ()) {
         operation.recordFetchedBlock = { record in
             //Convert record to tradebot and call completion
-            
-            
-            
+            guard let item = T(record: record) else { return }
+            completion(item)
         }
     }
     

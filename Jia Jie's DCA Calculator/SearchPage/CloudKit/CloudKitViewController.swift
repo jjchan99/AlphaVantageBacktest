@@ -67,7 +67,7 @@ class CloudKitViewController: UIViewController {
     func fetchItems() {
         let predicate = NSPredicate(value: true)
         
-        CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot") { [unowned self] items in
+        CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot") { [unowned self] (items: [TradeBot]) in
             DispatchQueue.main.async {
                 
             }

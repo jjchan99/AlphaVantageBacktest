@@ -7,48 +7,54 @@
 
 import Foundation
 
-class FetchLatest {
+protocol OHLCManager {
+    var sorted: [(key: String, value: TimeSeriesDaily)] { get }
+    var manager: OHLCTechnicalManager { get }
+    
+}
+
+class FetchLatest: OHLCManager {
     
     let sorted: [(key: String, value: TimeSeriesDaily)] = []
-    
-    
-    
+    let manager = OHLCTechnicalManager(window: 200)
     
     
 }
 
 class OHLCTechnicalManager {
     
-    var array: [OHLCCloudElement] = []
-    var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
-    var bollingerBandsCalculator = BollingerBandCalculator(window: 200)
+    let window: Int
+    
+    init(window: Int) {
+        self.window = window
+        self.movingAverageCalculator = .init(window: window)
+        self.bollingerBandsCalculator = .init(window: window)
+    }
+    
+    var movingAverageCalculator: SimpleMovingAverageCalculator
+    var bollingerBandsCalculator: BollingerBandCalculator
     var rsiCalculator: RSICalculator?
     
-    func addOHLCCloudElement(value: TimeSeriesDaily) {
+    func addOHLCCloudElement(key: String, value: TimeSeriesDaily) -> OHLCCloudElement {
         let open = Double(value.open)!
         let high = Double(value.high)!
         let low = Double(value.low)!
-        
-        let adjustedClose: Double
-        let volume: Double
-        let dividendAmount: Double
-        let splitCoefficient: Double
-        let percentageChange: Double
-        
-        let information: String
-        let symbol: String
-        let lastRefreshed: String
-        let outputSize: String
-        let timeZone: String
-        
-        
+        let close = Double(value.close)!
+        let stamp: String = key
+        let adjustedClose: Double = Double(value.adjustedClose)!
+        let volume: Double = Double(value.volume)!
+        let dividendAmount: Double = Double(value.dividendAmount)!
+        let splitCoefficient: Double = Double(value.splitCoefficient)!
         
         
         //MARK: TECHNICAL INDICATORS
-        let close = Double(value.close)!
+        if rsiCalculator == nil { rsiCalculator = .init(period: window, indexData: close) }
         let movingAverage = movingAverageCalculator.generate(indexData: close)
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
-        let rsi = rsiCalculator?.generate(indexData: close)
+        let rsi = rsiCalculator!.generate(indexData: close)
+        
+        let element: OHLCCloudElement = .init(stamp: stamp, open: open, high: high, low: low, close: close, adjustedClose: adjustedClose, volume: volume, dividendAmount: dividendAmount, splitCoefficient: splitCoefficient, percentageChange: nil, RSI: rsi.relativeStrengthIndex, movingAverage: movingAverage, standardDeviation: bollingerBand.standardDeviation, upperBollingerBand: bollingerBand.upperBollingerBand, lowerBollingerBand: bollingerBand.lowerBollingerBand)
+        return element
         
     }
 }

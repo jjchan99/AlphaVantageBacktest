@@ -8,12 +8,6 @@
 import Foundation
 
 struct OHLCCloudElement {
-    let information: String
-    let symbol: String
-    let lastRefreshed: String
-    let outputSize: String
-    let timeZone: String
-    
     let stamp: String
     let open: Double
     let high: Double
@@ -23,8 +17,8 @@ struct OHLCCloudElement {
     let volume: Double
     let dividendAmount: Double
     let splitCoefficient: Double
-    let percentageChange: Double
     
+    let percentageChange: Double?
     let RSI: Double?
     let movingAverage: Double
     let standardDeviation: Double?

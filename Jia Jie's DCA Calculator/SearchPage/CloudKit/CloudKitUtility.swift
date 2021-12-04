@@ -197,7 +197,6 @@ extension CloudKitUtility {
         Future { promise in
             CloudKitUtility.delete(item: item, completion: promise)
         }
-        
     }
     
     static private func delete<T: CloudKitInterchangeable>(item: T, completion: @escaping (Result<Bool, Error>) -> Void) {

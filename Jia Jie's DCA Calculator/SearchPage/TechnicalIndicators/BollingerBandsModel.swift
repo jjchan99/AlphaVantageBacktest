@@ -17,12 +17,11 @@ struct BollingerBandCalculator {
         self.movingAverageCalculator = .init(window: window)
     }
     
-    private mutating func generate(indexData: Double) -> BollingerBand {
+    mutating func generate(indexData: Double) -> BollingerBand {
         let simpleMovingAverage: Double? = {
             var avg: Double?
-            movingAverageCalculator.movingAverage(data: indexData) { average in
-                avg = array.count >= window ? average : nil
-            }
+            let average = movingAverageCalculator.movingAverage(data: indexData)
+            avg = array.count >= window ? average : nil
             return avg
         }()
         

@@ -56,6 +56,7 @@
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
 		1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B09275A74EC00F91392 /* CloudCRUD.swift */; };
+		1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -175,6 +176,7 @@
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
 		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
 		1D784B09275A74EC00F91392 /* CloudCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCRUD.swift; sourceTree = "<group>"; };
+		1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 				1D784B03275A4C7600F91392 /* CloudKitViewController.swift */,
 				1D784B07275A68F600F91392 /* CloudKitUtility.swift */,
 				1D784B09275A74EC00F91392 /* CloudCRUD.swift */,
+				1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -730,6 +733,7 @@
 				1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */,
 				1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */,
 				1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */,
+				1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */,
 				1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */,
 				1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */,
 				1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */,

@@ -9,19 +9,29 @@ import Foundation
 
 protocol OHLCManager {
     var sorted: [(key: String, value: TimeSeriesDaily)] { get }
-    var manager: OHLCTechnicalManager { get }
+    var technicalManager: OHLCTechnicalManager { get }
+    func iterate()
 }
 
 class FetchLatest: OHLCManager {
+    func iterate() {
+        
+    }
+    
     
     let sorted: [(key: String, value: TimeSeriesDaily)] = []
-    let manager = OHLCTechnicalManager(window: 200)
+    let technicalManager = OHLCTechnicalManager(window: 200)
     
 }
 
 class GraphManager: OHLCManager {
+    func iterate() {
+        
+    }
+    
     let sorted: [(key: String, value: TimeSeriesDaily)] = []
-    let manager = OHLCTechnicalManager(window: 200)
+    let technicalManager = OHLCTechnicalManager(window: 200)
+    let statisticsManager = OHLCStatisticsManager()
     
     let OHLCDataForRelevantPeriod: [CandleMode: [OHLCCloudElement]] = {
         var placeholder: [CandleMode: [OHLCCloudElement]] = [:]

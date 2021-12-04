@@ -10,7 +10,6 @@ import Foundation
 protocol OHLCManager {
     var sorted: [(key: String, value: TimeSeriesDaily)] { get }
     var manager: OHLCTechnicalManager { get }
-    
 }
 
 class FetchLatest: OHLCManager {
@@ -18,7 +17,19 @@ class FetchLatest: OHLCManager {
     let sorted: [(key: String, value: TimeSeriesDaily)] = []
     let manager = OHLCTechnicalManager(window: 200)
     
+}
+
+class GraphManager: OHLCManager {
+    let sorted: [(key: String, value: TimeSeriesDaily)] = []
+    let manager = OHLCTechnicalManager(window: 200)
     
+    let OHLCDataForRelevantPeriod: [CandleMode: [OHLCCloudElement]] = {
+        var placeholder: [CandleMode: [OHLCCloudElement]] = [:]
+        for cases in CandleMode.allCases {
+            placeholder[cases] = []
+        }
+        return placeholder
+    }()
 }
 
 class OHLCTechnicalManager {

@@ -172,7 +172,17 @@ extension CloudKitUtility {
         CKContainer.default().privateCloudDatabase.add(operation)
     }
     
-    static func add() {
-        
+    static func add(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
+        save(record: record, completion: completion)
+    }
+    
+    static func save(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
+        CKContainer.default().publicCloudDatabase.save(record) { record, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
+        }
     }
 }

@@ -193,5 +193,27 @@ extension CloudKitUtility {
         }
     }
     
+    static func delete<T: CloudKitInterchangeable>(item: T) -> Future<Bool, Error> {
+        Future { promise in
+            CloudKitUtility.delete(item: item, completion: promise)
+        }
+        
+    }
+    
+    static private func delete<T: CloudKitInterchangeable>(item: T, completion: @escaping (Result<Bool, Error>) -> Void) {
+        CloudKitUtility.delete(record: item.record, completion: completion)
+    }
+    
+    static private func delete(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
+        CKContainer.default().publicCloudDatabase.delete(withRecordID: record.recordID) {
+            id, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
+        }
+    }
+    
     
 }

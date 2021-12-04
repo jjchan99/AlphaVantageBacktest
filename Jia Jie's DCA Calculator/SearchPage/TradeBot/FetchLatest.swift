@@ -32,6 +32,24 @@ class GraphManager: OHLCManager {
     }()
 }
 
+class OHLCStatisticsManager {
+    enum TechnicalIndicators: CaseIterable {
+        case movingAverage, bollingerBands, RSI
+    }
+    
+    var maxMinRange: [CandleMode: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange]] = {
+        var nestedDict: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange] = [:]
+        var placeholder: [CandleMode: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange]] = [:]
+            for cases in CandleMode.allCases {
+                for i in TechnicalIndicators.allCases {
+                    nestedDict[i] = .init(max: 0, min: .infinity)
+                }
+                placeholder[cases] = nestedDict
+        }
+        return placeholder
+    }()
+}
+
 class OHLCTechnicalManager {
     
     let window: Int

@@ -26,14 +26,38 @@ class FetchLatest: OHLCManager {
 
 class GraphManager: OHLCManager {
     func iterate() {
-        
+        for idx in 0..<sorted.count {
+            let iterations = idx
+            let idx = sorted.count - 1 - idx
+            let OHLCCloudElement = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
+            
+            if rangeOf6Months(iterations) {
+                OHLCDataForRelevantPeriod[.months6]!.append(OHLCCloudElement)
+                statisticsManager.evaluate(period: .months6, value: OHLCCloudElement)
+            }
+            
+            if rangeOf3Months(iterations) {
+                OHLCDataForRelevantPeriod[.months3]!.append(OHLCCloudElement)
+                statisticsManager.evaluate(period: .months3, value: OHLCCloudElement)
+            }
+            
+            if rangeOf1Month(iterations) {
+                OHLCDataForRelevantPeriod[.months1]!.append(OHLCCloudElement)
+                statisticsManager.evaluate(period: .months1, value: OHLCCloudElement)
+            }
+            
+            if rangeOf5Days(iterations) {
+                OHLCDataForRelevantPeriod[.days5]!.append(OHLCCloudElement)
+                statisticsManager.evaluate(period: .days5, value: OHLCCloudElement)
+            }
+        }
     }
     
     let sorted: [(key: String, value: TimeSeriesDaily)] = []
     let technicalManager = OHLCTechnicalManager(window: 200)
     let statisticsManager = OHLCStatisticsManager()
     
-    let OHLCDataForRelevantPeriod: [CandleMode: [OHLCCloudElement]] = {
+    var OHLCDataForRelevantPeriod: [CandleMode: [OHLCCloudElement]] = {
         var placeholder: [CandleMode: [OHLCCloudElement]] = [:]
         for cases in CandleMode.allCases {
             placeholder[cases] = []
@@ -53,19 +77,19 @@ class GraphManager: OHLCManager {
         book.resetIndex()
         let indexPositionOf6MonthsAgo = book.binarySearch(sorted, key: dateLookUp[.months6]!, range: 0..<sorted.count)!
         
-        rangeOf5Days = { idx in
+        rangeOf5Days = { [unowned self] idx in
             return idx > sorted.count - 1 - indexPositionOf5DaysAgo
         }
         
-        rangeOf1Month = { idx in
+        rangeOf1Month = { [unowned self] idx in
             return idx > sorted.count - 1 - indexPositionOf1MonthAgo
         }
             
-        rangeOf3Months = { idx in
+        rangeOf3Months = { [unowned self] idx in
             return idx > sorted.count - 1 - indexPositionOf3MonthsAgo
         }
             
-        rangeOf6Months = {idx in
+        rangeOf6Months = { [unowned self] idx in
             return idx > sorted.count - 1 - indexPositionOf6MonthsAgo
         }
     }
@@ -170,7 +194,7 @@ class OHLCStatisticsManager {
         }
     }
     
-    func getValueFromMetric(metric: Metric, value: OHLCCloudElement) -> Double? {
+    private func getValueFromMetric(metric: Metric, value: OHLCCloudElement) -> Double? {
         switch metric {
         case .high:
             return value.high

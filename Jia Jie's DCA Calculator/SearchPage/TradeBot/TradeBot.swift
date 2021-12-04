@@ -117,35 +117,60 @@ struct TradeBot: CloudKitInterchangeable {
             return element.valueAtPercent(percent: b)!
         }
     }
-
-    mutating func evaluate(latest: OHLCCloudElement) {
+    
+    func checkNext(condition: EvaluationCondition, latest: OHLCCloudElement) -> Bool {
         let close = latest.close
+        
+        let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+        if condition.andCondition != nil {
+        let nextCondition = condition.andCondition!.first!
+        return condition.aboveOrBelow.evaluate(close, xxx) && checkNext(condition: nextCondition, latest: latest)
+        } else {
+            return condition.aboveOrBelow.evaluate(latest.close, xxx)
+        }
+    }
+
+    mutating func evaluate(latest: OHLCCloudElement, previous: OHLCCloudElement) {
+        let close = previous.close
+        let open = latest.open
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions {
             let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
-
-            if conditions.aboveOrBelow.evaluate(close, xxx) {
                 switch conditions.buyOrSell {
                 case .buy:
+                    if checkNext(condition: conditions, latest: latest) {
                     print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
-                    account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
+                    account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
                     account.cash = account.cash * (1 - cashBuyPercentage)
+                    break
+                    }
                 case .sell:
+                    if checkNext(condition: conditions, latest: latest) {
                     print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
-                    account.cash += account.accumulatedShares * close * sharesSellPercentage
+                    account.cash += account.accumulatedShares * open * sharesSellPercentage
                     account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
+                    break
+                    }
                 }
-            } else {
-
             }
         }
-    }
 
-    struct EvaluationCondition {
+    struct EvaluationCondition: CloudKitInterchangeable {
+        init?(record: CKRecord) {
+            <#code#>
+        }
+        
+        var record: CKRecord
+        
+        func update() -> TradeBot.EvaluationCondition {
+            <#code#>
+        }
+        
         let technicalIndicator: TechnicalIndicators
         let aboveOrBelow: AboveOrBelow
         let buyOrSell: BuyOrSell
+        let andCondition: [EvaluationCondition]?
     }
 
 

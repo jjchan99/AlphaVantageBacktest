@@ -33,21 +33,49 @@ class GraphManager: OHLCManager {
 }
 
 class OHLCStatisticsManager {
-    enum TechnicalIndicators: CaseIterable {
-        case movingAverage, bollingerBands, RSI
+    enum Metric: CaseIterable {
+        case movingAverage, bollingerBands, RSI, highLow
     }
     
-    var maxMinRange: [CandleMode: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange]] = {
-        var nestedDict: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange] = [:]
-        var placeholder: [CandleMode: [TechnicalIndicators: ChartMetaAnalysis.MaxMinRange]] = [:]
+    var maxMinRange: [CandleMode: [Metric: ChartMetaAnalysis.MaxMinRange]] = {
+        var nestedDict: [Metric: ChartMetaAnalysis.MaxMinRange] = [:]
+        var placeholder: [CandleMode: [Metric: ChartMetaAnalysis.MaxMinRange]] = [:]
             for cases in CandleMode.allCases {
-                for i in TechnicalIndicators.allCases {
-                    nestedDict[i] = .init(max: 0, min: .infinity)
+                for m in Metric.allCases {
+                    nestedDict[m] = .init(max: 0, min: .infinity)
                 }
                 placeholder[cases] = nestedDict
         }
         return placeholder
     }()
+    
+    private func newMaxNewMin(data: Double, previousMax: Double, previousMin: Double) -> (newMax: Double, newMin: Double) {
+        let newMax = data > previousMax ? data : previousMax
+        let newMin = data < previousMin ? data : previousMin
+        
+//        previousMax = newMax
+//        previousMin = newMin
+        
+        return ((newMax, newMin))
+    }
+    
+    private func newMax(data: Double, previousMax: Double) -> Double {
+        let newMax = data > previousMax ? data : previousMax
+//        previousMax = newMax
+        return newMax
+    }
+    
+    private func newMin(data: Double, previousMin: Double) -> Double {
+        let newMin = data < previousMin ? data : previousMin
+//        previousMin = newMin
+        return newMin
+    }
+    
+    func evaluate(period: CandleMode, value: TimeSeriesDaily) {
+        for m in Metric.allCases {
+            maxMinRange[period]![m]
+        }
+    }
 }
 
 class OHLCTechnicalManager {

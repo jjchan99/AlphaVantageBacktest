@@ -53,6 +53,11 @@
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
+		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
+		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
+		1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B09275A74EC00F91392 /* CloudCRUD.swift */; };
+		1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */; };
+		1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -169,6 +174,11 @@
 		1D72D2A62700D01E004BBC50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
+		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
+		1D784B09275A74EC00F91392 /* CloudCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCRUD.swift; sourceTree = "<group>"; };
+		1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
+		1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCCloudElement.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -256,7 +266,9 @@
 		1D18DDCD2758D9B30061A7AD /* TradeBot */ = {
 			isa = PBXGroup;
 			children = (
+				1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1D18DDD6275932940061A7AD /* BotViewController.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
@@ -514,6 +526,9 @@
 		1DFDEC3F275A1FE200776CA8 /* CloudKit */ = {
 			isa = PBXGroup;
 			children = (
+				1D784B03275A4C7600F91392 /* CloudKitViewController.swift */,
+				1D784B07275A68F600F91392 /* CloudKitUtility.swift */,
+				1D784B09275A74EC00F91392 /* CloudCRUD.swift */,
 			);
 			path = CloudKit;
 			sourceTree = "<group>";
@@ -665,6 +680,7 @@
 				1D54094B274815DE004D0501 /* AlgorithmBook.swift in Sources */,
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
+				1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
 				1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */,
 				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
@@ -674,6 +690,7 @@
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,
 				1D18DDD9275932BB0061A7AD /* BotViewModel.swift in Sources */,
+				1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */,
 				1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */,
 				1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */,
 				1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */,
@@ -698,6 +715,7 @@
 				1D911E542732E1C800444991 /* HomeViewController.swift in Sources */,
 				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
+				1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */,
 				1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */,
 				1DC3C9DB273BB1DA00900600 /* IntradayModel.swift in Sources */,
 				1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */,
@@ -719,6 +737,8 @@
 				1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */,
 				1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */,
 				1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */,
+				1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */,
+				1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */,
 				1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */,
 				1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */,
 				1D6D33DC27077063009A86EA /* Date+Extensions.swift in Sources */,

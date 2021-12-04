@@ -17,12 +17,11 @@ struct BollingerBandCalculator {
         self.movingAverageCalculator = .init(window: window)
     }
     
-    private mutating func generate(indexData: Double) -> BollingerBand {
+    mutating func generate(indexData: Double) -> BollingerBand {
         let simpleMovingAverage: Double? = {
             var avg: Double?
-            movingAverageCalculator.movingAverage(data: indexData) { average in
-                avg = array.count >= window ? average : nil
-            }
+            let average = movingAverageCalculator.generate(indexData: indexData)
+            avg = array.count >= window ? average : nil
             return avg
         }()
         
@@ -41,11 +40,9 @@ struct BollingerBandCalculator {
             return simpleMovingAverage - standardDeviation * 2
         }()
         
-        return .init(simpleMovingAverage: simpleMovingAverage, standardDeviation: standardDeviation, upperBollingerBand: upperBollingerBand, lowerBollingerBand: lowerBollingerBand)
-    }
-    
-    mutating func append(indexData: Double) {
-        array.append(generate(indexData: indexData))
+        let bollingerBand: BollingerBand = .init(simpleMovingAverage: simpleMovingAverage, standardDeviation: standardDeviation, upperBollingerBand: upperBollingerBand, lowerBollingerBand: lowerBollingerBand)
+        array.append(bollingerBand)
+        return bollingerBand
     }
     
     
@@ -58,6 +55,10 @@ struct BollingerBandCalculator {
         var standardDeviation: Double?
         var upperBollingerBand: Double?
         var lowerBollingerBand: Double?
+        func valueAtPercent(percent: Double) -> Double? {
+            guard upperBollingerBand != nil, lowerBollingerBand != nil else { return nil }
+            return ( upperBollingerBand! - lowerBollingerBand! ) * percent
+        }
     }
     
 }

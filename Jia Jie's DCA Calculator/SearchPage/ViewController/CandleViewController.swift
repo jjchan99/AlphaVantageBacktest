@@ -67,7 +67,7 @@ class CandleViewController: UIViewController {
         let condition: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .buy)
 //        let condition2: TradeBot.EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .sell)
                 
-        var bot = TradeBot(budget: 10000, account: .init(cash: 10000, accumulatedShares: 0), conditions: [condition], database: .init(technicalIndicators: [.movingAverage(period: 200): coordinator!.movingAverageDependencies[.months6]!]))
+        var bot = TradeBot(budget: 10000, account: .init(cash: 10000, accumulatedShares: 0), conditions: [condition])
                 
         for data in coordinator!.OHLCDependencies[.months6]! {
                     bot.evaluate(latest: data)
@@ -104,8 +104,7 @@ class CandleViewController: UIViewController {
             for index in 0..<sorted.count {
                 let iterations = index
                 let index = sorted.count - 1 - index
-                var average: Double!
-                movingAverageCalculator.movingAverage(data: Double(sorted[index].value.adjustedClose)!) { avg in average = avg }
+                var average: Double = movingAverageCalculator.generate(indexData: Double(sorted[index].value.adjustedClose)!)
 
                 if rangeOf6Months(iterations) {
                     coordinator.updatePercentageChange(period: .months6, index: index)

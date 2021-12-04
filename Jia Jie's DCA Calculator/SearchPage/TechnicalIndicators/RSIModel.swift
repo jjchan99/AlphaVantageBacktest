@@ -18,7 +18,7 @@ struct RSICalculator {
         array.append(.init(indexData: indexData, upwardMovement: nil, downwardMovement: nil, averageUpwardMovement: nil, averageDownwardMovement: nil, relativeStrength: nil, relativeStrengthIndex: nil))
     }
     
-    private func generate(indexData: Double) -> RSI {
+    private func get(indexData: Double) -> RSI {
         let previous = array.last!
         
         let upwardMovement =
@@ -75,8 +75,10 @@ struct RSICalculator {
         return .init(indexData: indexData, upwardMovement: upwardMovement, downwardMovement: downwardMovement, averageUpwardMovement: averageUpwardMovement, averageDownwardMovement: averageDownwardMovement, relativeStrength: relativeStrength, relativeStrengthIndex: relativeStrengthIndex)
     }
     
-    mutating func append(indexData: Double) {
-        array.append(generate(indexData: indexData))
+    mutating func generate(indexData: Double) -> RSI {
+        let rsi = get(indexData: indexData)
+        array.append(rsi)
+        return rsi
     }
     
     

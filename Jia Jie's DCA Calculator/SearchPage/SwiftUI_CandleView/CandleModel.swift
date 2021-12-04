@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct Candle {
-    let data: OHLC
+    let data: OHLCCloudElement
     let body: Path
     let stick: Path
 }

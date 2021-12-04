@@ -16,9 +16,10 @@ struct PercentageChange {
         self.first = first
     }
     
-   mutating func percentageChange(new: Double) {
+   mutating func percentageChange(new: Double) -> Double {
         let percentageChange = (new - first) / first
         percentageChangeArray.append(percentageChange)
+        return percentageChange
     }
     
     

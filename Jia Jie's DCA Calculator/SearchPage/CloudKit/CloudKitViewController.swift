@@ -64,6 +64,8 @@ class CloudKitViewController: UIViewController {
             }.store(in: &subscribers)
     }
     
+    var bot: [TradeBot] = []
+    
     func fetchItems() {
         let predicate = NSPredicate(value: true)
         let recordType = "TradeBot"
@@ -72,7 +74,7 @@ class CloudKitViewController: UIViewController {
             .sink { _ in
                 
             } receiveValue: { [unowned self] items in
-                
+                self.bot = items
             }
             .store(in: &subscribers)
     }

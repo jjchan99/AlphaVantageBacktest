@@ -50,8 +50,8 @@ class PageCoordinator: NSObject, Coordinator {
         let candleVC = CandleViewController(symbol: symbol)
         
         
-        let candleCoordinator = CandleCoordinator(sorted: rawDataDaily.sorted!, daily: rawDataDaily)
-        childCoordinators.append(candleCoordinator)
+        let candleCoordinator = GraphManager(sorted: rawDataDaily.sorted!)
+        childCoordinators.append(candleCoordinator as! Coordinator)
         candleVC.coordinator = candleCoordinator
         candleVC.daily = rawDataDaily
         candleVC.sorted = rawDataDaily.sorted!

@@ -118,8 +118,16 @@ extension CloudKitUtility {
 // MARK: CRUD FUNCTIONS
 
 extension CloudKitUtility {
+    
+    static func fetch<T: CloudKitInterchangeable>(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil) -> Future<[T], Error> {
+        Future { promise in
+            CloudKitUtility.fetch(predicate: predicate, recordType: recordType, sortDescriptors: sortDescriptors, resultsLimit: resultsLimit) { (items: [T]) in
+                promise(.success(items))
+            }
+        }
+    }
 
-    static func fetch<T: CloudKitInterchangeable>(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil, completion: @escaping (_ items: [T]) -> Void) {
+    static private func fetch<T: CloudKitInterchangeable>(predicate: NSPredicate, recordType: CKRecord.RecordType, sortDescriptors: [NSSortDescriptor]? = nil, resultsLimit: Int? = nil, completion: @escaping (_ items: [T]) -> Void) {
         let operation = createOperation(predicate: predicate, recordType: recordType, sortDescriptors: sortDescriptors, resultsLimit: resultsLimit)
 
         // Get items in query

@@ -25,9 +25,30 @@ class OHLCTechnicalManager {
     var rsiCalculator: RSICalculator?
     
     func addOHLCCloudElement(value: TimeSeriesDaily) {
+        let open = Double(value.open)!
+        let high = Double(value.high)!
+        let low = Double(value.low)!
+        
+        let adjustedClose: Double
+        let volume: Double
+        let dividendAmount: Double
+        let splitCoefficient: Double
+        let percentageChange: Double
+        
+        let information: String
+        let symbol: String
+        let lastRefreshed: String
+        let outputSize: String
+        let timeZone: String
+        
+        
+        
+        
+        //MARK: TECHNICAL INDICATORS
         let close = Double(value.close)!
         let movingAverage = movingAverageCalculator.generate(indexData: close)
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
         let rsi = rsiCalculator?.generate(indexData: close)
+        
     }
 }

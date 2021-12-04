@@ -17,7 +17,7 @@ class FetchLatest {
     
 }
 
-class OHLCDataManager {
+class OHLCTechnicalManager {
     
     var array: [OHLCCloudElement] = []
     var movingAverageCalculator = SimpleMovingAverageCalculator(window: 200)
@@ -26,11 +26,8 @@ class OHLCDataManager {
     
     func addOHLCCloudElement(value: TimeSeriesDaily) {
         let close = Double(value.close)!
-        movingAverageCalculator.generate(indexData: close)
-        bollingerBandsCalculator.generate(indexData: close)
-        rsiCalculator?.generate(indexData: close)
-        
+        let movingAverage = movingAverageCalculator.generate(indexData: close)
+        let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
+        let rsi = rsiCalculator?.generate(indexData: close)
     }
-    
-    
 }

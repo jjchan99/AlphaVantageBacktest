@@ -57,6 +57,7 @@
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
 		1D784B0A275A74EC00F91392 /* CloudCRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B09275A74EC00F91392 /* CloudCRUD.swift */; };
 		1D7927A8275B4A3E00DD2E6B /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */; };
+		1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -177,6 +178,7 @@
 		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
 		1D784B09275A74EC00F91392 /* CloudCRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudCRUD.swift; sourceTree = "<group>"; };
 		1D7927A7275B4A3E00DD2E6B /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
+		1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCCloudElement.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1D18DDD6275932940061A7AD /* BotViewController.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
@@ -712,6 +715,7 @@
 				1D911E542732E1C800444991 /* HomeViewController.swift in Sources */,
 				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
+				1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */,
 				1D18DDD7275932940061A7AD /* BotViewController.swift in Sources */,
 				1DC3C9DB273BB1DA00900600 /* IntradayModel.swift in Sources */,
 				1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */,

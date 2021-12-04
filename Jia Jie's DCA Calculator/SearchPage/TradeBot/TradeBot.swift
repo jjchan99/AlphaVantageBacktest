@@ -132,19 +132,3 @@ struct Account {
         return amount
     }
 }
-
-struct OHLCCloudElement {
-    var stamp: String
-    var open: Double
-    var high: Double
-    var low: Double
-    var close: Double
-    var RSI: Double
-    var movingAverage: Double
-    var standardDeviation: Double
-    var upperBollingerBand: Double
-    var lowerBollingerBand: Double
-    func valueAtPercent(percent: Double) -> Double {
-        return ( upperBollingerBand - lowerBollingerBand ) * percent
-    }
-}

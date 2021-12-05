@@ -9,24 +9,24 @@ import Foundation
 import UIKit
 import Combine
 import CloudKit
+import SwiftUI
 
 class CloudKitViewController: UIViewController {
 
-    var isSignedInToiCloud: Bool = false
-    var error: String = ""
-    var userName: String = ""
-    var permission: Bool = false
     var subscribers = Set<AnyCancellable>()
+    var hostingController: UIHostingController<AnyView>?
+    var viewModel = CloudViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         getiCloudStatus()
         requestPermission()
         getCurrentUserName()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
+        view.addSubview(hostingController!.view)
+        hostingController!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "cloudView")
+        view.backgroundColor = .white
+        Log.queue(action: "Cloud view did load")
     }
 
     func requestPermission() {
@@ -35,7 +35,7 @@ class CloudKitViewController: UIViewController {
             .sink { _ in
 
             } receiveValue: { [unowned self] value in
-                self.permission = value
+                viewModel.permission = value
             }.store(in: &subscribers)
     }
 
@@ -47,10 +47,10 @@ class CloudKitViewController: UIViewController {
                 case .finished:
                     break
                 case let .failure(error):
-                    self.error = error.localizedDescription
+                    viewModel.error = error.localizedDescription
                 }
             } receiveValue: { [unowned self] value in
-                self.isSignedInToiCloud = value
+                viewModel.isSignedInToiCloud = value
             }.store(in: &subscribers)
     }
 
@@ -60,7 +60,7 @@ class CloudKitViewController: UIViewController {
             .sink { _ in
 
             } receiveValue: { [unowned self] value in
-                self.userName = value
+                viewModel.userName = value
             }.store(in: &subscribers)
     }
     

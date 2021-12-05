@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window = UIWindow()
             navCoordinator = NavigationCoordinator(navigationController: navController)
             navCoordinator!.pushSearchViewController()
-            let homeViewController = HomeViewController()
+            let homeViewController = CloudKitViewController()
             tabBarController.viewControllers = [navController, homeViewController]
             
             window!.rootViewController = tabBarController

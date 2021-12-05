@@ -31,7 +31,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case let .bollingerBands(percentage: percentage):
             return percentage
         case let .RSI(period: period, value: value):
-            return 69
+            return Double(2 * period) + (value)
         }
     }
 
@@ -123,7 +123,7 @@ struct TradeBot: CloudKitInterchangeable {
         
         let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
         if condition.andCondition != nil {
-        let nextCondition = condition.andCondition!.first!
+        let nextCondition = condition.andCondition!
         return condition.aboveOrBelow.evaluate(close, xxx) && checkNext(condition: nextCondition, latest: latest)
         } else {
             return condition.aboveOrBelow.evaluate(latest.close, xxx)
@@ -156,7 +156,7 @@ struct TradeBot: CloudKitInterchangeable {
             }
         }
 
-    struct EvaluationCondition: CloudKitInterchangeable {
+    final class EvaluationCondition: CloudKitInterchangeable {
         init?(record: CKRecord) {
             <#code#>
         }
@@ -170,7 +170,7 @@ struct TradeBot: CloudKitInterchangeable {
         let technicalIndicator: TechnicalIndicators
         let aboveOrBelow: AboveOrBelow
         let buyOrSell: BuyOrSell
-        let andCondition: [EvaluationCondition]?
+        let andCondition: EvaluationCondition?
     }
 
 

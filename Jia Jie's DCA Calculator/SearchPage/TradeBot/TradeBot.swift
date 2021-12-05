@@ -102,11 +102,11 @@ struct TradeBot: CloudKitInterchangeable {
 //    }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable {
+final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible {
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
         let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
-        let buyOrSellRawValue = record["buyorSell"] as! Int
+        let buyOrSellRawValue = record["buyOrSell"] as! Int
         
         self.technicalIndicator = TechnicalIndicators.build(rawValue: technicalIndicatorRawValue)
         self.aboveOrBelow = AboveOrBelow(rawValue: aboveOrBelowRawValue)!
@@ -115,7 +115,7 @@ final class EvaluationCondition: CloudKitInterchangeable {
     }
     
     convenience init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: EvaluationCondition?) {
-        let record = CKRecord(recordType: "TradeBot")
+        let record = CKRecord(recordType: "EvaluationCondition")
                 record.setValuesForKeys([
                     "technicalIndicator": technicalIndicator.rawValue,
                     "aboveOrBelow": aboveOrBelow.rawValue,
@@ -134,6 +134,10 @@ final class EvaluationCondition: CloudKitInterchangeable {
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
 //    let andCondition: EvaluationCondition?
+    
+    var description: String {
+        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"
+    }
 }
 
 struct Account {

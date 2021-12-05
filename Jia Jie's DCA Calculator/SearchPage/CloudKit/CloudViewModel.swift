@@ -16,6 +16,13 @@ class CloudViewModel: ObservableObject {
     
     let width: CGFloat = .init(420).wScaled()
     let height: CGFloat = .init(812).hScaled()
+    
+    let testbot: TradeBot = .init(budget: 5000, account: .init(cash: 5000, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 1)!
+    
+    init() {
+        
+    }
+
 }
 
 struct CloudView: View {

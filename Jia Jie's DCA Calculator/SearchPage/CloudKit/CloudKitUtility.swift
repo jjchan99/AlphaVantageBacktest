@@ -173,7 +173,7 @@ extension CloudKitUtility {
     }
 
     static private func add(operation: CKDatabaseOperation) {
-        CKContainer.default().privateCloudDatabase.add(operation)
+        container.publicCloudDatabase.add(operation)
     }
     
     static func add<T: CloudKitInterchangeable>(item: T, completion: @escaping (Result<Bool, Error>) -> Void) {

@@ -25,6 +25,8 @@ class CloudKitUtility {
         case iCloudCouldNotFetchUserRecordID
         case iCloudCouldNotDiscoverUser
     }
+    
+    static let container = CKContainer(identifier: "iCloud.jiajiechan")
 
 }
 
@@ -32,7 +34,7 @@ class CloudKitUtility {
 
 extension CloudKitUtility {
     static private func getiCloudStatus(completion: @escaping (Result<Bool, Error>) -> ()) {
-        CKContainer.default().accountStatus { status, error in
+        container.accountStatus { status, error in
                 switch status {
                 case .available:
                     completion(.success(true))
@@ -49,7 +51,7 @@ extension CloudKitUtility {
         }
 
     private static func requestApplicationPermission(completion: @escaping (Result<Bool, Error>) -> ()) {
-        CKContainer.default().requestApplicationPermission([.userDiscoverability]) { status, error in
+        container.requestApplicationPermission([.userDiscoverability]) { status, error in
                 if status == .granted {
                     completion(.success(true))
                 } else {
@@ -76,7 +78,7 @@ extension CloudKitUtility {
     }
 
     static private func fetchUserRecordID(completion: @escaping (Result<CKRecord.ID, Error>) -> ()) {
-        CKContainer.default().fetchUserRecordID { id, error in
+        container.fetchUserRecordID { id, error in
             if let id = id {
                 completion(.success(id))
             } else {
@@ -86,7 +88,7 @@ extension CloudKitUtility {
     }
 
     static private func discoverUserIdentity(id: CKRecord.ID, completion: @escaping (Result<String, Error>) -> ()) {
-        CKContainer.default().discoverUserIdentity(withUserRecordID: id) { id, error in
+        container.discoverUserIdentity(withUserRecordID: id) { id, error in
             if let name = id?.nameComponents?.givenName {
             completion(.success(name))
         } else {
@@ -184,7 +186,7 @@ extension CloudKitUtility {
     }
     
     static func save(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
-        CKContainer.default().publicCloudDatabase.save(record) { record, error in
+        container.publicCloudDatabase.save(record) { record, error in
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -204,7 +206,7 @@ extension CloudKitUtility {
     }
     
     static private func delete(record: CKRecord, completion: @escaping (Result<Bool, Error>) -> Void) {
-        CKContainer.default().publicCloudDatabase.delete(withRecordID: record.recordID) {
+        container.publicCloudDatabase.delete(withRecordID: record.recordID) {
             id, error in
             if let error = error {
                 completion(.failure(error))

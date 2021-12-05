@@ -19,21 +19,34 @@ class CloudKitViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getiCloudStatus()
-        requestPermission()
-        getCurrentUserName()
         hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
         view.addSubview(hostingController!.view)
         hostingController!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "cloudView")
         view.backgroundColor = .white
         Log.queue(action: "Cloud view did load")
     }
-
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        getiCloudStatus()
+        requestPermission()
+        getCurrentUserName()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func requestPermission() {
         CloudKitUtility.requestApplicationPermission()
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-
+            .sink { value in
+                switch value {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
             } receiveValue: { [unowned self] value in
                 viewModel.permission = value
             }.store(in: &subscribers)
@@ -57,8 +70,13 @@ class CloudKitViewController: UIViewController {
     func getCurrentUserName() {
         CloudKitUtility.discoverUserIdentity()
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-
+            .sink { value in
+                switch value {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
             } receiveValue: { [unowned self] value in
                 viewModel.userName = value
             }.store(in: &subscribers)
@@ -71,8 +89,13 @@ class CloudKitViewController: UIViewController {
         let recordType = "TradeBot"
         CloudKitUtility.fetch(predicate: predicate, recordType: recordType)
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                
+            .sink { value in
+                switch value {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
             } receiveValue: { [unowned self] items in
                 self.bot = items
             }

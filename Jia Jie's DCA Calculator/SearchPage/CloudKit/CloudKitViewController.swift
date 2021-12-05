@@ -21,9 +21,18 @@ class CloudKitViewController: UIViewController {
         super.viewDidLoad()
         hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
         view.addSubview(hostingController!.view)
-        hostingController!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "cloudView")
+        hostingController!.view.activateConstraints(reference: view, constraints: [], identifier: "cloudView")
         view.backgroundColor = .white
+        let controller = hostingController!
+        NSLayoutConstraint.activate([
+                    controller.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+                    controller.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+                    controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    controller.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+
         Log.queue(action: "Cloud view did load")
+       
     }
     
     init() {

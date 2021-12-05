@@ -14,14 +14,39 @@ class CloudViewModel: ObservableObject {
     var isSignedInToiCloud: Bool = false
     var error: String = ""
     
-    let width: CGFloat = .init(420).wScaled()
-    let height: CGFloat = .init(812).hScaled()
+    let height: CGFloat = CGFloat(300).hScaled()
+    let width: CGFloat = CGFloat(390).wScaled()
     
-    let testbot: TradeBot = .init(budget: 5000, account: .init(cash: 5000, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 1)!
+    let bot: TradeBot = .init(budget: 69, account: .init(cash: 69, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 0.69)!
+    var fetched: [TradeBot]?
     
-    init() {
-        
+    func upload(bot: TradeBot) {
+        CloudKitUtility.add(item: bot) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success:
+                Log.queue(action: "Upload success: \(result)")
+            }
+        }
     }
+    
+    func fetch() {
+        let predicate: NSPredicate = .init(value: true)
+        CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
+            .sink { success in
+                switch success {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { [unowned self] value in
+                fetched = value
+            }
+
+    }
+    
 
 }
 
@@ -34,9 +59,22 @@ struct CloudView: View {
         Text("permission: \(viewModel.permission ? "true" : "false")")
             Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
         Text("error: \(viewModel.error)")
+                Button(action: {
+                    viewModel.upload(bot: viewModel.bot)
+                }, label: {
+                    Text("Upload a bot")
+                })
+                List {
+                    if viewModel.fetched != nil {
+                        ForEach(0..<viewModel.fetched!.count) { idx in
+                            Text("Budget: \(viewModel.fetched![idx].budget)")
+                            Text("Cash: \(viewModel.fetched![idx].account.cash)")
+                            Text("Accumulated shares: \(viewModel.fetched![idx].account.accumulatedShares)")
+                    }
+                }
+                }
             }
         }
-        .position(x: viewModel.width)
-        .position(y: viewModel.height * 0.5)
+        .frame(width: viewModel.width, height: viewModel.height)
     }
 }

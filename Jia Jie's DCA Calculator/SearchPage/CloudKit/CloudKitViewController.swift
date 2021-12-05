@@ -16,23 +16,23 @@ class CloudKitViewController: UIViewController {
     var subscribers = Set<AnyCancellable>()
     var hostingController: UIHostingController<AnyView>?
     var viewModel = CloudViewModel()
-    let testbot: TradeBot = .init(budget: 5000, account: .init(cash: 5000, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 1)!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
         view.addSubview(hostingController!.view)
-        hostingController!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "cloudView")
+        hostingController!.view.activateConstraints(reference: view, constraints: [], identifier: "cloudView")
         view.backgroundColor = .white
+        let controller = hostingController!
+        NSLayoutConstraint.activate([
+                    controller.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+                    controller.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+                    controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    controller.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+
         Log.queue(action: "Cloud view did load")
-        CloudKitUtility.add(item: testbot) { result in
-            switch result {
-            case .failure(let error):
-                print(error)
-            case .success:
-                Log.queue(action: "Upload success: \(result)")
-            }
-        }
+       
     }
     
     init() {

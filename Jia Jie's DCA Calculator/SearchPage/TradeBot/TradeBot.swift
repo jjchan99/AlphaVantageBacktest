@@ -6,106 +6,51 @@
 //
 import Foundation
 import CloudKit
-
-enum TechnicalIndicators: Hashable, CustomStringConvertible {
-
-    case movingAverage(period: Int),
-         bollingerBands(percentage: Double),
-         RSI(period: Int, value: Double)
-
-    var description: String {
-        switch self {
-        case let .movingAverage(period: period):
-            return ("\(period) day moving average")
-        case let .bollingerBands(percentage: percentage):
-            return ("\(percentage)%B")
-        case let .RSI(period: period, value: value):
-            return "\(period) period RSI value of \(value)"
-        }
-    }
-
-    var rawValue: Double {
-        switch self {
-        case let .movingAverage(period: period):
-            return Double(period)
-        case let .bollingerBands(percentage: percentage):
-            return percentage
-        case let .RSI(period: period, value: value):
-            return Double(2 * period) + (value)
-        }
-    }
-
-}
-
 import Foundation
 
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account
-    let conditions: [EvaluationCondition]
+    var conditions: [EvaluationCondition]!
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
     
     init?(record: CKRecord) {
+        let budget = record["budget"] as! Double
+        let cash = record["cash"] as! Double
+        let accumulatedShares = record["accumulatedShares"] as! Double
+        let cashBuyPercentage = record["cashBuyPercentage"] as! Double
+        let sharesSellPercentage = record["sharesSellPercentage"] as! Double
         
+        self.budget = budget
+        self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
+        self.cashBuyPercentage = cashBuyPercentage
+        self.sharesSellPercentage = sharesSellPercentage
+        self.record = record
     }
     
-    func update() -> Self? {
+    func update() -> Self {
         let record = self.record
         //DO STUFF WITH THE RECORD
         
         
-        return TradeBot(record: record)
+        return TradeBot(record: record)!
     }
     
     init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
-                    "budget": 10000,
-                    "cash": 10000,
+                    "budget": budget,
+                    "cash": budget,
                     "accumulatedShares": 0,
-                    "conditions": 3,
-                    "cashBuyPercentage": 0,
-                    "sharesSellPercentage": 0
+                    "cashBuyPercentage": cashBuyPercentage,
+                    "sharesSellPercentage": sharesSellPercentage
                 ])
         self.init(record: record)
     }
 
-    enum AboveOrBelow: Int, CustomStringConvertible {
-        case priceAbove, priceBelow
-
-        var description: String {
-        switch self {
-        case .priceAbove:
-            return "above"
-        case .priceBelow:
-            return "below"
-        }
-        }
-
-        func evaluate(_ price: Double, _ technicalIndicator: Double) -> Bool {
-            switch self {
-            case .priceAbove:
-                return price > technicalIndicator
-            case .priceBelow:
-                return price < technicalIndicator
-            }
-        }
-    }
-
-    enum BuyOrSell: Int, CustomStringConvertible {
-        var description: String {
-            switch self {
-            case .buy:
-                return "buy"
-            case .sell:
-                return "sell"
-            }
-        }
-        case buy, sell
-    }
 
     func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double {
         switch i {
@@ -154,26 +99,41 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                 }
             }
-        }
-
-    final class EvaluationCondition: CloudKitInterchangeable {
-        init?(record: CKRecord) {
-            <#code#>
-        }
-        
-        var record: CKRecord
-        
-        func update() -> TradeBot.EvaluationCondition {
-            <#code#>
-        }
-        
-        let technicalIndicator: TechnicalIndicators
-        let aboveOrBelow: AboveOrBelow
-        let buyOrSell: BuyOrSell
-        let andCondition: EvaluationCondition?
     }
+}
 
-
+final class EvaluationCondition: CloudKitInterchangeable {
+    init?(record: CKRecord) {
+        let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
+        let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
+        let buyOrSellRawValue = record["buyorSell"] as! Int
+        
+        self.technicalIndicator = TechnicalIndicators.build(rawValue: technicalIndicatorRawValue)
+        self.aboveOrBelow = AboveOrBelow(rawValue: aboveOrBelowRawValue)!
+        self.buyOrSell = BuyOrSell(rawValue: buyOrSellRawValue)!
+        self.record = record
+    }
+    
+    convenience init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: EvaluationCondition?) {
+        let record = CKRecord(recordType: "TradeBot")
+                record.setValuesForKeys([
+                    "technicalIndicator": technicalIndicator.rawValue,
+                    "aboveOrBelow": aboveOrBelow.rawValue,
+                    "buyOrSell": buyOrSell.rawValue,
+                ])
+        self.init(record: record)
+    }
+    
+    var record: CKRecord
+    
+    func update() -> EvaluationCondition {
+        return self
+    }
+    
+    let technicalIndicator: TechnicalIndicators
+    let aboveOrBelow: AboveOrBelow
+    let buyOrSell: BuyOrSell
+    let andCondition: EvaluationCondition?
 }
 
 struct Account {
@@ -185,3 +145,80 @@ struct Account {
         return amount
     }
 }
+
+enum TechnicalIndicators: Hashable, CustomStringConvertible {
+
+    case movingAverage(period: Int),
+         bollingerBands(percentage: Double),
+         RSI(period: Int, value: Double)
+
+    var description: String {
+        switch self {
+        case let .movingAverage(period: period):
+            return ("\(period) day moving average")
+        case let .bollingerBands(percentage: percentage):
+            return ("\(percentage)%B")
+        case let .RSI(period: period, value: value):
+            return "\(period) period RSI value of \(value)"
+        }
+    }
+
+    var rawValue: Double {
+        switch self {
+        case let .movingAverage(period: period):
+            return Double(period * 10)
+        case let .bollingerBands(percentage: percentage):
+            return percentage
+        case let .RSI(period: period, value: value):
+            return Double(2 * period) + (value)
+        }
+    }
+    
+    static func build(rawValue: Double) -> Self {
+        if rawValue >= 200 {
+            return .movingAverage(period: Int(rawValue) / 10)
+        } else if rawValue >= 4 && rawValue <= 29 {
+            let period = floor(rawValue) * 0.5
+            let value = rawValue - period
+            return .RSI(period: Int(period), value: value)
+        } else {
+            return .bollingerBands(percentage: rawValue)
+        }
+    }
+}
+
+enum AboveOrBelow: Int, CustomStringConvertible {
+    case priceAbove, priceBelow
+
+    var description: String {
+    switch self {
+    case .priceAbove:
+        return "above"
+    case .priceBelow:
+        return "below"
+    }
+    }
+
+    func evaluate(_ price: Double, _ technicalIndicator: Double) -> Bool {
+        switch self {
+        case .priceAbove:
+            return price > technicalIndicator
+        case .priceBelow:
+            return price < technicalIndicator
+        }
+    }
+}
+
+enum BuyOrSell: Int, CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .buy:
+            return "buy"
+        case .sell:
+            return "sell"
+        }
+    }
+    case buy, sell
+}
+
+

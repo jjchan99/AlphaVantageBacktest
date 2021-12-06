@@ -254,12 +254,13 @@ extension CloudKitUtility {
         }
     }
     
-    private static func saveArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T, completion: @escaping (Bool) -> Void) where S: CloudChild {
+    static func saveArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T, completion: @escaping (Bool) -> Void) where S: CloudChild {
         initializeArray(array: array, for: parent)
         let operation = CKModifyRecordsOperation(recordsToSave: array.map { $0.record }, recordIDsToDelete: nil)
         addModifyRecordsBlock(operation: operation) { success in
             completion(success)
         }
+        add(operation: operation)
     }
     
     

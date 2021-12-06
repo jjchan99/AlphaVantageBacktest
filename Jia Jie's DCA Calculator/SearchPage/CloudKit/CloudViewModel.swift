@@ -91,18 +91,16 @@ class CloudViewModel: ObservableObject {
             .store(in: &subscribers)
     }
     
-    func test(parent: TradeBot, condition: EvaluationCondition) {
+    func test(parent: TradeBot) {
         let anotherOne: EvaluationCondition = .init(technicalIndicator: .RSI(period: 12, value: 0.55), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: nil)!
-        CloudKitUtility.initializeArray(array: [condition, anotherOne], for: parent)
         CloudKitUtility.add(item: parent) { [unowned self] result in
-            CloudKitUtility.add(item: condition) { _ in
-                Log.queue(action: "Louis Van Gaals' army")
-                CloudKitUtility.add(item: anotherOne) { _ in
-                    Log.queue(action: "Louis Van Gaals' army")
-                }
+            CloudKitUtility.saveArray(array: [condition, anotherOne], for: parent) { success in
+                Log.queue(action: "Louis Van Gaals' army: \(success)")
             }
         }
     }
+
+    
     
     func fetchChildren(parent: TradeBot) {
         CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition") { [unowned self] value in
@@ -125,7 +123,7 @@ struct CloudView: View {
             Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
         Text("error: \(viewModel.error)")
                 Button(action: {
-                    viewModel.fetch()
+                    viewModel.test(parent: viewModel.bot)
                 }, label: {
                     Text("Click me")
                 })

@@ -227,38 +227,40 @@ extension CloudKitUtility {
     
     //MARK: - CHILD PARENT GETTERS
     static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType, completion: @escaping ([S]) -> Void) where S: CloudChild {
-        let predicate: NSPredicate = NSPredicate(format: parent.record.recordType, argumentArray: [parent.record.recordID])
-        let query = CKQuery(recordType: children, predicate: predicate)
-        
-        let operation = CKQueryOperation(query: query)
-        var childrenArray: [S] = []
-        addRecordMatchedBlock(operation: operation) { child in
-            childrenArray.append(child)
-        }
-        completion(childrenArray)
-    }
-    
-    static func fetchChildren<T: CloudKitInterchangeable>(for references: [CKRecord.Reference], _ completion: @escaping ([T]) -> Void) {
-      let recordIDs = references.map { $0.recordID }
-      let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
-      operation.qualityOfService = .utility
-      
-      operation.fetchRecordsCompletionBlock = { records, error in
-       //DO SOMETHING...
-      }
-      
+        let predicate = NSPredicate(format: parent.record.recordType, parent.record)
+        fetch(predicate: predicate, recordType: children)
+            .sink { _ in
+                
+            } receiveValue: { value in
+                completion(value)
+            }
     }
   
     
     //MARK: - CHILD PARENT SETTERS
-    static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
+    private static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
         child.setReference(parent: parent)
     }
     
-    static func initializeArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T) where S: CloudChild {
+    private static func initializeArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T) where S: CloudChild {
         array.forEach { child in
             CloudKitUtility.setParent(parent: parent, child: child)
         }
     }
+    
+    static private func addModifyRecordsBlock(operation: CKModifyRecordsOperation, completion: @escaping (_ finished: Bool) -> ()) {
+        operation.modifyRecordsCompletionBlock = { x, y, z in
+            completion(true)
+        }
+    }
+    
+    private static func saveArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T, completion: @escaping (Bool) -> Void) where S: CloudChild {
+        initializeArray(array: array, for: parent)
+        let operation = CKModifyRecordsOperation(recordsToSave: array.map { $0.record }, recordIDsToDelete: nil)
+        addModifyRecordsBlock(operation: operation) { success in
+            completion(success)
+        }
+    }
+    
     
 }

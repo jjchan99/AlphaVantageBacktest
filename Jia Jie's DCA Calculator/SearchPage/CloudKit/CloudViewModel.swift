@@ -22,7 +22,7 @@ class CloudViewModel: ObservableObject {
     let bot: TradeBot = .init(budget: 69, account: .init(cash: 69, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 0.69)!
     let condition: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.69), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: nil)!
     
-    var fetched: [TradeBot]? { didSet
+    @Published var fetched: [TradeBot]? { didSet
     {  Log.queue(action: "Fetch success")
         print("\(fetched)")
     }
@@ -67,7 +67,9 @@ class CloudViewModel: ObservableObject {
                     break
                 }
             } receiveValue: { [unowned self] value in
+                DispatchQueue.main.async {
                 fetched = value
+                }
             }
             .store(in: &subscribers)
 
@@ -90,9 +92,8 @@ class CloudViewModel: ObservableObject {
     }
     
     func test(parent: TradeBot, condition: EvaluationCondition) {
-        CloudKitUtility.setParent(parent: parent, child: condition)
         let anotherOne: EvaluationCondition = .init(technicalIndicator: .RSI(period: 12, value: 0.55), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: nil)!
-        CloudKitUtility.setParent(parent: parent, child: anotherOne)
+        CloudKitUtility.initializeArray(array: [condition, anotherOne], for: parent)
         CloudKitUtility.add(item: parent) { [unowned self] result in
             CloudKitUtility.add(item: condition) { _ in
                 Log.queue(action: "Louis Van Gaals' army")
@@ -105,8 +106,10 @@ class CloudViewModel: ObservableObject {
     
     func fetchChildren(parent: TradeBot) {
         CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition") { [unowned self] value in
+            DispatchQueue.main.async {
             self.fetchedConditions = value
-        }
+            }
+            }
     }
     
 
@@ -122,9 +125,14 @@ struct CloudView: View {
             Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
         Text("error: \(viewModel.error)")
                 Button(action: {
-                    viewModel.test(parent: viewModel.bot, condition: viewModel.condition)
+                    viewModel.fetch()
                 }, label: {
                     Text("Click me")
+                })
+                Button(action: {
+                    viewModel.fetchChildren(parent: viewModel.fetched![0])
+                }, label: {
+                    Text("Get the array elemenetz.")
                 })
             }
         }

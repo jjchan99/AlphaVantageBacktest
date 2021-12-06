@@ -102,7 +102,7 @@ struct TradeBot: CloudKitInterchangeable {
 //    }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible {
+final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
         let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
@@ -183,7 +183,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .movingAverage(period: Int(rawValue) / 10)
         } else if rawValue >= 4 && rawValue <= 29 {
             let period = floor(rawValue) * 0.5
-            let value = rawValue - period
+            let value = rawValue - floor(rawValue)
             return .RSI(period: Int(period), value: value)
         } else {
             return .bollingerBands(percentage: rawValue)

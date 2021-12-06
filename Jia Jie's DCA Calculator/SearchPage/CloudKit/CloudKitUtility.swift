@@ -15,6 +15,14 @@ protocol CloudKitInterchangeable {
     func update() -> Self
 }
 
+protocol CloudChild {}
+
+extension CloudKitInterchangeable where Self: CloudChild {
+    func setReference(parent: CloudKitInterchangeable) {
+        self.record[parent.record.recordType] = CKRecord.Reference(record: parent.record, action: .deleteSelf)
+    }
+}
+
 class CloudKitUtility {
     enum CloudKitError: String, LocalizedError {
         case iCloudAccountNotFound
@@ -217,38 +225,43 @@ extension CloudKitUtility {
     }
     
     
-    //MARK: TRY BOTH AND SEE WHICH ONE WORKS
-    static func fetchChildren<T: CloudKitInterchangeable>(parent: T, children: T) {
-        let predicate: NSPredicate = NSPredicate(format: parent.record.recordType, argumentArray: [parent.record.recordID])
-        let query = CKQuery(recordType: children.record.recordType, predicate: predicate)
-        
-        let operation = CKQueryOperation(query: query)
-        var childrenArray: [T] = []
-        addRecordMatchedBlock(operation: operation) { child in
-            childrenArray.append(child)
-        }
-    }
-    
-    static func fetchChildren<T: CloudKitInterchangeable>(for references: [CKRecord.Reference], _ completion: @escaping ([T]) -> Void) {
-      let recordIDs = references.map { $0.recordID }
-      let operation = CKFetchRecordsOperation(recordIDs: recordIDs)
-      operation.qualityOfService = .utility
-      
-      operation.fetchRecordsCompletionBlock = { records, error in
-       //DO SOMETHING...
-      }
-      
+    //MARK: - CHILD PARENT GETTERS
+    static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType, completion: @escaping ([S]) -> Void) where S: CloudChild {
+        let predicate = NSPredicate(format: parent.record.recordType, parent.record)
+        fetch(predicate: predicate, recordType: children)
+            .sink { _ in
+                
+            } receiveValue: { value in
+                completion(value)
+            }
     }
   
     
-    private static func setParent<T: CloudKitInterchangeable>(parent: T, child: T) {
-        child.record.setParent(parent.record.recordID)
+    //MARK: - CHILD PARENT SETTERS
+    private static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
+        child.setReference(parent: parent)
     }
     
-    static func initializeArray<T: CloudKitInterchangeable>(array: [T], for parent: T) {
+    private static func initializeArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T) where S: CloudChild {
         array.forEach { child in
             CloudKitUtility.setParent(parent: parent, child: child)
         }
     }
+    
+    static private func addModifyRecordsBlock(operation: CKModifyRecordsOperation, completion: @escaping (_ finished: Bool) -> ()) {
+        operation.modifyRecordsCompletionBlock = { x, y, z in
+            completion(true)
+        }
+    }
+    
+    static func saveArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T, completion: @escaping (Bool) -> Void) where S: CloudChild {
+        initializeArray(array: array, for: parent)
+        let operation = CKModifyRecordsOperation(recordsToSave: array.map { $0.record }, recordIDsToDelete: nil)
+        addModifyRecordsBlock(operation: operation) { success in
+            completion(success)
+        }
+        add(operation: operation)
+    }
+    
     
 }

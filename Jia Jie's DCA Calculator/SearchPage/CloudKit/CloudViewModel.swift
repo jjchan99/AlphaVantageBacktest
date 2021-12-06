@@ -104,11 +104,17 @@ class CloudViewModel: ObservableObject {
     
     func fetchChildren(parent: TradeBot) {
         CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
-            .sink { _ in
-                
+            .sink { value in
+                switch value {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
             } receiveValue: { [unowned self] value in
                 self.fetchedConditions = value
             }
+            .store(in: &subscribers)
 
     }
     

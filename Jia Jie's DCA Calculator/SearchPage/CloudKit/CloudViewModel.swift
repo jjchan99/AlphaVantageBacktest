@@ -20,7 +20,7 @@ class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
     
     let bot: TradeBot = .init(budget: 69, account: .init(cash: 69, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 0.69)!
-    let condition: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 20), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: nil)!
+    let condition: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.69), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: nil)!
     
     var fetched: [TradeBot]? { didSet
     {  Log.queue(action: "Fetch success")
@@ -105,7 +105,7 @@ struct CloudView: View {
                 Button(action: {
                     viewModel.fetchCondition()
                 }, label: {
-                    Text("Fetch conditions")
+                    Text("Click me")
                 })
             }
         }

@@ -226,14 +226,13 @@ extension CloudKitUtility {
     
     
     //MARK: - CHILD PARENT GETTERS
-    static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType, completion: @escaping ([S]) -> Void) where S: CloudChild {
-        let predicate = NSPredicate(format: parent.record.recordType, parent.record)
-        fetch(predicate: predicate, recordType: children)
-            .sink { _ in
-                
-            } receiveValue: { value in
-                completion(value)
+    static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType) -> Future<[S], Error> where S: CloudChild {
+        let predicate = NSPredicate(format: "\(parent.record.recordType) == %@", CKRecord.Reference(recordID: parent.record.recordID, action: .deleteSelf))
+        return Future { promise in
+            CloudKitUtility.fetch(predicate: predicate, recordType: children) { value in
+                promise(.success(value))
             }
+        }
     }
   
     

@@ -226,15 +226,16 @@ extension CloudKitUtility {
     
     
     //MARK: - CHILD PARENT GETTERS
-    static func fetchChildren<T: CloudKitInterchangeable>(parent: T, children: T) {
+    static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType, completion: @escaping ([S]) -> Void) where S: CloudChild {
         let predicate: NSPredicate = NSPredicate(format: parent.record.recordType, argumentArray: [parent.record.recordID])
-        let query = CKQuery(recordType: children.record.recordType, predicate: predicate)
+        let query = CKQuery(recordType: children, predicate: predicate)
         
         let operation = CKQueryOperation(query: query)
-        var childrenArray: [T] = []
+        var childrenArray: [S] = []
         addRecordMatchedBlock(operation: operation) { child in
             childrenArray.append(child)
         }
+        completion(childrenArray)
     }
     
     static func fetchChildren<T: CloudKitInterchangeable>(for references: [CKRecord.Reference], _ completion: @escaping ([T]) -> Void) {

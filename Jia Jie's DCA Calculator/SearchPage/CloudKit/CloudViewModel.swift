@@ -95,7 +95,16 @@ class CloudViewModel: ObservableObject {
         CloudKitUtility.add(item: parent) { [unowned self] result in
             CloudKitUtility.add(item: condition) { _ in
                 Log.queue(action: "Louis Van Gaals' army")
+                CloudKitUtility.add(item: condition) { _ in
+                    Log.queue(action: "Louis Van Gaals' army")
+                }
             }
+        }
+    }
+    
+    func fetchChildren(parent: TradeBot) {
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition") { [unowned self] value in
+            self.fetchedConditions = value
         }
     }
     

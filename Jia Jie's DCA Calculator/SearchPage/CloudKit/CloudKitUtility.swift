@@ -250,7 +250,7 @@ extension CloudKitUtility {
   
     
     //MARK: - CHILD PARENT SETTERS
-    private static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
+    static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
         child.setReference(parent: parent)
     }
     

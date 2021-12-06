@@ -90,6 +90,15 @@ class CloudViewModel: ObservableObject {
 
     }
     
+    func test(parent: TradeBot, condition: EvaluationCondition) {
+        CloudKitUtility.setParent(parent: parent, child: condition)
+        CloudKitUtility.add(item: parent) { [unowned self] result in
+            CloudKitUtility.add(item: condition) { _ in
+                Log.queue(action: "Louis Van Gaals' army")
+            }
+        }
+    }
+    
 
 }
 
@@ -103,7 +112,7 @@ struct CloudView: View {
             Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
         Text("error: \(viewModel.error)")
                 Button(action: {
-                    viewModel.fetchCondition()
+                    viewModel.test(parent: viewModel.bot, condition: viewModel.condition)
                 }, label: {
                     Text("Click me")
                 })

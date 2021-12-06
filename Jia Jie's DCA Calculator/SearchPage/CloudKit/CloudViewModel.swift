@@ -103,11 +103,13 @@ class CloudViewModel: ObservableObject {
     
     
     func fetchChildren(parent: TradeBot) {
-        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition") { [unowned self] value in
-            DispatchQueue.main.async {
-            self.fetchedConditions = value
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
+            .sink { _ in
+                
+            } receiveValue: { [unowned self] value in
+                self.fetchedConditions = value
             }
-            }
+
     }
     
 
@@ -128,9 +130,14 @@ struct CloudView: View {
                     Text("Click me")
                 })
                 Button(action: {
+                    viewModel.fetch()
+                }, label: {
+                    Text("Get the Parent.")
+                })
+                Button(action: {
                     viewModel.fetchChildren(parent: viewModel.fetched![0])
                 }, label: {
-                    Text("Get the array elemenetz.")
+                    Text("Get the CHILLLREN")
                 })
             }
         }

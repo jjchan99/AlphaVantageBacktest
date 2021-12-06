@@ -87,15 +87,16 @@ class CloudViewModel: ObservableObject {
                 fetchedConditions = value
             }
             .store(in: &subscribers)
-
     }
     
     func test(parent: TradeBot, condition: EvaluationCondition) {
         CloudKitUtility.setParent(parent: parent, child: condition)
+        let anotherOne: EvaluationCondition = .init(technicalIndicator: .RSI(period: 12, value: 0.55), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: nil)!
+        CloudKitUtility.setParent(parent: parent, child: anotherOne)
         CloudKitUtility.add(item: parent) { [unowned self] result in
             CloudKitUtility.add(item: condition) { _ in
                 Log.queue(action: "Louis Van Gaals' army")
-                CloudKitUtility.add(item: condition) { _ in
+                CloudKitUtility.add(item: anotherOne) { _ in
                     Log.queue(action: "Louis Van Gaals' army")
                 }
             }

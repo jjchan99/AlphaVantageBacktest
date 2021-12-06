@@ -227,7 +227,7 @@ extension CloudKitUtility {
     
     //MARK: - CHILD PARENT GETTERS
     static func fetchChildren<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, children: CKRecord.RecordType) -> Future<[S], Error> where S: CloudChild {
-        let predicate = NSPredicate(format: "TradeBot == %@", CKRecord.Reference(recordID: parent.record.recordID, action: .deleteSelf))
+        let predicate = NSPredicate(format: "\(parent.record.recordType) == %@", CKRecord.Reference(recordID: parent.record.recordID, action: .deleteSelf))
         return Future { promise in
             CloudKitUtility.fetch(predicate: predicate, recordType: children) { value in
                 promise(.success(value))

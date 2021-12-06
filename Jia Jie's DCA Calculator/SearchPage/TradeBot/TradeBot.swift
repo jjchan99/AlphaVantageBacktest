@@ -102,7 +102,7 @@ struct TradeBot: CloudKitInterchangeable {
 //    }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible {
+final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
         let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int

@@ -15,6 +15,14 @@ protocol CloudKitInterchangeable {
     func update() -> Self
 }
 
+protocol CloudChild {}
+
+extension CloudKitInterchangeable where Self: CloudChild {
+    func setReference(parent: CloudKitInterchangeable) {
+        self.record[parent.record.recordType] = CKRecord.Reference(record: parent.record, action: .deleteSelf)
+    }
+}
+
 class CloudKitUtility {
     enum CloudKitError: String, LocalizedError {
         case iCloudAccountNotFound
@@ -217,7 +225,7 @@ extension CloudKitUtility {
     }
     
     
-    //MARK: TRY BOTH AND SEE WHICH ONE WORKS
+    //MARK: - CHILD PARENT GETTERS
     static func fetchChildren<T: CloudKitInterchangeable>(parent: T, children: T) {
         let predicate: NSPredicate = NSPredicate(format: parent.record.recordType, argumentArray: [parent.record.recordID])
         let query = CKQuery(recordType: children.record.recordType, predicate: predicate)
@@ -241,11 +249,12 @@ extension CloudKitUtility {
     }
   
     
-    private static func setParent<T: CloudKitInterchangeable>(parent: T, child: T) {
-        child.record.setParent(parent.record.recordID)
+    //MARK: - CHILD PARENT SETTERS
+    private static func setParent<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(parent: T, child: S) where S: CloudChild {
+        child.setReference(parent: parent)
     }
     
-    static func initializeArray<T: CloudKitInterchangeable>(array: [T], for parent: T) {
+    static func initializeArray<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(array: [S], for parent: T) where S: CloudChild {
         array.forEach { child in
             CloudKitUtility.setParent(parent: parent, child: child)
         }

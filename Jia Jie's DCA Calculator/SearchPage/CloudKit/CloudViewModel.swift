@@ -21,6 +21,10 @@ class CloudViewModel: ObservableObject {
     
     let bot: TradeBot = .init(budget: 69, account: .init(cash: 69, accumulatedShares: 0), conditions: [], cashBuyPercentage: 1, sharesSellPercentage: 0.69)!
     let condition: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.69), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: nil)!
+    let andCondition: EvaluationCondition = .init(technicalIndicator: .RSI(period: 2, value: 1), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
+    var fetchedAndCondition: EvaluationCondition? { didSet {
+        print("fetched AND condition: \(fetchedAndCondition)")
+    }}
     
     @Published var fetched: [TradeBot]? { didSet
     {  Log.queue(action: "Fetch success")
@@ -31,6 +35,9 @@ class CloudViewModel: ObservableObject {
     var fetchedConditions: [EvaluationCondition]? { didSet
     { Log.queue(action: "Fetched conditions successfully")
         print("here are the conditions: \(fetchedConditions)")
+        fetchedConditions?.compactMap({ value in
+            v
+        })
     }
     }
     
@@ -75,27 +82,15 @@ class CloudViewModel: ObservableObject {
 
     }
     
-    func fetchCondition() {
-        let predicate: NSPredicate = .init(value: true)
-        CloudKitUtility.fetch(predicate: predicate, recordType: "EvaluationCondition")
-            .sink { success in
-                switch success {
-                case .failure(let error):
-                    print(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [unowned self] value in
-                fetchedConditions = value
-            }
-            .store(in: &subscribers)
-    }
+    let anotherOne: EvaluationCondition = .init(technicalIndicator: .RSI(period: 12, value: 0.55), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: nil)!
     
     func test(parent: TradeBot) {
-        let anotherOne: EvaluationCondition = .init(technicalIndicator: .RSI(period: 12, value: 0.55), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: nil)!
         CloudKitUtility.add(item: parent) { [unowned self] result in
             CloudKitUtility.saveArray(array: [condition, anotherOne], for: parent) { success in
                 Log.queue(action: "Louis Van Gaals' army: \(success)")
+                CloudKitUtility.saveChild(child: andCondition, for: anotherOne) { success in
+                    Log.queue(action: "So you SINK it is easy to win trophies?: \(success)")
+                }
             }
         }
     }
@@ -115,9 +110,22 @@ class CloudViewModel: ObservableObject {
                 self.fetchedConditions = value
             }
             .store(in: &subscribers)
-
     }
     
+    func fetchAndCondition(parent: EvaluationCondition) {
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
+            .sink { value in
+                switch value {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print(error)
+                }
+            } receiveValue: { [unowned self] value in
+                self.fetchedConditions = value
+            }
+            .store(in: &subscribers)
+    }
 
 }
 
@@ -144,6 +152,11 @@ struct CloudView: View {
                     viewModel.fetchChildren(parent: viewModel.fetched![0])
                 }, label: {
                     Text("Get the CHILLLREN")
+                })
+                Button(action: {
+                    viewModel.fetchAndCondition(parent: viewModel.anotherOne)
+                }, label: {
+                    Text("Get the AND COnditionz")
                 })
             }
         }

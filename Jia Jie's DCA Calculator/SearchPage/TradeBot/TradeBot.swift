@@ -183,7 +183,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .movingAverage(period: Int(rawValue) / 10)
         } else if rawValue >= 4 && rawValue <= 29 {
             let period = floor(rawValue) * 0.5
-            let value = rawValue - floor(rawValue)
+            let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
             return .RSI(period: Int(period), value: value)
         } else {
             return .bollingerBands(percentage: rawValue)

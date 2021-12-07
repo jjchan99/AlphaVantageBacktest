@@ -10,8 +10,13 @@ import Combine
 
 class BotAccountCoordinator: NSObject {
 
-    var bot: TradeBot?
-    var conditions: [EvaluationCondition]?
+    @Published var bot: TradeBot? { didSet {
+        print("Here's the bot: \(bot!)")
+    }}
+    
+    @Published var conditions: [EvaluationCondition]? { didSet {
+        print("Here's the conditions: \(conditions!)")
+    }}
 
     var subscribers = Set<AnyCancellable>()
      
@@ -55,7 +60,8 @@ class BotAccountCoordinator: NSObject {
     }
     
     func fetchAndConditions() {
-        let parents: [EvaluationCondition] = bot!.conditions!.compactMap ({ condition in
+        guard let bot = bot, let conditions = bot.conditions else { return }
+        let parents: [EvaluationCondition] = conditions.compactMap ({ condition in
             if condition.andCondition != nil { return condition } else { return nil }
         })
         parents.forEach { parent in
@@ -76,6 +82,7 @@ class BotAccountCoordinator: NSObject {
     }
     
     func fetchConditions() {
+        guard self.bot != nil else { return }
         CloudKitUtility.fetchChildren(parent: bot!, children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
             .sink { result in

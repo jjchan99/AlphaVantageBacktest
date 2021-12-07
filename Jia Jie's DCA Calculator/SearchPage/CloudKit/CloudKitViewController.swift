@@ -32,7 +32,22 @@ class CloudKitViewController: UIViewController {
                 ])
 
         Log.queue(action: "Cloud view did load")
-       
+        viewModel.coordinator.$bot
+            .sink { _ in
+                
+            } receiveValue: { [unowned self] value in
+                viewModel.coordinator.fetchConditions()
+            }
+            .store(in: &subscribers)
+        
+        viewModel.coordinator.$conditions
+            .sink { _ in
+                
+            } receiveValue: { [unowned self] value in
+                viewModel.coordinator.fetchAndConditions()
+            }
+            .store(in: &subscribers)
+
     }
     
     init() {

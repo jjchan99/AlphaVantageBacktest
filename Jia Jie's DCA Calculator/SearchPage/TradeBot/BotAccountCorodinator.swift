@@ -1,33 +1,122 @@
-////
-////  BotAccountCorodinator.swift
-////  Jia Jie's DCA Calculator
-////
-////  Created by Jia Jie Chan on 3/12/21.
-////
 //
-//import Foundation
-//struct BotAccountCoordinator: NSObject {
+//  BotAccountCorodinator.swift
+//  Jia Jie's DCA Calculator
 //
-//    var bot: TradeBot
+//  Created by Jia Jie Chan on 3/12/21.
 //
-//
-//    
-//
-//
-//    func refresh() {
-//    let todaysDate = Date().string(format: "yyyy-MM-dd")
-//    if sorted.last!.stamp != todaysDate {
-//
-//    } else {
-//        return
-//    }
-//    }
-//}
-//
-//class ExtractStatistics {
-//    var movingAverageCalculator: SimpleMovingAverageCalculator
-//    var bollingerBandCalculator: BollingerBandCalculator
-//    var RSICalculator: RSICalculator
-//
-//
-//}
+
+import Foundation
+import Combine
+
+class BotAccountCoordinator: NSObject {
+
+    var bot: TradeBot?
+    var subscribers = Set<AnyCancellable>()
+     
+    func specimen() -> TradeBot {
+     //MARK: - CONDITION (CONST) && (CONDITION 2 || CONDITION 3)
+        
+        let condition2: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
+        
+        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.20), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
+        
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: condition2)!
+        
+        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: condition3)!
+        
+        let f = BotFactory()
+            .setBudget(42000)
+            .setCashBuyPercentage(1)
+            .setSharesSellPercentage(0.5)
+            .addCondition(conditionZ)
+            .addCondition(conditionX)
+            .build()
+        
+        return f
+    }
+
+    func fetchBot() {
+        let predicate: NSPredicate = NSPredicate(value: true)
+        CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                   print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { [unowned self] value in
+                bot = value.first
+            }
+            .store(in: &subscribers)
+    }
+    
+    func fetchConditions() {
+        CloudKitUtility.fetchChildren(parent: bot!, children: "EvaluationCondition")
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                   print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { [unowned self] value in
+                bot!.conditions = value
+            }
+            .store(in: &subscribers)
+    }
+    
+    func upload() {
+        let specimen = specimen()
+        let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { $0.andCondition }
+        
+        CloudKitUtility.add(item: specimen) { value in
+            CloudKitUtility.saveArray(array: specimen.conditions!, for: specimen) { value in
+                for index in andParents.indices {
+                    CloudKitUtility.saveChild(child: andParents[index].andCondition!, for: andParents[index]) { value in
+                        Log.queue(action: "Success!")
+                    }
+                }
+            }
+        }
+    }
+}
+
+class BotFactory {
+    var budget: Double = 0
+    var cashBuyPercentage: Double = 0
+    var sharesSellPercentage: Double = 0
+    var evaluationConditions: [EvaluationCondition] = []
+    
+    func setBudget(_ value: Double) -> BotFactory {
+        self.budget = value
+        return self
+    }
+    
+    func setCashBuyPercentage(_ value: Double) -> BotFactory {
+        self.cashBuyPercentage = value
+        return self
+    }
+    
+    func setSharesSellPercentage(_ value: Double) -> BotFactory {
+        self.sharesSellPercentage = value
+        return self
+    }
+    
+    func addCondition(_ value: EvaluationCondition) -> BotFactory {
+        self.evaluationConditions.append(value)
+        return self
+    }
+    
+    func setAndCondition(value: EvaluationCondition, indexPath: Int) -> BotFactory {
+        self.evaluationConditions[indexPath].andCondition = value
+        return self
+    }
+    
+    func build() -> TradeBot {
+        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage)
+        return bot!
+    }
+}

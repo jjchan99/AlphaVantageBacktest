@@ -13,10 +13,6 @@ class BotAccountCoordinator: NSObject {
     @Published var bot: TradeBot? { didSet {
         print("Here's the bot: \(bot!)")
     }}
-    
-    @Published var conditions: [EvaluationCondition]? { didSet {
-        print("Here's the conditions: \(conditions!)")
-    }}
 
     var subscribers = Set<AnyCancellable>()
      
@@ -41,6 +37,12 @@ class BotAccountCoordinator: NSObject {
         print(f)
         return f
     }
+    
+    func inspect() {
+        bot!.conditions!.forEach { condition in
+            print("Condition: \(condition). And condition: \(condition.andCondition)")
+        }
+    }
 
     func fetchBot() {
         let predicate: NSPredicate = NSPredicate(value: true)
@@ -60,24 +62,20 @@ class BotAccountCoordinator: NSObject {
     }
     
     func fetchAndConditions() {
-        guard let bot = bot, let conditions = bot.conditions else { return }
-        let parents: [EvaluationCondition] = conditions.compactMap ({ condition in
-            if condition.andCondition != nil { return condition } else { return nil }
-        })
-        parents.forEach { parent in
-            CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationConditions")
-                .receive(on: DispatchQueue.main)
-                .sink { result in
-                    switch result {
-                    case .failure(let error):
-                       print(error)
-                    case .finished:
-                        break
-                    }
-                } receiveValue: { value in
-                    parent.andCondition = value.first!
+        bot!.conditions!.forEach { parent in
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                   print(error)
+                case .finished:
+                    break
                 }
-                .store(in: &subscribers)
+            } receiveValue: { [unowned self] value in
+                parent.andCondition = value.first
+            }
+            .store(in: &subscribers)
         }
     }
     

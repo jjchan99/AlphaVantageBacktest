@@ -37,19 +37,24 @@ struct CloudView: View {
                     Text("Click me")
                 })
                 Button(action: {
-                    
+                    viewModel.coordinator.fetchBot()
                 }, label: {
                     Text("Get the Parent.")
                 })
                 Button(action: {
-                    
+                    viewModel.coordinator.fetchConditions()
                 }, label: {
                     Text("Get the CHILLLREN")
                 })
                 Button(action: {
-                   
+                    viewModel.coordinator.fetchAndConditions()
                 }, label: {
                     Text("Get the AND COnditionz")
+                })
+                Button(action: {
+                    viewModel.coordinator.inspect()
+                }, label: {
+                    Text("Inspect >:)")
                 })
             }
         }

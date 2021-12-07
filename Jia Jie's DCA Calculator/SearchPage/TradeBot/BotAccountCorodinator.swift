@@ -48,11 +48,12 @@ class BotAccountCoordinator: NSObject {
         let predicate: NSPredicate = NSPredicate(value: true)
         CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
             .receive(on: DispatchQueue.main)
-            .sink { result in
+            .sink { [unowned self] result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
+                    fetchConditions()
                     break
                 }
             } receiveValue: { [unowned self] value in
@@ -65,11 +66,12 @@ class BotAccountCoordinator: NSObject {
         bot!.conditions!.forEach { parent in
         CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
-            .sink { result in
+            .sink { [unowned self] result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
+                    inspect()
                     break
                 }
             } receiveValue: { [unowned self] value in
@@ -83,11 +85,12 @@ class BotAccountCoordinator: NSObject {
         guard self.bot != nil else { return }
         CloudKitUtility.fetchChildren(parent: bot!, children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
-            .sink { result in
+            .sink { [unowned self] result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
+                    fetchAndConditions()
                     break
                 }
             } receiveValue: { [unowned self] value in

@@ -262,5 +262,11 @@ extension CloudKitUtility {
         add(operation: operation)
     }
     
+    static func saveChild<T: CloudKitInterchangeable, S: CloudKitInterchangeable>(child: S, for parent: T, completion: @escaping (Bool) -> Void) where S: CloudChild {
+        saveArray(array: [child], for: parent) { success in
+            completion(success)
+        }
+    }
+    
     
 }

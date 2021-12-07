@@ -12,7 +12,7 @@ struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account
-    var conditions: [EvaluationCondition]?
+    var conditions: [EvaluationCondition]? { didSet { conditions = oldValue ?? conditions } }
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
@@ -133,7 +133,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     let technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
-//    let andCondition: EvaluationCondition?
+    var andCondition: EvaluationCondition? { didSet { andCondition = oldValue ?? andCondition } }
     
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"

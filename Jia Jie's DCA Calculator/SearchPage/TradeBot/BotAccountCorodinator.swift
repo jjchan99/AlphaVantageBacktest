@@ -11,6 +11,8 @@ import Combine
 class BotAccountCoordinator: NSObject {
 
     var bot: TradeBot?
+    var conditions: [EvaluationCondition]?
+
     var subscribers = Set<AnyCancellable>()
      
     func specimen() -> TradeBot {
@@ -50,6 +52,27 @@ class BotAccountCoordinator: NSObject {
                 bot = value.first
             }
             .store(in: &subscribers)
+    }
+    
+    func fetchAndConditions() {
+        let parents: [EvaluationCondition] = bot!.conditions!.compactMap ({ condition in
+            if condition.andCondition != nil { return condition } else { return nil }
+        })
+        parents.forEach { parent in
+            CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationConditions")
+                .receive(on: DispatchQueue.main)
+                .sink { result in
+                    switch result {
+                    case .failure(let error):
+                       print(error)
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { value in
+                    parent.andCondition = value.first!
+                }
+                .store(in: &subscribers)
+        }
     }
     
     func fetchConditions() {

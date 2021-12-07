@@ -10,7 +10,10 @@ import Combine
 
 class BotAccountCoordinator: NSObject {
 
-    var bot: TradeBot?
+    @Published var bot: TradeBot? { didSet {
+        print("Here's the bot: \(bot!)")
+    }}
+
     var subscribers = Set<AnyCancellable>()
      
     func specimen() -> TradeBot {
@@ -34,6 +37,12 @@ class BotAccountCoordinator: NSObject {
         print(f)
         return f
     }
+    
+    func inspect() {
+        bot!.conditions!.forEach { condition in
+            print("Condition: \(condition). And condition: \(condition.andCondition)")
+        }
+    }
 
     func fetchBot() {
         let predicate: NSPredicate = NSPredicate(value: true)
@@ -52,7 +61,26 @@ class BotAccountCoordinator: NSObject {
             .store(in: &subscribers)
     }
     
+    func fetchAndConditions() {
+        bot!.conditions!.forEach { parent in
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
+            .receive(on: DispatchQueue.main)
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                   print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { [unowned self] value in
+                parent.andCondition = value.first
+            }
+            .store(in: &subscribers)
+        }
+    }
+    
     func fetchConditions() {
+        guard self.bot != nil else { return }
         CloudKitUtility.fetchChildren(parent: bot!, children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
             .sink { result in

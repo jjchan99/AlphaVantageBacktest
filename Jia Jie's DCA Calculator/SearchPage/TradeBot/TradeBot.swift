@@ -124,6 +124,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
                 ])
         self.init(record: record)
         self.andCondition = andCondition
+        self.shouldFetchAndCondition = andCondition != nil
     }
     
     var record: CKRecord
@@ -136,6 +137,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
     var andCondition: EvaluationCondition? { didSet { andCondition = oldValue ?? andCondition } }
+    var shouldFetchAndCondition: Bool? { didSet { shouldFetchAndCondition = oldValue ?? shouldFetchAndCondition } }
     
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"

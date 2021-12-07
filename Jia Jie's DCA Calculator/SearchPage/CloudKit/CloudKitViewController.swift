@@ -32,7 +32,7 @@ class CloudKitViewController: UIViewController {
                 ])
 
         Log.queue(action: "Cloud view did load")
-       
+
     }
     
     init() {

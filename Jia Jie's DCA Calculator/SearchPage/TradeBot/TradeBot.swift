@@ -12,7 +12,7 @@ struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account
-    var conditions: [EvaluationCondition]?
+    var conditions: [EvaluationCondition]? { didSet { conditions = oldValue ?? conditions } }
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
@@ -49,6 +49,7 @@ struct TradeBot: CloudKitInterchangeable {
                     "sharesSellPercentage": sharesSellPercentage
                 ])
         self.init(record: record)
+        self.conditions = conditions
     }
 
 
@@ -122,6 +123,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
                     "buyOrSell": buyOrSell.rawValue,
                 ])
         self.init(record: record)
+        self.andCondition = andCondition
     }
     
     var record: CKRecord
@@ -133,7 +135,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     let technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
-//    let andCondition: EvaluationCondition?
+    var andCondition: EvaluationCondition? { didSet { andCondition = oldValue ?? andCondition } }
     
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"
@@ -183,7 +185,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .movingAverage(period: Int(rawValue) / 10)
         } else if rawValue >= 4 && rawValue <= 29 {
             let period = floor(rawValue) * 0.5
-            let value = rawValue - floor(rawValue)
+            let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
             return .RSI(period: Int(period), value: value)
         } else {
             return .bollingerBands(percentage: rawValue)

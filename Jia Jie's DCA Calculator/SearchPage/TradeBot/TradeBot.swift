@@ -49,6 +49,7 @@ struct TradeBot: CloudKitInterchangeable {
                     "sharesSellPercentage": sharesSellPercentage
                 ])
         self.init(record: record)
+        self.conditions = conditions
     }
 
 
@@ -122,6 +123,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
                     "buyOrSell": buyOrSell.rawValue,
                 ])
         self.init(record: record)
+        self.andCondition = andCondition
     }
     
     var record: CKRecord

@@ -31,7 +31,7 @@ class BotAccountCoordinator: NSObject {
             .addCondition(conditionZ)
             .addCondition(conditionX)
             .build()
-        
+        print(f)
         return f
     }
 
@@ -70,13 +70,15 @@ class BotAccountCoordinator: NSObject {
     
     func upload() {
         let specimen = specimen()
-        let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { $0.andCondition }
+        let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { condition in
+            if condition.andCondition != nil { return condition } else { return nil }
+        }
         
         CloudKitUtility.add(item: specimen) { value in
             CloudKitUtility.saveArray(array: specimen.conditions!, for: specimen) { value in
                 for index in andParents.indices {
                     CloudKitUtility.saveChild(child: andParents[index].andCondition!, for: andParents[index]) { value in
-                        Log.queue(action: "Success!")
+                        Log.queue(action: "Success! \(value)")
                     }
                 }
             }
@@ -110,13 +112,14 @@ class BotFactory {
         return self
     }
     
-    func setAndCondition(value: EvaluationCondition, indexPath: Int) -> BotFactory {
-        self.evaluationConditions[indexPath].andCondition = value
-        return self
-    }
+//    func setAndCondition(value: EvaluationCondition, indexPath: Int) -> BotFactory {
+//        self.evaluationConditions[indexPath].andCondition = value
+//        return self
+//    }
     
     func build() -> TradeBot {
         let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage)
+        print(bot)
         return bot!
     }
 }

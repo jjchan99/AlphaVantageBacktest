@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class BotAccountCoordinator: NSObject {
+class BotAccountCoordinator {
 
     static var subs = Set<AnyCancellable>()
      

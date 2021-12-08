@@ -16,13 +16,13 @@ struct API {
         case invalidUrl
     }
     
-    var key: String {
+    static var key: String {
         return keys.randomElement() ?? ""
     }
     
-    let keys = ["N483IC64XUG8M4VQ", "HXMUNDJIX81H2UDJ", "6DUG1TOBABY1SOPG"]
+    static let keys = ["N483IC64XUG8M4VQ", "HXMUNDJIX81H2UDJ", "6DUG1TOBABY1SOPG"]
     
-    func fetchMonthlySeriesPublisher(_ symbolQuery: String) -> AnyPublisher<TimeSeriesMonthlyAdjusted, Error> {
+    static func fetchMonthlySeriesPublisher(_ symbolQuery: String) -> AnyPublisher<TimeSeriesMonthlyAdjusted, Error> {
         
         guard let symbolQuery = symbolQuery.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             return Fail(error: APIError.percentEncoding).eraseToAnyPublisher()
@@ -44,7 +44,7 @@ struct API {
         }
     }
     
-    func fetchSearchResultsPublisher(_ query: String) -> AnyPublisher<SearchResults, Error> {
+    static func fetchSearchResultsPublisher(_ query: String) -> AnyPublisher<SearchResults, Error> {
         guard let query = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             return Fail(error: APIError.percentEncoding).eraseToAnyPublisher()
         }

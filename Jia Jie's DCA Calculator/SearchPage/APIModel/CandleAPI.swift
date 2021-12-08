@@ -23,7 +23,7 @@ struct CandleAPI {
         case daily
     }
     
-    private func fetchURL(type: type, query: String) -> URL? {
+    static private func fetchURL(type: type, query: String) -> URL? {
         switch type {
         case .intraday:
             return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(query)&interval=5min&apikey=\(key0)&outputsize=full")
@@ -32,20 +32,20 @@ struct CandleAPI {
         }
     }
     
-    var key0: String {
+    static private var key0: String {
         if CandleAPI.keyIdx == 5 { CandleAPI.keyIdx = 0 } else { CandleAPI.keyIdx += 1 }
         return keys0[CandleAPI.keyIdx]
     }
     
-    var key1: String {
+    static private var key1: String {
         return keys1[CandleAPI.keyIdx]
     }
     
-    let keys0 = ["GKCZHS0SQNP50WDS", "9GA1F0JY13Z0DWC4", "1BRTTJRUMG63EUSO", "5BR25V35UQTEUCCW", "43GM9MU0FXBGBB6Z", "355URCWX6U1VOGCY"]
-    let keys1 = ["HEZNTAZ4HWL4TZBL", "OCTMFHTVCH8VTQK0", "HENHM5ZQK1QNX4NS", "P3IK9KTI2JHVLA5J", "YENDQZHUMT4O24WF", "03L502FSYT02IOLN"]
+    static private let keys0 = ["GKCZHS0SQNP50WDS", "9GA1F0JY13Z0DWC4", "1BRTTJRUMG63EUSO", "5BR25V35UQTEUCCW", "43GM9MU0FXBGBB6Z", "355URCWX6U1VOGCY"]
+    static private let keys1 = ["HEZNTAZ4HWL4TZBL", "OCTMFHTVCH8VTQK0", "HENHM5ZQK1QNX4NS", "P3IK9KTI2JHVLA5J", "YENDQZHUMT4O24WF", "03L502FSYT02IOLN"]
     
     
-    func fetchIntraday(_ symbolQuery: String) -> AnyPublisher<Intraday, Error> {
+    static func fetchIntraday(_ symbolQuery: String) -> AnyPublisher<Intraday, Error> {
         
         guard symbolQuery.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) != nil else {
             return Fail(error: APIError.percentEncoding).eraseToAnyPublisher()
@@ -69,7 +69,7 @@ struct CandleAPI {
         }
     }
     
-    func fetchDaily(_ symbolQuery: String) -> AnyPublisher<Daily, Error> {
+    static func fetchDaily(_ symbolQuery: String) -> AnyPublisher<Daily, Error> {
         
         guard let symbolQuery = symbolQuery.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
             return Fail(error: APIError.percentEncoding).eraseToAnyPublisher()

@@ -81,7 +81,7 @@ class SearchViewController: UITableViewController {
     }
     
     private func populateTable(with query: String) {
-        API().fetchSearchResultsPublisher(query)
+        API.fetchSearchResultsPublisher(query)
             .sink { value in
                 switch value {
                 case let .failure(error):
@@ -98,8 +98,8 @@ class SearchViewController: UITableViewController {
     }
     
     func subscribeToDaily(query: String, completion: @escaping () -> ()) {
-        CandleAPI().fetchDaily(query)
-            .sink { [unowned self] value in
+        CandleAPI.fetchDaily(query)
+            .sink { value in
                 switch value {
                 case let .failure(error):
                     print(error)

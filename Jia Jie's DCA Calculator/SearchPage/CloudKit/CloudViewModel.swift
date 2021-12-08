@@ -19,7 +19,6 @@ class CloudViewModel: ObservableObject {
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
     
-    let coordinator = BotAccountCoordinator()
 }
 
 struct CloudView: View {
@@ -32,12 +31,12 @@ struct CloudView: View {
             Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
         Text("error: \(viewModel.error)")
                 Button(action: {
-                    viewModel.coordinator.upload()
+                    BotAccountCoordinator.upload()
                 }, label: {
                     Text("Click me")
                 })
                 Button(action: {
-                    viewModel.coordinator.fetchBot()
+                    BotAccountCoordinator.fetchBot()
                         .receive(on: DispatchQueue.main)
                         .sink { _ in
                             

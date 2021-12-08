@@ -10,9 +10,9 @@ import Combine
 
 class BotAccountCoordinator: NSObject {
 
-    var subscribers = Set<AnyCancellable>()
+    static var subs = Set<AnyCancellable>()
      
-    func specimen() -> TradeBot {
+    static func specimen() -> TradeBot {
      //MARK: - CONDITION (CONST) && (CONDITION 2 || CONDITION 3)
         
         let condition2: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
@@ -34,14 +34,14 @@ class BotAccountCoordinator: NSObject {
         return f
     }
     
-    func inspect(for bot: TradeBot) {
+    static func inspect(for bot: TradeBot) {
         bot.conditions!.forEach { condition in
             print("Condition: \(condition). And condition: \(condition.andCondition)")
         }
     }
     
-    func fetchBot() -> Future<TradeBot, Error> {
-        Future { [unowned self] promise in
+    static func fetchBot() -> Future<TradeBot, Error> {
+        Future { promise in
             fetchBot() { (tradeBot: TradeBot) in
                 promise(.success(tradeBot))
                 print("Here is the bot: \(tradeBot)")
@@ -50,7 +50,7 @@ class BotAccountCoordinator: NSObject {
         }
     }
 
-    private func fetchBot(completion: @escaping (TradeBot) -> Void) {
+    static private func fetchBot(completion: @escaping (TradeBot) -> Void) {
         let predicate: NSPredicate = NSPredicate(value: true)
         CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
             .sink { result in
@@ -60,7 +60,7 @@ class BotAccountCoordinator: NSObject {
                 case .finished:
                     break
                 }
-            } receiveValue: { [unowned self] (value: [TradeBot]) in
+            } receiveValue: { (value: [TradeBot]) in
                 switch value.first == nil {
                 case true:
                        return
@@ -70,10 +70,10 @@ class BotAccountCoordinator: NSObject {
                     }
                 }
             }
-            .store(in: &subscribers)
+            .store(in: &BotAccountCoordinator.subs)
     }
     
-    private func fetchAndConditions(for bot: TradeBot, indexRef: Int, completion: @escaping (TradeBot) -> Void) {
+    static private func fetchAndConditions(for bot: TradeBot, indexRef: Int, completion: @escaping (TradeBot) -> Void) {
         CloudKitUtility.fetchChildren(parent: bot.conditions![indexRef], children: "EvaluationCondition")
             .sink { result in
                 switch result {
@@ -82,21 +82,21 @@ class BotAccountCoordinator: NSObject {
                 case .finished:
                     break
                 }
-            } receiveValue: { [unowned self] (value: [EvaluationCondition]) in
+            } receiveValue: { (value: [EvaluationCondition]) in
                 bot.conditions![indexRef].andCondition = value.first
                 print("Condition is: \(bot.conditions![indexRef])... ANDCondition fetched: \(value.first).")
                 if indexRef == bot.conditions!.indices.last {
                     completion(bot)
                 } else {
-                    fetchAndConditions(for: bot, indexRef: indexRef + 1) { [unowned self] tradeBot in
+                    fetchAndConditions(for: bot, indexRef: indexRef + 1) { tradeBot in
                         completion(tradeBot)
                     }
                 }
             }
-            .store(in: &subscribers)
+            .store(in: &BotAccountCoordinator.subs)
     }
     
-    private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
+    static private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
         CloudKitUtility.fetchChildren(parent: bot, children: "EvaluationCondition")
             .sink { result in
                 switch result {
@@ -105,17 +105,17 @@ class BotAccountCoordinator: NSObject {
                 case .finished:
                     break
                 }
-            } receiveValue: { [unowned self] (value: [EvaluationCondition]) in
+            } receiveValue: { (value: [EvaluationCondition]) in
                 var copy = bot
                 copy.conditions = value
                 fetchAndConditions(for: copy, indexRef: 0) { tradeBot in
                     completion(tradeBot)
                 }
             }
-            .store(in: &subscribers)
+            .store(in: &BotAccountCoordinator.subs)
     }
     
-    func upload() {
+    static func upload() {
         let specimen = specimen()
         let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { condition in
             if condition.andCondition != nil { return condition } else { return nil }

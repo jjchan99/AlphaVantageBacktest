@@ -193,6 +193,17 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
     }
 }
 
+struct BotTransaction {
+    let stamp: String
+    let deltaCash: Double
+    let deltaShares: Double
+    
+    let action: BuyOrSell
+    let condition: EvaluationCondition
+    let price: Double
+    let stamped: String
+}
+
 enum AboveOrBelow: Int, CustomStringConvertible {
     case priceAbove, priceBelow
 

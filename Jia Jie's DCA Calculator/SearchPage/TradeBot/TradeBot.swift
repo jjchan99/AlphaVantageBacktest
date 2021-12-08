@@ -71,6 +71,8 @@ struct TradeBot: CloudKitInterchangeable {
         
         guard xxx != nil else { return false }
         
+        print("Evaluating that the closing price of \(close) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx). I have evaluated this to be \(condition.aboveOrBelow.evaluate(close, xxx!)). I will now \(condition.buyOrSell).")
+        
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
             return condition.aboveOrBelow.evaluate(close, xxx!) && checkNext(condition: nextCondition, latest: latest)
@@ -90,14 +92,12 @@ struct TradeBot: CloudKitInterchangeable {
                 switch conditions.buyOrSell {
                 case .buy:
                     if checkNext(condition: conditions, latest: latest) {
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
                     account.cash = account.cash * (1 - cashBuyPercentage)
                     break
                     }
                 case .sell:
                     if checkNext(condition: conditions, latest: latest) {
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.cash += account.accumulatedShares * open * sharesSellPercentage
                     account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
                     break

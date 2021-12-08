@@ -53,7 +53,6 @@ class BotAccountCoordinator: NSObject {
     private func fetchBot(completion: @escaping (TradeBot) -> Void) {
         let predicate: NSPredicate = NSPredicate(value: true)
         CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
-            .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {
                 case .failure(let error):
@@ -75,9 +74,11 @@ class BotAccountCoordinator: NSObject {
     }
     
     private func fetchAndConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
+        //MARK: - ARRAYS ARE VALUE TYPES!! NEED COPY!! >:((
+        let copy = bot
+        
         bot.conditions!.indices.forEach { index in
             CloudKitUtility.fetchChildren(parent: bot.conditions![index], children: "EvaluationCondition")
-            .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {
                 case .failure(let error):
@@ -86,9 +87,10 @@ class BotAccountCoordinator: NSObject {
                     break
                 }
             } receiveValue: { (value: [EvaluationCondition]) in
-                bot.conditions![index].andCondition = value.first
-                if index == bot.conditions!.indices.last {
-                    completion(bot)
+                copy.conditions![index].andCondition = value.first
+                print("Condition is: \(copy.conditions![index])... ANDCondition fetched: \(value.first).")
+                if index == copy.conditions!.indices.last {
+                    completion(copy)
                 }
             }
             .store(in: &subscribers)
@@ -97,7 +99,6 @@ class BotAccountCoordinator: NSObject {
     
     private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
         CloudKitUtility.fetchChildren(parent: bot, children: "EvaluationCondition")
-            .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {
                 case .failure(let error):

@@ -53,14 +53,14 @@ struct TradeBot: CloudKitInterchangeable {
     }
 
 
-    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double {
+    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
         switch i {
         case .movingAverage:
             return element.movingAverage
         case .RSI:
-            return element.RSI!
+            return element.RSI
         case let .bollingerBands(percentage: b):
-            return element.valueAtPercent(percent: b)!
+            return element.valueAtPercent(percent: b)
         }
     }
     
@@ -68,11 +68,14 @@ struct TradeBot: CloudKitInterchangeable {
         let close = latest.close
 
         let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+        
+        guard xxx != nil else { return false }
+        
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
-        return condition.aboveOrBelow.evaluate(close, xxx) && checkNext(condition: nextCondition, latest: latest)
+            return condition.aboveOrBelow.evaluate(close, xxx!) && checkNext(condition: nextCondition, latest: latest)
         } else {
-            return condition.aboveOrBelow.evaluate(latest.close, xxx)
+            return condition.aboveOrBelow.evaluate(latest.close, xxx!)
         }
     }
 
@@ -83,6 +86,7 @@ struct TradeBot: CloudKitInterchangeable {
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
             let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
+            guard xxx != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
                     if checkNext(condition: conditions, latest: latest) {

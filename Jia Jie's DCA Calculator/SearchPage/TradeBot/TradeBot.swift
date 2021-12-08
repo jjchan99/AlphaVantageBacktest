@@ -57,38 +57,50 @@ struct TradeBot: CloudKitInterchangeable {
         switch i {
         case .movingAverage:
             return element.movingAverage
-        case .RSI:
-            return element.RSI
+        case let .RSI(period: _, value: value):
+            return value
         case let .bollingerBands(percentage: b):
             return element.valueAtPercent(percent: b)
         }
     }
     
+    func getInputValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
+        switch i {
+        case .movingAverage:
+            return element.close
+        case .RSI:
+            return element.RSI
+        case let .bollingerBands(percentage: b):
+            return element.close
+        }
+    }
+    
     func checkNext(condition: EvaluationCondition, latest: OHLCCloudElement) -> Bool {
-        let close = latest.close
+        let inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
 
         let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
         
-        guard xxx != nil else { return false }
+        guard xxx != nil, inputValue != nil else { return false }
         
-        print("Evaluating that the closing price of \(close) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx). I have evaluated this to be \(condition.aboveOrBelow.evaluate(close, xxx!)). I will now \(condition.buyOrSell).")
+        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
         
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
-            return condition.aboveOrBelow.evaluate(close, xxx!) && checkNext(condition: nextCondition, latest: latest)
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, latest: latest)
         } else {
-            return condition.aboveOrBelow.evaluate(latest.close, xxx!)
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
         }
     }
 
     mutating func evaluate(latest: OHLCCloudElement, previous: OHLCCloudElement) {
-        let close = previous.close
         let open = latest.open
+       
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
+            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
             let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
-            guard xxx != nil else { continue }
+            guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
                     if checkNext(condition: conditions, latest: latest) {

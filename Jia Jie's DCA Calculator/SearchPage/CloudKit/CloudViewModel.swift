@@ -14,16 +14,8 @@ class CloudViewModel: ObservableObject {
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
-    
-    func idk() {
-        FetchLatest.get() {
-            
-        }
-        
-        FetchLatest.getBot() {
-            
-        }
-    }
+    @Published var daily: Daily?
+    @Published var tb: TradeBot?
     
 }
 

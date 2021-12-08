@@ -35,6 +35,14 @@ class CloudKitViewController: UIViewController {
                     controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                     controller.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
                 ])
+        
+        FetchLatest.get() { [unowned self] daily in
+            viewModel.daily = daily
+        }
+        
+        FetchLatest.getBot() { [unowned self] tb in
+            viewModel.tb = tb
+        }
 
         Log.queue(action: "Cloud view did load")
 

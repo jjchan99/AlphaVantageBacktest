@@ -14,9 +14,24 @@ protocol OHLCManager {
 
 class FetchLatest {
     static var subscribers = Set<AnyCancellable>()
-    static func iterate(value: Daily) {
+    static func update(value: Daily, bot: TradeBot) -> TradeBot {
         let technicalManager = OHLCTechnicalManager(window: 200)
+        var value = value
+        var bot = bot
+        let sorted = value.sorted!
+        var previous: OHLCCloudElement?
         
+        for idx in 0..<sorted.count - 1 {
+            let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
+            
+            if previous != nil {
+                bot.evaluate(latest: OHLC, previous: previous!)
+            }
+            
+            previous = OHLC
+        }
+        
+        return bot
     }
     
     static func get(completion: @escaping (Daily) -> Void) {

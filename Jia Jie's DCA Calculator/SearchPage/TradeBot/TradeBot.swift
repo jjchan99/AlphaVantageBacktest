@@ -70,7 +70,7 @@ struct TradeBot: CloudKitInterchangeable {
             return element.close
         case .RSI:
             return element.RSI
-        case let .bollingerBands(percentage: b):
+        case .bollingerBands:
             return element.close
         }
     }
@@ -82,7 +82,7 @@ struct TradeBot: CloudKitInterchangeable {
         
         guard xxx != nil, inputValue != nil else { return false }
         
-        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
+        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
         
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!

@@ -14,10 +14,10 @@ class CloudViewModel: ObservableObject {
     var permission: Bool = false
     var isSignedInToiCloud: Bool = false
     var error: String = ""
+    var subscribers = Set<AnyCancellable>()
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
-    var subscribers = Set<AnyCancellable>()
     
     let coordinator = BotAccountCoordinator()
 }
@@ -38,23 +38,16 @@ struct CloudView: View {
                 })
                 Button(action: {
                     viewModel.coordinator.fetchBot()
+                        .receive(on: DispatchQueue.main)
+                        .sink { _ in
+                            
+                        } receiveValue: { tb in
+                            
+                        }
+                        .store(in: &viewModel.subscribers)
+
                 }, label: {
                     Text("Get the Parent.")
-                })
-                Button(action: {
-                    viewModel.coordinator.fetchConditions()
-                }, label: {
-                    Text("Get the CHILLLREN")
-                })
-                Button(action: {
-                    viewModel.coordinator.fetchAndConditions()
-                }, label: {
-                    Text("Get the AND COnditionz")
-                })
-                Button(action: {
-                    viewModel.coordinator.inspect()
-                }, label: {
-                    Text("Inspect >:)")
                 })
             }
         }

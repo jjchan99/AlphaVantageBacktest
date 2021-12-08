@@ -73,12 +73,8 @@ class BotAccountCoordinator: NSObject {
             .store(in: &subscribers)
     }
     
-    private func fetchAndConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
-        //MARK: - ARRAYS ARE VALUE TYPES!! NEED COPY!! >:((
-        let copy = bot
-        
-        bot.conditions!.indices.forEach { index in
-            CloudKitUtility.fetchChildren(parent: bot.conditions![index], children: "EvaluationCondition")
+    private func fetchAndConditions(for bot: TradeBot, indexRef: Int, completion: @escaping (TradeBot) -> Void) {
+        CloudKitUtility.fetchChildren(parent: bot.conditions![indexRef], children: "EvaluationCondition")
             .sink { result in
                 switch result {
                 case .failure(let error):
@@ -86,15 +82,18 @@ class BotAccountCoordinator: NSObject {
                 case .finished:
                     break
                 }
-            } receiveValue: { (value: [EvaluationCondition]) in
-                copy.conditions![index].andCondition = value.first
-                print("Condition is: \(copy.conditions![index])... ANDCondition fetched: \(value.first).")
-                if index == copy.conditions!.indices.last {
-                    completion(copy)
+            } receiveValue: { [unowned self] (value: [EvaluationCondition]) in
+                bot.conditions![indexRef].andCondition = value.first
+                print("Condition is: \(bot.conditions![indexRef])... ANDCondition fetched: \(value.first).")
+                if indexRef == bot.conditions!.indices.last {
+                    completion(bot)
+                } else {
+                    fetchAndConditions(for: bot, indexRef: indexRef + 1) { [unowned self] tradeBot in
+                        completion(tradeBot)
+                    }
                 }
             }
             .store(in: &subscribers)
-        }
     }
     
     private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
@@ -109,7 +108,7 @@ class BotAccountCoordinator: NSObject {
             } receiveValue: { [unowned self] (value: [EvaluationCondition]) in
                 var copy = bot
                 copy.conditions = value
-                fetchAndConditions(for: copy) { tradeBot in
+                fetchAndConditions(for: copy, indexRef: 0) { tradeBot in
                     completion(tradeBot)
                 }
             }

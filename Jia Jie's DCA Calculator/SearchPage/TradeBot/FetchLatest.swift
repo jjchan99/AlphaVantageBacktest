@@ -35,6 +35,7 @@ class FetchLatest {
             var previous: OHLCCloudElement?
             
             for idx in 0..<sorted.count - 1 {
+                let idx = sorted.count - 1 - idx
                 let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
                 
                 if previous != nil {

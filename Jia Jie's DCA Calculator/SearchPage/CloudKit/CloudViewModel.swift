@@ -10,10 +10,6 @@ import SwiftUI
 import Combine
 
 class CloudViewModel: ObservableObject {
-    var userName: String = ""
-    var permission: Bool = false
-    var isSignedInToiCloud: Bool = false
-    var error: String = ""
     var subscribers = Set<AnyCancellable>()
     
     let height: CGFloat = CGFloat(300).hScaled()
@@ -26,10 +22,6 @@ struct CloudView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
-        Text("username: \(viewModel.userName)")
-        Text("permission: \(viewModel.permission ? "true" : "false")")
-            Text("is signed into icloud: \(viewModel.isSignedInToiCloud ? "true" : "false")")
-        Text("error: \(viewModel.error)")
                 Button(action: {
                     BotAccountCoordinator.upload()
                 }, label: {

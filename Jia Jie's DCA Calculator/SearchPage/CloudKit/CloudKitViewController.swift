@@ -17,6 +17,11 @@ class CloudKitViewController: UIViewController {
     var hostingController: UIHostingController<AnyView>?
     var viewModel = CloudViewModel()
     
+    var userName: String = ""
+    var permission: Bool = false
+    var isSignedInToiCloud: Bool = false
+    var error: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
@@ -57,7 +62,7 @@ class CloudKitViewController: UIViewController {
                     break
                 }
             } receiveValue: { [unowned self] value in
-                viewModel.permission = value
+                permission = value
             }.store(in: &subscribers)
     }
 
@@ -69,10 +74,10 @@ class CloudKitViewController: UIViewController {
                 case .finished:
                     break
                 case let .failure(error):
-                    viewModel.error = error.localizedDescription
+                    self.error = error.localizedDescription
                 }
             } receiveValue: { [unowned self] value in
-                viewModel.isSignedInToiCloud = value
+                isSignedInToiCloud = value
             }.store(in: &subscribers)
     }
 
@@ -87,27 +92,8 @@ class CloudKitViewController: UIViewController {
                     break
                 }
             } receiveValue: { [unowned self] value in
-                viewModel.userName = value
+                userName = value
             }.store(in: &subscribers)
     }
     
-    var bot: [TradeBot] = []
-    
-    func fetchItems() {
-        let predicate = NSPredicate(value: true)
-        let recordType = "TradeBot"
-        CloudKitUtility.fetch(predicate: predicate, recordType: recordType)
-            .receive(on: DispatchQueue.main)
-            .sink { value in
-                switch value {
-                case .failure(let error):
-                    print(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [unowned self] items in
-                self.bot = items
-            }
-            .store(in: &subscribers)
-    }
 }

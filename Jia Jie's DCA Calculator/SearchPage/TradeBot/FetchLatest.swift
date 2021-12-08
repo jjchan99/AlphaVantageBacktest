@@ -6,22 +6,46 @@
 //
 
 import Foundation
+import Combine
 
 protocol OHLCManager {
-    var sorted: [(key: String, value: TimeSeriesDaily)] { get }
-    var technicalManager: OHLCTechnicalManager { get }
-    func iterate()
+    
 }
 
-class FetchLatest: OHLCManager {
-    func iterate() {
+class FetchLatest {
+    static var subscribers = Set<AnyCancellable>()
+    static func iterate(value: Daily) {
+        let technicalManager = OHLCTechnicalManager(window: 200)
         
     }
     
+    static func get(completion: @escaping (Daily) -> Void) {
+        DispatchQueue.global().async {
+        CandleAPI.fetchDaily("TSLA")
+            .sink { _ in
+                
+            } receiveValue: { value in
+                DispatchQueue.main.async {
+                completion(value)
+                }
+            }
+            .store(in: &subscribers)
+        }
+    }
     
-    let sorted: [(key: String, value: TimeSeriesDaily)] = []
-    let technicalManager = OHLCTechnicalManager(window: 200)
-    
+    static func getBot(completion: @escaping (TradeBot) -> Void) {
+        DispatchQueue.global().async {
+        BotAccountCoordinator.fetchBot()
+            .sink { _ in
+                
+            } receiveValue: { value in
+                DispatchQueue.main.async {
+                completion(value)
+                }
+            }
+            .store(in: &subscribers)
+        }
+    }
 }
 
 class GraphManager: NSObject, OHLCManager, Coordinator {

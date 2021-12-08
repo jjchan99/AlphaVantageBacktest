@@ -15,6 +15,16 @@ class CloudViewModel: ObservableObject {
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
     
+    func idk() {
+        FetchLatest.get() {
+            
+        }
+        
+        FetchLatest.getBot() {
+            
+        }
+    }
+    
 }
 
 struct CloudView: View {

@@ -10,10 +10,6 @@ import Combine
 
 class BotAccountCoordinator: NSObject {
 
-    @Published var bot: TradeBot? { didSet {
-        print("Here's the bot: \(bot!)")
-    }}
-
     var subscribers = Set<AnyCancellable>()
      
     func specimen() -> TradeBot {
@@ -38,63 +34,83 @@ class BotAccountCoordinator: NSObject {
         return f
     }
     
-    func inspect() {
-        bot!.conditions!.forEach { condition in
+    func inspect(for bot: TradeBot) {
+        bot.conditions!.forEach { condition in
             print("Condition: \(condition). And condition: \(condition.andCondition)")
         }
     }
+    
+    func fetchBot() -> Future<TradeBot, Error> {
+        Future { [unowned self] promise in
+            fetchBot() { (tradeBot: TradeBot) in
+                promise(.success(tradeBot))
+                print("Here is the bot: \(tradeBot)")
+                inspect(for: tradeBot)
+            }
+        }
+    }
 
-    func fetchBot() {
+    private func fetchBot(completion: @escaping (TradeBot) -> Void) {
         let predicate: NSPredicate = NSPredicate(value: true)
         CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] result in
+            .sink { result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
-                    fetchConditions()
                     break
                 }
-            } receiveValue: { [unowned self] value in
-                bot = value.first
+            } receiveValue: { [unowned self] (value: [TradeBot]) in
+                switch value.first == nil {
+                case true:
+                       return
+                case false:
+                    fetchConditions(for: value.first!) { tradeBot in
+                        completion(tradeBot)
+                    }
+                }
             }
             .store(in: &subscribers)
     }
     
-    func fetchAndConditions() {
-        bot!.conditions!.forEach { parent in
-        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
+    private func fetchAndConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
+        bot.conditions!.indices.forEach { index in
+            CloudKitUtility.fetchChildren(parent: bot.conditions![index], children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] result in
+            .sink { result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
-                    inspect()
                     break
                 }
-            } receiveValue: { [unowned self] value in
-                parent.andCondition = value.first
+            } receiveValue: { (value: [EvaluationCondition]) in
+                bot.conditions![index].andCondition = value.first
+                if index == bot.conditions!.indices.last {
+                    completion(bot)
+                }
             }
             .store(in: &subscribers)
         }
     }
     
-    func fetchConditions() {
-        guard self.bot != nil else { return }
-        CloudKitUtility.fetchChildren(parent: bot!, children: "EvaluationCondition")
+    private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
+        CloudKitUtility.fetchChildren(parent: bot, children: "EvaluationCondition")
             .receive(on: DispatchQueue.main)
-            .sink { [unowned self] result in
+            .sink { result in
                 switch result {
                 case .failure(let error):
                    print(error)
                 case .finished:
-                    fetchAndConditions()
                     break
                 }
-            } receiveValue: { [unowned self] value in
-                bot!.conditions = value
+            } receiveValue: { [unowned self] (value: [EvaluationCondition]) in
+                var copy = bot
+                copy.conditions = value
+                fetchAndConditions(for: copy) { tradeBot in
+                    completion(tradeBot)
+                }
             }
             .store(in: &subscribers)
     }

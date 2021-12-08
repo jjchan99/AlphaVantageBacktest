@@ -14,54 +14,66 @@ protocol OHLCManager {
 
 class FetchLatest {
     static var subscribers = Set<AnyCancellable>()
-    static func update(value: Daily, bot: TradeBot) -> TradeBot {
+    
+    
+    static func update(completion: @escaping (TradeBot) -> Void) {
         let technicalManager = OHLCTechnicalManager(window: 200)
-        var value = value
-        var bot = bot
-        let sorted = value.sorted!
-        var previous: OHLCCloudElement?
+        let group = DispatchGroup()
+        var value: Daily!
+        var bot: TradeBot!
         
-        for idx in 0..<sorted.count - 1 {
-            let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
-            
-            if previous != nil {
-                bot.evaluate(latest: OHLC, previous: previous!)
-            }
-            
-            previous = OHLC
+        group.enter()
+        get { stonks in
+            value = stonks
+            group.leave()
         }
         
-        return bot
+        group.enter()
+        getBot { tb in
+            bot = tb
+            group.leave()
+        }
+        
+        group.notify(queue: .global()) {
+            let sorted = value.sorted!
+            var previous: OHLCCloudElement?
+            
+            for idx in 0..<sorted.count - 1 {
+                let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
+                
+                if previous != nil {
+                    bot.evaluate(latest: OHLC, previous: previous!)
+                }
+                
+                previous = OHLC
+            }
+            DispatchQueue.main.async {
+            completion(bot)
+            }
+        }
     }
     
-    static func get(completion: @escaping (Daily) -> Void) {
-        DispatchQueue.global().async {
+    private static func get(completion: @escaping (Daily) -> Void) {
         CandleAPI.fetchDaily("TSLA")
             .sink { _ in
                 
             } receiveValue: { value in
-                DispatchQueue.main.async {
                 completion(value)
                 }
-            }
             .store(in: &subscribers)
-        }
-    }
+   }
     
-    static func getBot(completion: @escaping (TradeBot) -> Void) {
-        DispatchQueue.global().async {
+   private static func getBot(completion: @escaping (TradeBot) -> Void) {
         BotAccountCoordinator.fetchBot()
             .sink { _ in
                 
             } receiveValue: { value in
-                DispatchQueue.main.async {
                 completion(value)
-                }
             }
             .store(in: &subscribers)
         }
     }
-}
+
 
 class GraphManager: NSObject, OHLCManager, Coordinator {
     func iterate() {

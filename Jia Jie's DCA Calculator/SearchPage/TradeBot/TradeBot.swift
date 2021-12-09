@@ -38,7 +38,6 @@ struct TradeBot: CloudKitInterchangeable {
         let record = self.record
         //DO STUFF WITH THE RECORD
         
-        CloudKitUtility.update(item: <#T##CloudKitInterchangeable#>, completion: <#T##(Result<Bool, Error>) -> Void#>)
         return TradeBot(record: record)!
     }
     
@@ -149,7 +148,10 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     var record: CKRecord
     
     func update() -> EvaluationCondition {
-        return self
+        let record = self.record
+        //DO STUFF WITH THE RECORD
+        
+        return .init(record: record)!
     }
     
     let technicalIndicator: TechnicalIndicators

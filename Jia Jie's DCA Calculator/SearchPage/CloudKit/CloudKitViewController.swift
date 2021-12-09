@@ -36,9 +36,9 @@ class CloudKitViewController: UIViewController {
                     controller.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
                 ])
         
-//        FetchLatest.update { tb in
-//            Log.queue(action: "HALLELUJAH!!! \(tb)")
-//        }
+        FetchLatest.update { tb in
+            Log.queue(action: "HALLELUJAH!!! \(tb)")
+        }
 
         Log.queue(action: "Cloud view did load")
 

@@ -53,47 +53,63 @@ struct TradeBot: CloudKitInterchangeable {
     }
 
 
-    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double {
+    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
         switch i {
         case .movingAverage:
             return element.movingAverage
-        case .RSI:
-            return element.RSI!
+        case let .RSI(period: _, value: value):
+            return value * 100
         case let .bollingerBands(percentage: b):
-            return element.valueAtPercent(percent: b)!
+            return element.valueAtPercent(percent: b)
+        }
+    }
+    
+    func getInputValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
+        switch i {
+        case .movingAverage:
+            return element.close
+        case .RSI:
+            return element.RSI
+        case .bollingerBands:
+            return element.close
         }
     }
     
     func checkNext(condition: EvaluationCondition, latest: OHLCCloudElement) -> Bool {
-        let close = latest.close
+        let inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
 
         let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+        
+        guard xxx != nil, inputValue != nil else { return false }
+        
+        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
+        
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
-        return condition.aboveOrBelow.evaluate(close, xxx) && checkNext(condition: nextCondition, latest: latest)
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, latest: latest)
         } else {
-            return condition.aboveOrBelow.evaluate(latest.close, xxx)
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
         }
     }
 
     mutating func evaluate(latest: OHLCCloudElement, previous: OHLCCloudElement) {
-        let close = previous.close
         let open = latest.open
+       
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
+            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
             let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
+            guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
                     if checkNext(condition: conditions, latest: latest) {
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
                     account.cash = account.cash * (1 - cashBuyPercentage)
                     break
                     }
                 case .sell:
                     if checkNext(condition: conditions, latest: latest) {
-                    print("Evaluating that the closing price of \(close) is \(conditions.aboveOrBelow) the \(conditions.technicalIndicator) of \(xxx). I have evaluated this to be true. I will now \(conditions.buyOrSell).")
                     account.cash += account.accumulatedShares * open * sharesSellPercentage
                     account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
                     break
@@ -191,6 +207,17 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .bollingerBands(percentage: rawValue)
         }
     }
+}
+
+struct BotTransaction {
+    let stamp: String
+    let deltaCash: Double
+    let deltaShares: Double
+    
+    let action: BuyOrSell
+    let condition: EvaluationCondition
+    let price: Double
+    let stamped: String
 }
 
 enum AboveOrBelow: Int, CustomStringConvertible {

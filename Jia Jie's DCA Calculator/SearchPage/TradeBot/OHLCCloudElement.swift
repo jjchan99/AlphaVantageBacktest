@@ -27,7 +27,7 @@ struct OHLCCloudElement {
     
     func valueAtPercent(percent: Double) -> Double? {
         guard upperBollingerBand != nil, lowerBollingerBand != nil else { return nil }
-        return ( upperBollingerBand! - lowerBollingerBand! ) * percent
+        return lowerBollingerBand! + (( upperBollingerBand! - lowerBollingerBand! ) * percent)
     }
     func green() -> Bool {
         return close > open

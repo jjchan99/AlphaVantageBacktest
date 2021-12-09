@@ -86,7 +86,7 @@ struct TradeBot: CloudKitInterchangeable {
         
         guard xxx != nil, inputValue != nil else { return false }
         
-        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
+        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
         
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
@@ -172,6 +172,17 @@ struct Account {
     }
 }
 
+struct TransactionHistory {
+    var latest: Double
+    var previous: Double
+    var evaluations: [String]
+    var previousCash: Double
+    var newCash: Double
+    var previousShares: Double
+    var newShares: Double
+    var action: BuyOrSell
+}
+
 enum TechnicalIndicators: Hashable, CustomStringConvertible {
 
     case movingAverage(period: Int),
@@ -211,17 +222,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .bollingerBands(percentage: rawValue)
         }
     }
-}
-
-struct BotTransaction {
-    let stamp: String
-    let deltaCash: Double
-    let deltaShares: Double
-    
-    let action: BuyOrSell
-    let condition: EvaluationCondition
-    let price: Double
-    let stamped: String
 }
 
 enum AboveOrBelow: Int, CustomStringConvertible {

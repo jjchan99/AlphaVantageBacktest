@@ -17,11 +17,13 @@ class BotAccountCoordinator {
         
         let condition2: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
         
-        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.20), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
+        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: nil)!
         
         let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: condition2)!
         
         let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: condition3)!
+        
+        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.7), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: nil)!
         
         let f = BotFactory()
             .setBudget(42000)
@@ -29,6 +31,7 @@ class BotAccountCoordinator {
             .setSharesSellPercentage(0.5)
             .addCondition(conditionZ)
             .addCondition(conditionX)
+            .addCondition(conditionY)
             .build()
         print(f)
         return f

@@ -38,7 +38,7 @@ class FetchLatest {
                 let idx = sorted.count - 1 - idx
                 let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
                 
-                if previous != nil {
+                if previous != nil && sorted[idx].key > bot.effectiveAfter {
                     bot.evaluate(latest: OHLC, previous: previous!)
                 }
                 

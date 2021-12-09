@@ -16,6 +16,7 @@ struct TradeBot: CloudKitInterchangeable {
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
+    let effectiveAfter: String
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
@@ -23,12 +24,14 @@ struct TradeBot: CloudKitInterchangeable {
         let accumulatedShares = record["accumulatedShares"] as! Double
         let cashBuyPercentage = record["cashBuyPercentage"] as! Double
         let sharesSellPercentage = record["sharesSellPercentage"] as! Double
+        let effectiveAfter = record["effectiveAfter"] as! String
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
         self.cashBuyPercentage = cashBuyPercentage
         self.sharesSellPercentage = sharesSellPercentage
         self.record = record
+        self.effectiveAfter = effectiveAfter
     }
     
     func update() -> Self {
@@ -39,14 +42,15 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
                     "cash": budget,
                     "accumulatedShares": 0,
                     "cashBuyPercentage": cashBuyPercentage,
-                    "sharesSellPercentage": sharesSellPercentage
+                    "sharesSellPercentage": sharesSellPercentage,
+                    "effectiveAfter": effectiveAfter
                 ])
         self.init(record: record)
         self.conditions = conditions

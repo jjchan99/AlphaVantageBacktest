@@ -50,6 +50,7 @@
 		1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A227006D93004BBC50 /* TitleView.swift */; };
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
+		1D7416AB27627D1B00E9FD7C /* PeriodicTradeBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7416AA27627D1B00E9FD7C /* PeriodicTradeBot.swift */; };
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
@@ -170,6 +171,7 @@
 		1D72D2A227006D93004BBC50 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactoryProtocol.swift; sourceTree = "<group>"; };
 		1D72D2A62700D01E004BBC50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1D7416AA27627D1B00E9FD7C /* PeriodicTradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicTradeBot.swift; sourceTree = "<group>"; };
 		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +383,14 @@
 			path = GraphRendererModel;
 			sourceTree = "<group>";
 		};
+		1D7416A927627CF900E9FD7C /* PeriodicTradeBot */ = {
+			isa = PBXGroup;
+			children = (
+				1D7416AA27627D1B00E9FD7C /* PeriodicTradeBot.swift */,
+			);
+			path = PeriodicTradeBot;
+			sourceTree = "<group>";
+		};
 		1D784B00275A493700F91392 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +438,7 @@
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
 				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
+				1D7416A927627CF900E9FD7C /* PeriodicTradeBot */,
 				1D18DDCD2758D9B30061A7AD /* TradeBot */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
@@ -682,6 +693,7 @@
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
 				1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */,
+				1D7416AB27627D1B00E9FD7C /* PeriodicTradeBot.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
 				1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */,
 				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,

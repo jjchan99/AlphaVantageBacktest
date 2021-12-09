@@ -16,7 +16,7 @@ class FetchLatest {
         let technicalManager = OHLCTechnicalManager(window: 200)
         let group = DispatchGroup()
         var value: Daily!
-        var bot: TradeBot!
+        var bot: TradeBot! 
         
         group.enter()
         get { stonks in

@@ -58,7 +58,7 @@ struct TradeBot: CloudKitInterchangeable {
         case .movingAverage:
             return element.movingAverage
         case let .RSI(period: _, value: value):
-            return value
+            return value * 100
         case let .bollingerBands(percentage: b):
             return element.valueAtPercent(percent: b)
         }

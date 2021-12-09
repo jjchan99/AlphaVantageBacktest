@@ -38,7 +38,7 @@ struct TradeBot: CloudKitInterchangeable {
         let record = self.record
         //DO STUFF WITH THE RECORD
         
-        
+        CloudKitUtility.update(item: <#T##CloudKitInterchangeable#>, completion: <#T##(Result<Bool, Error>) -> Void#>)
         return TradeBot(record: record)!
     }
     

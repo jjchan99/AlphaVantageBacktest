@@ -33,7 +33,7 @@ class OHLCTechnicalManager {
         
         
         //MARK: TECHNICAL INDICATORS
-        if rsiCalculator == nil { rsiCalculator = .init(period: window, indexData: close) }
+        if rsiCalculator == nil { rsiCalculator = .init(period: 14, indexData: close) }
         let movingAverage = movingAverageCalculator.generate(indexData: close)
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
         let rsi = rsiCalculator!.generate(indexData: close)

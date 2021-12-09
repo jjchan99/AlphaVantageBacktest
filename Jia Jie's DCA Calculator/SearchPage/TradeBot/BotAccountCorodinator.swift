@@ -33,7 +33,7 @@ class BotAccountCoordinator {
             .addCondition(conditionX)
             .addCondition(conditionY)
             .build()
-        print(f)
+//        print(f)
         return f
     }
     
@@ -118,7 +118,7 @@ class BotAccountCoordinator {
             .store(in: &BotAccountCoordinator.subs)
     }
     
-    static func upload() {
+    static func upload(completion: @escaping () -> Void) {
         let specimen = specimen()
         let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { condition in
             if condition.andCondition != nil { return condition } else { return nil }
@@ -126,10 +126,17 @@ class BotAccountCoordinator {
         
         CloudKitUtility.add(item: specimen) { value in
             CloudKitUtility.saveArray(array: specimen.conditions!, for: specimen) { value in
+                let group = DispatchGroup()
                 for index in andParents.indices {
+                    group.enter()
                     CloudKitUtility.saveChild(child: andParents[index].andCondition!, for: andParents[index]) { value in
-                        Log.queue(action: "Success! \(value)")
+                        Log.queue(action: "AND condition uploaded")
+                        group.leave()
                     }
+                }
+                
+                group.notify(queue: .main) {
+                    completion()
                 }
             }
         }

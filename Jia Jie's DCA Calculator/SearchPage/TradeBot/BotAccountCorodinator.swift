@@ -176,7 +176,6 @@ class BotFactory {
     
     func build() -> TradeBot {
         let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage)
-        print(bot)
         return bot!
     }
 }

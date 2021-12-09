@@ -50,6 +50,7 @@
 		1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A227006D93004BBC50 /* TitleView.swift */; };
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
+		1D7416AD2762890C00E9FD7C /* TradeAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */; };
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
@@ -170,6 +171,7 @@
 		1D72D2A227006D93004BBC50 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactoryProtocol.swift; sourceTree = "<group>"; };
 		1D72D2A62700D01E004BBC50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAssistant.swift; sourceTree = "<group>"; };
 		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 				1D18DDD8275932BB0061A7AD /* BotViewModel.swift */,
@@ -674,6 +677,7 @@
 				1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */,
 				1D25E28F2722C58A00CD8E4C /* ZeroPositionModel.swift in Sources */,
 				1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */,
+				1D7416AD2762890C00E9FD7C /* TradeAssistant.swift in Sources */,
 				1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */,
 				1D8897E92708B5EF005131B0 /* GraphView.swift in Sources */,
 				1DC8A2422761FC25009FBA85 /* OHLCTechnicalManager.swift in Sources */,

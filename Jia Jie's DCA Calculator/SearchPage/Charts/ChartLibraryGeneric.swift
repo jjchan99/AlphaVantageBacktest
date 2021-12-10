@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CoreGraphics
+import Algorithms
 
 enum ChartType {
     case bar
@@ -16,7 +17,7 @@ enum ChartType {
 }
 
 protocol ChartPointSpecified: Comparable {
-    associatedtype T where T: Numeric, T: Comparable
+    associatedtype T where T: CustomNumeric
     var valueForPlot: T { get }
     var open: T? { get }
     var high: T? { get }
@@ -26,32 +27,33 @@ protocol ChartPointSpecified: Comparable {
 
 extension ChartPointSpecified {
     static func < (lhs: Self, rhs: Self) -> Bool {
-        guard type(of: lhs.valueForPlot) == type(of: rhs.valueForPlot) else {}
+        guard type(of: lhs.valueForPlot) == type(of: rhs.valueForPlot) else { fatalError("You did not use matching types.") }
         return lhs.valueForPlot < rhs.valueForPlot
     }
-
     static func == (lhs: Self, rhs: Self) -> Bool {
            return lhs.valueForPlot == rhs.valueForPlot
     }
 }
 
 struct ChartLibraryGeneric {
+    static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
+        return CGFloat(fromNumeric: value)
+    }
     
     private static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
-        
-        
     }
     
-    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T.T? = nil, min: T.T? = nil) {
+    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
-        let range
+        let range = cgf(max - min)
         
-        let deviation = data[index].valueForPlot - max
-        let share = deviation / analysis.tradingVolume.range
-        let scaled = CGFloat(share) * heightBounds
+        let deviation = abs(data[index].valueForPlot - max)
+        let share = cgf(deviation) / range
+        let scaled = CGFloat(share) * 1
+        return scaled
     }
 }
    
@@ -73,5 +75,4 @@ struct Test: ChartPointSpecified {
     
 }
 
-    
-   
+

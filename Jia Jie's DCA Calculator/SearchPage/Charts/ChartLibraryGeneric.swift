@@ -42,10 +42,10 @@ struct ChartLibraryGeneric {
         let min = min ?? data.min()!.valueForPlot
     }
     
-    private static func renderBarPath(index: Int, count: Int) {
+    private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil) {
 
-        let xPosition = XFactory.getXPosition(index: index, padding: padding, dataCount: count, adjustedWidth: XFactory.adjustedWidth(width: width, padding: padding))
-        let yPosition = yPositionFactory.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index) - (0.05 * specifications.specifications[.bar]!.height)
+        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
+        let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: <#T##CGFloat#>, max: <#T##CustomNumeric?#>, min: <#T##CustomNumeric?#>)
         
         volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
         volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
@@ -114,9 +114,7 @@ struct ChartLibraryGeneric {
 }
 
 fileprivate struct XFactory {
-    static private let height: CGFloat = .init(350).hScaled()
     static private let width: CGFloat = .init(420).wScaled()
-    static private let barHeight: CGFloat = .init(45).hScaled()
     static private let padding: CGFloat = 0.05 * width
     
     static func adjustedWidth(width: CGFloat = width, padding: CGFloat = padding) -> CGFloat {
@@ -142,6 +140,9 @@ fileprivate struct XFactory {
 }
 
 fileprivate struct YFactory {
+    static private let height: CGFloat = .init(350).hScaled()
+    static private let barHeight: CGFloat = .init(45).hScaled()
+    
     enum ChartType {
         case allNegative
         case allPositive
@@ -158,7 +159,7 @@ fileprivate struct YFactory {
         return chartType
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+    static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat = height, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let range = cgf(max - min)
         
         let open = data[index].open
@@ -173,7 +174,7 @@ fileprivate struct YFactory {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
+    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat = height, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
         let range = cgf(max - min)
@@ -198,7 +199,7 @@ fileprivate struct YFactory {
         }
     }
     
-    static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat) -> CGFloat {
+    static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat = height) -> CGFloat {
         let type = type(min: min, max: max)
         let range = cgf(max - min)
         switch type {

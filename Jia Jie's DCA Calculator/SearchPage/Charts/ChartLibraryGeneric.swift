@@ -47,10 +47,11 @@ struct ChartLibraryGeneric {
     private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
+        let range
         
         let deviation = data[index].valueForPlot - max
-//        let share = deviation / analysis.tradingVolume.range
-//        let scaled = CGFloat(share) * heightBounds
+        let share = deviation / analysis.tradingVolume.range
+        let scaled = CGFloat(share) * heightBounds
     }
 }
    

@@ -14,6 +14,7 @@ struct HomeView: View {
     var body: some View {
         if vm.tb != nil {
             List {
+            }
         }
     }
 }

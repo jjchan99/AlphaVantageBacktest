@@ -42,6 +42,15 @@ struct ChartLibraryGeneric {
         let min = min ?? data.min()!.valueForPlot
     }
     
+    init(padding: CGFloat, set: (inout [Charts: (height: CGFloat, width: CGFloat)]) -> ()) {
+        set(&self.specifications)
+        self.padding = padding
+    }
+    
+    var specifications: [Charts: (height: CGFloat, width: CGFloat)] = [:]
+    
+    
+    
 }
 
 fileprivate struct XFactory {

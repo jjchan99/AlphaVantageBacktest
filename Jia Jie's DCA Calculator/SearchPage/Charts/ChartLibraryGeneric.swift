@@ -37,16 +37,16 @@ extension ChartPointSpecified {
 
 struct ChartLibraryGeneric {
     
-    private static func render<T: ChartPointSpecified>(data: [T], max: T? = nil, min: T? = nil) {
-        let max = max ?? data.max()!
-        let min = min ?? data.min()!
+    private static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
+        let max = max ?? data.max()!.valueForPlot
+        let min = min ?? data.min()!.valueForPlot
         
         
     }
     
-    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T? = nil, min: T? = nil) {
-        let max = max ?? data.max()!
-        let min = min ?? data.min()!
+    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T.T? = nil, min: T.T? = nil) {
+        let max = max ?? data.max()!.valueForPlot
+        let min = min ?? data.min()!.valueForPlot
         
         let deviation = data[index].valueForPlot - max
 //        let share = deviation / analysis.tradingVolume.range

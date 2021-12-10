@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -76,6 +76,7 @@
 		1D911E542732E1C800444991 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E532732E1C800444991 /* HomeViewController.swift */; };
 		1D92AE84274E86150076F449 /* MovingAverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE83274E86150076F449 /* MovingAverageView.swift */; };
 		1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE85274E86450076F449 /* TradingVolumeView.swift */; };
+		1D9349342763340600D815DE /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 1D9349332763340600D815DE /* Algorithms */; };
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
 		1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF22756659500055702 /* BollingerBandsModel.swift */; };
@@ -235,6 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D9349342763340600D815DE /* Algorithms in Frameworks */,
 				1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -566,6 +568,9 @@
 			dependencies = (
 			);
 			name = "Jia Jie's DCA Calculator";
+			packageProductDependencies = (
+				1D9349332763340600D815DE /* Algorithms */,
+			);
 			productName = "Jia Jie's DCA Calculator";
 			productReference = 1D25E31A26EDD83A00EA4225 /* Jia Jie's DCA Calculator.app */;
 			productType = "com.apple.product-type.application";
@@ -637,6 +642,9 @@
 				Base,
 			);
 			mainGroup = 1D25E31126EDD83A00EA4225;
+			packageReferences = (
+				1D9349322763340600D815DE /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+			);
 			productRefGroup = 1D25E31B26EDD83A00EA4225 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1093,6 +1101,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1D9349322763340600D815DE /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1D9349332763340600D815DE /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D9349322763340600D815DE /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1D25E31226EDD83A00EA4225 /* Project object */;
 }

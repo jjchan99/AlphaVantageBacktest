@@ -36,21 +36,13 @@ extension ChartPointSpecified {
 }
 
 struct ChartLibraryGeneric {
-    
-    private static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
+    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
     }
     
-    init(padding: CGFloat, set: (inout [Charts: (height: CGFloat, width: CGFloat)]) -> ()) {
-        set(&self.specifications)
-        self.padding = padding
-    }
-    
-    var specifications: [Charts: (height: CGFloat, width: CGFloat)] = [:]
-    
-    
-    
+    func setup<T: ChartPointSpecified>([CGPoint])
+  
 }
 
 fileprivate struct XFactory {

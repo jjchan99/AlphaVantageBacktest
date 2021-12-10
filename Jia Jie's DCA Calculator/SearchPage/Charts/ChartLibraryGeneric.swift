@@ -36,33 +36,106 @@ extension ChartPointSpecified {
 }
 
 struct ChartLibraryGeneric {
+    
     static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
     }
     
-    func setup<T: ChartPointSpecified>([CGPoint])
+    private static func renderBarPath(index: Int, count: Int) {
+
+        let xPosition = XFactory.getXPosition(index: index, padding: padding, dataCount: count, adjustedWidth: XFactory.adjustedWidth(width: width, padding: padding))
+        let yPosition = yPositionFactory.getYPosition(mode: .tradingVolume, heightBounds: specifications.specifications[.bar]!.height, index: index) - (0.05 * specifications.specifications[.bar]!.height)
+        
+        volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
+        volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
+        volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: specifications.specifications[.bar]!.height))
+        volumeChart.addLine(to: .init(x: xPosition - (0.5 * spacing), y: specifications.specifications[.bar]!.height))
+        volumeChart.addLine(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
+        volumeChart.closeSubpath()
+    }
+    
+    private mutating func renderLinePath(index: Int) {
+       let xPosition = getXPosition(index: index)
+       let yPosition = yPositionFactory.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
+       let indexPoint = CGPoint(x: xPosition, y: yPosition)
+       
+       if index == 0 {
+        movingAverageChart.points.append(indexPoint)
+        movingAverageChart.path.move(to: indexPoint)
+        movingAverageChart.area.move(to: indexPoint)
+            
+        } else {
+         
+            if data.count < 3 {
+                movingAverageChart.path.addLine(to: indexPoint)
+            } else {
+            let controlPoints = getControlPoints(index: index-1)
+            movingAverageChart.points.append(indexPoint)
+            movingAverageChart.path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
+            movingAverageChart.area.addLine(to: indexPoint)
+            }
+        }
+
+        if index == data.count {
+            movingAverageChart.area.addLine(to: CGPoint(x: xPosition, y: specifications.specifications[.line]!.height))
+            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: specifications.specifications[.line]!.height))
+            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((data[0].movingAverage / analysis.movingAverage.range)))) * specifications.specifications[.line]!.height))
+            movingAverageChart.area.closeSubpath()
+        }
+    }
+    
+    private mutating func renderCandlePath(index: Int) {
+        var stick = Path()
+        var body = Path()
+        let xPosition = getXPosition(index: index)
+        let yPosition = yPositionFactory.getYPosition(heightBounds: specifications.specifications[.candle]!.height, index: index)
+        let green = data[index].green()
+        
+        body.move(to: .init(x: xPosition - (0.5 * spacing), y: green ? yPosition.close : yPosition.open))
+        body.addLine(to: .init(x: xPosition + (0.5 * spacing), y: green ? yPosition.close : yPosition.open))
+        body.addLine(to: .init(x: xPosition + (0.5 * spacing), y: green ? yPosition.open : yPosition.close))
+        body.addLine(to: .init(x: xPosition - (0.5 * spacing), y: green ? yPosition.open : yPosition.close))
+        body.addLine(to: .init(x: xPosition - (0.5 * spacing), y: green ? yPosition.close : yPosition.open))
+     
+        stick.move(to: .init(x: xPosition, y: yPosition.high))
+        stick.addLine(to: .init(x: xPosition, y: yPosition.low))
+        
+        candles.append(.init(data: data[index], body: body, stick: stick))
+        
+    }
+    
+    
+    
+    func setup<T: ChartPointSpecified>(data: [T], spec: CGPoint, type: Charts) {
+        
+    }
   
 }
 
 fileprivate struct XFactory {
-    static func adjustedWidth(width: CGFloat, padding: CGFloat) -> CGFloat {
+    static private let height: CGFloat = .init(350).hScaled()
+    static private let width: CGFloat = .init(420).wScaled()
+    static private let barHeight: CGFloat = .init(45).hScaled()
+    static private let padding: CGFloat = 0.05 * width
+    
+    static func adjustedWidth(width: CGFloat = width, padding: CGFloat = padding) -> CGFloat {
         width - (2 * padding)
     }
     
-    static func columns(dataCount: Int, adjustedWidth: CGFloat) -> CGFloat {
+    static func columns(dataCount: Int, adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
         adjustedWidth / CGFloat(dataCount - 1)
     }
     
-    static func maxWidth(adjustedWidth: CGFloat) -> CGFloat {
+    static func maxWidth(adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
         0.06 * adjustedWidth
     }
     
-    static func spacing(maxWidth: CGFloat, columns: CGFloat) -> CGFloat {
+    static func spacing(maxWidth: CGFloat = maxWidth(), columns: CGFloat) -> CGFloat {
         columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
     
-    static func getXPosition(index: Int, padding: CGFloat, dataCount: Int, adjustedWidth: CGFloat) -> CGFloat {
+    static func getXPosition(index: Int, padding: CGFloat = padding, dataCount: Int, adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
         let columns = columns(dataCount: dataCount, adjustedWidth: adjustedWidth)
         return index == 0 ? padding : (columns * CGFloat(index)) + padding
     }

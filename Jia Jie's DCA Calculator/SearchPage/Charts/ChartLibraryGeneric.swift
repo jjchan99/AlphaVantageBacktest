@@ -52,7 +52,19 @@ struct ChartLibraryGeneric {
         let chartType: ChartType = min < 0 && max >= 0 ? .negativePositive : allNegativeOrAllPositive
         return chartType
     }
-   
+    
+    private static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat) -> CGFloat {
+        let type = type(min: min, max: max)
+        let range = cgf(max - min)
+        switch type {
+        case .allNegative:
+            return 0
+        case .allPositive:
+            return heightBounds
+        case .negativePositive:
+            return (range + cgf(min))/range * heightBounds
+        }
+    }
     
     private static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
@@ -68,9 +80,20 @@ struct ChartLibraryGeneric {
         
         let deviation = abs(data[index].valueForPlot - max)
         let share = cgf(deviation) / range
-        let untranslatedScaled = CGFloat(share) * heightBounds
-        let translation = cgf(min/max) * heightBounds
-        return 2
+        let scaled = CGFloat(share) * heightBounds
+        
+        switch type {
+        case .allPositive:
+            let translation = cgf(min/max) * heightBounds
+            return scaled - translation
+        case .negativePositive:
+            return scaled
+        case .allNegative:
+            let minShareOfHeight = cgf(max/min) * heightBounds
+            let shareOfRange = cgf(max - data[index].valueForPlot) / range
+            let untranslated = shareOfRange * heightBounds
+            return untranslated + minShareOfHeight
+        }
     }
     
     private static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {

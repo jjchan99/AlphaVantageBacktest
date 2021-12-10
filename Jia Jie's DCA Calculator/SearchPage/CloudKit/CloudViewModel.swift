@@ -17,6 +17,12 @@ class CloudViewModel: ObservableObject {
     @Published var daily: Daily?
     @Published var tb: TradeBot?
     
+    func actionOnRefresh(completion: @escaping () -> Void) {
+        FetchLatest.update { tb in
+            self.tb = tb
+            completion()
+        }
+    }
 }
 
 struct CloudView: View {

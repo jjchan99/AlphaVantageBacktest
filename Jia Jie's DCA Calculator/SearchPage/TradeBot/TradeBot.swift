@@ -16,6 +16,7 @@ struct TradeBot: CloudKitInterchangeable {
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
+    let effectiveAfter: String
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
@@ -23,30 +24,32 @@ struct TradeBot: CloudKitInterchangeable {
         let accumulatedShares = record["accumulatedShares"] as! Double
         let cashBuyPercentage = record["cashBuyPercentage"] as! Double
         let sharesSellPercentage = record["sharesSellPercentage"] as! Double
+        let effectiveAfter = record["effectiveAfter"] as! String
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
         self.cashBuyPercentage = cashBuyPercentage
         self.sharesSellPercentage = sharesSellPercentage
         self.record = record
+        self.effectiveAfter = effectiveAfter
     }
     
     func update() -> Self {
         let record = self.record
         //DO STUFF WITH THE RECORD
         
-        
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
                     "cash": budget,
                     "accumulatedShares": 0,
                     "cashBuyPercentage": cashBuyPercentage,
-                    "sharesSellPercentage": sharesSellPercentage
+                    "sharesSellPercentage": sharesSellPercentage,
+                    "effectiveAfter": effectiveAfter
                 ])
         self.init(record: record)
         self.conditions = conditions
@@ -82,7 +85,7 @@ struct TradeBot: CloudKitInterchangeable {
         
         guard xxx != nil, inputValue != nil else { return false }
         
-        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)). I will now \(condition.buyOrSell).")
+        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
         
         if condition.andCondition != nil {
         let nextCondition = condition.andCondition!
@@ -99,7 +102,7 @@ struct TradeBot: CloudKitInterchangeable {
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
             let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
-            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
+            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
             guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
@@ -145,7 +148,10 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     var record: CKRecord
     
     func update() -> EvaluationCondition {
-        return self
+        let record = self.record
+        //DO STUFF WITH THE RECORD
+        
+        return .init(record: record)!
     }
     
     let technicalIndicator: TechnicalIndicators
@@ -166,6 +172,17 @@ struct Account {
         cash -= amount
         return amount
     }
+}
+
+struct TransactionHistory {
+    var latest: Double
+    var previous: Double
+    var evaluations: [String]
+    var previousCash: Double
+    var newCash: Double
+    var previousShares: Double
+    var newShares: Double
+    var action: BuyOrSell
 }
 
 enum TechnicalIndicators: Hashable, CustomStringConvertible {
@@ -207,17 +224,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return .bollingerBands(percentage: rawValue)
         }
     }
-}
-
-struct BotTransaction {
-    let stamp: String
-    let deltaCash: Double
-    let deltaShares: Double
-    
-    let action: BuyOrSell
-    let condition: EvaluationCondition
-    let price: Double
-    let stamped: String
 }
 
 enum AboveOrBelow: Int, CustomStringConvertible {

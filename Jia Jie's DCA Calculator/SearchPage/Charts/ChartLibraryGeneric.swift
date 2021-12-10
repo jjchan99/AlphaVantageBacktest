@@ -35,19 +35,33 @@ extension ChartPointSpecified {
     }
 }
 
+protocol ChartSpecifications {
+    var height: CGFloat { get set }
+    var width: CGFloat { get set }
+    var padding: CGFloat { get set }
+    
+    
+}
+
 
 struct ChartLibraryGeneric {
     
-    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
+    struct Specifications {
+      
+    }
+    
+    
+    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil, setValuesForKeys: [String : ]) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
         
         var path = Path()
         for index in data.indices {
-            path = renderBarPath(index: index, count: data.count, data: data, max: nil, min: nil, path: path)
+            path = renderBarPath(index: index, count: data.count, data: data, max: max, min: min, path: path)
         }
     }
 
+    
     
     private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil, path: Path) -> Path {
 

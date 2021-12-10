@@ -35,23 +35,19 @@ extension ChartPointSpecified {
     }
 }
 
-protocol ChartSpecifications {
-    var height: CGFloat { get set }
-    var width: CGFloat { get set }
-    var padding: CGFloat { get set }
-    
-    
-}
-
 
 struct ChartLibraryGeneric {
     
-    struct Specifications {
-      
+    struct Specifications<T: ChartPointSpecified> {
+        let data: [T]
+        var height: CGFloat = YFactory.height
+        var width: CGFloat = XFactory.width
+        var padding: CGFloat = XFactory.padding
+        var maxWidth: CGFloat = XFactory.maxWidth()
     }
     
     
-    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil, setValuesForKeys: [String : ]) {
+    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil, setValuesForKeys: [String : Specifications<T>]) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
         
@@ -145,20 +141,20 @@ fileprivate struct XFactory {
         width - (2 * padding)
     }
     
-    static func columns(dataCount: Int, adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
-        adjustedWidth / CGFloat(dataCount - 1)
+    static func columns(dataCount: Int) -> CGFloat {
+        adjustedWidth() / CGFloat(dataCount - 1)
     }
     
-    static func maxWidth(adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
-        0.06 * adjustedWidth
+    static func maxWidth() -> CGFloat {
+        0.06 * adjustedWidth()
     }
     
     static func spacing(maxWidth: CGFloat = maxWidth(), columns: CGFloat) -> CGFloat {
         columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
     
-    static func getXPosition(index: Int, padding: CGFloat = padding, dataCount: Int, adjustedWidth: CGFloat = adjustedWidth()) -> CGFloat {
-        let columns = columns(dataCount: dataCount, adjustedWidth: adjustedWidth)
+    static func getXPosition(index: Int, padding: CGFloat = padding, dataCount: Int) -> CGFloat {
+        let columns = columns(dataCount: dataCount)
         return index == 0 ? padding : (columns * CGFloat(index)) + padding
     }
 }

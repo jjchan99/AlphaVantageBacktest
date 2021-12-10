@@ -102,7 +102,7 @@ struct TradeBot: CloudKitInterchangeable {
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
             let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
-            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: latest)
+            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
             guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:

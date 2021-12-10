@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D06C6B027440DCA00374255 /* CandleIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6AF27440DC900374255 /* CandleIndicator.swift */; };
 		1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6B12744125D00374255 /* CandleIndicatorView.swift */; };
+		1D0AAF9A2762963700318892 /* ChartLibraryGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */; };
 		1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */; };
 		1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */; };
 		1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1210232736DC2A00B58B67 /* PageViewController.swift */; };
@@ -51,6 +52,7 @@
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
 		1D72D2A72700D01E004BBC50 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A62700D01E004BBC50 /* Extensions.swift */; };
 		1D7416AD2762890C00E9FD7C /* TradeAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */; };
+		1D7416B127628D8E00E9FD7C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7416B027628D8E00E9FD7C /* HomeView.swift */; };
 		1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D784B01275A493700F91392 /* CloudKit.framework */; };
 		1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B03275A4C7600F91392 /* CloudKitViewController.swift */; };
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
@@ -124,6 +126,7 @@
 /* Begin PBXFileReference section */
 		1D06C6AF27440DC900374255 /* CandleIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicator.swift; sourceTree = "<group>"; };
 		1D06C6B12744125D00374255 /* CandleIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicatorView.swift; sourceTree = "<group>"; };
+		1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryGeneric.swift; sourceTree = "<group>"; };
 		1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultMeta.swift; sourceTree = "<group>"; };
 		1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAnalysisModel.swift; sourceTree = "<group>"; };
 		1D1210232736DC2A00B58B67 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 		1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactoryProtocol.swift; sourceTree = "<group>"; };
 		1D72D2A62700D01E004BBC50 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeAssistant.swift; sourceTree = "<group>"; };
+		1D7416B027628D8E00E9FD7C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Jia Jie's DCA Calculator.entitlements"; sourceTree = "<group>"; };
 		1D784B01275A493700F91392 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		1D784B03275A4C7600F91392 /* CloudKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitViewController.swift; sourceTree = "<group>"; };
@@ -284,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */,
+				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
 				1D2425B127575EB1003A9755 /* YPositionFactory.swift */,
 				1D2425AF27575E49003A9755 /* ControlPoints.swift */,
 			);
@@ -384,6 +389,14 @@
 			path = GraphRendererModel;
 			sourceTree = "<group>";
 		};
+		1D7416AE27628C5F00E9FD7C /* Tab1Views */ = {
+			isa = PBXGroup;
+			children = (
+				1D7416B027628D8E00E9FD7C /* HomeView.swift */,
+			);
+			path = Tab1Views;
+			sourceTree = "<group>";
+		};
 		1D784B00275A493700F91392 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -432,6 +445,7 @@
 				1D2425AE27575DEE003A9755 /* Charts */,
 				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
 				1D18DDCD2758D9B30061A7AD /* TradeBot */,
+				1D7416AE27628C5F00E9FD7C /* Tab1Views */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
 			path = SearchPage;
@@ -676,9 +690,11 @@
 				1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */,
 				1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */,
 				1D25E28F2722C58A00CD8E4C /* ZeroPositionModel.swift in Sources */,
+				1D0AAF9A2762963700318892 /* ChartLibraryGeneric.swift in Sources */,
 				1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */,
 				1D7416AD2762890C00E9FD7C /* TradeAssistant.swift in Sources */,
 				1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */,
+				1D7416B127628D8E00E9FD7C /* HomeView.swift in Sources */,
 				1D8897E92708B5EF005131B0 /* GraphView.swift in Sources */,
 				1DC8A2422761FC25009FBA85 /* OHLCTechnicalManager.swift in Sources */,
 				1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */,

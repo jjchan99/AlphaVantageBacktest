@@ -35,29 +35,39 @@ extension ChartPointSpecified {
     }
 }
 
+
 struct ChartLibraryGeneric {
     
     static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
+        
+        var path = Path()
+        for index in data.indices {
+            path = renderBarPath(index: index, count: data.count, data: data, max: nil, min: nil, path: path)
+        }
     }
+
     
-    private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil) {
+    private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil, path: Path) -> Path {
 
         let xPosition = XFactory.getXPosition(index: index, dataCount: count)
         let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: YFactory.barHeight)
         
-        volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
-        volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
-        volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: specifications.specifications[.bar]!.height))
-        volumeChart.addLine(to: .init(x: xPosition - (0.5 * spacing), y: specifications.specifications[.bar]!.height))
-        volumeChart.addLine(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
-        volumeChart.closeSubpath()
+        var path = path
+        let spacing = 0.5 * XFactory.spacing(columns: XFactory.columns(dataCount: data.count))
+        path.move(to: .init(x: xPosition - spacing, y: yPosition))
+        path.addLine(to: .init(x: xPosition + spacing, y: yPosition))
+        path.addLine(to: .init(x: xPosition + spacing, y: YFactory.height))
+        path.addLine(to: .init(x: xPosition - spacing, y: YFactory.height))
+        path.addLine(to: .init(x: xPosition - spacing, y: yPosition))
+        path.closeSubpath()
+        return path
     }
     
-    private mutating func renderLinePath(index: Int) {
-       let xPosition = getXPosition(index: index)
-       let yPosition = yPositionFactory.getYPosition(mode: .movingAverage, heightBounds: specifications.specifications[.line]!.height, index: index)
+    private mutating func renderLinePath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil) {
+       let xPosition = XFactory.getXPosition(index: index, dataCount: count)
+       let yPosition = YFactory.getYPosition(data: data, index: index)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        
        if index == 0 {

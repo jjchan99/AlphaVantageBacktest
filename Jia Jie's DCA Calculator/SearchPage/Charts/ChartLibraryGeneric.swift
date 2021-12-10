@@ -36,24 +36,53 @@ extension ChartPointSpecified {
 }
 
 struct ChartLibraryGeneric {
+        
     static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
+    
+    enum ChartType {
+        case allNegative
+        case allPositive
+        case negativePositive
+    }
+    
+    static private func type<T: CustomNumeric>(min: T, max: T) -> ChartType {
+        let allNegativeOrAllPositive: ChartType = min < 0 && max < 0 ? .allNegative : .allPositive
+        let chartType: ChartType = min < 0 && max >= 0 ? .negativePositive : allNegativeOrAllPositive
+        return chartType
+    }
+   
     
     private static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
     }
     
-    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
+    private static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
         let range = cgf(max - min)
         
         let deviation = abs(data[index].valueForPlot - max)
         let share = cgf(deviation) / range
-        let scaled = CGFloat(share) * 1
+        let scaled = CGFloat(share) * heightBounds
         return scaled
+    }
+    
+    private static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+        let range = cgf(max - min)
+        
+        let open = data[index].open
+        let high = data[index].high
+        let low = data[index].low
+        let close = data[index].close
+        let yOpen = (abs(cgf(open! - max)) / range) * heightBounds
+        let yHigh = (abs(cgf(high! - max)) / range) * heightBounds
+        let yLow = (abs(cgf(low! - max)) / range) * heightBounds
+        let yClose = (abs(cgf(close! - max)) / range) * heightBounds
+//        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
+        return ((yOpen, yHigh, yLow, yClose))
     }
 }
    

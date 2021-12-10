@@ -27,6 +27,10 @@ protocol CustomNumeric : Comparable, SignedNumeric {
     // 'shadow method' that allows instances of Numeric
     // to coerce themselves to another Numeric type
     func _asOther<T:CustomNumeric>() -> T
+    static func +(lhs: Self, rhs: Self) -> Self
+    static func -(lhs: Self, rhs: Self) -> Self
+    static func *(lhs: Self, rhs: Self) -> Self
+    static func /(lhs: Self, rhs: Self) -> Self
 }
 
 extension CustomNumeric {

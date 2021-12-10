@@ -64,10 +64,13 @@ struct ChartLibraryGeneric {
         let min = min ?? data.min()!.valueForPlot
         let range = cgf(max - min)
         
+        let type = type(min: min, max: max)
+        
         let deviation = abs(data[index].valueForPlot - max)
         let share = cgf(deviation) / range
-        let scaled = CGFloat(share) * heightBounds
-        return scaled
+        let untranslatedScaled = CGFloat(share) * heightBounds
+        let translation = cgf(min/max) * heightBounds
+        return 2
     }
     
     private static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {

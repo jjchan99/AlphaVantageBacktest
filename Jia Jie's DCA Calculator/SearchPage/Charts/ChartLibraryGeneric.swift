@@ -23,6 +23,10 @@ protocol ChartPointSpecified: Comparable {
     var high: T? { get }
     var low: T? { get }
     var close: T? { get }
+    
+    //    associatedtype SomeEnumType: RawRepresentable where SomeEnumType.RawValue: StringProtocol
+    //    func pathToValueForChart(key: SomeEnumType) -> T
+    static var itemsToPlot: [KeyPath<Self, T>] { get }
 }
 
 extension ChartPointSpecified {
@@ -213,7 +217,7 @@ fileprivate struct YFactory {
             return scaled
         case .allNegative:
             let minShareOfHeight = cgf(max/min) * heightBounds
-            let shareOfRange = cgf(max - data[index].valueForPlot) / range
+            let shareOfRange = cgf(max - data[index][keyPath: T.itemsToPlot[0]]) / range
             let untranslated = shareOfRange * heightBounds
             return untranslated + minShareOfHeight
         }
@@ -237,6 +241,8 @@ fileprivate struct YFactory {
 
 
 struct Test: ChartPointSpecified {
+    static var itemsToPlot: [KeyPath<Test, Double>] = [\Test.open!, \Test.close!]
+    
     var open: Double?
     
     var high: Double?

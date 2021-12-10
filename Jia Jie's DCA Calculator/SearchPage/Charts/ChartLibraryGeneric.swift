@@ -45,7 +45,7 @@ struct ChartLibraryGeneric {
     private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T? = nil, min: T.T? = nil) {
 
         let xPosition = XFactory.getXPosition(index: index, dataCount: count)
-        let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: <#T##CGFloat#>, max: <#T##CustomNumeric?#>, min: <#T##CustomNumeric?#>)
+        let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: YFactory.barHeight)
         
         volumeChart.move(to: .init(x: xPosition - (0.5 * spacing), y: yPosition))
         volumeChart.addLine(to: .init(x: xPosition + (0.5 * spacing), y: yPosition))
@@ -114,8 +114,8 @@ struct ChartLibraryGeneric {
 }
 
 fileprivate struct XFactory {
-    static private let width: CGFloat = .init(420).wScaled()
-    static private let padding: CGFloat = 0.05 * width
+    static let width: CGFloat = .init(420).wScaled()
+    static let padding: CGFloat = 0.05 * width
     
     static func adjustedWidth(width: CGFloat = width, padding: CGFloat = padding) -> CGFloat {
         width - (2 * padding)
@@ -140,8 +140,8 @@ fileprivate struct XFactory {
 }
 
 fileprivate struct YFactory {
-    static private let height: CGFloat = .init(350).hScaled()
-    static private let barHeight: CGFloat = .init(45).hScaled()
+    static let height: CGFloat = .init(350).hScaled()
+    static let barHeight: CGFloat = .init(45).hScaled()
     
     enum ChartType {
         case allNegative

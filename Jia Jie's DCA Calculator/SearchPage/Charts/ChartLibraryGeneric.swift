@@ -64,7 +64,7 @@ struct ChartLibraryGeneric {
         let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
         
         var path = path
-        let spacing = 0.5 * XFactory.spacing(columns: XFactory.columns(dataCount: data.count))
+        let spacing = 0.5 * XFactory.spacing(dataCount: data.count)
         path.move(to: .init(x: xPosition - spacing, y: yPosition))
         path.addLine(to: .init(x: xPosition + spacing, y: yPosition))
         path.addLine(to: .init(x: xPosition + spacing, y: spec.height))

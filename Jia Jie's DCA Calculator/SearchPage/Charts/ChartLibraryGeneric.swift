@@ -10,10 +10,11 @@ import SwiftUI
 import CoreGraphics
 import Algorithms
 
-enum ChartType {
+enum ChartType: CaseIterable {
     case bar
     case line
     case candle
+    
 }
 
 protocol ChartPointSpecified {
@@ -28,6 +29,7 @@ protocol ChartPointSpecified {
 
 struct Specifications<T: CustomNumeric> {
     var type: ChartType
+    let title: String
     var height: CGFloat = YFactory.height
     var width: CGFloat = XFactory.width
     var padding: CGFloat = XFactory.padding
@@ -36,23 +38,45 @@ struct Specifications<T: CustomNumeric> {
     let max: T
 }
 
+struct PathFactory {
+//    static func createCandles<T: ChartPointSpecified>() -> [Candle<T>] {
+//        return []
+//    }
+//
+//    static func createLine() -> (path: Path, area: Path) {
+//        return (path: Path(), area: Path())
+//    }
+//
+//    static func createBar() -> Path {
+//        return Path()
+//    }
+}
+
 struct ChartLibraryGeneric {
     static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
 
     static func render<T: ChartPointSpecified>(data: [T]) {
-        var path = Path()
+        var bars: [String: Path] = [:]
+        var candles: [String: [Candle<T>]] = [:]
+        var lines: [String: (path: Path, area: Path)] = [:]
+        
         for index in data.indices {
             for (key, spec) in T.itemsToPlot {
                 switch spec.type {
                 case .bar:
-                    path = renderBarPath(index: index, data: data, key: key, spec: spec, path: path)
+                    let previous = bars[spec.title] ?? Path()
+                    let new = renderBarPath(index: index, data: data, key: key, spec: spec, path: previous)
+                    bars[spec.title] = new
                 case .line:
-                    renderLinePath(index: index, data: data, key: key, spec: spec)
+                    let previous = lines[spec.title] ?? (path: Path(), area: Path())
+                    let new = renderLinePath(index: index, data: data, key: key, spec: spec)
+                    lines[spec.title] = new
                 case .candle:
-                    renderCandlePath(index: index, data: data, spec: spec)
-                    
+                    let previous = candles[spec.title] ?? []
+                    let new = renderCandlePath(index: index, data: data, spec: spec)
+                    candles[spec.title] = new
                 }
             }
         }

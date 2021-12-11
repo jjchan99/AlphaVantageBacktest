@@ -27,7 +27,7 @@ protocol ChartPointSpecified {
 }
 
 struct Specifications<T: CustomNumeric> {
-    var type: Charts
+    var type: ChartType
     var height: CGFloat = YFactory.height
     var width: CGFloat = XFactory.width
     var padding: CGFloat = XFactory.padding
@@ -132,7 +132,7 @@ struct ChartLibraryGeneric {
     
     
     
-    func setup<T: ChartPointSpecified>(data: [T], spec: CGPoint, type: Charts) {
+    func setup<T: ChartPointSpecified>(data: [T], spec: CGPoint, type: ChartType) {
         
     }
 }

@@ -113,7 +113,7 @@ struct ChartLibraryGeneric {
     static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) {
         var stick = Path()
         var body = Path()
-        var candles: [Candle] = []
+        var candles: [Candle<T>] = []
         let xPosition = XFactory.getXPosition(index: index, dataCount: data.count)
         let yPosition = YFactory.getYPosition(data: data, heightBounds: spec.height, index: index, max: spec.max, min: spec.min)
         let green = cgf(data[index].close!) > cgf(data[index].open!)

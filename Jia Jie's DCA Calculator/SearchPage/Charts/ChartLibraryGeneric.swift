@@ -51,12 +51,6 @@ struct ChartLibraryGeneric {
                     
                     
                 }
-                
-                
-                
-        
-                
-                
             }
         }
     }
@@ -139,7 +133,38 @@ struct ChartLibraryGeneric {
     func setup<T: ChartPointSpecified>(data: [T], spec: CGPoint, type: Charts) {
         
     }
-  
+}
+
+extension ChartLibraryGeneric {
+    static private func getControlPoints<T: ChartPointSpecified>(index: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>) -> (CGPoint, CGPoint) {
+        var points: [Int: CGPoint] = [:]
+        for idx in index - 1...index + 2 {
+            let withinRange = data.indices.contains(idx)
+            if withinRange {
+                points[idx] = CGPoint(x: XFactory.getXPosition(index: index, dataCount: data.count), y: YFactory.getYPosition(data: data, index: index, max: max, min: min, key: key))
+            }
+        }
+        
+        if points[index-1] == nil {
+            let centerPoint = points[index + 1]!
+            let previousPoint = points[index]!
+            let nextPoint = points[index + 2]!
+            let staticPoint1 = ControlPoint.staticControlPoints(centerPoint: centerPoint, previousPoint: previousPoint, nextPoint: nextPoint).staticPoint1
+            let controlPoint1 = ControlPoint.translateControlPoints(centerPoint: centerPoint, previousPoint: previousPoint, nextPoint: nextPoint).controlPoint1
+            return ((staticPoint1, controlPoint1))
+        } else if points[index + 2] == nil {
+            let centerPoint = points[index]!
+            let previousPoint = points[index - 1]!
+            let nextPoint = points[index + 1]!
+            let staticPoint2 = ControlPoint.staticControlPoints(centerPoint: centerPoint, previousPoint: previousPoint, nextPoint: nextPoint).staticPoint2
+            let controlPoint2 = ControlPoint.translateControlPoints(centerPoint: centerPoint, previousPoint: previousPoint, nextPoint: nextPoint).controlPoint2
+            return ((controlPoint2, staticPoint2))
+        } else {
+            let controlPoint2 = ControlPoint.translateControlPoints(centerPoint: points[index]!, previousPoint: points[index - 1]!, nextPoint: points[index + 1]!).controlPoint2
+            let controlPoint1 = ControlPoint.translateControlPoints(centerPoint: points[index + 1]!, previousPoint: points[index]!, nextPoint: points[index + 2]!).controlPoint1
+            return ((controlPoint2, controlPoint1))
+        }
+    }
 }
 
 fileprivate struct XFactory {
@@ -178,11 +203,11 @@ fileprivate struct YFactory {
         case negativePositive
     }
     
-    static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
+    static private func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
     
-    static func type<T: CustomNumeric>(min: T, max: T) -> ChartType {
+    static private func type<T: CustomNumeric>(min: T, max: T) -> ChartType {
         let allNegativeOrAllPositive: ChartType = min < 0 && max < 0 ? .allNegative : .allPositive
         let chartType: ChartType = min < 0 && max >= 0 ? .negativePositive : allNegativeOrAllPositive
         return chartType

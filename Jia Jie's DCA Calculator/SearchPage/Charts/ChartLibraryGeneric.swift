@@ -26,7 +26,17 @@ protocol ChartPointSpecified: Comparable {
     
     //    associatedtype SomeEnumType: RawRepresentable where SomeEnumType.RawValue: StringProtocol
     //    func pathToValueForChart(key: SomeEnumType) -> T
-    static var itemsToPlot: [KeyPath<Self, T>] { get }
+    static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get }
+}
+
+struct Specifications<T: CustomNumeric> {
+    var type: Charts
+    var height: CGFloat = YFactory.height
+    var width: CGFloat = XFactory.width
+    var padding: CGFloat = XFactory.padding
+    var maxWidth: CGFloat = XFactory.maxWidth()
+    let min: T
+    let max: T
 }
 
 extension ChartPointSpecified {
@@ -41,23 +51,30 @@ extension ChartPointSpecified {
 
 
 struct ChartLibraryGeneric {
-    
-    struct Specifications<T: ChartPointSpecified> {
-        let data: [T]
-        var height: CGFloat = YFactory.height
-        var width: CGFloat = XFactory.width
-        var padding: CGFloat = XFactory.padding
-        var maxWidth: CGFloat = XFactory.maxWidth()
-    }
-    
-    
-    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil, setValuesForKeys: [String : Specifications<T>]) {
+
+    static func render<T: ChartPointSpecified>(data: [T], max: T.T? = nil, min: T.T? = nil) {
         let max = max ?? data.max()!.valueForPlot
         let min = min ?? data.min()!.valueForPlot
         
         var path = Path()
         for index in data.indices {
-            path = renderBarPath(index: index, count: data.count, data: data, max: max, min: min, path: path)
+            for (key, spec) in T.itemsToPlot {
+                switch spec.type {
+                case .bar:
+                    path = renderBarPath(index: index, count: data.count, data: data, max: max, min: min, path: path)
+                case .line:
+                    
+                case .candle:
+                    
+                    
+                }
+                
+                
+                
+        
+                
+                
+            }
         }
     }
 
@@ -198,11 +215,8 @@ fileprivate struct YFactory {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat = height, max: T.T? = nil, min: T.T? = nil) -> CGFloat {
-        let max = max ?? data.max()!.valueForPlot
-        let min = min ?? data.min()!.valueForPlot
+    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat = height, max: T.T, min: T.T, key: KeyPath<T, T.T>) -> CGFloat {
         let range = cgf(max - min)
-        
         let type = type(min: min, max: max)
         
         let deviation = abs(data[index].valueForPlot - max)
@@ -217,7 +231,7 @@ fileprivate struct YFactory {
             return scaled
         case .allNegative:
             let minShareOfHeight = cgf(max/min) * heightBounds
-            let shareOfRange = cgf(max - data[index][keyPath: T.itemsToPlot[0]]) / range
+            let shareOfRange = cgf(max - data[index][keyPath: key]) / range
             let untranslated = shareOfRange * heightBounds
             return untranslated + minShareOfHeight
         }
@@ -241,7 +255,12 @@ fileprivate struct YFactory {
 
 
 struct Test: ChartPointSpecified {
-    static var itemsToPlot: [KeyPath<Test, Double>] = [\Test.open!, \Test.close!]
+    var valueForPlot: Double = 6
+    
+    static var itemsToPlot: [KeyPath<Test, Double> : Specifications<Double>] = [
+        \Test.open! : .init(type: .bar, min: 4, max: 6) ,
+         \Test.close! : .init(type: .line, min: 6, max: 5)
+    ]
     
     var open: Double?
     
@@ -252,8 +271,6 @@ struct Test: ChartPointSpecified {
     var close: Double?
     
     typealias T = Double
-    
-    var valueForPlot: Double = 4
     
 }
 

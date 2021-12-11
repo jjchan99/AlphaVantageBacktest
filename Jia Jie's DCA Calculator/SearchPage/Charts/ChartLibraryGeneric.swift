@@ -84,29 +84,33 @@ struct ChartLibraryGeneric {
        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
        let yPosition = YFactory.getYPosition(data: data, index: index, max: max, min: min, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
+        
+       var path = Path()
+       var area = Path()
+       var points: [CGPoint]
        
        if index == 0 {
-        movingAverageChart.points.append(indexPoint)
-        movingAverageChart.path.move(to: indexPoint)
-        movingAverageChart.area.move(to: indexPoint)
+        points.append(indexPoint)
+        path.move(to: indexPoint)
+        area.move(to: indexPoint)
             
         } else {
          
             if data.count < 3 {
-                movingAverageChart.path.addLine(to: indexPoint)
+                path.addLine(to: indexPoint)
             } else {
             let controlPoints = getControlPoints(index: index-1)
-            movingAverageChart.points.append(indexPoint)
-            movingAverageChart.path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
-            movingAverageChart.area.addLine(to: indexPoint)
+            points.append(indexPoint)
+            path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
+            area.addLine(to: indexPoint)
             }
         }
 
         if index == data.count {
-            movingAverageChart.area.addLine(to: CGPoint(x: xPosition, y: specifications.specifications[.line]!.height))
-            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: specifications.specifications[.line]!.height))
-            movingAverageChart.area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((data[0].movingAverage / analysis.movingAverage.range)))) * specifications.specifications[.line]!.height))
-            movingAverageChart.area.closeSubpath()
+            area.addLine(to: CGPoint(x: xPosition, y: specifications.specifications[.line]!.height))
+            area.addLine(to: CGPoint(x: 0, y: specifications.specifications[.line]!.height))
+            area.addLine(to: CGPoint(x: 0, y: (1 - (CGFloat((data[0].movingAverage / analysis.movingAverage.range)))) * specifications.specifications[.line]!.height))
+            area.closeSubpath()
         }
     }
     

@@ -44,9 +44,9 @@ struct ChartLibraryGeneric {
             for (key, spec) in T.itemsToPlot {
                 switch spec.type {
                 case .bar:
-                    path = renderBarPath(index: index, count: data.count, data: data, max: spec.max, min: spec.min, path: path)
+                    path = renderBarPath(index: index, data: data, max: spec.max, min: spec.min, key: key, path: path)
                 case .line:
-                    
+                    renderLinePath(index: index, data: data, max: spec.max, min: spec.min, key: key)
                 case .candle:
                     
                     
@@ -63,8 +63,8 @@ struct ChartLibraryGeneric {
 
     
     
-    private static func renderBarPath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>, path: Path) -> Path {
-
+    private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>, path: Path) -> Path {
+        let count = data.count
         let xPosition = XFactory.getXPosition(index: index, dataCount: count)
         let yPosition = YFactory.getYPosition(data: data, index: index, max: max, min: min, key: key)
         
@@ -79,9 +79,10 @@ struct ChartLibraryGeneric {
         return path
     }
     
-    private mutating func renderLinePath<T: ChartPointSpecified>(index: Int, count: Int, data: [T], max: T.T, min: T.T) {
+    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>) {
+       let count = data.count
        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
-       let yPosition = YFactory.getYPosition(data: data, index: index)
+       let yPosition = YFactory.getYPosition(data: data, index: index, max: max, min: min, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        
        if index == 0 {

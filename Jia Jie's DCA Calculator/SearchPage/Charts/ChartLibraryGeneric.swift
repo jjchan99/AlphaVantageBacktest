@@ -83,7 +83,7 @@ struct ChartLibraryGeneric {
         
        var path = Path()
        var area = Path()
-       var points: [CGPoint]
+       var points: [CGPoint] = []
        
        if index == 0 {
         points.append(indexPoint)
@@ -187,7 +187,7 @@ fileprivate struct XFactory {
     
     static func spacing(maxWidth: CGFloat = maxWidth(), dataCount: Int) -> CGFloat {
         let columns = columns(dataCount: dataCount)
-        columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
+        return columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
     
     static func getXPosition(index: Int, padding: CGFloat = padding, dataCount: Int) -> CGFloat {

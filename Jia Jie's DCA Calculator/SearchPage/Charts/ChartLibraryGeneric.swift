@@ -10,11 +10,10 @@ import SwiftUI
 import CoreGraphics
 import Algorithms
 
-enum ChartType: CaseIterable {
-    case bar
-    case line
-    case candle
-    
+enum ChartType<T: ChartPointSpecified> {
+    case bar(Path)
+    case line((Path, Path))
+    case candle([Candle<T>])
 }
 
 protocol ChartPointSpecified {
@@ -24,18 +23,18 @@ protocol ChartPointSpecified {
     var low: T? { get }
     var close: T? { get }
     
-    static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get }
+    static var itemsToPlot: [KeyPath<Self, T> : Specifications<Self>] { get }
 }
 
-struct Specifications<T: CustomNumeric> {
-    var type: ChartType
+struct Specifications<T: ChartPointSpecified> {
+    var type: ChartType<T>
     let title: String
     var height: CGFloat = YFactory.height
     var width: CGFloat = XFactory.width
     var padding: CGFloat = XFactory.padding
     var maxWidth: CGFloat = XFactory.maxWidth()
-    let min: T
-    let max: T
+    let min: T.T
+    let max: T.T
 }
 
 struct PathFactory {
@@ -82,7 +81,7 @@ struct ChartLibraryGeneric {
         }
     }
 
-    private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, path: Path) -> Path {
+    private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T>, path: Path) -> Path {
         let count = data.count
         let xPosition = XFactory.getXPosition(index: index, dataCount: count)
         let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
@@ -98,7 +97,7 @@ struct ChartLibraryGeneric {
         return path
     }
     
-    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>) {
+    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T>) {
        let count = data.count
        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
        let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
@@ -134,7 +133,7 @@ struct ChartLibraryGeneric {
         }
     }
     
-    static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) {
+    static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T>) {
         var stick = Path()
         var body = Path()
         var candles: [Candle<T>] = []
@@ -296,7 +295,7 @@ fileprivate struct YFactory {
 
 struct Test: ChartPointSpecified {
     
-    static var itemsToPlot: [KeyPath<Test, Double> : Specifications<Double>] = [
+    static var itemsToPlot: [KeyPath<Test, Double> : Specifications<Test>] = [
         \Test.open! : .init(type: .bar, min: 4, max: 6) ,
          \Test.close! : .init(type: .line, min: 6, max: 5)
     ]

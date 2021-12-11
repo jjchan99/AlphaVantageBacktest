@@ -93,7 +93,7 @@ struct ChartLibraryGeneric {
             if data.count < 3 {
                 path.addLine(to: indexPoint)
             } else {
-            let controlPoints = getControlPoints(index: index-1)
+            let controlPoints = getControlPoints(index: index-1, data: data, max: max, min: min, key: key)
             points.append(indexPoint)
             path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
             area.addLine(to: indexPoint)

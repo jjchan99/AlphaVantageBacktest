@@ -17,7 +17,7 @@ enum ChartType {
 }
 
 protocol ChartPointSpecified {
-    associatedtype T where T: CustomNumeric
+    associatedtype T where T: CustomNumeric 
     var open: T? { get }
     var high: T? { get }
     var low: T? { get }
@@ -51,7 +51,7 @@ struct ChartLibraryGeneric {
                 case .line:
                     renderLinePath(index: index, data: data, key: key, spec: spec)
                 case .candle:
-                    
+                    renderCandlePath(index: index, data: data, spec: spec)
                     
                 }
             }
@@ -116,7 +116,7 @@ struct ChartLibraryGeneric {
         var candles: [Candle] = []
         let xPosition = XFactory.getXPosition(index: index, dataCount: data.count)
         let yPosition = YFactory.getYPosition(data: data, heightBounds: spec.height, index: index, max: spec.max, min: spec.min)
-        let green = data[index].close > data[index].open
+        let green = cgf(data[index].close!) > cgf(data[index].open!)
         
         body.move(to: .init(x: xPosition - (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
         body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
@@ -128,7 +128,6 @@ struct ChartLibraryGeneric {
         stick.addLine(to: .init(x: xPosition, y: yPosition.low))
         
         candles.append(.init(data: data[index], body: body, stick: stick))
-        
     }
     
     

@@ -287,7 +287,7 @@ fileprivate struct YFactory {
         switch type {
         case .allPositive:
             let translation = cgf(min/max) * heightBounds
-            return scaled - translation
+            return scaled 
         case .negativePositive:
             return scaled
         case .allNegative:

@@ -17,12 +17,19 @@ enum ChartType: CaseIterable {
     
 }
 
+protocol CandlePointSpecified: ChartPointSpecified {
+    var open: T { get }
+    var high: T { get }
+    var low: T { get }
+    var close: T { get }
+}
+
 protocol ChartPointSpecified {
     associatedtype T where T: CustomNumeric 
-    var open: T? { get }
-    var high: T? { get }
-    var low: T? { get }
-    var close: T? { get }
+//    var open: T? { get }
+//    var high: T? { get }
+//    var low: T? { get }
+//    var close: T? { get }
     
     static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get }
 }
@@ -58,6 +65,29 @@ struct ChartLibraryGeneric {
     }
 
     static func render<T: ChartPointSpecified>(data: [T]) {
+        var bars: [String: Path] = [:]
+        var candles: [String: [Candle<T>]] = [:]
+        var lines: [String: (path: Path, area: Path)] = [:]
+        
+        for index in data.indices {
+            for (key, spec) in T.itemsToPlot {
+                switch spec.type {
+                case .bar:
+                    let previous = bars[spec.title] ?? Path()
+                    let new = renderBarPath(index: index, data: data, key: key, spec: spec, path: previous)
+                    bars[spec.title] = new
+                case .line:
+                    let previous = lines[spec.title] ?? (path: Path(), area: Path())
+                    let new = renderLinePath(index: index, data: data, key: key, spec: spec, previous: previous)
+                    lines[spec.title] = new
+                default:
+                    return
+                }
+            }
+        }
+    }
+    
+    static func render<T: CandlePointSpecified>(data: [T]) {
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]
@@ -136,12 +166,12 @@ struct ChartLibraryGeneric {
         return ((path, area))
     }
     
-    static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) -> Candle<T> {
+    static private func renderCandlePath<T: CandlePointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) -> Candle<T> {
         var stick = Path()
         var body = Path()
         let xPosition = XFactory.getXPosition(index: index, dataCount: data.count)
         let yPosition = YFactory.getYPosition(data: data, heightBounds: spec.height, index: index, max: spec.max, min: spec.min)
-        let green = cgf(data[index].close!) > cgf(data[index].open!)
+        let green = cgf(data[index].close) > cgf(data[index].open)
         
         body.move(to: .init(x: xPosition - (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
         body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
@@ -241,17 +271,17 @@ fileprivate struct YFactory {
         return chartType
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], heightBounds: CGFloat = height, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+    static func getYPosition<T: CandlePointSpecified>(data: [T], heightBounds: CGFloat = height, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let range = cgf(max - min)
         
         let open = data[index].open
         let high = data[index].high
         let low = data[index].low
         let close = data[index].close
-        let yOpen = (abs(cgf(open! - max)) / range) * heightBounds
-        let yHigh = (abs(cgf(high! - max)) / range) * heightBounds
-        let yLow = (abs(cgf(low! - max)) / range) * heightBounds
-        let yClose = (abs(cgf(close! - max)) / range) * heightBounds
+        let yOpen = (abs(cgf(open - max)) / range) * heightBounds
+        let yHigh = (abs(cgf(high - max)) / range) * heightBounds
+        let yLow = (abs(cgf(low - max)) / range) * heightBounds
+        let yClose = (abs(cgf(close - max)) / range) * heightBounds
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }

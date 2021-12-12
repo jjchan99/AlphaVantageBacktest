@@ -38,4 +38,10 @@ struct OHLCCloudElement {
     }
 }
 
-extension OHLCCloudElement:
+extension OHLCCloudElement: CandlePointSpecified {
+    typealias T = Double
+    
+    static var itemsToPlot: [KeyPath<OHLCCloudElement, Double> : Specifications<Double>] = [:]
+    
+    
+}

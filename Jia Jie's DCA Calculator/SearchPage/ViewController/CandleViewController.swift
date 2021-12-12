@@ -70,7 +70,7 @@ class CandleViewController: UIViewController {
         
         OHLCCloudElement.itemsToPlot = [
             \OHLCCloudElement.movingAverage : .init(type: .line, title: "movingAverage", min: movingAverage.min, max: movingAverage.max),
-             \OHLCCloudElement.volume : .init(type: .bar, title: "volume", min: tradingVolume.min, max: tradingVolume.max),
+             \OHLCCloudElement.volume : .init(type: .bar, title: "volume", height: viewModel.barHeight, min: tradingVolume.min, max: tradingVolume.max),
              \OHLCCloudElement.emptyKey : .init(type: .candle, title: "daily", min: min(movingAverage.min, low.min), max: max(movingAverage.max, high.max))
         ]
         

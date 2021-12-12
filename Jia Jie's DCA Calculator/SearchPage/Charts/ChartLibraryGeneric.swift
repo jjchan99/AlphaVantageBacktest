@@ -105,10 +105,10 @@ struct ChartLibraryGeneric {
     private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, path: Path) -> Path {
         let count = data.count
         let xPosition = XFactory.getXPosition(index: index, dataCount: count)
-        let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
+        let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: spec.height, max: spec.max, min: spec.min, key: key)
         
         var path = path
-        let spacing = 0.5 * XFactory.spacing(dataCount: data.count)
+        let spacing = 0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)
         path.move(to: .init(x: xPosition - spacing, y: yPosition))
         path.addLine(to: .init(x: xPosition + spacing, y: yPosition))
         path.addLine(to: .init(x: xPosition + spacing, y: spec.height))
@@ -121,7 +121,7 @@ struct ChartLibraryGeneric {
     private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, previous: (Path, Path)) -> ((Path, Path)) {
        let count = data.count
        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
-       let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
+       let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: spec.height, max: spec.max, min: spec.min, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        let range = spec.max - spec.min
         
@@ -139,7 +139,7 @@ struct ChartLibraryGeneric {
             if data.count < 3 {
                 path.addLine(to: indexPoint)
             } else {
-                let controlPoints = getControlPoints(index: index-1, data: data, max: spec.max, min: spec.min, key: key)
+                let controlPoints = getControlPoints(index: index-1, data: data, max: spec.max, min: spec.min, key: key, height: spec.height)
             points.append(indexPoint)
             path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
             area.addLine(to: indexPoint)
@@ -163,11 +163,11 @@ struct ChartLibraryGeneric {
         let yPosition = YFactory.getYPosition(data: data, heightBounds: spec.height, index: index, max: spec.max, min: spec.min)
         let green = cgf(data[index].close) > cgf(data[index].open)
         
-        body.move(to: .init(x: xPosition - (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
-        body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
-        body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.open : yPosition.close))
-        body.addLine(to: .init(x: xPosition - (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.open : yPosition.close))
-        body.addLine(to: .init(x: xPosition - (0.5 * XFactory.spacing(dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
+        body.move(to: .init(x: xPosition - (0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
+        body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
+        body.addLine(to: .init(x: xPosition + (0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)), y: green ? yPosition.open : yPosition.close))
+        body.addLine(to: .init(x: xPosition - (0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)), y: green ? yPosition.open : yPosition.close))
+        body.addLine(to: .init(x: xPosition - (0.5 * XFactory.spacing(maxWidth: spec.maxWidth, dataCount: data.count)), y: green ? yPosition.close : yPosition.open))
      
         stick.move(to: .init(x: xPosition, y: yPosition.high))
         stick.addLine(to: .init(x: xPosition, y: yPosition.low))
@@ -183,12 +183,12 @@ struct ChartLibraryGeneric {
 }
 
 extension ChartLibraryGeneric {
-    static private func getControlPoints<T: ChartPointSpecified>(index: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>) -> (CGPoint, CGPoint) {
+    static private func getControlPoints<T: ChartPointSpecified>(index: Int, data: [T], max: T.T, min: T.T, key: KeyPath<T, T.T>, height: CGFloat) -> (CGPoint, CGPoint) {
         var points: [Int: CGPoint] = [:]
         for idx in index - 1...index + 2 {
             let withinRange = data.indices.contains(idx)
             if withinRange {
-                points[idx] = CGPoint(x: XFactory.getXPosition(index: index, dataCount: data.count), y: YFactory.getYPosition(data: data, index: index, max: max, min: min, key: key))
+                points[idx] = CGPoint(x: XFactory.getXPosition(index: index, dataCount: data.count), y: YFactory.getYPosition(data: data, index: index, heightBounds: height, max: max, min: min, key: key))
             }
         }
         
@@ -230,7 +230,7 @@ fileprivate struct XFactory {
         0.06 * adjustedWidth()
     }
     
-    static func spacing(maxWidth: CGFloat = maxWidth(), dataCount: Int) -> CGFloat {
+    static func spacing(maxWidth: CGFloat, dataCount: Int) -> CGFloat {
         let columns = columns(dataCount: dataCount)
         return columns <= 5.0 ? 1 : (0.5) * columns > maxWidth ? maxWidth : (0.5) * columns
     }
@@ -261,7 +261,7 @@ fileprivate struct YFactory {
         return chartType
     }
     
-    static func getYPosition<T: CandlePointSpecified>(data: [T], heightBounds: CGFloat = height, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
+    static func getYPosition<T: CandlePointSpecified>(data: [T], heightBounds: CGFloat, index: Int, max: T.T, min: T.T) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let range = cgf(max - min)
         
         let open = data[index].open
@@ -276,7 +276,7 @@ fileprivate struct YFactory {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat = height, max: T.T, min: T.T, key: KeyPath<T, T.T>) -> CGFloat {
+    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat, max: T.T, min: T.T, key: KeyPath<T, T.T>) -> CGFloat {
         let range = cgf(max - min)
         let type = type(min: min, max: max)
         
@@ -298,7 +298,7 @@ fileprivate struct YFactory {
         }
     }
     
-    static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat = height) -> CGFloat {
+    static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat) -> CGFloat {
         let type = type(min: min, max: max)
         let range = cgf(max - min)
         switch type {

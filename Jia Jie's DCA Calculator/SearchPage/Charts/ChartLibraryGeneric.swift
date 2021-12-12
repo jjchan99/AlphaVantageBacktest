@@ -14,7 +14,6 @@ enum ChartType: CaseIterable {
     case bar
     case line
     case candle
-    
 }
 
 protocol CandlePointSpecified: ChartPointSpecified {
@@ -22,6 +21,7 @@ protocol CandlePointSpecified: ChartPointSpecified {
     var high: T { get }
     var low: T { get }
     var close: T { get }
+    var emptyKey: T { get }
 }
 
 protocol ChartPointSpecified {
@@ -45,26 +45,12 @@ struct Specifications<T: CustomNumeric> {
     let max: T
 }
 
-struct PathFactory {
-//    static func createCandles<T: ChartPointSpecified>() -> [Candle<T>] {
-//        return []
-//    }
-//
-//    static func createLine() -> (path: Path, area: Path) {
-//        return (path: Path(), area: Path())
-//    }
-//
-//    static func createBar() -> Path {
-//        return Path()
-//    }
-}
-
 struct ChartLibraryGeneric {
     static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
 
-    static func render<T: ChartPointSpecified>(data: [T]) {
+    static func render<T: ChartPointSpecified>(data: [T]) -> ChartLibraryOutput<T> {
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]
@@ -81,13 +67,15 @@ struct ChartLibraryGeneric {
                     let new = renderLinePath(index: index, data: data, key: key, spec: spec, previous: previous)
                     lines[spec.title] = new
                 default:
-                    return
+                    fatalError("Data must conform to CandlePointSpecified protocl to render Candles chart")
                 }
             }
         }
+        
+        return .init(bars: bars, candles: candles, lines: lines)
     }
     
-    static func render<T: CandlePointSpecified>(data: [T]) {
+    static func render<T: CandlePointSpecified>(OHLC data: [T]) -> ChartLibraryOutput<T> {
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]
@@ -110,6 +98,8 @@ struct ChartLibraryGeneric {
                 }
             }
         }
+        
+        return .init(bars: bars, candles: candles, lines: lines)
     }
 
     private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, path: Path) -> Path {

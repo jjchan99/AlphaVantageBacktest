@@ -9,27 +9,27 @@ import Foundation
 import SwiftUI
 
 struct CandleView: View {
-    @EnvironmentObject var viewModel: CandleViewModel
+    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
     
     let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
     let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
     
     func scaleFactor(_ a: CGFloat) -> CGFloat {
-        let sf = a / (CGFloat(viewModel.sorted!.count) / 5)
+        let sf = a / (CGFloat(viewModel.chartsOutput!.candles["daily"]!.count) / 5)
         return sf < 1 ? 1 : sf
     }
  
     var body: some View {
         ZStack {
-        if viewModel.charts != nil {
+        if viewModel.chartsOutput != nil {
             
             VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
               
                 ZStack {
-                ForEach(0..<viewModel.sorted!.count, id: \.self) { idx in
-                    let candles = viewModel.charts!.candles
-                    let color: Color = candles[idx].data.green() ? green : red
+                    ForEach(0..<viewModel.chartsOutput!.candles["daily"]!.count, id: \.self) { idx in
+                        let candles = viewModel.chartsOutput!.candles["daily"]!
+                        let color: Color = candles[idx].data.green() ? green : red
                 
                 color
                     .mask(candles[idx].body)

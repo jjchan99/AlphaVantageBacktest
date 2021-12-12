@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BackgroundView: View {
     
-    @EnvironmentObject var viewModel: CandleViewModel
+    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
     
     var body: some View {
         ForEach(0..<4) { idx in

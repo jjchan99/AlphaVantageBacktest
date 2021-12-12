@@ -38,6 +38,7 @@
 		1D260F6D27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */; };
 		1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */; };
 		1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573726F2DB0700B40E2B /* TableViewCell.swift */; };
+		1D2CDC612765EBBA000B693D /* ChartLibraryOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */; };
 		1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */; };
 		1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D32802C2701C1AB00C60A6C /* Animations.swift */; };
 		1D469FA22758AC800073978D /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D469FA12758AC800073978D /* BackgroundView.swift */; };
@@ -163,6 +164,7 @@
 		1D260F6E27117E5500099DA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsModel.swift; sourceTree = "<group>"; };
 		1D29573726F2DB0700B40E2B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryOutput.swift; sourceTree = "<group>"; };
 		1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChangeModel.swift; sourceTree = "<group>"; };
 		1D32802C2701C1AB00C60A6C /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		1D469FA12758AC800073978D /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */,
+				1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */,
 				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
 				1D93493527633A2100D815DE /* NumericProtocol.swift */,
 				1D2425B127575EB1003A9755 /* YPositionFactory.swift */,
@@ -716,6 +719,7 @@
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
 				1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */,
 				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
+				1D2CDC612765EBBA000B693D /* ChartLibraryOutput.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,

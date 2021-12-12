@@ -8,13 +8,13 @@
 import Foundation
 import CoreGraphics
 
-struct CandleIndicator {
+struct CandleIndicator<T: CandlePointSpecified> {
     
     let height: CGFloat
     let width: CGFloat
-    let dataToDisplay: [Candle]
+    let dataToDisplay: [Candle<T>]
     
-    init(height: CGFloat, width: CGFloat, dataToDisplay: [Candle]) {
+    init(height: CGFloat, width: CGFloat, dataToDisplay: [Candle<T>]) {
         self.height = height
         self.width = width
         self.dataToDisplay = dataToDisplay

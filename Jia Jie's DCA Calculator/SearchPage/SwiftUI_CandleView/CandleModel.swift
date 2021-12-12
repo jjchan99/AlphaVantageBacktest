@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct Candle<T: ChartPointSpecified> {
+struct Candle<T: CandlePointSpecified> {
     let data: T
     let body: Path
     let stick: Path

@@ -13,7 +13,7 @@ import Combine
 class CandleViewController: UIViewController {
     
     let symbol: String
-    let viewModel = CandleViewModel()
+    let viewModel = CandleViewModel<OHLCCloudElement>()
     var hc: UIHostingController<AnyView>?
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
@@ -59,25 +59,22 @@ class CandleViewController: UIViewController {
 //        print("Bot account at the end is: \(bot.account)")
 //    }
  
-    
-    
     func OHLC(mode: CandleMode) {
         guard let coordinator = coordinator else { fatalError() }
         
-        let OHLC = coordinator.OHLCDataForRelevantPeriod[mode]
+        let OHLC = coordinator.OHLCDataForRelevantPeriod[mode]!
         let tradingVolume = coordinator.statisticsManager.maxMinRange[mode]![.tradingVolume]!
         let movingAverage = coordinator.statisticsManager.maxMinRange[mode]![.movingAverage]!
         let high = coordinator.statisticsManager.maxMinRange[mode]![.high]!
         let low = coordinator.statisticsManager.maxMinRange[mode]![.low]!
         
-        viewModel.sorted = OHLC
-        var charts: ChartLibrary = .init(specifications: .init(padding: viewModel.padding, set: { dict in
-            dict[.bar] = (height: viewModel.barHeight, width: viewModel.width)
-            dict[.line] = (height: viewModel.height, width: viewModel.width)
-            dict[.candle] = (height: viewModel.height, width: viewModel.width)
-        }), data: OHLC!, analysis: .init(tradingVolume: .init(max: tradingVolume.max, min: tradingVolume.min), movingAverage: .init(max: movingAverage.max, min: movingAverage.min), highLow: .init(max: high.max, min: low.min)))
-        charts.iterateOverData()
-        viewModel.charts = charts
+        OHLCCloudElement.itemsToPlot = [
+            \OHLCCloudElement.movingAverage : .init(type: .line, title: "movingAverage", min: movingAverage.min, max: movingAverage.max),
+             \OHLCCloudElement.volume : .init(type: .bar, title: "volume", min: tradingVolume.min, max: tradingVolume.max),
+             \OHLCCloudElement.emptyKey : .init(type: .candle, title: "daily", min: min(movingAverage.min, low.min), max: max(movingAverage.max, high.max))
+        ]
+        
+        viewModel.chartsOutput = ChartLibraryGeneric.render(OHLC: OHLC)
         
         Log.queue(action: "I expect the app to crash")
     }

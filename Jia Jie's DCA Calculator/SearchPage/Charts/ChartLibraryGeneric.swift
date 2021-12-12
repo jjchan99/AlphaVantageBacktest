@@ -71,12 +71,12 @@ struct ChartLibraryGeneric {
                     bars[spec.title] = new
                 case .line:
                     let previous = lines[spec.title] ?? (path: Path(), area: Path())
-                    let new = renderLinePath(index: index, data: data, key: key, spec: spec)
+                    let new = renderLinePath(index: index, data: data, key: key, spec: spec, previous: previous)
                     lines[spec.title] = new
                 case .candle:
-                    let previous = candles[spec.title] ?? []
+                    if candles[spec.title] == nil { candles[spec.title] = [] }
                     let new = renderCandlePath(index: index, data: data, spec: spec)
-                    candles[spec.title] = new
+                    candles[spec.title]!.append(new)
                 }
             }
         }
@@ -98,15 +98,15 @@ struct ChartLibraryGeneric {
         return path
     }
     
-    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>) {
+    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, previous: (Path, Path)) -> ((Path, Path)) {
        let count = data.count
        let xPosition = XFactory.getXPosition(index: index, dataCount: count)
        let yPosition = YFactory.getYPosition(data: data, index: index, max: spec.max, min: spec.min, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        let range = spec.max - spec.min
         
-       var path = Path()
-       var area = Path()
+        var path = previous.0
+        var area = previous.1
        var points: [CGPoint] = []
        
        if index == 0 {
@@ -132,12 +132,13 @@ struct ChartLibraryGeneric {
             area.addLine(to: CGPoint(x: 0, y: (1 - (cgf(data[0][keyPath: key] / range))) * spec.height))
             area.closeSubpath()
         }
+        
+        return ((path, area))
     }
     
-    static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) {
+    static private func renderCandlePath<T: ChartPointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) -> Candle<T> {
         var stick = Path()
         var body = Path()
-        var candles: [Candle<T>] = []
         let xPosition = XFactory.getXPosition(index: index, dataCount: data.count)
         let yPosition = YFactory.getYPosition(data: data, heightBounds: spec.height, index: index, max: spec.max, min: spec.min)
         let green = cgf(data[index].close!) > cgf(data[index].open!)
@@ -151,7 +152,7 @@ struct ChartLibraryGeneric {
         stick.move(to: .init(x: xPosition, y: yPosition.high))
         stick.addLine(to: .init(x: xPosition, y: yPosition.low))
         
-        candles.append(.init(data: data[index], body: body, stick: stick))
+        return(.init(data: data[index], body: body, stick: stick))
     }
     
     
@@ -294,23 +295,23 @@ fileprivate struct YFactory {
 
 
 
-struct Test: ChartPointSpecified {
-    
-    static var itemsToPlot: [KeyPath<Test, Double> : Specifications<Double>] = [
-        \Test.open! : .init(type: .bar, min: 4, max: 6) ,
-         \Test.close! : .init(type: .line, min: 6, max: 5)
-    ]
-    
-    var open: Double?
-    
-    var high: Double?
-    
-    var low: Double?
-    
-    var close: Double?
-    
-    typealias T = Double
-    
-}
+//struct Test: ChartPointSpecified {
+//
+//    static var itemsToPlot: [KeyPath<Test, Double> : Specifications<Double>] = [
+//        \Test.open! : .init(type: .bar, min: 4, max: 6) ,
+//         \Test.close! : .init(type: .line, min: 6, max: 5)
+//    ]
+//
+//    var open: Double?
+//
+//    var high: Double?
+//
+//    var low: Double?
+//
+//    var close: Double?
+//
+//    typealias T = Double
+//
+//}
 
 

@@ -70,9 +70,9 @@ class CandleViewController: UIViewController {
         
         
         OHLCCloudElement.itemsToPlot = [
-            \OHLCCloudElement.movingAverage : .init(count: OHLC.count, type: .line, title: "movingAverage", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, high.min)),
+            \OHLCCloudElement.movingAverage : .init(count: OHLC.count, type: .line, title: "movingAverage", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min)),
              \OHLCCloudElement.volume : .init(count: OHLC.count, type: .bar, title: "volume", height: viewModel.barHeight, width: viewModel.width, padding: viewModel.padding, max: tradingVolume.max, min: tradingVolume.min),
-             \OHLCCloudElement.emptyKey : .init(count: OHLC.count, type: .candle, title: "daily", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, high.min))
+             \OHLCCloudElement.emptyKey : .init(count: OHLC.count, type: .candle, title: "daily", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min))
         ]
         
         viewModel.chartsOutput = ChartLibraryGeneric.render(OHLC: OHLC)

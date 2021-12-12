@@ -10,15 +10,15 @@ import SwiftUI
 
 struct TradingVolumeView: View {
     
-    @EnvironmentObject var viewModel: CandleViewModel
+    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
     var render: Path?
 
     
     var body: some View {
         ZStack {
-        if viewModel.charts != nil {
+        if viewModel.chartsOutput != nil {
             Color.gray
-                .mask(viewModel.charts!.volumeChart)
+                .mask(viewModel.chartsOutput!.bars["volume"]!)
         }
         }
     }

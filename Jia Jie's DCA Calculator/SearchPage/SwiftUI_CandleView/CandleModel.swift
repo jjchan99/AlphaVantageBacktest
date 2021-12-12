@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct Candle {
-    let data: OHLCCloudElement
+struct Candle<T: CandlePointSpecified> {
+    let data: T
     let body: Path
     let stick: Path
 }

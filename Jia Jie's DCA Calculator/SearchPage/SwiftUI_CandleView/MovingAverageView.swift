@@ -10,11 +10,11 @@ import SwiftUI
 
 struct MovingAverageView: View {
     
-    @EnvironmentObject var viewModel: CandleViewModel
+    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
     let color: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
     var body: some View {
-        if viewModel.charts != nil {
-            viewModel.charts!.movingAverageChart.path
+        if viewModel.chartsOutput != nil {
+            viewModel.chartsOutput!.lines["movingAverage"]!.path
                 .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
                 .fill(color)
         }

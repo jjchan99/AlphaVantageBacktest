@@ -69,14 +69,16 @@ class CandleViewController: UIViewController {
         let high = coordinator.statisticsManager.maxMinRange[mode]![.high]!
         let low = coordinator.statisticsManager.maxMinRange[mode]![.low]!
         
+  
         
         OHLCCloudElement.itemsToPlot = [
             \OHLCCloudElement.movingAverage : .init(count: OHLC.count, type: .line, title: "movingAverage", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min)),
              \OHLCCloudElement.volume : .init(count: OHLC.count, type: .bar, title: "volume", height: viewModel.barHeight, width: viewModel.width, padding: viewModel.padding, max: tradingVolume.max, min: tradingVolume.min),
              \OHLCCloudElement.emptyKey : .init(count: OHLC.count, type: .candle, title: "daily", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min))
         ]
-        
         viewModel.chartsOutput = ChartLibraryGeneric.render(OHLC: OHLC)
+        viewModel.indicator = .init(height: viewModel.height, width: viewModel.width, dataToDisplay: viewModel.chartsOutput!.candles["daily"]!)
+        viewModel.singleCandleRenderer = SingleCandleRenderer(movingAverage: .init(max: movingAverage.max, min: movingAverage.min), highLow: .init(max: high.max, min: low.min), candles: viewModel.chartsOutput!.candles["daily"]!, spec: OHLCCloudElement.itemsToPlot[\OHLCCloudElement.emptyKey]!)
         
         Log.queue(action: "I expect the app to crash")
     }

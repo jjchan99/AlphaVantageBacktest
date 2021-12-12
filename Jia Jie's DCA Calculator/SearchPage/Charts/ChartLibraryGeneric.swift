@@ -25,12 +25,7 @@ protocol CandlePointSpecified: ChartPointSpecified {
 }
 
 protocol ChartPointSpecified {
-    associatedtype T where T: CustomNumeric 
-//    var open: T? { get }
-//    var high: T? { get }
-//    var low: T? { get }
-//    var close: T? { get }
-    
+    associatedtype T where T: CustomNumeric
     static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get }
 }
 

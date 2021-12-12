@@ -41,14 +41,9 @@ class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
     
     @Published var indicator: CandleIndicator<OHLCCloudElement>?
     
+    @Published var singleCandleRenderer: SingleCandleRenderer?
+    
     lazy var padding: CGFloat = 0.05 * width
-    
-    
-   
-    
-    
-    
-    
     
 }
 

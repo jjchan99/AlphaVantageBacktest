@@ -25,7 +25,6 @@
 		1D1A016827325493005449A2 /* ScaleFactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D1A016727325493005449A2 /* ScaleFactor.swift */; };
 		1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D20600E26F71837007EA13F /* CalculatorViewController.swift */; };
 		1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425AF27575E49003A9755 /* ControlPoints.swift */; };
-		1D2425B227575EB1003A9755 /* YPositionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425B127575EB1003A9755 /* YPositionFactory.swift */; };
 		1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425B327576566003A9755 /* PageCoordinator.swift */; };
 		1D25E28F2722C58A00CD8E4C /* ZeroPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E28E2722C58A00CD8E4C /* ZeroPositionModel.swift */; };
 		1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */; };
@@ -82,7 +81,7 @@
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
 		1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF22756659500055702 /* BollingerBandsModel.swift */; };
-		1DB20751274FDCE60015B1B7 /* ChartLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */; };
+		1DB20751274FDCE60015B1B7 /* SingleCandleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB20750274FDCE60015B1B7 /* SingleCandleRenderer.swift */; };
 		1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413526F1E857001FBC77 /* DCAResultModel.swift */; };
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
 		1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB596C92760F047005385AF /* FetchLatest.swift */; };
@@ -145,7 +144,6 @@
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
 		1D20600E26F71837007EA13F /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		1D2425AF27575E49003A9755 /* ControlPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPoints.swift; sourceTree = "<group>"; };
-		1D2425B127575EB1003A9755 /* YPositionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YPositionFactory.swift; sourceTree = "<group>"; };
 		1D2425B327576566003A9755 /* PageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCoordinator.swift; sourceTree = "<group>"; };
 		1D25E28E2722C58A00CD8E4C /* ZeroPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroPositionModel.swift; sourceTree = "<group>"; };
 		1D25E31A26EDD83A00EA4225 /* Jia Jie's DCA Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jia Jie's DCA Calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,7 +206,7 @@
 		1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleView.swift; sourceTree = "<group>"; };
 		1DA32BF02756172900055702 /* RSIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSIModel.swift; sourceTree = "<group>"; };
 		1DA32BF22756659500055702 /* BollingerBandsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BollingerBandsModel.swift; sourceTree = "<group>"; };
-		1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibrary.swift; sourceTree = "<group>"; };
+		1DB20750274FDCE60015B1B7 /* SingleCandleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleRenderer.swift; sourceTree = "<group>"; };
 		1DB5413526F1E857001FBC77 /* DCAResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultModel.swift; sourceTree = "<group>"; };
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		1DB596C92760F047005385AF /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
@@ -293,11 +291,9 @@
 		1D2425AE27575DEE003A9755 /* Charts */ = {
 			isa = PBXGroup;
 			children = (
-				1DB20750274FDCE60015B1B7 /* ChartLibrary.swift */,
 				1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */,
 				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
 				1D93493527633A2100D815DE /* NumericProtocol.swift */,
-				1D2425B127575EB1003A9755 /* YPositionFactory.swift */,
 				1D2425AF27575E49003A9755 /* ControlPoints.swift */,
 			);
 			path = Charts;
@@ -499,6 +495,7 @@
 		1DB5413B26F1F27C001FBC77 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1D54094A274815DE004D0501 /* AlgorithmBook.swift */,
 				1D85ED58270B67A600D6D4C1 /* Double+Extensions.swift */,
 				1D6D33DB27077063009A86EA /* Date+Extensions.swift */,
 				1D8021D826FF102A0004F668 /* DIContainer.swift */,
@@ -513,13 +510,13 @@
 		1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */ = {
 			isa = PBXGroup;
 			children = (
+				1DB20750274FDCE60015B1B7 /* SingleCandleRenderer.swift */,
 				1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */,
 				1DC3C9D8273BB10900900600 /* CandleView.swift */,
 				1D469FA12758AC800073978D /* BackgroundView.swift */,
 				1D92AE83274E86150076F449 /* MovingAverageView.swift */,
 				1D92AE85274E86450076F449 /* TradingVolumeView.swift */,
 				1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */,
-				1D54094A274815DE004D0501 /* AlgorithmBook.swift */,
 				1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */,
 				1D06C6B12744125D00374255 /* CandleIndicatorView.swift */,
 				1DC3C9E0273BC13000900600 /* CandleModel.swift */,
@@ -693,7 +690,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */,
-				1DB20751274FDCE60015B1B7 /* ChartLibrary.swift in Sources */,
+				1DB20751274FDCE60015B1B7 /* SingleCandleRenderer.swift in Sources */,
 				1D1210262736E1F100B58B67 /* FinancialsViewController.swift in Sources */,
 				1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */,
 				1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */,
@@ -744,7 +741,6 @@
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
 				1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */,
-				1D2425B227575EB1003A9755 /* YPositionFactory.swift in Sources */,
 				1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */,
 				1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */,
 				1DC58277275D240700FD1592 /* CloudViewModel.swift in Sources */,

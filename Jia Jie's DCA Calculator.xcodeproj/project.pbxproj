@@ -37,6 +37,7 @@
 		1D260F6D27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */; };
 		1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */; };
 		1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573726F2DB0700B40E2B /* TableViewCell.swift */; };
+		1D2B4F2C27667B80001A3B96 /* DragGestureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2B4F2B27667B80001A3B96 /* DragGestureModel.swift */; };
 		1D2CDC612765EBBA000B693D /* ChartLibraryOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */; };
 		1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */; };
 		1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D32802C2701C1AB00C60A6C /* Animations.swift */; };
@@ -162,6 +163,7 @@
 		1D260F6E27117E5500099DA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsModel.swift; sourceTree = "<group>"; };
 		1D29573726F2DB0700B40E2B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		1D2B4F2B27667B80001A3B96 /* DragGestureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureModel.swift; sourceTree = "<group>"; };
 		1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryOutput.swift; sourceTree = "<group>"; };
 		1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChangeModel.swift; sourceTree = "<group>"; };
 		1D32802C2701C1AB00C60A6C /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */,
+				1D2B4F2B27667B80001A3B96 /* DragGestureModel.swift */,
 				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
 				1D93493527633A2100D815DE /* NumericProtocol.swift */,
 				1D2425AF27575E49003A9755 /* ControlPoints.swift */,
@@ -694,6 +697,7 @@
 				1D1210262736E1F100B58B67 /* FinancialsViewController.swift in Sources */,
 				1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */,
 				1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */,
+				1D2B4F2C27667B80001A3B96 /* DragGestureModel.swift in Sources */,
 				1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */,
 				1D67EF1227086441005E1016 /* DateViews.swift in Sources */,
 				1DDF323C2737C73F00451CD1 /* BarGraphRenderer.swift in Sources */,

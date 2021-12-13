@@ -167,16 +167,28 @@ extension CloudKitUtility {
     }
 
     static private func addRecordMatchedBlock<T: CloudKitInterchangeable>(operation: CKQueryOperation, completion: @escaping (_ tradeBot: T) -> ()) {
-        operation.recordFetchedBlock = { record in
+        operation.recordMatchedBlock = { id, result in
             //Convert record to tradebot and call completion
-            guard let item = T(record: record) else { return }
-            completion(item)
+            switch result {
+            case .success(let record):
+                guard let item = T(record: record) else { return }
+                completion(item)
+            case .failure(let error):
+                print(error)
+                return
+            }
         }
     }
     
     static private func addQueryResultBlock(operation: CKQueryOperation, completion: @escaping (_ finished: Bool) -> ()) {
-        operation.queryCompletionBlock = { cursor, error in
-            completion(true)
+        operation.queryResultBlock = { result in
+            switch result {
+            case .success(let cursor):
+                completion(true)
+            case .failure(let error):
+                print(error)
+                return
+            }
         }
     }
 

@@ -13,7 +13,7 @@ struct DateIndicatorView: View {
     
     var body: some View {
         if viewModel.shouldDrawGraph ?? false {
-            let dateDisplay = DateIndicator(selectedIndex: viewModel.selectedIndex ?? 0, mostRecentDate: viewModel.results.last!.month, result: viewModel.results).showDate()
+            let dateDisplay = DateIndicator(selectedIndex: viewModel.selectedIndex ?? 0, result: viewModel.results).showDate()
             Text("\(dateDisplay)")
                 .font(.system(size: CGFloat(15).hScaled()))
                 .bold()

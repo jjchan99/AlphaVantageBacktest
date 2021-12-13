@@ -63,7 +63,7 @@ struct LineGraphView: View {
     }
     
     private func generatePath() {
-        let render = GraphRenderer(width: viewModel.width, height: viewModel.height, data: viewModel.results, meta: viewModel.meta!, mode: mode).render()
+        let render = ChartLibraryGeneric.render(data: viewModel.results)
         self.area = render.area
         self.graphPoints = render.points
         self.path = render.path

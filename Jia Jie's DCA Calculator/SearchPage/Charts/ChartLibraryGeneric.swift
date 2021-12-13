@@ -10,9 +10,9 @@ import SwiftUI
 import CoreGraphics
 import Algorithms
 
-enum ChartType: CaseIterable {
-    case bar
-    case line
+enum ChartType {
+    case bar(zero: Bool)
+    case line(zero: Bool)
     case candle
 }
 
@@ -68,7 +68,6 @@ struct ChartLibraryGeneric {
 
     static func render<T: ChartPointSpecified>(data: [T]) -> ChartLibraryOutput<T> {
         var bars: [String: Path] = [:]
-        var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]
         
         for index in data.indices {
@@ -88,7 +87,7 @@ struct ChartLibraryGeneric {
             }
         }
         
-        return .init(bars: bars, candles: candles, lines: lines)
+        return .init(bars: bars, candles: [:], lines: lines)
     }
     
     static func render<T: CandlePointSpecified>(OHLC data: [T]) -> ChartLibraryOutput<T> {
@@ -121,7 +120,7 @@ struct ChartLibraryGeneric {
     private static func renderBarPath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, path: Path) -> Path {
         let count = data.count
         let xPosition = XFactory.getXPosition(index: index, spec: spec, dataCount: count)
-        let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: spec.height, max: spec.max, min: spec.min, key: key)
+        let yPosition = YFactory.getYPosition(data: data, index: index, spec: spec, key: key)
         
         var path = path
         let spacing = 0.5 * spec.spacing
@@ -137,7 +136,7 @@ struct ChartLibraryGeneric {
     private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, previous: (Path, Path)) -> ((Path, Path)) {
        let count = data.count
         let xPosition = XFactory.getXPosition(index: index, spec: spec, dataCount: count)
-       let yPosition = YFactory.getYPosition(data: data, index: index, heightBounds: spec.height, max: spec.max, min: spec.min, key: key)
+        let yPosition = YFactory.getYPosition(data: data, index: index, spec: spec, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
        let range = spec.max - spec.min
         
@@ -191,11 +190,6 @@ struct ChartLibraryGeneric {
         return(.init(data: data[index], body: body, stick: stick))
     }
     
-    
-    
-    func setup<T: ChartPointSpecified>(data: [T], spec: CGPoint, type: ChartType) {
-        
-    }
 }
 
 extension ChartLibraryGeneric {
@@ -204,7 +198,7 @@ extension ChartLibraryGeneric {
         for idx in index - 1...index + 2 {
             let withinRange = data.indices.contains(idx)
             if withinRange {
-                points[idx] = CGPoint(x: XFactory.getXPosition(index: index, spec: spec, dataCount: data.count), y: YFactory.getYPosition(data: data, index: index, heightBounds: height, max: spec.max, min: spec.min, key: key))
+                points[idx] = CGPoint(x: XFactory.getXPosition(index: index, spec: spec, dataCount: data.count), y: YFactory.getYPosition(data: data, index: index, spec: spec, key: key))
             }
         }
         
@@ -271,25 +265,29 @@ fileprivate struct YFactory {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
-    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, heightBounds: CGFloat, max: T.T, min: T.T, key: KeyPath<T, T.T>) -> CGFloat {
-        let range = cgf(max - min)
-        let type = type(min: min, max: max)
+    static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, spec: Specifications<T.T>, key: KeyPath<T, T.T>) -> CGFloat {
+        let range = cgf(spec.max - spec.min)
+        let type = type(min: spec.min, max: spec.max)
         
-        let deviation = abs(data[index][keyPath: key] - max)
+        let deviation = abs(data[index][keyPath: key] - spec.max)
         let share = cgf(deviation) / range
-        let scaled = CGFloat(share) * heightBounds
-        
+        let scaled = CGFloat(share) * spec.height
+        switch spec.type {
+        case .bar(let zero), .line(let zero):
         switch type {
         case .allPositive:
-            let translation = cgf(min/max) * heightBounds
-            return scaled 
+            let translation = cgf(spec.min/spec.max) * spec.height
+            return zero ? scaled - translation : scaled
         case .negativePositive:
             return scaled
         case .allNegative:
-            let minShareOfHeight = cgf(max/min) * heightBounds
-            let shareOfRange = cgf(max - data[index][keyPath: key]) / range
-            let untranslated = shareOfRange * heightBounds
+            let minShareOfHeight = cgf(spec.max/spec.min) * spec.height
+            let shareOfRange = cgf(spec.max - data[index][keyPath: key]) / range
+            let untranslated = shareOfRange * spec.height
             return untranslated + minShareOfHeight
+        }
+        default:
+            fatalError()
         }
     }
     

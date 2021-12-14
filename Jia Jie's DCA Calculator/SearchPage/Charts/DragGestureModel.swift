@@ -60,4 +60,10 @@ struct YDragGesture<T: CustomNumeric> {
         let chartType: ChartType = min < 0 && max >= 0 ? .negativePositive : allNegativeOrAllPositive
         return chartType
     }
+    
+    enum ChartType {
+        case allNegative
+        case allPositive
+        case negativePositive
+    }
 }

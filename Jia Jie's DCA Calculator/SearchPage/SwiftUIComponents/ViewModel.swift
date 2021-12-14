@@ -22,7 +22,7 @@ class GraphViewModel: ObservableObject {
             selectedIndex = 0
         }
     }
-    
+    lazy var padding: CGFloat = 0.05 * width
     @Published var shouldDrawGraph: Bool?
     
     @Published var meta: DCAResultMeta?

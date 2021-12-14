@@ -23,7 +23,7 @@ struct LineGraphView: View {
     @ViewBuilder var body: some View {
         let zeroPosition = ZeroPosition(meta: viewModel.meta!, mode: mode, height: viewModel.height).getZeroPosition()
         ZStack {
-        if graphPoints.count != 0 {
+            if true {
             let redGradient = LinearGradient(gradient: .init(colors: [g3, .white]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: zeroPosition / viewModel.height))
             let blueGradient = LinearGradient(gradient: .init(colors: [.green, .white]), startPoint: .top, endPoint: .bottom)
         blueGradient
@@ -63,12 +63,12 @@ struct LineGraphView: View {
     }
     
     private func generatePath() {
-//        let render = ChartLibraryGeneric.render(data: viewModel.results, setItemsToPlot: [
-//            \DCAResult.gain : .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain)
-//        ])
-//        self.area = render.line["gain"].area
-////        self.graphPoints = render.bars["gain"].points
-//        self.path = render.line["gain"].path
+        let render = ChartLibraryGeneric.render(data: viewModel.results, setItemsToPlot: [
+            \DCAResult.gain : .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain)
+        ])
+        self.area = render.lines["gain"]!.area
+//        self.graphPoints = render.bars["gain"].points
+        self.path = render.lines["gain"]!.path
     }
 }
     

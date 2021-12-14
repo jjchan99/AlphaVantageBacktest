@@ -26,7 +26,7 @@ protocol CandlePointSpecified: ChartPointSpecified {
 
 protocol ChartPointSpecified {
     associatedtype T where T: CustomNumeric
-    static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get }
+    static var itemsToPlot: [KeyPath<Self, T> : Specifications<T>] { get set }
 }
 
 struct Specifications<T: CustomNumeric> {
@@ -66,7 +66,8 @@ struct ChartLibraryGeneric {
         return CGFloat(fromNumeric: value)
     }
 
-    static func render<T: ChartPointSpecified>(data: [T]) -> ChartLibraryOutput<T> {
+    static func render<T: ChartPointSpecified>(data: [T], setItemsToPlot: [KeyPath<T, T.T> : Specifications<T.T>]) -> ChartLibraryOutput<T> {
+        T.itemsToPlot = setItemsToPlot
         var bars: [String: Path] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]
         
@@ -90,7 +91,8 @@ struct ChartLibraryGeneric {
         return .init(bars: bars, lines: lines)
     }
     
-    static func render<T: CandlePointSpecified>(OHLC data: [T]) -> CandleLibraryOutput<T> {
+    static func render<T: CandlePointSpecified>(OHLC data: [T], setItemsToPlot: [KeyPath<T, T.T> : Specifications<T.T>]) -> CandleLibraryOutput<T> {
+        T.itemsToPlot = setItemsToPlot
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]

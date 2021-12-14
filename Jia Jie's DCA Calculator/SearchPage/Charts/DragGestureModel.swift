@@ -18,9 +18,15 @@ struct YDragGesture<T: CustomNumeric> {
     init(graphPoints: [CGPoint], spec: Specifications<T>) {
         self.graphPoints = graphPoints
         self.spec = spec
+        self.height = spec.height
+        self.width = spec.width
     }
     
-    func updateIndicator(xPos: CGFloat) -> (selectedIndex: Int, currentPlot: String, selectedYPos: CGFloat) {
+    func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
+        return CGFloat(fromNumeric: value)
+    }
+    
+    func updateIndicator(xPos: CGFloat) -> (selectedIndex: Int, currentPlot: CGFloat, selectedYPos: CGFloat) {
             var selectedYPos: CGFloat = 0
           
         guard xPos >= 0 && xPos <= spec.width else { fatalError() }
@@ -30,11 +36,11 @@ struct YDragGesture<T: CustomNumeric> {
                 selectedYPos = getYPos(index: index)
             }
         
-            let range = spec.max - spec.min
+            let range = cgf(spec.max - spec.min)
             let getMetaType = type(min: spec.min, max: spec.max)
-            let maxY = getMetaType == .allPositive || getMetaType == .negativePositive ? spec.max : spec.min
+            let maxY = getMetaType == .allPositive || getMetaType == .negativePositive ? cgf(spec.max) : cgf(spec.min)
            
-            let scaledY = getMetaType == .allPositive || getMetaType == .negativePositive ? CGFloat(maxY) - (CGFloat(range)/height) * selectedYPos : 0 - (CGFloat(range)/height) * selectedYPos
+            let scaledY = getMetaType == .allPositive || getMetaType == .negativePositive ? cgf(maxY) - (range/height) * selectedYPos : 0 - (range/height) * selectedYPos
             let currentPlot = scaledY
         
             guard Int(index) < graphPoints.count else { fatalError() }

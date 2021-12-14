@@ -63,10 +63,12 @@ struct LineGraphView: View {
     }
     
     private func generatePath() {
-        let render = ChartLibraryGeneric.render(data: viewModel.results, setItemsToPlot: [:])
-//        self.area = render.area
-//        self.graphPoints = render.points
-//        self.path = render.path
+//        let render = ChartLibraryGeneric.render(data: viewModel.results, setItemsToPlot: [
+//            \DCAResult.gain : .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain)
+//        ])
+//        self.area = render.line["gain"].area
+////        self.graphPoints = render.bars["gain"].points
+//        self.path = render.line["gain"].path
     }
 }
     

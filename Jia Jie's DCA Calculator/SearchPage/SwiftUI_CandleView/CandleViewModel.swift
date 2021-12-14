@@ -33,7 +33,7 @@ class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
     
     @Published var specifications: Specifications<T.T>?
     
-    @Published var chartsOutput: ChartLibraryOutput<T>?
+    @Published var chartsOutput: CandleLibraryOutput<T>?
     
     @Published var selectedIndex: Int?
     

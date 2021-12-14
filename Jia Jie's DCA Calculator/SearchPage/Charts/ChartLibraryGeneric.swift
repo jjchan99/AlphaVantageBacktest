@@ -87,10 +87,10 @@ struct ChartLibraryGeneric {
             }
         }
         
-        return .init(bars: bars, candles: [:], lines: lines)
+        return .init(bars: bars, lines: lines)
     }
     
-    static func render<T: CandlePointSpecified>(OHLC data: [T]) -> ChartLibraryOutput<T> {
+    static func render<T: CandlePointSpecified>(OHLC data: [T]) -> CandleLibraryOutput<T> {
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
         var lines: [String: (path: Path, area: Path)] = [:]

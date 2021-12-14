@@ -126,7 +126,7 @@ class CalculatorViewController: UIViewController {
         if (coordinator!.initialInvestment == 0 && coordinator!.monthlyInvestment == 0) || (coordinator!.monthIndex == 0 && coordinator!.initialInvestment == 0) {
             viewModel.shouldDrawGraph = false
         } else {
-            hostingController!.view.activateConstraints(reference: view.layoutMarginsGuide, constraints: [.top(constant: CGFloat(50).hScaled()), .leading(), .trailing()], identifier: "hostingController")
+            hostingController!.view.activateConstraints(reference: view.layoutMarginsGuide, constraints: [.top(constant: CGFloat(240).hScaled()), .leading(), .trailing()], identifier: "hostingController")
             viewModel.shouldDrawGraph = true
             animateConstraints()
     }

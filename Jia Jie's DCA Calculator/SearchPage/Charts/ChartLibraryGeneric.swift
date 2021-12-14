@@ -140,17 +140,16 @@ struct ChartLibraryGeneric {
         let xPosition = XFactory.getXPosition(index: index, spec: spec, dataCount: count)
         let yPosition = YFactory.getYPosition(data: data, index: index, spec: spec, key: key)
        let indexPoint = CGPoint(x: xPosition, y: yPosition)
-       let range = spec.max - spec.min
         
-        var path = previous.0
-        var area = previous.1
+       var path = previous.0
+       var area = previous.1
        var points: [CGPoint] = []
        
        if index == 0 {
         points.append(indexPoint)
         path.move(to: indexPoint)
         area.move(to: indexPoint)
-            
+
         } else {
          
             if data.count < 3 {
@@ -159,14 +158,15 @@ struct ChartLibraryGeneric {
                 let controlPoints = getControlPoints(index: index-1, data: data, spec: spec, key: key, height: spec.height)
             points.append(indexPoint)
             path.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
-            area.addLine(to: indexPoint)
+            area.addCurve(to: indexPoint, control1: controlPoints.0, control2: controlPoints.1)
             }
         }
 
         if index == data.count {
-            area.addLine(to: CGPoint(x: xPosition, y: spec.height))
-            area.addLine(to: CGPoint(x: 0, y: spec.height))
-            area.addLine(to: CGPoint(x: 0, y: (1 - (cgf(data[0][keyPath: key] / range))) * spec.height))
+            let y = YFactory.getZeroPosition(spec: spec)
+            area.addLine(to: CGPoint(x: xPosition, y: y))
+            area.addLine(to: CGPoint(x: 0, y: y))
+            area.addLine(to: CGPoint(x: 0, y: YFactory.getYPosition(data: data, index: 0, spec: spec, key: key)))
             area.closeSubpath()
         }
         
@@ -226,13 +226,13 @@ extension ChartLibraryGeneric {
     }
 }
 
-fileprivate struct XFactory {
+struct XFactory {
     static func getXPosition<T: CustomNumeric>(index: Int, spec: Specifications<T>, dataCount: Int) -> CGFloat {
         return index == 0 ? spec.padding : (spec.columns * CGFloat(index)) + spec.padding
     }
 }
 
-fileprivate struct YFactory {
+struct YFactory {
     static let height: CGFloat = .init(350).hScaled()
     static let barHeight: CGFloat = .init(45).hScaled()
     
@@ -267,43 +267,62 @@ fileprivate struct YFactory {
         return ((yOpen, yHigh, yLow, yClose))
     }
     
+    static private func getRange<T: CustomNumeric>(type: YFactory.ChartType, spec: Specifications<T>) -> CGFloat {
+        switch type {
+        case .allNegative:
+            return cgf(abs(spec.min))
+        case .allPositive:
+            return cgf(spec.max)
+        case .negativePositive:
+            return cgf(spec.max - spec.min)
+        }
+    }
+    
     static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, spec: Specifications<T.T>, key: KeyPath<T, T.T>) -> CGFloat {
-        let range = cgf(spec.max - spec.min)
+        switch spec.type {
+        case .bar(let zero), .line(let zero):
+            
         let type = type(min: spec.min, max: spec.max)
-        
+        let range = zero ? getRange(type: type, spec: spec) : cgf(spec.max - spec.min)
         let deviation = abs(data[index][keyPath: key] - spec.max)
         let share = cgf(deviation) / range
         let scaled = CGFloat(share) * spec.height
-        switch spec.type {
-        case .bar(let zero), .line(let zero):
+       
         switch type {
         case .allPositive:
             let translation = cgf(spec.min/spec.max) * spec.height
-            return zero ? scaled - translation : scaled
+            return scaled
         case .negativePositive:
             return scaled
         case .allNegative:
             let minShareOfHeight = cgf(spec.max/spec.min) * spec.height
             let shareOfRange = cgf(spec.max - data[index][keyPath: key]) / range
             let untranslated = shareOfRange * spec.height
-            return untranslated + minShareOfHeight
+            return zero ? untranslated + minShareOfHeight : untranslated
         }
         default:
             fatalError()
         }
     }
     
-    static func getZeroPosition<T: CustomNumeric>(min: T, max: T, heightBounds: CGFloat) -> CGFloat {
-        let type = type(min: min, max: max)
-        let range = cgf(max - min)
+    static func getZeroPosition<T: CustomNumeric>(spec: Specifications<T>) -> CGFloat {
+        switch spec.type {
+        case .bar(let zero), .line(let zero):
+        let type = type(min: spec.min, max: spec.max)
+        let range = zero ? getRange(type: type, spec: spec) : cgf(spec.max - spec.min)
+      
         switch type {
         case .allNegative:
             return 0
         case .allPositive:
-            return heightBounds
+            return spec.height
         case .negativePositive:
-            return (range + cgf(min))/range * heightBounds
+            return (range + cgf(spec.min))/range * spec.height
         }
+        default:
+            fatalError()
+        }
+        
     }
 }
    

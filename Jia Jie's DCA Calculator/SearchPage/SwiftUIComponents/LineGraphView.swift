@@ -21,7 +21,7 @@ struct LineGraphView: View {
     @State var area = Path()
    
     @ViewBuilder var body: some View {
-        let zeroPosition = ZeroPosition(meta: viewModel.meta!, mode: mode, height: viewModel.height).getZeroPosition()
+        let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
         ZStack {
             if true {
             let redGradient = LinearGradient(gradient: .init(colors: [g3, .white]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: zeroPosition / viewModel.height))
@@ -69,6 +69,7 @@ struct LineGraphView: View {
         self.area = render.lines["gain"]!.area
 //        self.graphPoints = render.bars["gain"].points
         self.path = render.lines["gain"]!.path
+        
     }
 }
     

@@ -42,6 +42,7 @@ struct LineGraphView: View {
             .clipped()
             .offset(y: zeroPosition * 0.5)
                 )
+              
         path
             .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
             .fill(
@@ -88,7 +89,7 @@ struct ZeroLineView: View {
     
         GeometryReader { geometry in
             Path { path in
-                let zeroPosition = ZeroPosition(meta: viewModel.meta!, mode: mode, height: viewModel.height).getZeroPosition()
+                let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
                 
                 //MARK: ZERO POSITION
                 path.move(to: CGPoint(x: 0, y: zeroPosition))

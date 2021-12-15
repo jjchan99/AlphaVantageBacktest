@@ -151,7 +151,7 @@ struct ChartLibraryGeneric {
         area.move(to: indexPoint)
 
         } else {
-         
+            
             if data.count < 3 {
                 path.addLine(to: indexPoint)
             } else {
@@ -162,7 +162,7 @@ struct ChartLibraryGeneric {
             }
         }
 
-        if index == data.count {
+        if index == data.count - 1 {
             let y = YFactory.getZeroPosition(spec: spec)
             area.addLine(to: CGPoint(x: xPosition, y: y))
             area.addLine(to: CGPoint(x: 0, y: y))
@@ -268,6 +268,7 @@ struct YFactory {
     }
     
     static private func getRange<T: CustomNumeric>(type: YFactory.ChartType, spec: Specifications<T>) -> CGFloat {
+      
         switch type {
         case .allNegative:
             return cgf(abs(spec.min))
@@ -276,6 +277,7 @@ struct YFactory {
         case .negativePositive:
             return cgf(spec.max - spec.min)
         }
+        
     }
     
     static func getYPosition<T: ChartPointSpecified>(data: [T], index: Int, spec: Specifications<T.T>, key: KeyPath<T, T.T>) -> CGFloat {
@@ -290,7 +292,7 @@ struct YFactory {
        
         switch type {
         case .allPositive:
-            let translation = cgf(spec.min/spec.max) * spec.height
+//            let translation = cgf(spec.min/spec.max) * spec.height
             return scaled
         case .negativePositive:
             return scaled

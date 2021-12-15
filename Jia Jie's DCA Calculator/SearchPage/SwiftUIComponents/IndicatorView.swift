@@ -74,7 +74,7 @@ struct IndicatorView: View {
                             labelOffset = xPos
                         }
                     
-                        let indicator = Indicator(graphPoints: graphPoints, height: viewModel.height, width: viewModel.width, meta: viewModel.meta!, mode: mode)
+                        let indicator = YDragGesture(graphPoints: graphpoints, spec: spec)
 
                         let result = indicator.updateIndicator(xPos: xPos)
                         self.currentPlot = result.currentPlot

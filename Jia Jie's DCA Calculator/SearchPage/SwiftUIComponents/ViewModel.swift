@@ -35,4 +35,6 @@ class GraphViewModel: ObservableObject {
     @Published var offset: CGFloat = .zero
     
     @Published var selectedIndex: Int?
+    
+    lazy var spec: Specifications<Double> = .init(count: results.count, type: .line(zero: true), title: "gain", height: height, width: width, padding: padding, max: meta!.maxGain, min: meta!.minGain)
 }

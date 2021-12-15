@@ -52,16 +52,17 @@ struct IndicatorView: View {
                     .frame(width: 10, height: 10)
                     .position(x: 0, y: selectedYPos ?? graphPoints[0].y)
                 )
-                .offset(x: viewModel.offset)
+                .offset(x: viewModel.offset + viewModel.padding)
         }
         .frame(width: viewModel.width, height: viewModel.height)
         .contentShape(Rectangle())
         .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ touch in
                         let xPos = touch.location.x
-                        guard xPos >= 0 && xPos <= viewModel.width else {
-                            return
-                        }
+                        print("xPos: \(xPos)")
+//                        guard xPos >= 0 && xPos <= viewModel.width else {
+//                            return
+//                        }
 
                         showPlot = true
                         viewModel.offset = xPos
@@ -92,7 +93,7 @@ struct IndicatorView: View {
                             showPlot = false
                         }
                     }))
-        .frame(width: viewModel.width, height: viewModel.height)
+        .frame(width: viewModel.spec.adjustedWidth, height: viewModel.height)
             .onChange(of: mode) { _ in
                 viewModel.id = UUID()
             }

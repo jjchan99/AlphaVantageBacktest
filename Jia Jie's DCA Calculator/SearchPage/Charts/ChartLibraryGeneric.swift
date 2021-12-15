@@ -154,6 +154,7 @@ struct ChartLibraryGeneric {
             
             if data.count < 3 {
                 path.addLine(to: indexPoint)
+                area.addLine(to: indexPoint)
             } else {
                 let controlPoints = getControlPoints(index: index-1, data: data, spec: spec, key: key, height: spec.height)
             points.append(indexPoint)
@@ -165,8 +166,8 @@ struct ChartLibraryGeneric {
         if index == data.count - 1 {
             let y = YFactory.getZeroPosition(spec: spec)
             area.addLine(to: CGPoint(x: xPosition, y: y))
-            area.addLine(to: CGPoint(x: 0, y: y))
-            area.addLine(to: CGPoint(x: 0, y: YFactory.getYPosition(data: data, index: 0, spec: spec, key: key)))
+            area.addLine(to: CGPoint(x: XFactory.getXPosition(index: 0, spec: spec, dataCount: data.count), y: y))
+            area.addLine(to: CGPoint(x: XFactory.getXPosition(index: 0, spec: spec, dataCount: data.count), y: YFactory.getYPosition(data: data, index: 0, spec: spec, key: key)))
             area.closeSubpath()
         }
         
@@ -300,7 +301,8 @@ struct YFactory {
             let minShareOfHeight = cgf(spec.max/spec.min) * spec.height
             let shareOfRange = cgf(spec.max - data[index][keyPath: key]) / range
             let untranslated = shareOfRange * spec.height
-            return zero ? untranslated + minShareOfHeight : untranslated
+//            return zero ? untranslated + minShareOfHeight : untranslated
+            return untranslated
         }
         default:
             fatalError()

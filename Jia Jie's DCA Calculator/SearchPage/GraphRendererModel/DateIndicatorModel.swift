@@ -7,15 +7,19 @@
 
 import Foundation
 
-struct DateIndicator {
+protocol MonthSpecified {
+    var month: String { get }
+}
+
+struct DateIndicator<T: MonthSpecified> {
     
     let selectedIndex: Int
     let mostRecentDate: String
-    let result: [DCAResult]
+    let result: [T]
     
-    init(selectedIndex: Int, mostRecentDate: String, result: [DCAResult]) {
+    init(selectedIndex: Int, result: [T]) {
         self.selectedIndex = selectedIndex
-        self.mostRecentDate = mostRecentDate
+        self.mostRecentDate = result.last!.month
         self.result = result
     }
     

@@ -22,7 +22,7 @@ class GraphViewModel: ObservableObject {
             selectedIndex = 0
         }
     }
-    
+    lazy var padding: CGFloat = 0.05 * width
     @Published var shouldDrawGraph: Bool?
     
     @Published var meta: DCAResultMeta?
@@ -30,7 +30,7 @@ class GraphViewModel: ObservableObject {
     @Published var percentage: CGFloat = 0
     
     let height: CGFloat = CGFloat(300).hScaled()
-    let width: CGFloat = CGFloat(390).wScaled()
+    let width: CGFloat = CGFloat(428).wScaled()
     
     @Published var offset: CGFloat = .zero
     

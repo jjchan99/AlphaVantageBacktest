@@ -19,29 +19,30 @@ struct LineGraphView: View {
     let g2: Color = Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1))
     let g3: Color = Color(#colorLiteral(red: 1, green: 0, blue: 0, alpha: 1))
     @State var area = Path()
-   
+    @State var spec: Specifications<Double>?
     @ViewBuilder var body: some View {
-        let zeroPosition = ZeroPosition(meta: viewModel.meta!, mode: mode, height: viewModel.height).getZeroPosition()
+        let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
         ZStack {
-        if graphPoints.count != 0 {
+            if spec != nil {
             let redGradient = LinearGradient(gradient: .init(colors: [g3, .white]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: zeroPosition / viewModel.height))
             let blueGradient = LinearGradient(gradient: .init(colors: [.green, .white]), startPoint: .top, endPoint: .bottom)
         blueGradient
-            .opacity(0.5)
+            .opacity(1)
             .mask(area)
             .frame(width: viewModel.width, height: zeroPosition)
             .clipped()
-            .position(x: viewModel.width / 2, y: zeroPosition - (zeroPosition * 0.5))
+            .position(x: (viewModel.width / 2), y: zeroPosition - (zeroPosition * 0.5))
         redGradient
             .mask(
         Color.white
-            .opacity(0.5)
+            .opacity(1)
             .mask(area)
             .offset(y: -1 * zeroPosition)
             .frame(width: viewModel.width, height: viewModel.height - zeroPosition)
             .clipped()
             .offset(y: zeroPosition * 0.5)
                 )
+              
         path
             .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
             .fill(
@@ -63,10 +64,15 @@ struct LineGraphView: View {
     }
     
     private func generatePath() {
-        let render = GraphRenderer(width: viewModel.width, height: viewModel.height, data: viewModel.results, meta: viewModel.meta!, mode: mode).render()
-        self.area = render.area
-        self.graphPoints = render.points
-        self.path = render.path
+        let spec: Specifications<Double> = .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain)
+        let render = ChartLibraryGeneric.render(data: viewModel.results, setItemsToPlot: [
+            \DCAResult.gain : spec
+        ])
+        self.area = render.lines["gain"]!.area
+//        self.graphPoints = render.bars["gain"].points
+        self.path = render.lines["gain"]!.path
+        self.spec = spec
+        
     }
 }
     
@@ -85,7 +91,7 @@ struct ZeroLineView: View {
     
         GeometryReader { geometry in
             Path { path in
-                let zeroPosition = ZeroPosition(meta: viewModel.meta!, mode: mode, height: viewModel.height).getZeroPosition()
+                let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
                 
                 //MARK: ZERO POSITION
                 path.move(to: CGPoint(x: 0, y: zeroPosition))

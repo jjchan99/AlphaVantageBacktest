@@ -33,7 +33,7 @@ class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
     
     @Published var specifications: Specifications<T.T>?
     
-    @Published var chartsOutput: ChartLibraryOutput<T>?
+    @Published var chartsOutput: CandleLibraryOutput<T>?
     
     @Published var selectedIndex: Int?
     
@@ -41,14 +41,9 @@ class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
     
     @Published var indicator: CandleIndicator<OHLCCloudElement>?
     
+    @Published var singleCandleRenderer: SingleCandleRenderer?
+    
     lazy var padding: CGFloat = 0.05 * width
-    
-    
-   
-    
-    
-    
-    
     
 }
 

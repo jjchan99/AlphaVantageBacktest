@@ -8,7 +8,12 @@
 import Foundation
 import SwiftUI
 
-struct ChartLibraryOutput<T: CandlePointSpecified> {
+struct ChartLibraryOutput<T: ChartPointSpecified> {
+    var bars: [String: Path] = [:]
+    var lines: [String: (path: Path, area: Path)] = [:]
+}
+
+struct CandleLibraryOutput<T: CandlePointSpecified> {
     var bars: [String: Path] = [:]
     var candles: [String: [Candle<T>]] = [:]
     var lines: [String: (path: Path, area: Path)] = [:]

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DCAResult: CustomStringConvertible, Identifiable {
+public struct DCAResult: CustomStringConvertible, Identifiable, MonthSpecified {
     public let id = UUID()
     
     let symbol: String
@@ -55,4 +55,9 @@ public struct DCAResult: CustomStringConvertible, Identifiable {
         }
         
     }
+}
+
+extension DCAResult: ChartPointSpecified {
+    typealias T = Double
+    static var itemsToPlot: [KeyPath<DCAResult, Double> : Specifications<Double>] = [:]
 }

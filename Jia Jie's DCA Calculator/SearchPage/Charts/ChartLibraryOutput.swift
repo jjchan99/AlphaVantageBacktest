@@ -10,11 +10,11 @@ import SwiftUI
 
 struct ChartLibraryOutput<T: ChartPointSpecified> {
     var bars: [String: Path] = [:]
-    var lines: [String: (path: Path, area: Path)] = [:]
+    var lines: [String: (path: Path, area: Path, points: [CGPoint])] = [:]
 }
 
 struct CandleLibraryOutput<T: CandlePointSpecified> {
     var bars: [String: Path] = [:]
     var candles: [String: [Candle<T>]] = [:]
-    var lines: [String: (path: Path, area: Path)] = [:]
+    var lines: [String: (path: Path, area: Path, points: [CGPoint])] = [:]
 }

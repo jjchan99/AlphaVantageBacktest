@@ -19,11 +19,11 @@ struct LineGraphView: View {
     let g2: Color = Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1))
     let g3: Color = Color(#colorLiteral(red: 1, green: 0, blue: 0, alpha: 1))
     @State var area = Path()
-    @State var spec: Specifications<Double>?
+    @State var spec: Specifications<Double> = .init(count: 0, type: .line(zero: false), title: "", height: 0, width: 0, padding: 0, max: 0, min: 0)
     @ViewBuilder var body: some View {
         let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
         ZStack {
-            if spec != nil {
+            if true {
             let redGradient = LinearGradient(gradient: .init(colors: [g3, .white]), startPoint: .init(x: 0.5, y: 1), endPoint: .init(x: 0.5, y: zeroPosition / viewModel.height))
             let blueGradient = LinearGradient(gradient: .init(colors: [.green, .white]), startPoint: .top, endPoint: .bottom)
         blueGradient
@@ -47,7 +47,7 @@ struct LineGraphView: View {
             .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
             .fill(
                 LinearGradient(gradient: .init(colors: [g1, g2]), startPoint: .leading, endPoint: .trailing))
-            .overlay(IndicatorView(mode: $mode, graphPoints: $graphPoints)
+            .overlay(IndicatorView(mode: $mode, graphPoints: $graphPoints, spec: $spec)
                         .environmentObject(viewModel))
             .foregroundColor(Color.blue)
         }
@@ -72,6 +72,7 @@ struct LineGraphView: View {
 //        self.graphPoints = render.bars["gain"].points
         self.path = render.lines["gain"]!.path
         self.spec = spec
+        self.graphPoints = render.lines["gain"]!.points
         
     }
 }

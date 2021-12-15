@@ -16,13 +16,15 @@ struct IndicatorView: View {
     @State var currentPlot: String?
     @Binding var mode: Mode
     @Binding var graphPoints: [CGPoint]
+    @Binding var spec: Specifications<Double>
     @State var selectedYPos: CGFloat?
     @State var selectedIndex: Int = 0
     @State var labelOffset: CGFloat = 0
     
-    init(mode: Binding<Mode>, graphPoints: Binding<[CGPoint]>) {
+    init(mode: Binding<Mode>, graphPoints: Binding<[CGPoint]>, spec: Binding<Specifications<Double>>) {
         self._mode = mode
         self._graphPoints = graphPoints
+        self._spec = spec
     }
     
     @EnvironmentObject var viewModel: GraphViewModel
@@ -74,10 +76,10 @@ struct IndicatorView: View {
                             labelOffset = xPos
                         }
                     
-                        let indicator = YDragGesture(graphPoints: graphpoints, spec: spec)
+                        let indicator = YDragGesture(graphPoints: graphPoints, spec: spec)
 
-                        let result = indicator.updateIndicator(xPos: xPos)
-                        self.currentPlot = result.currentPlot
+                        let result: (selectedIndex: Int, currentPlot: CGFloat, selectedYPos: CGFloat) = indicator.updateIndicator(xPos: xPos)
+                        self.currentPlot = "\(result.currentPlot)"
                         self.selectedYPos = result.selectedYPos
                         viewModel.selectedIndex = result.selectedIndex
 //                        print("Y is at: \(currentPlot!) X is at: \(xPos)")

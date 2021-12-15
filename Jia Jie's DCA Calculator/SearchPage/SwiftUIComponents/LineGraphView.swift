@@ -92,11 +92,13 @@ struct ZeroLineView: View {
     
         GeometryReader { geometry in
             Path { path in
-                let zeroPosition = YFactory.getZeroPosition(spec: .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain))
+                let spec: Specifications<Double> = .init(count: viewModel.results.count, type: .line(zero: true), title: "gain", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: viewModel.meta!.maxGain, min: viewModel.meta!.minGain)
+                let zeroPosition = YFactory.getZeroPosition(spec: spec)
                 
                 //MARK: ZERO POSITION
-                path.move(to: CGPoint(x: 0, y: zeroPosition))
-                path.addLine(to: CGPoint(x: viewModel.width, y: zeroPosition))
+                path.move(to: CGPoint(x: spec.padding, y: zeroPosition))
+                path.addLine(to: CGPoint(x: viewModel.width - spec.padding
+                                         , y: zeroPosition))
             }
             .stroke(minY < 0 ? Color.gray.opacity(0.3) : Color.gray.opacity(1.0), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
         }

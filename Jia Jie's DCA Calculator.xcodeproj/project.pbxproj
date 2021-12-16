@@ -107,6 +107,7 @@
 		1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */; };
 		1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */; };
 		1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */; };
+		1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF278C276AF22000FCAE6D /* DateManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,6 +234,7 @@
 		1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchModeButtonView.swift; sourceTree = "<group>"; };
 		1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageModel.swift; sourceTree = "<group>"; };
 		1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotAccountCorodinator.swift; sourceTree = "<group>"; };
+		1DFF278C276AF22000FCAE6D /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 		1D18DDCD2758D9B30061A7AD /* TradeBot */ = {
 			isa = PBXGroup;
 			children = (
+				1DFF278C276AF22000FCAE6D /* DateManager.swift */,
 				1D7927A7275B4A3E00DD2E6B /* GraphManager.swift */,
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
@@ -768,6 +771,7 @@
 				1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */,
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
+				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,
 				1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */,
 				1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */,
 				1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */,

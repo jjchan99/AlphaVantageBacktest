@@ -56,63 +56,81 @@ struct TradeBot: CloudKitInterchangeable {
     }
 
 
-    func getIndicatorValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
+    func getIndicatorValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
         case .movingAverage:
-            return element.movingAverage
+            return element.movingAverage as! T?
         case let .RSI(period: _, value: value):
-            return value * 100
+            return value * 100 as! T?
         case let .bollingerBands(percentage: b):
-            return element.valueAtPercent(percent: b)
+            return element.valueAtPercent(percent: b) as! T?
+        case .monthlyPeriodic:
+            return DateManager.date(from: element.stamp) as! T?
         }
     }
     
-    func getInputValue(i: TechnicalIndicators, element: OHLCCloudElement) -> Double? {
+    func getInputValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
         case .movingAverage:
-            return element.close
+            return element.movingAverage as! T?
         case .RSI:
-            return element.RSI
+            return element.RSI as! T?
         case .bollingerBands:
-            return element.close
+            return element.close as! T?
+        case .monthlyPeriodic:
+            return DateManager.date(from: element.stamp) as! T?
         }
     }
     
-    func checkNext(condition: EvaluationCondition, latest: OHLCCloudElement) -> Bool {
-        let inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
-
-        let xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement? = nil) -> Bool {
         
-        guard xxx != nil, inputValue != nil else { return false }
+        switch condition.technicalIndicator {
+        case .monthlyPeriodic:
+            var inputValue: Date!
+            var xxx: Date!
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest!)
+            
+            return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
+        default:
+            var inputValue: Double?
+            var xxx: Double?
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+           
+            guard xxx != nil, inputValue != nil else { return false }
         
-        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
+            print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
         
-        if condition.andCondition != nil {
-        let nextCondition = condition.andCondition!
-            return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, latest: latest)
-        } else {
-            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
-        }
+            if condition.andCondition != nil {
+            let nextCondition = condition.andCondition!
+                return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, previous: previous)
+            } else {
+                return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+            }
+    }
     }
 
-    mutating func evaluate(latest: OHLCCloudElement, previous: OHLCCloudElement) {
+    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
         let open = latest.open
        
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for conditions in self.conditions! {
-            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
-            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
-            guard xxx != nil, inputValue != nil else { continue }
+//            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
+//            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
+//            guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
-                    if checkNext(condition: conditions, latest: latest) {
+                    if checkNext(condition: conditions, previous: previous, latest: latest) {
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
                     account.cash = account.cash * (1 - cashBuyPercentage)
                     break
                     }
                 case .sell:
-                    if checkNext(condition: conditions, latest: latest) {
+                    if checkNext(condition: conditions, previous: previous) {
                     account.cash += account.accumulatedShares * open * sharesSellPercentage
                     account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
                     break
@@ -189,7 +207,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
 
     case movingAverage(period: Int),
          bollingerBands(percentage: Double),
-         RSI(period: Int, value: Double)
+         RSI(period: Int, value: Double),
+         monthlyPeriodic
 
     var description: String {
         switch self {
@@ -199,6 +218,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return ("\(percentage)%B")
         case let .RSI(period: period, value: value):
             return "\(period) period RSI value of \(value)"
+        case .monthlyPeriodic:
+            return "monthly end investment"
         }
     }
 
@@ -210,6 +231,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return percentage
         case let .RSI(period: period, value: value):
             return Double(2 * period) + (value)
+        case let .monthlyPeriodic:
+            return 69
         }
     }
     
@@ -259,5 +282,4 @@ enum BuyOrSell: Int, CustomStringConvertible {
     }
     case buy, sell
 }
-
 

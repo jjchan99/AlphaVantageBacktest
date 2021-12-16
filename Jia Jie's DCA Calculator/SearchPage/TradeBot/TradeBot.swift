@@ -12,7 +12,7 @@ struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account
-    var conditions: [LinkedList<EvaluationCondition>] = []
+    var conditions: [EvaluationCondition] = []
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
@@ -83,7 +83,41 @@ struct TradeBot: CloudKitInterchangeable {
     }
     
     func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement? = nil) -> Bool {
+        let andCondition = condition.andCondition
+        for index in andCondition.indices {
+            let condition = andCondition[index]
+            switch condition.technicalIndicator {
+            case .monthlyPeriodic:
         
+                var inputValue: Date!
+                var xxx: Date!
+                
+                inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+                xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest!)
+                
+                return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
+            default:
+                var inputValue: Double?
+                var xxx: Double?
+                
+                inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+                xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+                
+                guard xxx != nil, inputValue != nil else { return false }
+                
+                print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
+                
+                if index == andCondition.indices.last {
+                   return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+                }
+            
+                if condition.aboveOrBelow.evaluate(inputValue!, xxx!) {
+                   continue
+                } else {
+                    return false
+                }
+        }
+    }
         switch condition.technicalIndicator {
         case .monthlyPeriodic:
             var inputValue: Date!
@@ -99,18 +133,10 @@ struct TradeBot: CloudKitInterchangeable {
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
-           
+            
             guard xxx != nil, inputValue != nil else { return false }
-        
-            print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
-        
-            if condition.next != nil {
-                let nextCondition = condition.next!
-                return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, previous: previous)
-            } else {
-                return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
-            }
-    }
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+        }
     }
 
     mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
@@ -118,24 +144,23 @@ struct TradeBot: CloudKitInterchangeable {
        
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        for conditions in self.conditions! {
+        for condition in self.conditions {
 //            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
 //            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
 //            guard xxx != nil, inputValue != nil else { continue }
-                let conditions = conditions.head!
-                switch conditions.buyOrSell {
+                switch condition.buyOrSell {
                 case .buy:
-                    switch conditions.technicalIndicator {
+                    if checkNext(condition: condition, previous: previous, latest: latest) {
+                    switch condition.technicalIndicator {
                     case .monthlyPeriodic:
                         account.accumulatedShares += account.decrement(MonthlyAdapter.getMonthlyInvestment(cbp: cashBuyPercentage, budget: budget)) / open
                     default:
-                    if checkNext(condition: conditions, previous: previous, latest: latest) {
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
                     }
                     break
                     }
                 case .sell:
-                    if checkNext(condition: conditions, previous: previous) {
+                    if checkNext(condition: condition, previous: previous) {
                     account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * open
                     break
                     }
@@ -144,13 +169,7 @@ struct TradeBot: CloudKitInterchangeable {
     }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild, Node {
-    
-    var next: EvaluationCondition?
-    
-    var previous: EvaluationCondition?
-    
-    typealias T = EvaluationCondition
+final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
     
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
@@ -163,7 +182,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
         self.record = record
     }
     
-    convenience init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: EvaluationCondition?) {
+    convenience init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: [EvaluationCondition]) {
         let record = CKRecord(recordType: "EvaluationCondition")
                 record.setValuesForKeys([
                     "technicalIndicator": technicalIndicator.rawValue,
@@ -171,7 +190,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
                     "buyOrSell": buyOrSell.rawValue,
                 ])
         self.init(record: record)
-        self.next = andCondition
+        self.andCondition = andCondition
     }
     
     var record: CKRecord
@@ -186,6 +205,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     let technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
+    var andCondition: [EvaluationCondition] = []
     
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"

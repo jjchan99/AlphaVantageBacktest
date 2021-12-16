@@ -124,15 +124,18 @@ struct TradeBot: CloudKitInterchangeable {
 //            guard xxx != nil, inputValue != nil else { continue }
                 switch conditions.buyOrSell {
                 case .buy:
+                    switch conditions.technicalIndicator {
+                    case .monthlyPeriodic:
+                        account.accumulatedShares += account.decrement(MonthlyAdapter.getMonthlyInvestment(cbp: cashBuyPercentage, budget: budget)) / open
+                    default:
                     if checkNext(condition: conditions, previous: previous, latest: latest) {
                     account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
-                    account.cash = account.cash * (1 - cashBuyPercentage)
+                    }
                     break
                     }
                 case .sell:
                     if checkNext(condition: conditions, previous: previous) {
-                    account.cash += account.accumulatedShares * open * sharesSellPercentage
-                    account.accumulatedShares = account.accumulatedShares * (1 - sharesSellPercentage)
+                    account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * open
                     break
                     }
                 }
@@ -189,6 +192,15 @@ struct Account {
     mutating func decrement(_ amount: Double) -> Double {
         cash -= amount
         return amount
+    }
+    
+    mutating func decrement(shares: Double) -> Double {
+        accumulatedShares -= shares
+        return shares
+    }
+    
+    func netWorth(quote: Double) -> Double {
+        return accumulatedShares * quote + cash
     }
 }
 
@@ -281,5 +293,19 @@ enum BuyOrSell: Int, CustomStringConvertible {
         }
     }
     case buy, sell
+}
+
+struct MonthlyAdapter {
+    
+    //MARK: Where Budget = Initial Investment
+    
+    static func getMonthlyInvestment(cbp: Double, budget: Double) -> Double {
+        return cbp * budget
+    }
+    
+    static func monthlyInvestmentToCbp(monthlyInvestment: Double, budget: Double) -> Double {
+        return monthlyInvestment / budget
+    }
+    
 }
 

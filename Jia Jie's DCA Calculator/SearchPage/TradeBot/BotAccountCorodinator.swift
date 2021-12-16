@@ -19,7 +19,7 @@ class BotAccountCoordinator {
         
         let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
         
-        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition2])!
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition2, condition2, condition2])!
         
         let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition3])!
         
@@ -103,17 +103,20 @@ class BotAccountCoordinator {
                 } receiveValue: { (value: [EvaluationCondition]) in
                     var bot = bot
                     let group = DispatchGroup()
+                    var list = value
             
                     value.forEach { condition in
+                        var copy = condition
                         group.enter()
                         fetchAndConditions(parent: condition) { andCondition in
-                            condition.andCondition = andCondition
+                            copy.andCondition = andCondition
+                            list.append(condition)
                             group.leave()
                         }
                     }
                     
                     group.wait()
-                    bot.conditions = value
+                    bot.conditions = list
                     completion(bot)
                 }
                 .store(in: &BotAccountCoordinator.subs)

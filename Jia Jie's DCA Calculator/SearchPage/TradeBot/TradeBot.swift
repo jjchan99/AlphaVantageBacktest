@@ -169,7 +169,7 @@ struct TradeBot: CloudKitInterchangeable {
     }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
+struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
     
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
@@ -182,7 +182,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
         self.record = record
     }
     
-    convenience init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: [EvaluationCondition]) {
+    init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: [EvaluationCondition]) {
         let record = CKRecord(recordType: "EvaluationCondition")
                 record.setValuesForKeys([
                     "technicalIndicator": technicalIndicator.rawValue,

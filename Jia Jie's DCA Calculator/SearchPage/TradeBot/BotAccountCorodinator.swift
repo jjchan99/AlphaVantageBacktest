@@ -39,7 +39,7 @@ class BotAccountCoordinator {
     
     static func inspect(for bot: TradeBot) {
         bot.conditions.forEach { condition in
-//            print("Condition: \(condition). And condition: \(condition.next)")
+            print("Condition: \(condition). And condition: \(condition.andCondition)")
         }
     }
     

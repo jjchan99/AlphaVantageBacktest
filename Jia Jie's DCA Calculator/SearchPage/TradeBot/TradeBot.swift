@@ -12,7 +12,7 @@ struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
     var account: Account
-    var conditions: [EvaluationCondition]? { didSet { conditions = oldValue ?? conditions } }
+    var conditions: [LinkedList<EvaluationCondition>] = []
     let cashBuyPercentage: Double
     let sharesSellPercentage: Double
     let record: CKRecord
@@ -104,8 +104,8 @@ struct TradeBot: CloudKitInterchangeable {
         
             print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
         
-            if condition.andCondition != nil {
-            let nextCondition = condition.andCondition!
+            if condition.next != nil {
+                let nextCondition = condition.next!
                 return condition.aboveOrBelow.evaluate(inputValue!, xxx!) && checkNext(condition: nextCondition, previous: previous)
             } else {
                 return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
@@ -122,6 +122,7 @@ struct TradeBot: CloudKitInterchangeable {
 //            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
 //            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
 //            guard xxx != nil, inputValue != nil else { continue }
+                let conditions = conditions.head!
                 switch conditions.buyOrSell {
                 case .buy:
                     switch conditions.technicalIndicator {
@@ -143,7 +144,14 @@ struct TradeBot: CloudKitInterchangeable {
     }
 }
 
-final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
+final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild, Node {
+    
+    var next: EvaluationCondition?
+    
+    var previous: EvaluationCondition?
+    
+    typealias T = EvaluationCondition
+    
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
         let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
@@ -163,7 +171,7 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
                     "buyOrSell": buyOrSell.rawValue,
                 ])
         self.init(record: record)
-        self.andCondition = andCondition
+        self.next = andCondition
     }
     
     var record: CKRecord
@@ -178,7 +186,6 @@ final class EvaluationCondition: CloudKitInterchangeable, CustomStringConvertibl
     let technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
-    var andCondition: EvaluationCondition? { didSet { andCondition = oldValue ?? andCondition } }
     
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"

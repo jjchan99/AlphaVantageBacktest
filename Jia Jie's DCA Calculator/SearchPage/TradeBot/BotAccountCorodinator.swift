@@ -38,8 +38,8 @@ class BotAccountCoordinator {
     }
     
     static func inspect(for bot: TradeBot) {
-        bot.conditions!.forEach { condition in
-            print("Condition: \(condition). And condition: \(condition.andCondition)")
+        bot.conditions.forEach { condition in
+//            print("Condition: \(condition). And condition: \(condition.next)")
         }
     }
     
@@ -76,8 +76,8 @@ class BotAccountCoordinator {
             .store(in: &BotAccountCoordinator.subs)
     }
     
-    static private func fetchAndConditions(for bot: TradeBot, indexRef: Int, completion: @escaping (TradeBot) -> Void) {
-        CloudKitUtility.fetchChildren(parent: bot.conditions![indexRef], children: "EvaluationCondition")
+    static private func traverseFetch(list: LinkedList<EvaluationCondition>, parent: EvaluationCondition, completion: @escaping (LinkedList<EvaluationCondition>) -> Void) {
+        CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
             .sink { result in
                 switch result {
                 case .failure(let error):
@@ -86,42 +86,61 @@ class BotAccountCoordinator {
                     break
                 }
             } receiveValue: { (value: [EvaluationCondition]) in
-                bot.conditions![indexRef].andCondition = value.first
-                print("Condition is: \(bot.conditions![indexRef])... ANDCondition fetched: \(value.first).")
-                if indexRef == bot.conditions!.indices.last {
-                    completion(bot)
+                if value.first != nil {
+                    list.append(value: value.first!)
+                    traverseFetch(list: list, parent: value.first!, completion: { list in })
                 } else {
-                    fetchAndConditions(for: bot, indexRef: indexRef + 1) { tradeBot in
-                        completion(tradeBot)
-                    }
+                    completion(list)
                 }
             }
             .store(in: &BotAccountCoordinator.subs)
+    }
+        
+        static private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
+            CloudKitUtility.fetchChildren(parent: bot, children: "EvaluationCondition")
+                .sink { result in
+                    switch result {
+                    case .failure(let error):
+                       print(error)
+                    case .finished:
+                        break
+                    }
+                } receiveValue: { (value: [EvaluationCondition]) in
+                    var list: [LinkedList<EvaluationCondition>] = []
+                    var bot = bot
+                    let group = DispatchGroup()
+            
+                    value.forEach { condition in
+                        group.enter()
+                        traverseFetch(list: LinkedList<EvaluationCondition>(head: condition), parent: condition) { completeList in
+                            list.append(completeList)
+                            group.leave()
+                        }
+                    }
+                    
+                    group.wait()
+                    bot.conditions = list
+                    completion(bot)
+                }
+                .store(in: &BotAccountCoordinator.subs)
+        }
+    
+    static func traverseSave(child: EvaluationCondition, for parents: EvaluationCondition) {
+        CloudKitUtility.saveChild(child: child, for: parents) { value in
+            Log.queue(action: "AND condition uploaded")
+            
+         
+        }
     }
     
-    static private func fetchConditions(for bot: TradeBot, completion: @escaping (TradeBot) -> Void) {
-        CloudKitUtility.fetchChildren(parent: bot, children: "EvaluationCondition")
-            .sink { result in
-                switch result {
-                case .failure(let error):
-                   print(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { (value: [EvaluationCondition]) in
-                var copy = bot
-                copy.conditions = value
-                fetchAndConditions(for: copy, indexRef: 0) { tradeBot in
-                    completion(tradeBot)
-                }
-            }
-            .store(in: &BotAccountCoordinator.subs)
-    }
+    
+    
+    
     
     static func upload(completion: @escaping () -> Void) {
         let specimen = specimen()
-        let andParents: [EvaluationCondition] = specimen.conditions!.compactMap { condition in
-            if condition.andCondition != nil { return condition } else { return nil }
+        let andParents: [EvaluationCondition] = specimen.conditions.compactMap { condition in
+            if condition.next != nil { return condition } else { return nil }
         }
         
         CloudKitUtility.add(item: specimen) { value in
@@ -129,7 +148,7 @@ class BotAccountCoordinator {
                 let group = DispatchGroup()
                 for index in andParents.indices {
                     group.enter()
-                    CloudKitUtility.saveChild(child: andParents[index].andCondition!, for: andParents[index]) { value in
+                    CloudKitUtility.saveChild(child: andParents[index].next!, for: andParents[index]) { value in
                         Log.queue(action: "AND condition uploaded")
                         group.leave()
                     }

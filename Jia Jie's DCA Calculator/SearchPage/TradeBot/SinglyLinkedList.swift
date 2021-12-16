@@ -7,41 +7,52 @@
 
 import Foundation
 
-class Node<T> {
-  // 2
-  var value: T
-  var next: Node<T>?
-  weak var previous: Node<T>?
+//class Node<T> {
+//  // 2
+//  var value: T
+//  var next: Node<T>?
+//  weak var previous: Node<T>?
+//
+//  // 3
+//  init(value: T) {
+//    self.value = value
+//  }
+//}
 
-  // 3
-  init(value: T) {
-    self.value = value
-  }
+protocol Node: AnyObject {
+    associatedtype T: Node
+   
+    var next: T? { get set }
+    var previous: T? { get set }
 }
 
-class LinkedList<BindingClass> {
-  var head: Node<BindingClass>?
-  var tail: Node<BindingClass>?
+class LinkedList<T: Node> {
+  var head: T?
+  var tail: T?
+  
+  init(head: T?) {
+        self.head = head
+  }
 
   var isEmpty: Bool {
     return head == nil
   }
 
-  var first: Node<BindingClass>? {
+    var first: T? {
     return head
   }
 
-  var last: Node<BindingClass>? {
+    var last: T? {
     return tail
-  }
+    }
 
-  func append(value: BindingClass) {
+    func append(value: T) {
       // 1
-      let newNode: Node<BindingClass> = Node(value: value)
+      let newNode = value
       // 2
       if let tailNode = tail {
-        newNode.previous = newNode
-        tailNode.next = newNode
+        newNode.previous = (newNode as! T.T)
+        tailNode.next = (newNode as! T.T)
       }
       // 3
       else {
@@ -51,7 +62,7 @@ class LinkedList<BindingClass> {
       tail = newNode
     }
     
-    func nodeAt(index: Int) -> Node<BindingClass>? {
+    func nodeAt(index: Int) -> T? {
       // 1
       if index >= 0 {
         var node = head
@@ -60,7 +71,7 @@ class LinkedList<BindingClass> {
         while node != nil {
           if i == 0 { return node }
           i -= 1
-          node = node!.next
+          node = (node!.next as! T)
         }
       }
       // 3
@@ -72,19 +83,19 @@ class LinkedList<BindingClass> {
       tail = nil
     }
     
-    func remove(node: Node<BindingClass>) -> BindingClass {
+    func remove(node: T) -> T {
       let prev = node.previous
       let next = node.next
 
       if let prev = prev {
-        prev.next = next // 1
+        prev.next = (next as! T.T.T) // 1
       } else {
-        head = next // 2
+          head = (next as! T) // 2
       }
-      next?.previous = prev // 3
+      next?.previous = (prev as! T.T.T) // 3
 
       if next == nil {
-        tail = prev // 4
+        tail = (prev as! T) // 4
       }
 
       // 5
@@ -92,6 +103,7 @@ class LinkedList<BindingClass> {
       node.next = nil
 
       // 6
-      return node.value
+      return node
     }
 }
+

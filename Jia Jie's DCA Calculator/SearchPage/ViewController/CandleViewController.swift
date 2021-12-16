@@ -44,6 +44,7 @@ class CandleViewController: UIViewController {
             OHLC(mode: mode)
         }
         view.backgroundColor = .white
+        overrideUserInterfaceStyle = .light
         
 //        testBot()
     }

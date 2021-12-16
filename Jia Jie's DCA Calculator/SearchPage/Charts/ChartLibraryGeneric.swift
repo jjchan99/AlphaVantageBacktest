@@ -69,7 +69,7 @@ struct ChartLibraryGeneric {
     static func render<T: ChartPointSpecified>(data: [T], setItemsToPlot: [KeyPath<T, T.T> : Specifications<T.T>]) -> ChartLibraryOutput<T> {
         T.itemsToPlot = setItemsToPlot
         var bars: [String: Path] = [:]
-        var lines: [String: (path: Path, area: Path)] = [:]
+        var lines: [String: (path: Path, area: Path, points: [CGPoint])] = [:]
         
         for index in data.indices {
             for (key, spec) in T.itemsToPlot {
@@ -79,7 +79,7 @@ struct ChartLibraryGeneric {
                     let new = renderBarPath(index: index, data: data, key: key, spec: spec, path: previous)
                     bars[spec.title] = new
                 case .line:
-                    let previous = lines[spec.title] ?? (path: Path(), area: Path())
+                    let previous = lines[spec.title] ?? (path: Path(), area: Path(), points: [])
                     let new = renderLinePath(index: index, data: data, key: key, spec: spec, previous: previous)
                     lines[spec.title] = new
                 default:
@@ -95,7 +95,7 @@ struct ChartLibraryGeneric {
         T.itemsToPlot = setItemsToPlot
         var bars: [String: Path] = [:]
         var candles: [String: [Candle<T>]] = [:]
-        var lines: [String: (path: Path, area: Path)] = [:]
+        var lines: [String: (path: Path, area: Path, points: [CGPoint])] = [:]
         
         for index in data.indices {
             for (key, spec) in T.itemsToPlot {
@@ -105,7 +105,7 @@ struct ChartLibraryGeneric {
                     let new = renderBarPath(index: index, data: data, key: key, spec: spec, path: previous)
                     bars[spec.title] = new
                 case .line:
-                    let previous = lines[spec.title] ?? (path: Path(), area: Path())
+                    let previous = lines[spec.title] ?? (path: Path(), area: Path(), points: [])
                     let new = renderLinePath(index: index, data: data, key: key, spec: spec, previous: previous)
                     lines[spec.title] = new
                 case .candle:
@@ -135,7 +135,7 @@ struct ChartLibraryGeneric {
         return path
     }
     
-    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, previous: (Path, Path)) -> ((Path, Path)) {
+    private static func renderLinePath<T: ChartPointSpecified>(index: Int, data: [T], key: KeyPath<T, T.T>, spec: Specifications<T.T>, previous: (Path, Path, [CGPoint])) -> ((Path, Path, [CGPoint])) {
        let count = data.count
         let xPosition = XFactory.getXPosition(index: index, spec: spec, dataCount: count)
         let yPosition = YFactory.getYPosition(data: data, index: index, spec: spec, key: key)
@@ -143,7 +143,7 @@ struct ChartLibraryGeneric {
         
        var path = previous.0
        var area = previous.1
-       var points: [CGPoint] = []
+       var points = previous.2
        
        if index == 0 {
         points.append(indexPoint)
@@ -171,7 +171,7 @@ struct ChartLibraryGeneric {
             area.closeSubpath()
         }
         
-        return ((path, area))
+        return (path, area, points)
     }
     
     static private func renderCandlePath<T: CandlePointSpecified>(index: Int, data: [T], spec: Specifications<T.T>) -> Candle<T> {

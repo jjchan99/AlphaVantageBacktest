@@ -16,13 +16,15 @@ struct IndicatorView: View {
     @State var currentPlot: String?
     @Binding var mode: Mode
     @Binding var graphPoints: [CGPoint]
+    @Binding var spec: Specifications<Double>
     @State var selectedYPos: CGFloat?
     @State var selectedIndex: Int = 0
     @State var labelOffset: CGFloat = 0
     
-    init(mode: Binding<Mode>, graphPoints: Binding<[CGPoint]>) {
+    init(mode: Binding<Mode>, graphPoints: Binding<[CGPoint]>, spec: Binding<Specifications<Double>>) {
         self._mode = mode
         self._graphPoints = graphPoints
+        self._spec = spec
     }
     
     @EnvironmentObject var viewModel: GraphViewModel
@@ -50,16 +52,17 @@ struct IndicatorView: View {
                     .frame(width: 10, height: 10)
                     .position(x: 0, y: selectedYPos ?? graphPoints[0].y)
                 )
-                .offset(x: viewModel.offset)
+                .offset(x: viewModel.offset + viewModel.padding)
         }
         .frame(width: viewModel.width, height: viewModel.height)
         .contentShape(Rectangle())
         .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ touch in
                         let xPos = touch.location.x
-                        guard xPos >= 0 && xPos <= viewModel.width else {
-                            return
-                        }
+                        print("xPos: \(xPos)")
+//                        guard xPos >= 0 && xPos <= viewModel.width else {
+//                            return
+//                        }
 
                         showPlot = true
                         viewModel.offset = xPos
@@ -74,10 +77,10 @@ struct IndicatorView: View {
                             labelOffset = xPos
                         }
                     
-                        let indicator = YDragGesture(graphPoints: graphpoints, spec: spec)
+                        let indicator = YDragGesture(graphPoints: graphPoints, spec: spec)
 
-                        let result = indicator.updateIndicator(xPos: xPos)
-                        self.currentPlot = result.currentPlot
+                        let result: (selectedIndex: Int, currentPlot: CGFloat, selectedYPos: CGFloat) = indicator.updateIndicator(xPos: xPos)
+                        self.currentPlot = "\(result.currentPlot)"
                         self.selectedYPos = result.selectedYPos
                         viewModel.selectedIndex = result.selectedIndex
 //                        print("Y is at: \(currentPlot!) X is at: \(xPos)")
@@ -90,7 +93,7 @@ struct IndicatorView: View {
                             showPlot = false
                         }
                     }))
-        .frame(width: viewModel.width, height: viewModel.height)
+        .frame(width: viewModel.spec.adjustedWidth, height: viewModel.height)
             .onChange(of: mode) { _ in
                 viewModel.id = UUID()
             }

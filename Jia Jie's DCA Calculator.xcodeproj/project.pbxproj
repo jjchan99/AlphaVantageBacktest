@@ -72,7 +72,6 @@
 		1D911E52273289BA00444991 /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E51273289BA00444991 /* TabViewModel.swift */; };
 		1D92AE84274E86150076F449 /* MovingAverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE83274E86150076F449 /* MovingAverageView.swift */; };
 		1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE85274E86450076F449 /* TradingVolumeView.swift */; };
-		1D9349342763340600D815DE /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 1D9349332763340600D815DE /* Algorithms */; };
 		1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D93493527633A2100D815DE /* NumericProtocol.swift */; };
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
@@ -89,6 +88,7 @@
 		1DC3C9DF273BBA2F00900600 /* CandleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9DE273BBA2F00900600 /* CandleAPI.swift */; };
 		1DC3C9E1273BC13000900600 /* CandleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9E0273BC13000900600 /* CandleModel.swift */; };
 		1DC58277275D240700FD1592 /* CloudViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC58276275D240700FD1592 /* CloudViewModel.swift */; };
+		1DC58888276CB39300046591 /* PopupViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC58887276CB39300046591 /* PopupViews.swift */; };
 		1DC8A2422761FC25009FBA85 /* OHLCTechnicalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */; };
 		1DC9EAB3274A5138000E8D86 /* CandleModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */; };
 		1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCAEF5F26FCB40000BFB251 /* BodyView.swift */; };
@@ -212,6 +212,7 @@
 		1DC3C9DE273BBA2F00900600 /* CandleAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleAPI.swift; sourceTree = "<group>"; };
 		1DC3C9E0273BC13000900600 /* CandleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleModel.swift; sourceTree = "<group>"; };
 		1DC58276275D240700FD1592 /* CloudViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudViewModel.swift; sourceTree = "<group>"; };
+		1DC58887276CB39300046591 /* PopupViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViews.swift; sourceTree = "<group>"; };
 		1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCTechnicalManager.swift; sourceTree = "<group>"; };
 		1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleModeView.swift; sourceTree = "<group>"; };
 		1DCAEF5F26FCB40000BFB251 /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
@@ -234,7 +235,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D9349342763340600D815DE /* Algorithms in Frameworks */,
 				1D784B02275A493700F91392 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,6 +518,7 @@
 			isa = PBXGroup;
 			children = (
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
+				1DC58887276CB39300046591 /* PopupViews.swift */,
 				1DD29270276C8E91009AF2C2 /* InputViewController.swift */,
 			);
 			path = InputViews;
@@ -558,7 +559,6 @@
 			);
 			name = "Jia Jie's DCA Calculator";
 			packageProductDependencies = (
-				1D9349332763340600D815DE /* Algorithms */,
 			);
 			productName = "Jia Jie's DCA Calculator";
 			productReference = 1D25E31A26EDD83A00EA4225 /* Jia Jie's DCA Calculator.app */;
@@ -756,6 +756,7 @@
 				1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */,
 				1D7927A8275B4A3E00DD2E6B /* GraphManager.swift in Sources */,
 				1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */,
+				1DC58888276CB39300046591 /* PopupViews.swift in Sources */,
 				1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */,
 				1D6D33DC27077063009A86EA /* Date+Extensions.swift in Sources */,
 				1D8021D926FF102A0004F668 /* DIContainer.swift in Sources */,
@@ -1100,14 +1101,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1D9349332763340600D815DE /* Algorithms */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1D9349322763340600D815DE /* XCRemoteSwiftPackageReference "swift-algorithms" */;
-			productName = Algorithms;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1D25E31226EDD83A00EA4225 /* Project object */;
 }

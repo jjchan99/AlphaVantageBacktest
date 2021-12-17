@@ -55,7 +55,7 @@ struct TradeBot: CloudKitInterchangeable {
         self.conditions = conditions
     }
 
-
+    //MARK: INDICATOR VALUE IS ALWAYS PREVIOUS
     func getIndicatorValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
         case .movingAverage:
@@ -66,9 +66,12 @@ struct TradeBot: CloudKitInterchangeable {
             return element.valueAtPercent(percent: b) as! T?
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
+        case .stopOrder(value: let value):
+            return value as! T?
         }
     }
     
+    //MARK: SCENARIO 1: INDICATORS BASED ON OPEN. ELEMENT IS ALWAYS MOST RECENT. SECNARIO 2: INDICATORS BASED ON CLOSE. ELEMENT IS PREVIOUS FOR INDICATORS. ELEMENT IS MOST RECENT FOR PRICE INPUT (USING OPEN).
     func getInputValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
         case .movingAverage:
@@ -76,9 +79,11 @@ struct TradeBot: CloudKitInterchangeable {
         case .RSI:
             return element.RSI as! T?
         case .bollingerBands:
-            return element.close as! T?
+            return element.open as! T?
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
+        case .stopOrder(value: let value):
+            return element.open as! T?
         }
     }
     
@@ -247,7 +252,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
     case movingAverage(period: Int),
          bollingerBands(percentage: Double),
          RSI(period: Int, value: Double),
-         monthlyPeriodic
+         monthlyPeriodic,
+         stopOrder(value: Double)
 
     var description: String {
         switch self {
@@ -259,6 +265,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "\(period) period RSI value of \(value)"
         case .monthlyPeriodic:
             return "monthly end investment"
+        case .stopOrder(value: let value):
+            return "stop order initiates at \(value)"
         }
     }
 
@@ -272,6 +280,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return Double(2 * period) + (value)
         case let .monthlyPeriodic:
             return 69
+        case .stopOrder(value: let value):
+            return value + 1000000
         }
     }
     

@@ -50,8 +50,9 @@ struct InputCustomizationView: View {
                     }
                 }
             }
+            .navigationTitle("Hello my friends.")
         }
-        .navigationTitle("Hello my friends.")
+       
     }
 }
 

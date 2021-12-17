@@ -321,6 +321,10 @@
 				1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */,
 				1D911E4A2732842600444991 /* SearchPage */,
 				1DCBBE3D276BA1310079D5CA /* TradeBotViews */,
+				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
+				1D18DDCD2758D9B30061A7AD /* TradeBot */,
+				1DA32BEF2756171000055702 /* TechnicalIndicators */,
+				1D2425AE27575DEE003A9755 /* Charts */,
 				1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */,
 				1D911E4D2732867300444991 /* TabViewController.swift */,
 				1D911E51273289BA00444991 /* TabViewModel.swift */,
@@ -419,10 +423,6 @@
 				1D12102B2736F95D00B58B67 /* SwiftUI_FinancialsView */,
 				1D8021D526FF039B0004F668 /* Coordinators */,
 				1D3BF6FF26FF7C5800528646 /* ViewController */,
-				1DA32BEF2756171000055702 /* TechnicalIndicators */,
-				1D2425AE27575DEE003A9755 /* Charts */,
-				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
-				1D18DDCD2758D9B30061A7AD /* TradeBot */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
 			path = SearchPage;

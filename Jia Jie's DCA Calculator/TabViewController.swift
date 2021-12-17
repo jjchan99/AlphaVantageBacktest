@@ -44,11 +44,11 @@ class TabViewController: UITabBarController {
     func registerForKeyboardNotifications() {
        //Adding notifies on keyboard appearing
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [unowned self] value in
-            self.hostingController!.view.removeFromSuperview()
+            self.hostingController!.view.isHidden = true
         }
         
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { [unowned self] value in
-           addCustomTab()
+            self.hostingController!.view.isHidden = false
         }
    }
 

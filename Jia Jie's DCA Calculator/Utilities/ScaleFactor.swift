@@ -34,3 +34,8 @@ extension CGFloat {
         return ScaleFactor.wScaled(self)
     }
 }
+
+struct Dimensions {
+    static let height: CGFloat = .init(926).hScaled()
+    static let width: CGFloat = .init(428).wScaled()
+}

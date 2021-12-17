@@ -25,7 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navCoordinator = NavigationCoordinator(navigationController: navController)
         navCoordinator!.pushSearchViewController()
         let homeViewController = CloudKitViewController()
-        tabBarController.viewControllers = [navController, homeViewController]
+        let inputViewController = InputViewController()
+        tabBarController.viewControllers = [navController, homeViewController, inputViewController]
         window!.rootViewController = tabBarController
         window!.makeKeyAndVisible()
     }

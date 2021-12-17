@@ -36,8 +36,8 @@ class TabViewController: UITabBarController {
             selectedViewController = viewControllers![0]
         }
         
-        viewModel.index2tapped = { [weak self] in
-            
+        viewModel.index2tapped = { [unowned self] in
+            selectedViewController = viewControllers![2]
         }
     }
     

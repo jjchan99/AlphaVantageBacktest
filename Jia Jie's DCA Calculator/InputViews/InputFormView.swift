@@ -36,6 +36,7 @@ struct InputCustomizationView: View {
             Text("HELLO")
             
         }
+        .frame(width: Dimensions.width, height: Dimensions.height)
     }
 }
 

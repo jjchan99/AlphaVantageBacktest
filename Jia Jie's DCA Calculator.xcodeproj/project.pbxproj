@@ -326,7 +326,7 @@
 				1D18DDCD2758D9B30061A7AD /* TradeBot */,
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
-				1DCBBE3D276BA1310079D5CA /* TradeBotViews */,
+				1DCBBE3D276BA1310079D5CA /* InputViews */,
 				1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */,
 				1D911E4D2732867300444991 /* TabViewController.swift */,
 				1D911E51273289BA00444991 /* TabViewModel.swift */,
@@ -514,13 +514,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		1DCBBE3D276BA1310079D5CA /* TradeBotViews */ = {
+		1DCBBE3D276BA1310079D5CA /* InputViews */ = {
 			isa = PBXGroup;
 			children = (
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1DD29270276C8E91009AF2C2 /* InputViewController.swift */,
 			);
-			path = TradeBotViews;
+			path = InputViews;
 			sourceTree = "<group>";
 		};
 		1DF13C6727183D29005C7CB7 /* AccessoryViews */ = {

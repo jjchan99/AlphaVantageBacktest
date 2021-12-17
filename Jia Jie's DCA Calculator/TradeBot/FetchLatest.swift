@@ -46,10 +46,11 @@ class FetchLatest {
             }
             
             //MARK: UPDATE EFFECTIVE AFTER
-            bot.update(effectiveAfter: sorted[sorted.count - 1].key)
-            
-            DispatchQueue.main.async {
-            completion(bot)
+            let record = bot.update(effectiveAfter: sorted[sorted.count - 1].key)
+            CloudKitUtility.update(item: record) { success in
+                DispatchQueue.main.async {
+                completion(bot)
+                }
             }
         }
     }

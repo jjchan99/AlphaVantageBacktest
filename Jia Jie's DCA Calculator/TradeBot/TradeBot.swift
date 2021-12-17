@@ -63,6 +63,8 @@ struct TradeBot: CloudKitInterchangeable {
                 ])
         self.init(record: record)
         self.conditions = conditions
+        
+        //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
 
     //MARK: INDICATOR VALUE IS ALWAYS PREVIOUS

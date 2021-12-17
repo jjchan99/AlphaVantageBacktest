@@ -30,13 +30,28 @@ struct InputMenuView: View {
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
     
-    
     var body: some View {
-        List(0...4, id: \.self) { idx in
-            Text("HELLO")
-            
+        NavigationView {
+            VStack {
+                Form {
+                    Section {
+                        List(0...4, id: \.self) { idx in
+                            HStack {
+                                Image(systemName: "dollarsign.circle")
+                                VStack {
+                                Text("HI")
+                                Text("Select this")
+                                }
+                            }
+                            .frame(height: 0.1 * Dimensions.height)
+                        }
+                    } header: {
+                        Text("Trading Indicators")
+                    }
+                }
+            }
         }
-        .frame(width: Dimensions.width, height: Dimensions.height)
+        .navigationTitle("Hello my friends.")
     }
 }
 

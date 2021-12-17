@@ -29,28 +29,48 @@ struct InputMenuView: View {
 
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
+    var titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index", "Custom Setup Price"]
+    var description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum", "Your own price constraints"]
     
     var body: some View {
         NavigationView {
             VStack {
                 Form {
                     Section {
-                        List(0...4, id: \.self) { idx in
+                        List(0..<4, id: \.self) { idx in
                             HStack {
                                 Image(systemName: "dollarsign.circle")
-                                VStack {
-                                Text("HI")
-                                Text("Select this")
+                                VStack(alignment: .leading) {
+                                Text(titles[idx])
+                                        .font(.caption.bold())
+                                Text(description[idx])
+                                        .font(.caption2)
                                 }
+                                Image(systemName: "arrow.forward.circle")
                             }
                             .frame(height: 0.1 * Dimensions.height)
                         }
                     } header: {
                         Text("Trading Indicators")
                     }
+                    Section {
+                        HStack {
+                            Image(systemName: "dollarsign.circle")
+                            VStack(alignment: .leading) {
+                            Text("Monthly Dollar-Cost Averaging")
+                                    .font(.caption.bold())
+                            Text("Invest at regular monthly intervals")
+                                    .font(.caption2)
+                            }
+                            Image(systemName: "arrow.forward.circle")
+                        }
+                        .frame(height: 0.1 * Dimensions.height)
+                    } header: {
+                       Text("Periodic")
+                    }
                 }
             }
-            .navigationTitle("Hello my friends.")
+            .navigationTitle("Entry strategy")
         }
        
     }

@@ -30,7 +30,7 @@ struct InputMenuView: View {
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
     var titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index", "Custom Setup Price"]
-    var description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum", "Your own price constraints"]
+    var description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum", "Constrain orders based on the price you set"]
     
     var body: some View {
         NavigationView {

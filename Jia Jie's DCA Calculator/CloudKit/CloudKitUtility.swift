@@ -12,7 +12,6 @@ import Combine
 protocol CloudKitInterchangeable {
     init?(record: CKRecord)
     var record: CKRecord { get }
-    func update() -> Self
 }
 
 protocol CloudChild {}

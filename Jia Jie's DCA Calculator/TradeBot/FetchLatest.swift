@@ -44,6 +44,10 @@ class FetchLatest {
                 
                 previous = OHLC
             }
+            
+            //MARK: UPDATE EFFECTIVE AFTER
+            bot.update(effectiveAfter: sorted[sorted.count - 1].key)
+            
             DispatchQueue.main.async {
             completion(bot)
             }

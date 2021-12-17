@@ -34,9 +34,19 @@ struct TradeBot: CloudKitInterchangeable {
         self.effectiveAfter = effectiveAfter
     }
     
-    func update() -> Self {
+    func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
         let record = self.record
-        //DO STUFF WITH THE RECORD
+        
+        //MARK: SCENARIO 1: UPDATING EFFECTIVE AFTER
+        if let effectiveAfter = effectiveAfter {
+            record["effectiveAfter"] = effectiveAfter
+        }
+        
+        //MARK: SCENARIO 2: BUYING/SELLING - REQUIRES UPDATES IN ACCOUNT AND TRANSACTION HISTORY.
+        if let cash = cash, let accumulatedShares = accumulatedShares {
+            record["cash"] = cash
+            record["accumulatedShares"] = accumulatedShares
+        }
         
         return TradeBot(record: record)!
     }

@@ -26,7 +26,6 @@
 		1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D20600E26F71837007EA13F /* CalculatorViewController.swift */; };
 		1D2425B027575E49003A9755 /* ControlPoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425AF27575E49003A9755 /* ControlPoints.swift */; };
 		1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2425B327576566003A9755 /* PageCoordinator.swift */; };
-		1D25E28F2722C58A00CD8E4C /* ZeroPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E28E2722C58A00CD8E4C /* ZeroPositionModel.swift */; };
 		1D25E31E26EDD83A00EA4225 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */; };
 		1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E31F26EDD83A00EA4225 /* SceneDelegate.swift */; };
 		1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E32126EDD83A00EA4225 /* SearchViewController.swift */; };
@@ -46,7 +45,6 @@
 		1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */; };
 		1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */; };
 		1D67EF1227086441005E1016 /* DateViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF1127086441005E1016 /* DateViews.swift */; };
-		1D6B9362271D641F009B012E /* GraphRendererModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6B9361271D641F009B012E /* GraphRendererModel.swift */; };
 		1D6B9365271D841B009B012E /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6B9364271D841B009B012E /* GraphTests.swift */; };
 		1D6D33DC27077063009A86EA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6D33DB27077063009A86EA /* Date+Extensions.swift */; };
 		1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A227006D93004BBC50 /* TitleView.swift */; };
@@ -97,10 +95,10 @@
 		1DC8A2422761FC25009FBA85 /* OHLCTechnicalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */; };
 		1DC9EAB3274A5138000E8D86 /* CandleModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */; };
 		1DCAEF6026FCB40000BFB251 /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCAEF5F26FCB40000BFB251 /* BodyView.swift */; };
+		1DCBBE3F276BA16D0079D5CA /* InputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */; };
 		1DD26EE3272C536600BEDF32 /* DateIndicatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */; };
 		1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */; };
 		1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */; };
-		1DDE4AEF271DDC0300858560 /* IndicatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE4AEE271DDC0300858560 /* IndicatorModel.swift */; };
 		1DDF323C2737C73F00451CD1 /* BarGraphRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */; };
 		1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */; };
 		1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6327183898005C7CB7 /* IndicatorView.swift */; };
@@ -147,7 +145,6 @@
 		1D20600E26F71837007EA13F /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
 		1D2425AF27575E49003A9755 /* ControlPoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPoints.swift; sourceTree = "<group>"; };
 		1D2425B327576566003A9755 /* PageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCoordinator.swift; sourceTree = "<group>"; };
-		1D25E28E2722C58A00CD8E4C /* ZeroPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZeroPositionModel.swift; sourceTree = "<group>"; };
 		1D25E31A26EDD83A00EA4225 /* Jia Jie's DCA Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jia Jie's DCA Calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1D25E31F26EDD83A00EA4225 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -173,7 +170,6 @@
 		1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyConstraints.swift; sourceTree = "<group>"; };
 		1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLabelsView.swift; sourceTree = "<group>"; };
 		1D67EF1127086441005E1016 /* DateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViews.swift; sourceTree = "<group>"; };
-		1D6B9361271D641F009B012E /* GraphRendererModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphRendererModel.swift; sourceTree = "<group>"; };
 		1D6B9364271D841B009B012E /* GraphTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		1D6D33DB27077063009A86EA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		1D72D2A227006D93004BBC50 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
@@ -224,10 +220,10 @@
 		1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCTechnicalManager.swift; sourceTree = "<group>"; };
 		1DC9EAB2274A5138000E8D86 /* CandleModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleModeView.swift; sourceTree = "<group>"; };
 		1DCAEF5F26FCB40000BFB251 /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
+		1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormView.swift; sourceTree = "<group>"; };
 		1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateIndicatorModel.swift; sourceTree = "<group>"; };
 		1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateIndicatorView.swift; sourceTree = "<group>"; };
 		1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBarRenderer.swift; sourceTree = "<group>"; };
-		1DDE4AEE271DDC0300858560 /* IndicatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorModel.swift; sourceTree = "<group>"; };
 		1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphRenderer.swift; sourceTree = "<group>"; };
 		1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOHLCHandler.swift; sourceTree = "<group>"; };
 		1DF13C6327183898005C7CB7 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
@@ -297,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */,
+				1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */,
 				1D2B4F2B27667B80001A3B96 /* DragGestureModel.swift */,
 				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
 				1D93493527633A2100D815DE /* NumericProtocol.swift */,
@@ -331,13 +328,14 @@
 			children = (
 				1D784AFF275A490F00F91392 /* Jia Jie's DCA Calculator.entitlements */,
 				1D911E4A2732842600444991 /* SearchPage */,
+				1DCBBE3D276BA1310079D5CA /* TradeBotViews */,
+				1D7416AE27628C5F00E9FD7C /* Tab1Views */,
 				1D25E31D26EDD83A00EA4225 /* AppDelegate.swift */,
 				1D911E4D2732867300444991 /* TabViewController.swift */,
 				1D911E532732E1C800444991 /* HomeViewController.swift */,
 				1D911E51273289BA00444991 /* TabViewModel.swift */,
 				1D911E4F2732878900444991 /* CustomTabView.swift */,
 				1D25E31F26EDD83A00EA4225 /* SceneDelegate.swift */,
-				1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */,
 				1D25E32826EDD83D00EA4225 /* LaunchScreen.storyboard */,
 				1DB5413B26F1F27C001FBC77 /* Utilities */,
 				1D25E32B26EDD83D00EA4225 /* Info.plist */,
@@ -387,18 +385,6 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		1D6B9363271D642B009B012E /* GraphRendererModel */ = {
-			isa = PBXGroup;
-			children = (
-				1D6B9361271D641F009B012E /* GraphRendererModel.swift */,
-				1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */,
-				1D25E28E2722C58A00CD8E4C /* ZeroPositionModel.swift */,
-				1DDE4AEE271DDC0300858560 /* IndicatorModel.swift */,
-				1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */,
-			);
-			path = GraphRendererModel;
-			sourceTree = "<group>";
-		};
 		1D7416AE27628C5F00E9FD7C /* Tab1Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,18 +401,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1D8021D526FF039B0004F668 /* NavigationCoordinator */ = {
+		1D8021D526FF039B0004F668 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */,
 				1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */,
 				1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */,
 				1D2425B327576566003A9755 /* PageCoordinator.swift */,
 				1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */,
 			);
-			path = NavigationCoordinator;
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
-		1D8897EC2708B87B005131B0 /* SwiftUIComponents */ = {
+		1D8897EC2708B87B005131B0 /* SwiftUI_DCACalc */ = {
 			isa = PBXGroup;
 			children = (
 				1D8897E82708B5EF005131B0 /* GraphView.swift */,
@@ -437,7 +424,7 @@
 				1D8897EA2708B86F005131B0 /* ViewModel.swift */,
 				1DF13C6727183D29005C7CB7 /* AccessoryViews */,
 			);
-			path = SwiftUIComponents;
+			path = SwiftUI_DCACalc;
 			sourceTree = "<group>";
 		};
 		1D911E4A2732842600444991 /* SearchPage */ = {
@@ -445,17 +432,15 @@
 			children = (
 				1DB5413A26F1F252001FBC77 /* APIModel */,
 				1DB5413926F1F22C001FBC77 /* DCAModel */,
-				1D6B9363271D642B009B012E /* GraphRendererModel */,
 				1DCAEF6126FCC36B00BFB251 /* Views */,
-				1D8897EC2708B87B005131B0 /* SwiftUIComponents */,
+				1D8897EC2708B87B005131B0 /* SwiftUI_DCACalc */,
 				1D12102B2736F95D00B58B67 /* SwiftUI_FinancialsView */,
-				1D8021D526FF039B0004F668 /* NavigationCoordinator */,
+				1D8021D526FF039B0004F668 /* Coordinators */,
 				1D3BF6FF26FF7C5800528646 /* ViewController */,
 				1DA32BEF2756171000055702 /* TechnicalIndicators */,
 				1D2425AE27575DEE003A9755 /* Charts */,
 				1DFDEC3F275A1FE200776CA8 /* CloudKit */,
 				1D18DDCD2758D9B30061A7AD /* TradeBot */,
-				1D7416AE27628C5F00E9FD7C /* Tab1Views */,
 				1DC3C9D5273BB0CC00900600 /* SwiftUI_CandleView */,
 			);
 			path = SearchPage;
@@ -479,6 +464,7 @@
 				1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */,
 				1DB5413526F1E857001FBC77 /* DCAResultModel.swift */,
 				1DB5413726F1EA52001FBC77 /* Protocols.swift */,
+				1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */,
 			);
 			path = DCAModel;
 			sourceTree = "<group>";
@@ -541,6 +527,14 @@
 				1D32802C2701C1AB00C60A6C /* Animations.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		1DCBBE3D276BA1310079D5CA /* TradeBotViews */ = {
+			isa = PBXGroup;
+			children = (
+				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
+			);
+			path = TradeBotViews;
 			sourceTree = "<group>";
 		};
 		1DF13C6727183D29005C7CB7 /* AccessoryViews */ = {
@@ -707,7 +701,6 @@
 				1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */,
 				1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */,
 				1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */,
-				1D25E28F2722C58A00CD8E4C /* ZeroPositionModel.swift in Sources */,
 				1D0AAF9A2762963700318892 /* ChartLibraryGeneric.swift in Sources */,
 				1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */,
 				1D7416AD2762890C00E9FD7C /* TradeAssistant.swift in Sources */,
@@ -742,7 +735,6 @@
 				1DC3C9D4273BAFF200900600 /* CandleViewController.swift in Sources */,
 				1DC3C9E1273BC13000900600 /* CandleModel.swift in Sources */,
 				1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */,
-				1D6B9362271D641F009B012E /* GraphRendererModel.swift in Sources */,
 				1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */,
 				1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */,
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
@@ -762,7 +754,6 @@
 				1D85ED59270B67A600D6D4C1 /* Double+Extensions.swift in Sources */,
 				1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */,
 				1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */,
-				1DDE4AEF271DDC0300858560 /* IndicatorModel.swift in Sources */,
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
 				1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */,
 				1D12102D2736F98100B58B67 /* FinancialsViewModel.swift in Sources */,
@@ -773,6 +764,7 @@
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,
 				1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */,
+				1DCBBE3F276BA16D0079D5CA /* InputFormView.swift in Sources */,
 				1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */,
 				1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */,
 				1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */,

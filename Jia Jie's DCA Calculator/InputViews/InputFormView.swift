@@ -31,6 +31,7 @@ struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
     var titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index", "Custom Setup Price"]
     var description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum", "Constrain orders based on the price you set"]
+    @State private var isPresented: Bool = false { didSet {print("LEO GURA!!!!")}}
     
     var body: some View {
         NavigationView {
@@ -38,6 +39,9 @@ struct InputCustomizationView: View {
                 Form {
                     Section {
                         List(0..<4, id: \.self) { idx in
+                            Button() {
+                                isPresented = true
+                            } label: {
                             HStack {
                                 Image(systemName: "dollarsign.circle")
                                 VStack(alignment: .leading) {
@@ -46,14 +50,25 @@ struct InputCustomizationView: View {
                                 Text(description[idx])
                                         .font(.caption2)
                                 }
-                                Image(systemName: "arrow.forward.circle")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .opacity(0.3)
                             }
                             .frame(height: 0.1 * Dimensions.height)
+                            }
+                            .sheet(isPresented: $isPresented) {
+                                BPercentPopupView()
+                            }
+                            .foregroundColor(.black)
+                            
                         }
                     } header: {
                         Text("Trading Indicators")
                     }
                     Section {
+                        Button() {
+                            isPresented = true
+                        } label: {
                         HStack {
                             Image(systemName: "dollarsign.circle")
                             VStack(alignment: .leading) {
@@ -62,9 +77,16 @@ struct InputCustomizationView: View {
                             Text("Invest at regular monthly intervals")
                                     .font(.caption2)
                             }
-                            Image(systemName: "arrow.forward.circle")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .opacity(0.3)
+                            }
+                            .frame(height: 0.1 * Dimensions.height)
                         }
-                        .frame(height: 0.1 * Dimensions.height)
+                        .sheet(isPresented: $isPresented) {
+                            BPercentPopupView()
+                        }
+                        .foregroundColor(.black)
                     } header: {
                        Text("Periodic")
                     }

@@ -85,6 +85,7 @@ struct InputCustomizationView: View {
                         }
                         .sheet(isPresented: $isPresented) {
                             BPercentPopupView()
+                              
                         }
                         .foregroundColor(.black)
                     } header: {

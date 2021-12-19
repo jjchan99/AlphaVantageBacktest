@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1D06C6B027440DCA00374255 /* CandleIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6AF27440DC900374255 /* CandleIndicator.swift */; };
 		1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6B12744125D00374255 /* CandleIndicatorView.swift */; };
+		1D0AA619276F4D6A00C9182D /* TradeBotAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */; };
 		1D0AAF9A2762963700318892 /* ChartLibraryGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */; };
 		1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */; };
 		1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */; };
@@ -126,6 +127,7 @@
 /* Begin PBXFileReference section */
 		1D06C6AF27440DC900374255 /* CandleIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicator.swift; sourceTree = "<group>"; };
 		1D06C6B12744125D00374255 /* CandleIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicatorView.swift; sourceTree = "<group>"; };
+		1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBotAlgorithm.swift; sourceTree = "<group>"; };
 		1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryGeneric.swift; sourceTree = "<group>"; };
 		1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultMeta.swift; sourceTree = "<group>"; };
 		1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAnalysisModel.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
@@ -745,6 +748,7 @@
 				1DC3C9DD273BB98F00900600 /* DailyModel.swift in Sources */,
 				1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */,
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,
+				1D0AA619276F4D6A00C9182D /* TradeBotAlgorithm.swift in Sources */,
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,
 				1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */,

@@ -66,93 +66,20 @@ struct TradeBot: CloudKitInterchangeable {
         
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
-
-    //MARK: INDICATOR VALUE IS ALWAYS PREVIOUS
-    func getIndicatorValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
-        switch i {
-        case .movingAverage:
-            return element.movingAverage as! T?
-        case let .RSI(period: _, value: value):
-            return value * 100 as! T?
-        case let .bollingerBands(percentage: b):
-            return element.valueAtPercent(percent: b) as! T?
-        case .monthlyPeriodic:
-            return DateManager.date(from: element.stamp) as! T?
-        case .stopOrder(value: let value):
-            return value as! T?
-        }
-    }
     
-    //MARK: SCENARIO 1: INDICATORS BASED ON OPEN. ELEMENT IS ALWAYS MOST RECENT. SECNARIO 2: INDICATORS BASED ON CLOSE. ELEMENT IS PREVIOUS FOR INDICATORS. ELEMENT IS MOST RECENT FOR PRICE INPUT (USING OPEN).
-    func getInputValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
-        switch i {
-        case .movingAverage:
-            return element.movingAverage as! T?
-        case .RSI:
-            return element.RSI as! T?
-        case .bollingerBands:
-            return element.open as! T?
-        case .monthlyPeriodic:
-            return DateManager.date(from: element.stamp) as! T?
-        case .stopOrder(value: let value):
-            return element.open as! T?
+    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement) -> Bool {
+        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest) {
+        for index in condition.andCondition.indices {
+            let condition = condition.andCondition[index]
+            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest) {
+                continue
+            } else {
+                return false
+            }
         }
-    }
-    
-    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement? = nil) -> Bool {
-        let andCondition = condition.andCondition
-        for index in andCondition.indices {
-            let condition = andCondition[index]
-            switch condition.technicalIndicator {
-            case .monthlyPeriodic:
-        
-                var inputValue: Date!
-                var xxx: Date!
-                
-                inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
-                xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest!)
-                
-                return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
-            default:
-                var inputValue: Double?
-                var xxx: Double?
-                
-                inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
-                xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
-                
-                guard xxx != nil, inputValue != nil else { return false }
-                
-                print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
-                
-                if index == andCondition.indices.last {
-                   return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
-                }
-            
-                if condition.aboveOrBelow.evaluate(inputValue!, xxx!) {
-                   continue
-                } else {
-                    return false
-                }
-        }
-    }
-        switch condition.technicalIndicator {
-        case .monthlyPeriodic:
-            var inputValue: Date!
-            var xxx: Date!
-            
-            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
-            xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest!)
-            
-            return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
-        default:
-            var inputValue: Double?
-            var xxx: Double?
-            
-            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
-            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
-            
-            guard xxx != nil, inputValue != nil else { return false }
-            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+        return true
+        } else {
+            return false
         }
     }
 
@@ -177,7 +104,7 @@ struct TradeBot: CloudKitInterchangeable {
                     break
                     }
                 case .sell:
-                    if checkNext(condition: condition, previous: previous) {
+                    if checkNext(condition: condition, previous: previous, latest: latest) {
                     account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * open
                     break
                     }
@@ -232,6 +159,10 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
 struct Account {
     var cash: Double
     var accumulatedShares: Double
+    
+    func profit(quote: Double, budget: Double) -> Double {
+        (accumulatedShares * quote + cash) - budget
+    }
 
     mutating func decrement(_ amount: Double) -> Double {
         cash -= amount
@@ -290,7 +221,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return percentage
         case let .RSI(period: period, value: value):
             return Double(2 * period) + (value)
-        case let .monthlyPeriodic:
+        case .monthlyPeriodic:
             return 69
         case .stopOrder(value: let value):
             return value + 1000000

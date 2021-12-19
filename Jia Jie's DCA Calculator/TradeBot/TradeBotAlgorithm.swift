@@ -18,8 +18,8 @@ struct TradeBotAlgorithm {
             var inputValue: Date!
             var xxx: Date!
             
-            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
-            xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
             return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
         case .movingAverage, .RSI:
@@ -35,7 +35,7 @@ struct TradeBotAlgorithm {
         default:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
-            xxx = getIndicatorValue(i: condition.technicalIndicator, element: latest)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
         }
         
@@ -58,6 +58,7 @@ struct TradeBotAlgorithm {
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
         case .stopOrder:
+            //MARK: INPUT: LATEST OPEN
             return element.open as! T?
         case .profitTarget:
             return nil
@@ -75,8 +76,8 @@ struct TradeBotAlgorithm {
             return element.valueAtPercent(percent: b) as! T?
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
-        case .stopOrder(value: let value):
-            return value as! T?
+        case .stopOrder(let value):
+            return ( element.close * (1 + value)) as! T?
         case .profitTarget(value: let value):
             return value as! T?
         }

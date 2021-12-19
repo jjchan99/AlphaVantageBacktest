@@ -8,7 +8,7 @@
 import Foundation
 struct TradeBotAlgorithm {
     
-    static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement) -> Bool {
+    static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
         var inputValue: Double?
         var xxx: Double?
         
@@ -25,6 +25,11 @@ struct TradeBotAlgorithm {
         case .movingAverage, .RSI:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+        case .profitTarget:
+            
+            inputValue = bot.account.profit(quote: latest.close, budget: bot.budget)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
         
         default:
@@ -54,6 +59,8 @@ struct TradeBotAlgorithm {
             return DateManager.date(from: element.stamp) as! T?
         case .stopOrder:
             return element.open as! T?
+        case .profitTarget:
+            return nil
         }
     }
     
@@ -69,6 +76,8 @@ struct TradeBotAlgorithm {
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
         case .stopOrder(value: let value):
+            return value as! T?
+        case .profitTarget(value: let value):
             return value as! T?
         }
     }

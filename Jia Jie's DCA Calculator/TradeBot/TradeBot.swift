@@ -67,11 +67,11 @@ struct TradeBot: CloudKitInterchangeable {
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
     
-    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement) -> Bool {
-        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest) {
+    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
+        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
         for index in condition.andCondition.indices {
             let condition = condition.andCondition[index]
-            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest) {
+            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
                 continue
             } else {
                 return false
@@ -84,7 +84,7 @@ struct TradeBot: CloudKitInterchangeable {
     }
 
     mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
-        let open = latest.open
+        let close = latest.close
        
 
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
@@ -94,18 +94,20 @@ struct TradeBot: CloudKitInterchangeable {
 //            guard xxx != nil, inputValue != nil else { continue }
                 switch condition.buyOrSell {
                 case .buy:
-                    if checkNext(condition: condition, previous: previous, latest: latest) {
+                    guard account.cash >= 1 else { return }
+                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(MonthlyAdapter.getMonthlyInvestment(cbp: cashBuyPercentage, budget: budget)) / open
+                        account.accumulatedShares += account.decrement(MonthlyAdapter.getMonthlyInvestment(cbp: cashBuyPercentage, budget: budget)) / close
                     default:
-                    account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / open
+                        account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     }
                     break
                     }
                 case .sell:
-                    if checkNext(condition: condition, previous: previous, latest: latest) {
-                    account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * open
+                    guard account.accumulatedShares > 0 else { return }
+                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * close
                     break
                     }
                 }
@@ -196,7 +198,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
          bollingerBands(percentage: Double),
          RSI(period: Int, value: Double),
          monthlyPeriodic,
-         stopOrder(value: Double)
+         stopOrder(value: Double),
+         profitTarget(value: Double)
 
     var description: String {
         switch self {
@@ -210,6 +213,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "monthly end investment"
         case .stopOrder(value: let value):
             return "stop order initiates at \(value)"
+        case .profitTarget(value: let value):
+            return "stop order initiates when profit is at \(value)"
         }
     }
 
@@ -225,6 +230,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return 69
         case .stopOrder(value: let value):
             return value + 1000000
+        case .profitTarget(value: let value):
+            return value + 10000
         }
     }
     

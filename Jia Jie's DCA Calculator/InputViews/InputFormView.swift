@@ -94,7 +94,7 @@ struct InputCustomizationView: View {
                             
                         }
                     } header: {
-                        Text("Trading Indicators")
+                        Text("Custom targets")
                     }
                     Section {
                         Button() {

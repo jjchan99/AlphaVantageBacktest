@@ -77,7 +77,7 @@ struct TradeBotAlgorithm {
         case .monthlyPeriodic:
             return DateManager.date(from: element.stamp) as! T?
         case .stopOrder(let value):
-            return ( element.close * (1 + value)) as! T?
+            return value as! T?
         case .profitTarget(value: let value):
             return value as! T?
         }

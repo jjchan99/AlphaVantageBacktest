@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import CoreGraphics
-import Algorithms
 
 enum ChartType {
     case bar(zero: Bool)

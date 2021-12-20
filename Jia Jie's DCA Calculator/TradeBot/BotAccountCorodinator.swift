@@ -108,7 +108,7 @@ Condition: \(condition). And condition: \(condition.andCondition)
                 } receiveValue: { (value: [EvaluationCondition]) in
                     var bot = bot
                     let group = DispatchGroup()
-                    var list = value
+                    var list: [EvaluationCondition] = []
             
                     value.forEach { condition in
                         var copy = condition

@@ -33,6 +33,7 @@ class BotAccountCoordinator {
             .setCashBuyPercentage(1)
             .setSharesSellPercentage(1)
             .addCondition(conditionZ)
+            .setExitTrigger(afterDays: 10)
             .build()
 //        print(f)
         return f
@@ -157,8 +158,9 @@ class BotFactory {
         return self
     }
     
-    func setExitTrigger(afterDays: Int) {
+    func setExitTrigger(afterDays: Int) -> BotFactory {
         self.exitTrigger = afterDays
+        return self
     }
     
     func setCashBuyPercentage(_ value: Double) -> BotFactory {

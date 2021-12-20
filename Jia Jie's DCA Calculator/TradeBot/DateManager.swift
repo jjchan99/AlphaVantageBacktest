@@ -20,8 +20,8 @@ struct DateManager {
         return date!
     }
     
-    static func addDaysToDate(fromDate: Date) -> Date {
-        let nextDate = Calendar.current.date(byAdding: .day, value: 10, to: fromDate)
+    static func addDaysToDate(fromDate: Date, value: Int) -> Date {
+        let nextDate = Calendar.current.date(byAdding: .day, value: value, to: fromDate)
         return nextDate!
     }
     

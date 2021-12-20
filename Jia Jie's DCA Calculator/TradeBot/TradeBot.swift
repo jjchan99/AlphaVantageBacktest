@@ -110,7 +110,10 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                         
                         if exitTrigger != nil {
-                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: exitTrigger!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+                            let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
+                            let dateString = DateManager.string(fromDate: date)
+                            let withoutNoise = DateManager.removeNoise(fromString: dateString)
+                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
                             conditions.append(exitTrigger)
                             CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
                                 didEvaluate(completion)

@@ -40,7 +40,7 @@ class FetchLatest {
                 
                 if previous != nil && sorted[idx].key > bot.effectiveAfter {
                     bot.evaluate(previous: previous!, latest: OHLC) { success in
-                        
+
                     }
                 }
                 
@@ -48,7 +48,7 @@ class FetchLatest {
             }
             
             //MARK: UPDATE EFFECTIVE AFTER
-            let record = bot.update(effectiveAfter: sorted[sorted.count - 1].key, cash: bot.account.cash, accumulatedShares: bot.account.accumulatedShares)
+            let record = bot.update(effectiveAfter: sorted.first!.key, cash: bot.account.cash, accumulatedShares: bot.account.accumulatedShares)
             CloudKitUtility.update(item: record) { success in
                 DispatchQueue.main.async {
                 completion(bot)

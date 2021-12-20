@@ -110,6 +110,7 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                         
                         if exitTrigger != nil {
+                            print("entry triggered on \(latest.stamp)")
                             let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
                             let dateString = DateManager.string(fromDate: date)
                             let withoutNoise = DateManager.removeNoise(fromString: dateString)

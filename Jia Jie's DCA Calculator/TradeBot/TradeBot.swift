@@ -233,7 +233,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
     var rawValue: Double {
         switch self {
         case let .movingAverage(period: period):
-            return Double(period * 10)
+            return Double(period)
         case let .bollingerBands(percentage: percentage):
             return percentage
         case let .RSI(period: period, value: value):
@@ -258,8 +258,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case let x where x >= 1000000:
             return .stopOrder(value: rawValue - 1000000)
             
-        case let x where x >= 200:
-            return .movingAverage(period: Int(rawValue) / 10)
+        case let x where x >= 50:
+            return .movingAverage(period: Int(rawValue))
             
         case let x where x == 69:
             return .monthlyPeriodic
@@ -275,10 +275,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         default:
             return .bollingerBands(percentage: rawValue)
         }
-    }
-    
-    static func build(rawValue: Int) -> Self {
-        
     }
 }
 

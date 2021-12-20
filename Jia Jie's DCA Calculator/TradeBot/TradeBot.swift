@@ -100,7 +100,7 @@ struct TradeBot: CloudKitInterchangeable {
 //            guard xxx != nil, inputValue != nil else { continue }
                 switch condition.buyOrSell {
                 case .buy:
-                    guard account.cash >= 1 else { return }
+                    guard account.cash >= 1 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
@@ -123,7 +123,7 @@ struct TradeBot: CloudKitInterchangeable {
                     break
                     }
                 case .sell:
-                    guard account.accumulatedShares > 0 else { return }
+                    guard account.accumulatedShares > 0 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * close
                     break

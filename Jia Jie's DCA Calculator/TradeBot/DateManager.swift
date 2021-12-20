@@ -17,7 +17,7 @@ struct DateManager {
     
     static func date(from: String) -> Date {
         let date = formatter.date(from: from)
-        return date
+        return date!
     }
     
     static func addDaysToDate(fromDate: Date) -> Date {

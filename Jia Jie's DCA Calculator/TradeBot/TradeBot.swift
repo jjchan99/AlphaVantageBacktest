@@ -26,6 +26,7 @@ struct TradeBot: CloudKitInterchangeable {
         let cashBuyPercentage = record["cashBuyPercentage"] as! Double
         let sharesSellPercentage = record["sharesSellPercentage"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
+        let exitTrigger = record["exitTrigger"] as! Int
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
@@ -33,6 +34,7 @@ struct TradeBot: CloudKitInterchangeable {
         self.sharesSellPercentage = sharesSellPercentage
         self.record = record
         self.effectiveAfter = effectiveAfter
+        self.exitTrigger = exitTrigger
     }
     
     func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
@@ -52,7 +54,7 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String, exitTrigger: Int? = nil) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
@@ -62,6 +64,9 @@ struct TradeBot: CloudKitInterchangeable {
                     "sharesSellPercentage": sharesSellPercentage,
                     "effectiveAfter": effectiveAfter
                 ])
+            if let exitTrigger = exitTrigger {
+              record.setValue(exitTrigger, forKey: "exitTrigger")
+             }
         self.init(record: record)
         self.conditions = conditions
         

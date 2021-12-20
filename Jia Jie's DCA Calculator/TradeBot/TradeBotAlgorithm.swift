@@ -70,6 +70,8 @@ struct TradeBotAlgorithm {
             return element.open as! T?
         case .profitTarget:
             return nil
+        case .exitTrigger:
+            return element.stamp as! T?
         }
     }
     
@@ -88,6 +90,8 @@ struct TradeBotAlgorithm {
             return value as! T?
         case .profitTarget(value: let value):
             return value as! T?
+        case .exitTrigger(value: let value):
+            return DateManager.addNoise(fromString: "\(value)") as! T?
         }
     }
 }

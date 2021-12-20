@@ -19,6 +19,11 @@ struct DateManager {
         return formatter.date(from: from)!
     }
     
+    static func addDaysToDate(fromDate: Date) -> Date {
+        let nextDate = Calendar.current.date(byAdding: .day, value: 10, to: fromDate)
+        return nextDate!
+    }
+    
     static func checkIfNewMonth(previous: Date, next: Date) -> Bool {
         let previousMonth = Calendar.current.component(.month, from: previous)
         let nextMonth = Calendar.current.component(.month, from: next)
@@ -33,5 +38,12 @@ struct DateManager {
         
         return month
     }
+    
+    static func removeNoise(fromString: String) -> String {
+        let bad: Set<Character> = ["-"]
+        var copy = fromString
+        copy.removeAll() { bad.contains($0) }
+    }
+    
     
 }

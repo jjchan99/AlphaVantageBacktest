@@ -24,7 +24,7 @@ struct TradeBotAlgorithm {
             return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
         case .movingAverage, .RSI:
             
-            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
         case .profitTarget:

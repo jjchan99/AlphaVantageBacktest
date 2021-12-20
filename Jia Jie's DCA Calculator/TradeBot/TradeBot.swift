@@ -17,7 +17,7 @@ struct TradeBot: CloudKitInterchangeable {
     let sharesSellPercentage: Double
     let record: CKRecord
     let effectiveAfter: String
-    let exitTrigger: Int?
+    var exitTrigger: Int?
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double

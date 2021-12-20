@@ -41,7 +41,10 @@ class BotAccountCoordinator {
     
     static func inspect(for bot: TradeBot) {
         bot.conditions.forEach { condition in
-            print("Condition: \(condition). And condition: \(condition.andCondition)")
+            print("""
+The bot has \(bot.conditions.count) conditions. That is:
+Condition: \(condition). And condition: \(condition.andCondition)
+""")
         }
     }
     

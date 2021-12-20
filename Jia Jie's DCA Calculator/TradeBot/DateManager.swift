@@ -16,7 +16,8 @@ struct DateManager {
     }()
     
     static func date(from: String) -> Date {
-        return formatter.date(from: from)!
+        let date = formatter.date(from: from)
+        return date
     }
     
     static func addDaysToDate(fromDate: Date) -> Date {
@@ -35,7 +36,6 @@ struct DateManager {
         let year = Calendar.current.component(.year, from: date)
         let month = Calendar.current.component(.month, from: date)
         let day = Calendar.current.component(.day, from: date)
-        
         return month
     }
     
@@ -43,7 +43,22 @@ struct DateManager {
         let bad: Set<Character> = ["-"]
         var copy = fromString
         copy.removeAll() { bad.contains($0) }
+        return copy
     }
     
+    static func string(fromDate: Date) -> String {
+        let day = Calendar.current.component(.day, from: fromDate)
+        let year = Calendar.current.component(.year, from: fromDate)
+        let month = Calendar.current.component(.month, from: fromDate)
+        return constructKey(month: month, year: year, day: day)
+    }
+    
+    static private func constructKey(month: Int, year: Int, day: Int) -> String {
+        
+        let day: String = day < 10 ? "0\(day)" : "\(day)"
+        let month: String = month < 10 ? "0\(month)" : "\(month)"
+        
+        return "\(year)-\(month)-\(day)"
+    }
     
 }

@@ -17,6 +17,7 @@ struct TradeBot: CloudKitInterchangeable {
     let sharesSellPercentage: Double
     let record: CKRecord
     let effectiveAfter: String
+    let exitTrigger: Int?
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
@@ -83,7 +84,7 @@ struct TradeBot: CloudKitInterchangeable {
         }
     }
 
-    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
+    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
         let close = latest.close
        
 
@@ -102,6 +103,14 @@ struct TradeBot: CloudKitInterchangeable {
                     default:
                         account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     }
+                        
+                        if exitTrigger != nil {
+                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: exitTrigger!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+                            conditions.append(exitTrigger)
+                            CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
+                                didEvaluate(completion)
+                        }
+                        }
                     break
                     }
                 case .sell:
@@ -199,7 +208,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
          RSI(period: Int, value: Double),
          monthlyPeriodic,
          stopOrder(value: Double),
-         profitTarget(value: Double)
+         profitTarget(value: Double),
+         exitTrigger(value: Int)
 
     var description: String {
         switch self {
@@ -215,6 +225,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "stop order initiates at \(value)"
         case .profitTarget(value: let value):
             return "stop order initiates when profit is at \(value)"
+        case .exitTrigger(value: let value):
+            return "exiting on \(value)"
         }
     }
 
@@ -232,19 +244,44 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return value + 1000000
         case .profitTarget(value: let value):
             return value + 10000
+        case .exitTrigger(value: let value):
+            return Double(value)
         }
     }
     
     static func build(rawValue: Double) -> Self {
-        if rawValue >= 200 {
+//        if rawValue >= 200 {
+//            return .movingAverage(period: Int(rawValue) / 10)
+//        } else if rawValue >= 4 && rawValue <= 29 {
+//            let period = floor(rawValue) * 0.5
+//            let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
+//            return .RSI(period: Int(period), value: value)
+//        } else {
+//            return .bollingerBands(percentage: rawValue)
+//        }
+        
+        switch rawValue {
+        case let x where x >= 200:
             return .movingAverage(period: Int(rawValue) / 10)
-        } else if rawValue >= 4 && rawValue <= 29 {
+        case let x where x >= 4 && x <= 29:
             let period = floor(rawValue) * 0.5
             let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
             return .RSI(period: Int(period), value: value)
-        } else {
-            return .bollingerBands(percentage: rawValue)
+        case let x where x == 69:
+            return .monthlyPeriodic
+        case let x where x >= 1000000:
+            return .stopOrder(value: rawValue - 1000000)
+        case let x where x >= 10000:
+            return .profitTarget(value: rawValue - 10000)
+        case let x where x >= 10000000:
+            return exitTrigger(value: Int(rawValue))
+        default:
+            fatalError()
         }
+    }
+    
+    static func build(rawValue: Int) -> Self {
+        
     }
 }
 

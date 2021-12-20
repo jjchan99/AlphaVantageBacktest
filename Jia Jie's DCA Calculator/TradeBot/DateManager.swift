@@ -46,6 +46,13 @@ struct DateManager {
         return copy
     }
     
+    static func addNoise(fromString: String) -> String {
+        var copy = fromString
+        copy.insert("-", at: copy.index(copy.startIndex, offsetBy: 4))
+        copy.insert("-", at: copy.index(copy.startIndex, offsetBy: 7))
+        return copy
+    }
+    
     static func string(fromDate: Date) -> String {
         let day = Calendar.current.component(.day, from: fromDate)
         let year = Calendar.current.component(.year, from: fromDate)

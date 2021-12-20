@@ -243,40 +243,37 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case .stopOrder(value: let value):
             return value + 1000000
         case .profitTarget(value: let value):
-            return value + 10000
+            return value + 2
         case .exitTrigger(value: let value):
             return Double(value)
         }
     }
     
     static func build(rawValue: Double) -> Self {
-//        if rawValue >= 200 {
-//            return .movingAverage(period: Int(rawValue) / 10)
-//        } else if rawValue >= 4 && rawValue <= 29 {
-//            let period = floor(rawValue) * 0.5
-//            let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
-//            return .RSI(period: Int(period), value: value)
-//        } else {
-//            return .bollingerBands(percentage: rawValue)
-//        }
         
         switch rawValue {
+        case let x where x >= 10000000:
+            return exitTrigger(value: Int(rawValue))
+            
+        case let x where x >= 1000000:
+            return .stopOrder(value: rawValue - 1000000)
+            
         case let x where x >= 200:
             return .movingAverage(period: Int(rawValue) / 10)
+            
+        case let x where x == 69:
+            return .monthlyPeriodic
+            
         case let x where x >= 4 && x <= 29:
             let period = floor(rawValue) * 0.5
             let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
             return .RSI(period: Int(period), value: value)
-        case let x where x == 69:
-            return .monthlyPeriodic
-        case let x where x >= 1000000:
-            return .stopOrder(value: rawValue - 1000000)
-        case let x where x >= 10000:
-            return .profitTarget(value: rawValue - 10000)
-        case let x where x >= 10000000:
-            return exitTrigger(value: Int(rawValue))
+       
+        case let x where x >= 2:
+            return .profitTarget(value: rawValue - 2)
+       
         default:
-            fatalError()
+            return .bollingerBands(percentage: rawValue)
         }
     }
     

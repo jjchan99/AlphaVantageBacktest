@@ -24,13 +24,25 @@ struct TradeBotAlgorithm {
             return DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
         case .movingAverage, .RSI:
             
-            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
         case .profitTarget:
             
             inputValue = bot.account.profit(quote: latest.close, budget: bot.budget)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+        case .exitTrigger:
+            
+            var inputValue: String!
+            var xxx: String!
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+            guard xxx != nil, inputValue != nil else { return false }
+            
+            return inputValue > xxx
         
         default:
             
@@ -70,6 +82,8 @@ struct TradeBotAlgorithm {
             return element.open as! T?
         case .profitTarget:
             return nil
+        case .exitTrigger:
+            return element.stamp as! T?
         }
     }
     
@@ -88,6 +102,8 @@ struct TradeBotAlgorithm {
             return value as! T?
         case .profitTarget(value: let value):
             return value as! T?
+        case .exitTrigger(value: let value):
+            return DateManager.addNoise(fromString: "\(value)") as! T?
         }
     }
 }

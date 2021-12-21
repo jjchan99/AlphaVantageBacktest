@@ -20,8 +20,8 @@ struct DateManager {
         return date!
     }
     
-    static func addDaysToDate(fromDate: Date) -> Date {
-        let nextDate = Calendar.current.date(byAdding: .day, value: 10, to: fromDate)
+    static func addDaysToDate(fromDate: Date, value: Int) -> Date {
+        let nextDate = Calendar.current.date(byAdding: .day, value: value, to: fromDate)
         return nextDate!
     }
     
@@ -43,6 +43,13 @@ struct DateManager {
         let bad: Set<Character> = ["-"]
         var copy = fromString
         copy.removeAll() { bad.contains($0) }
+        return copy
+    }
+    
+    static func addNoise(fromString: String) -> String {
+        var copy = fromString
+        copy.insert("-", at: copy.index(copy.startIndex, offsetBy: 4))
+        copy.insert("-", at: copy.index(copy.startIndex, offsetBy: 7))
         return copy
     }
     

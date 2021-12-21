@@ -14,25 +14,30 @@ class BotAccountCoordinator {
      
     static func specimen() -> TradeBot {
      //MARK: - CONDITION (CONST) && (CONDITION 2 || CONDITION 3)
-        let condition69: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
-        let condition0: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
-        let condition2: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+//        let condition69: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+//        let condition0: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+//        let condition2: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.33), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+//
+//        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+//
+        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
-        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .sell, andCondition: [exitTrigger])!
         
-        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition2, condition0, condition69])!
+//
+        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [])!
+//
+//        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.7), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
-        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition3])!
         
-        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.7), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
         let f = BotFactory()
             .setBudget(42000)
             .setCashBuyPercentage(1)
-            .setSharesSellPercentage(0.5)
+            .setSharesSellPercentage(1)
             .addCondition(conditionZ)
             .addCondition(conditionX)
-            .addCondition(conditionY)
+            .setExitTrigger(afterDays: -10)
             .build()
 //        print(f)
         return f
@@ -40,7 +45,10 @@ class BotAccountCoordinator {
     
     static func inspect(for bot: TradeBot) {
         bot.conditions.forEach { condition in
-            print("Condition: \(condition). And condition: \(condition.andCondition)")
+            print("""
+The bot has \(bot.conditions.count) conditions. That is:
+Condition: \(condition). And condition: \(condition.andCondition)
+""")
         }
     }
     
@@ -104,14 +112,14 @@ class BotAccountCoordinator {
                 } receiveValue: { (value: [EvaluationCondition]) in
                     var bot = bot
                     let group = DispatchGroup()
-                    var list = value
+                    var list: [EvaluationCondition] = []
             
                     value.forEach { condition in
                         var copy = condition
                         group.enter()
                         fetchAndConditions(parent: condition) { andCondition in
                             copy.andCondition = andCondition
-                            list.append(condition)
+                            list.append(copy)
                             group.leave()
                         }
                     }
@@ -150,9 +158,15 @@ class BotFactory {
     var cashBuyPercentage: Double = 0
     var sharesSellPercentage: Double = 0
     var evaluationConditions: [EvaluationCondition] = []
+    var exitTrigger: Int?
     
     func setBudget(_ value: Double) -> BotFactory {
         self.budget = value
+        return self
+    }
+    
+    func setExitTrigger(afterDays: Int) -> BotFactory {
+        self.exitTrigger = afterDays
         return self
     }
     
@@ -177,7 +191,7 @@ class BotFactory {
 //    }
     
     func build() -> TradeBot {
-        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage, effectiveAfter: "2021-12-05")
+        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
         return bot!
     }
 }

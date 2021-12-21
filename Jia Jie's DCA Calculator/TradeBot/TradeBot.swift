@@ -17,6 +17,7 @@ struct TradeBot: CloudKitInterchangeable {
     let sharesSellPercentage: Double
     let record: CKRecord
     let effectiveAfter: String
+    var exitTrigger: Int?
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
@@ -25,6 +26,7 @@ struct TradeBot: CloudKitInterchangeable {
         let cashBuyPercentage = record["cashBuyPercentage"] as! Double
         let sharesSellPercentage = record["sharesSellPercentage"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
+        let exitTrigger = record["exitTrigger"] as! Int?
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
@@ -32,6 +34,7 @@ struct TradeBot: CloudKitInterchangeable {
         self.sharesSellPercentage = sharesSellPercentage
         self.record = record
         self.effectiveAfter = effectiveAfter
+        self.exitTrigger = exitTrigger
     }
     
     func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
@@ -51,7 +54,7 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String, exitTrigger: Int? = nil) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
@@ -61,6 +64,9 @@ struct TradeBot: CloudKitInterchangeable {
                     "sharesSellPercentage": sharesSellPercentage,
                     "effectiveAfter": effectiveAfter
                 ])
+            if let exitTrigger = exitTrigger {
+              record.setValue(exitTrigger, forKey: "exitTrigger")
+             }
         self.init(record: record)
         self.conditions = conditions
         
@@ -83,18 +89,14 @@ struct TradeBot: CloudKitInterchangeable {
         }
     }
 
-    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
+    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
         let close = latest.close
        
-
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for condition in self.conditions {
-//            let inputValue = getInputValue(i: conditions.technicalIndicator, element: previous)
-//            let xxx = getIndicatorValue(i: conditions.technicalIndicator, element: previous)
-//            guard xxx != nil, inputValue != nil else { continue }
                 switch condition.buyOrSell {
                 case .buy:
-                    guard account.cash >= 1 else { return }
+                    guard account.cash >= 1 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
@@ -102,59 +104,44 @@ struct TradeBot: CloudKitInterchangeable {
                     default:
                         account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     }
+                        
+                    switch exitTrigger {
+                        case .some(exitTrigger) where exitTrigger! >= 0:
+                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
+                            Log.queue(action: "This should be on a background thread")
+                            didEvaluate(true)
+                        }
+                        self.conditions.append(newCondition)
+                        case .some(exitTrigger) where exitTrigger! < 0:
+                        ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
+                            Log.queue(action: "This should be on a background thread")
+                            didEvaluate(true)
+                        }
+                        default:
+                          break
+                    }
+                        
+//                        if exitTrigger != nil {
+//                            print("entry triggered on \(latest.stamp)")
+//                            let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
+//                            let dateString = DateManager.string(fromDate: date)
+//                            let withoutNoise = DateManager.removeNoise(fromString: dateString)
+//                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+//                            conditions.append(exitTrigger)
+//                            CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
+//                                didEvaluate(completion)
+//                        }
+//                        }
                     break
                     }
                 case .sell:
-                    guard account.accumulatedShares > 0 else { return }
+                    guard account.accumulatedShares > 0 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * close
                     break
                     }
                 }
             }
-    }
-}
-
-struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
-    
-    init?(record: CKRecord) {
-        let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
-        let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
-        let buyOrSellRawValue = record["buyOrSell"] as! Int
-        
-        self.technicalIndicator = TechnicalIndicators.build(rawValue: technicalIndicatorRawValue)
-        self.aboveOrBelow = AboveOrBelow(rawValue: aboveOrBelowRawValue)!
-        self.buyOrSell = BuyOrSell(rawValue: buyOrSellRawValue)!
-        self.record = record
-    }
-    
-    init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: [EvaluationCondition]) {
-        let record = CKRecord(recordType: "EvaluationCondition")
-                record.setValuesForKeys([
-                    "technicalIndicator": technicalIndicator.rawValue,
-                    "aboveOrBelow": aboveOrBelow.rawValue,
-                    "buyOrSell": buyOrSell.rawValue,
-                ])
-        self.init(record: record)
-        self.andCondition = andCondition
-    }
-    
-    var record: CKRecord
-    
-    func update() -> EvaluationCondition {
-        let record = self.record
-        //DO STUFF WITH THE RECORD
-        
-        return .init(record: record)!
-    }
-    
-    let technicalIndicator: TechnicalIndicators
-    let aboveOrBelow: AboveOrBelow
-    let buyOrSell: BuyOrSell
-    var andCondition: [EvaluationCondition] = []
-    
-    var description: String {
-        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"
     }
 }
 
@@ -181,17 +168,6 @@ struct Account {
     }
 }
 
-struct TransactionHistory {
-    var latest: Double
-    var previous: Double
-    var evaluations: [String]
-    var previousCash: Double
-    var newCash: Double
-    var previousShares: Double
-    var newShares: Double
-    var action: BuyOrSell
-}
-
 enum TechnicalIndicators: Hashable, CustomStringConvertible {
 
     case movingAverage(period: Int),
@@ -199,7 +175,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
          RSI(period: Int, value: Double),
          monthlyPeriodic,
          stopOrder(value: Double),
-         profitTarget(value: Double)
+         profitTarget(value: Double),
+         exitTrigger(value: Int)
 
     var description: String {
         switch self {
@@ -215,13 +192,15 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "stop order initiates at \(value)"
         case .profitTarget(value: let value):
             return "stop order initiates when profit is at \(value)"
+        case .exitTrigger(value: let value):
+            return "exiting on \(value)"
         }
     }
 
     var rawValue: Double {
         switch self {
         case let .movingAverage(period: period):
-            return Double(period * 10)
+            return Double(period)
         case let .bollingerBands(percentage: percentage):
             return percentage
         case let .RSI(period: period, value: value):
@@ -231,18 +210,36 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case .stopOrder(value: let value):
             return value + 1000000
         case .profitTarget(value: let value):
-            return value + 10000
+            return value + 2
+        case .exitTrigger(value: let value):
+            return Double(value)
         }
     }
     
     static func build(rawValue: Double) -> Self {
-        if rawValue >= 200 {
-            return .movingAverage(period: Int(rawValue) / 10)
-        } else if rawValue >= 4 && rawValue <= 29 {
+        
+        switch rawValue {
+        case let x where x >= 10000000:
+            return exitTrigger(value: Int(rawValue))
+            
+        case let x where x >= 1000000:
+            return .stopOrder(value: rawValue - 1000000)
+            
+        case let x where x >= 50:
+            return .movingAverage(period: Int(rawValue))
+            
+        case let x where x == 69:
+            return .monthlyPeriodic
+            
+        case let x where x >= 4 && x <= 29:
             let period = floor(rawValue) * 0.5
             let value = Int(rawValue) % 2 == 0 ? rawValue - floor(rawValue) : 1
             return .RSI(period: Int(period), value: value)
-        } else {
+       
+        case let x where x >= 2:
+            return .profitTarget(value: rawValue - 2)
+       
+        default:
             return .bollingerBands(percentage: rawValue)
         }
     }

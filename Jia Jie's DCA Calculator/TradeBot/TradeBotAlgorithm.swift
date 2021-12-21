@@ -31,6 +31,20 @@ struct TradeBotAlgorithm {
             
             inputValue = bot.account.profit(quote: latest.close, budget: bot.budget)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+        case .exitTrigger:
+            
+            var inputValue: String!
+            var xxx: String!
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+            guard xxx != nil, inputValue != nil else { return false }
+            
+            print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
+            
+            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
         
         default:
             

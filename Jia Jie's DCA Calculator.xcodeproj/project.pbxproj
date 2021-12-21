@@ -68,6 +68,7 @@
 		1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */; };
 		1D8897E92708B5EF005131B0 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8897E82708B5EF005131B0 /* GraphView.swift */; };
 		1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8897EA2708B86F005131B0 /* ViewModel.swift */; };
+		1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */; };
 		1D911E4E2732867300444991 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4D2732867300444991 /* TabViewController.swift */; };
 		1D911E502732878900444991 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4F2732878900444991 /* CustomTabView.swift */; };
 		1D911E52273289BA00444991 /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E51273289BA00444991 /* TabViewModel.swift */; };
@@ -81,6 +82,7 @@
 		1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413526F1E857001FBC77 /* DCAResultModel.swift */; };
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
 		1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB596C92760F047005385AF /* FetchLatest.swift */; };
+		1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBF218527718B52007E426B /* EvaluationCondition.swift */; };
 		1DC3C9D4273BAFF200900600 /* CandleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D3273BAFF200900600 /* CandleViewController.swift */; };
 		1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */; };
 		1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D8273BB10900900600 /* CandleView.swift */; };
@@ -193,6 +195,7 @@
 		1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCACalculatorModel.swift; sourceTree = "<group>"; };
 		1D8897E82708B5EF005131B0 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		1D8897EA2708B86F005131B0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitTriggerManager.swift; sourceTree = "<group>"; };
 		1D911E4D2732867300444991 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		1D911E4F2732878900444991 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		1D911E51273289BA00444991 /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 		1DB5413526F1E857001FBC77 /* DCAResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultModel.swift; sourceTree = "<group>"; };
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		1DB596C92760F047005385AF /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
+		1DBF218527718B52007E426B /* EvaluationCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationCondition.swift; sourceTree = "<group>"; };
 		1DC3C9D3273BAFF200900600 /* CandleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewController.swift; sourceTree = "<group>"; };
 		1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewModel.swift; sourceTree = "<group>"; };
 		1DC3C9D8273BB10900900600 /* CandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleView.swift; sourceTree = "<group>"; };
@@ -278,6 +282,8 @@
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
+				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
 				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
@@ -708,6 +714,7 @@
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
+				1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */,
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,
 				1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */,
@@ -748,6 +755,7 @@
 				1DC3C9DD273BB98F00900600 /* DailyModel.swift in Sources */,
 				1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */,
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,
+				1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */,
 				1D0AA619276F4D6A00C9182D /* TradeBotAlgorithm.swift in Sources */,
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,

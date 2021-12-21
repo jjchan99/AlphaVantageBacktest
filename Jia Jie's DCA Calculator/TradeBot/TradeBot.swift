@@ -118,7 +118,6 @@ struct TradeBot: CloudKitInterchangeable {
                         }
                         default:
                           break
-                     
                     }
                         
 //                        if exitTrigger != nil {

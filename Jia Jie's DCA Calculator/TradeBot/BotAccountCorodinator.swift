@@ -20,7 +20,10 @@ class BotAccountCoordinator {
 //
 //        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
 //
-        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [])!
+        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+        
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [exitTrigger])!
+        
 //
 //        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition3])!
 //
@@ -115,7 +118,7 @@ Condition: \(condition). And condition: \(condition.andCondition)
                         group.enter()
                         fetchAndConditions(parent: condition) { andCondition in
                             copy.andCondition = andCondition
-                            list.append(condition)
+                            list.append(copy)
                             group.leave()
                         }
                     }

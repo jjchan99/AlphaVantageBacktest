@@ -42,9 +42,7 @@ struct TradeBotAlgorithm {
             
             guard xxx != nil, inputValue != nil else { return false }
             
-            print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
-            
-            return condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+            return inputValue > xxx
         
         default:
             

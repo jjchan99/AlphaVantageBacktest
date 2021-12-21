@@ -22,7 +22,7 @@ class BotAccountCoordinator {
 //
         let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
-        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [exitTrigger])!
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [exitTrigger])!
         
 //
 //        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [condition3])!
@@ -36,7 +36,7 @@ class BotAccountCoordinator {
             .setCashBuyPercentage(1)
             .setSharesSellPercentage(1)
             .addCondition(conditionZ)
-            .setExitTrigger(afterDays: 10)
+            .setExitTrigger(afterDays: -10)
             .build()
 //        print(f)
         return f

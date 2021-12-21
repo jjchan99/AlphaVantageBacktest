@@ -8,7 +8,7 @@
 import Foundation
 struct ExitTriggerManager {
     
-    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) {
+    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) -> EvaluationCondition {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
@@ -17,6 +17,7 @@ struct ExitTriggerManager {
         CloudKitUtility.saveChild(child: exitTrigger, for: tb) { success in
             completion()
         }
+        return exitTrigger
     }
     
     static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) {

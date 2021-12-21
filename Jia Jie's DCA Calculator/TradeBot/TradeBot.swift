@@ -106,9 +106,11 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                         
                     if exitTrigger != nil {
-                        ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
+                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
+                            Log.queue(action: "This should be on a background thread")
                             didEvaluate(true)
                         }
+                        self.conditions.append(newCondition)
                     }
                         
 //                        if exitTrigger != nil {

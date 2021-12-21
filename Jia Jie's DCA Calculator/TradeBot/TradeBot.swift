@@ -114,6 +114,7 @@ struct TradeBot: CloudKitInterchangeable {
                         self.conditions.append(newCondition)
                         case .some(exitTrigger) where exitTrigger! < 0:
                         ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
+                            Log.queue(action: "This should be on a background thread")
                             didEvaluate(true)
                         }
                         default:

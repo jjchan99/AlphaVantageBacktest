@@ -26,7 +26,7 @@ struct ExitTriggerManager {
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
         let group = DispatchGroup()
         for conditions in tb.conditions {
-            guard conditions.buyOrSell == .buy else { continue }
+            guard conditions.buyOrSell == .sell else { continue }
 //            conditions.andCondition.append(exitTrigger)
             for andConditions in conditions.andCondition where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
                 let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!

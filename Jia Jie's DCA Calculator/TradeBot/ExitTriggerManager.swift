@@ -24,16 +24,19 @@ struct ExitTriggerManager {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
+        let group = DispatchGroup()
         for conditions in tb.conditions {
-            let group = DispatchGroup()
             guard conditions.buyOrSell == .sell else { continue }
 //            conditions.andCondition.append(exitTrigger)
-            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
             for andConditions in conditions.andCondition where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
+                let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
                 group.enter()
                 let record = andConditions.update(newCondition: exitTrigger)
                 CloudKitUtility.update(item: record) { success in
                     group.leave()
+                }
+                group.notify(queue: .global()) {
+                    completion()
                 }
             }
         }

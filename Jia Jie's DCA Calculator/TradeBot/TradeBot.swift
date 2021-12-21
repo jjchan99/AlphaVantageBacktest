@@ -26,7 +26,7 @@ struct TradeBot: CloudKitInterchangeable {
         let cashBuyPercentage = record["cashBuyPercentage"] as! Double
         let sharesSellPercentage = record["sharesSellPercentage"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
-        let exitTrigger = record["exitTrigger"] as! Int
+        let exitTrigger = record["exitTrigger"] as! Int?
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
@@ -105,12 +105,17 @@ struct TradeBot: CloudKitInterchangeable {
                         account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     }
                         
-                    if exitTrigger != nil {
+                    switch exitTrigger {
+                        case .some(exitTrigger) where exitTrigger! >= 0:
                         let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
                             Log.queue(action: "This should be on a background thread")
                             didEvaluate(true)
                         }
                         self.conditions.append(newCondition)
+                        case .some(exitTrigger) where exitTrigger! < 0:
+                            
+                        default:
+                     
                     }
                         
 //                        if exitTrigger != nil {
@@ -158,17 +163,6 @@ struct Account {
     func netWorth(quote: Double) -> Double {
         return accumulatedShares * quote + cash
     }
-}
-
-struct TransactionHistory {
-    var latest: Double
-    var previous: Double
-    var evaluations: [String]
-    var previousCash: Double
-    var newCash: Double
-    var previousShares: Double
-    var newShares: Double
-    var action: BuyOrSell
 }
 
 enum TechnicalIndicators: Hashable, CustomStringConvertible {

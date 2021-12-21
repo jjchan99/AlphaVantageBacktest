@@ -83,6 +83,7 @@
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
 		1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB596C92760F047005385AF /* FetchLatest.swift */; };
 		1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBF218527718B52007E426B /* EvaluationCondition.swift */; };
+		1DBF2188277193F0007E426B /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBF2187277193F0007E426B /* Transaction.swift */; };
 		1DC3C9D4273BAFF200900600 /* CandleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D3273BAFF200900600 /* CandleViewController.swift */; };
 		1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */; };
 		1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D8273BB10900900600 /* CandleView.swift */; };
@@ -210,6 +211,7 @@
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		1DB596C92760F047005385AF /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
 		1DBF218527718B52007E426B /* EvaluationCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationCondition.swift; sourceTree = "<group>"; };
+		1DBF2187277193F0007E426B /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		1DC3C9D3273BAFF200900600 /* CandleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewController.swift; sourceTree = "<group>"; };
 		1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewModel.swift; sourceTree = "<group>"; };
 		1DC3C9D8273BB10900900600 /* CandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleView.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1DBF2187277193F0007E426B /* Transaction.swift */,
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
 				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
 				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
@@ -734,6 +737,7 @@
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
 				1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */,
+				1DBF2188277193F0007E426B /* Transaction.swift in Sources */,
 				1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */,
 				1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */,
 				1DC58277275D240700FD1592 /* CloudViewModel.swift in Sources */,

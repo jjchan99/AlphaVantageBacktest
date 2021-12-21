@@ -105,17 +105,23 @@ struct TradeBot: CloudKitInterchangeable {
                         account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
                     }
                         
-                        if exitTrigger != nil {
-                            print("entry triggered on \(latest.stamp)")
-                            let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
-                            let dateString = DateManager.string(fromDate: date)
-                            let withoutNoise = DateManager.removeNoise(fromString: dateString)
-                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
-                            conditions.append(exitTrigger)
-                            CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
-                                didEvaluate(completion)
+                    if exitTrigger != nil {
+                        ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
+                            didEvaluate(true)
                         }
-                        }
+                    }
+                        
+//                        if exitTrigger != nil {
+//                            print("entry triggered on \(latest.stamp)")
+//                            let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
+//                            let dateString = DateManager.string(fromDate: date)
+//                            let withoutNoise = DateManager.removeNoise(fromString: dateString)
+//                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+//                            conditions.append(exitTrigger)
+//                            CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
+//                                didEvaluate(completion)
+//                        }
+//                        }
                     break
                     }
                 case .sell:

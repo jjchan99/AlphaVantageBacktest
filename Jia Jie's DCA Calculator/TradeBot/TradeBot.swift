@@ -113,8 +113,11 @@ struct TradeBot: CloudKitInterchangeable {
                         }
                         self.conditions.append(newCondition)
                         case .some(exitTrigger) where exitTrigger! < 0:
-                            
+                        ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
+                            didEvaluate(true)
+                        }
                         default:
+                          break
                      
                     }
                         

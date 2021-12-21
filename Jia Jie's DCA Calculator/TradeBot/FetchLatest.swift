@@ -51,7 +51,7 @@ class FetchLatest {
             let record = bot.update(effectiveAfter: sorted.first!.key, cash: bot.account.cash, accumulatedShares: bot.account.accumulatedShares)
             CloudKitUtility.update(item: record) { success in
                 DispatchQueue.main.async {
-                completion(bot)
+                    completion(record)
                 }
             }
         }

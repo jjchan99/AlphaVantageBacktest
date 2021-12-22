@@ -13,11 +13,8 @@ struct OHLCCloudElement {
     let high: Double
     let low: Double
     let close: Double
-    let adjustedClose: Double
     let volume: Double
-    let dividendAmount: Double
-    let splitCoefficient: Double
-    
+ 
     let percentageChange: Double?
     let RSI: Double?
     let movingAverage: Double

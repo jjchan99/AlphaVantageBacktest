@@ -26,10 +26,7 @@ class OHLCTechnicalManager {
         let low = Double(value.low)!
         let close = Double(value.close)!
         let stamp: String = key
-        let adjustedClose: Double = Double(value.adjustedClose)!
         let volume: Double = Double(value.volume)!
-        let dividendAmount: Double = Double(value.dividendAmount)!
-        let splitCoefficient: Double = Double(value.splitCoefficient)!
         
         
         //MARK: TECHNICAL INDICATORS
@@ -38,7 +35,7 @@ class OHLCTechnicalManager {
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
         let rsi = rsiCalculator!.generate(indexData: close)
         
-        let element: OHLCCloudElement = .init(stamp: stamp, open: open, high: high, low: low, close: close, adjustedClose: adjustedClose, volume: volume, dividendAmount: dividendAmount, splitCoefficient: splitCoefficient, percentageChange: nil, RSI: rsi.relativeStrengthIndex, movingAverage: movingAverage, standardDeviation: bollingerBand.standardDeviation, upperBollingerBand: bollingerBand.upperBollingerBand, lowerBollingerBand: bollingerBand.lowerBollingerBand)
+        let element: OHLCCloudElement = .init(stamp: stamp, open: open, high: high, low: low, close: close, volume: volume, percentageChange: nil, RSI: rsi.relativeStrengthIndex, movingAverage: movingAverage, standardDeviation: bollingerBand.standardDeviation, upperBollingerBand: bollingerBand.upperBollingerBand, lowerBollingerBand: bollingerBand.lowerBollingerBand)
         return element
         
     }

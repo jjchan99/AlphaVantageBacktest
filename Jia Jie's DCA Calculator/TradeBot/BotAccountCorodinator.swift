@@ -24,6 +24,7 @@ class BotAccountCoordinator {
         
         let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .sell, andCondition: [exitTrigger])!
         
+        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.5), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [BotFactory.copyCondition(exitTrigger)])!
 //
         let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy, andCondition: [])!
 //
@@ -37,6 +38,7 @@ class BotAccountCoordinator {
             .setSharesSellPercentage(1)
             .addCondition(conditionZ)
             .addCondition(conditionX)
+            .addCondition(conditionY)
             .setExitTrigger(afterDays: -10)
             .build()
 //        print(f)
@@ -191,7 +193,11 @@ class BotFactory {
 //    }
     
     func build() -> TradeBot {
-        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
+        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
         return bot!
+    }
+    
+    static func copyCondition(_ e: EvaluationCondition) -> EvaluationCondition {
+        return EvaluationCondition.init(technicalIndicator: e.technicalIndicator, aboveOrBelow: e.aboveOrBelow, buyOrSell: e.buyOrSell, andCondition: e.andCondition)!
     }
 }

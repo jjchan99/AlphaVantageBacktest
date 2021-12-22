@@ -287,8 +287,8 @@
 				1DBF2187277193F0007E426B /* Transaction.swift */,
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
 				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
-				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
+				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 			);

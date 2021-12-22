@@ -19,14 +19,20 @@ class FetchLatest {
         var bot: TradeBot! 
         
         group.enter()
-        get { stonks in
-            value = stonks
+        getBot { tb in
+            bot = tb
             group.leave()
         }
         
         group.enter()
-        getBot { tb in
-            bot = tb
+        get { stonks in
+            if let stonks = stonks {
+            value = stonks
+            } else {
+                completion(bot)
+                print("Exited prematurely")
+                return
+            }
             group.leave()
         }
         
@@ -57,12 +63,17 @@ class FetchLatest {
         }
     }
     
-    private static func get(completion: @escaping (Daily) -> Void) {
+    private static func get(completion: @escaping (Daily?) -> Void) {
         CandleAPI.fetchDaily("TSLA")
             .sink { _ in
                 
             } receiveValue: { value in
+                if value.timeSeries != nil {
                 completion(value)
+                } else {
+                    print(value.note!)
+                    completion(nil)
+                }
                 }
             .store(in: &subscribers)
    }

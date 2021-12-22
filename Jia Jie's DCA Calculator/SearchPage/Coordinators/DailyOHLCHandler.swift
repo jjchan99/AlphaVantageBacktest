@@ -86,7 +86,7 @@ struct DailyOHLCHandler {
 
                             } else {
 //                                print("Received, most recent stamp: \(startStamp). data: \(startData!)")
-                                let startOHLC: OHLC = .init(meta: daily.meta!, stamp: stamp, open: startData!.open, high: nil, low: nil, close: data!.close, adjustedClose: data!.adjustedClose, volume: nil, dividendAmount: nil, splitCoefficient: nil, percentageChange: nil)
+                                let startOHLC: OHLC = .init(meta: daily.meta!, stamp: stamp, open: startData!.open, high: nil, low: nil, close: data!.close, volume: nil)
 //                                print("Should be most recent OHLC: stamp: \(startOHLC.stamp) open: \(startOHLC.open) close: \(startOHLC.close)")
                                 array.append(startOHLC)
                             }
@@ -119,7 +119,7 @@ struct DailyOHLCHandler {
                                     decrement(&startCurrentMonth, &startCurrentYear)
                                     startCurrentDay = 1
 
-                                    let startOHLC: OHLC = .init(meta: daily.meta!, stamp: stamp, open: startData!.open, high: nil, low: nil, close: data!.close, adjustedClose: data!.adjustedClose, volume: nil, dividendAmount: nil, splitCoefficient: nil, percentageChange: nil)
+                                    let startOHLC: OHLC = .init(meta: daily.meta!, stamp: stamp, open: startData!.open, high: nil, low: nil, close: data!.close, volume: nil)
 //                                    print("Should be OHLC: stamp: \(startOHLC.stamp) open: \(startOHLC.open) close: \(startOHLC.close)")
                                     array.append(startOHLC)
                                 }
@@ -156,11 +156,7 @@ struct OHLC {
     let high: String?
     let low: String?
     let close: String
-    let adjustedClose: String
     let volume: String?
-    let dividendAmount: String?
-    let splitCoefficient: String?
-    let percentageChange: Double?
     
     static func == (lhs: OHLC, rhs: OHLC) -> Bool {
         return lhs.stamp == rhs.stamp && lhs.meta.symbol == rhs.meta.symbol

@@ -44,29 +44,23 @@ public struct TimeSeriesDaily: Codable {
     var high: String
     var low: String
     var close: String
-    var adjustedClose: String
     var volume: String
-    var dividendAmount: String
-    var splitCoefficient: String
     
     private enum CodingKeys: String, CodingKey {
         case open = "1. open"
         case high = "2. high"
         case low = "3. low"
         case close = "4. close"
-        case adjustedClose = "5. adjusted close"
-        case volume = "6. volume"
-        case dividendAmount = "7. dividend amount"
-        case splitCoefficient = "8. split coefficient"
+        case volume = "5. volume"
     }
 }
 
 extension TimeSeriesDaily: Comparable {
     public static func < (lhs: TimeSeriesDaily, rhs: TimeSeriesDaily) -> Bool {
-        return lhs.adjustedClose < rhs.adjustedClose
+        return lhs.close < rhs.close
     }
     
     public static func == (lhs: TimeSeriesDaily, rhs: TimeSeriesDaily) -> Bool {
-        return lhs.adjustedClose == rhs.adjustedClose
+        return lhs.close == rhs.close
     }
 }

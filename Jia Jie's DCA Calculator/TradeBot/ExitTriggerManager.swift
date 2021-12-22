@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import Combine
+
 struct ExitTriggerManager {
+    static var subs = Set<AnyCancellable>()
     
     static func orUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) -> EvaluationCondition {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
@@ -20,24 +23,45 @@ struct ExitTriggerManager {
         return exitTrigger
     }
     
-    static func exitDidTrigger(tb: TradeBot) {
-        let newCondition: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+    static func exitDidTrigger(tb: TradeBot, completion: @escaping () -> Void) {
+            for (condition) in tb.conditions {
+                guard condition.buyOrSell == .sell else { continue }
+                switch condition.technicalIndicator {
+                case .exitTrigger:
+                    CloudKitUtility.delete(item: condition)
+                        .sink { _ in
+                            
+                        } receiveValue: { success in
+                            completion()
+                        }
+                        .store(in: &subs)
+                default:
+                    break
+                }
+            }
+    }
+    
+    static func exitDidTrigger(tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
+        var copy = tb.conditions
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.buyOrSell == .sell else { continue }
-            switch conditions.technicalIndicator {
-            case .exitTrigger:
-                let record = conditions.update(newCondition: newCondition)
-                CloudKitUtility.update(item: conditions) { success in
+            for (index, andConditions) in conditions.andCondition.enumerated() {
+                switch andConditions.technicalIndicator {
+                case .exitTrigger:
+                let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+                let record = andConditions.update(newCondition: exitTrigger)
+                CloudKitUtility.update(item: record) { success in
                     
                 }
-            default:
-                break
+                copy[outerIndex].andCondition[index] = exitTrigger
+                default:
+                    break
             }
-            
-            
+            }
         }
-        return 
+        return copy
     }
+    
     
     static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)

@@ -193,7 +193,7 @@ class BotFactory {
 //    }
     
     func build() -> TradeBot {
-        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, cashBuyPercentage: cashBuyPercentage, sharesSellPercentage: sharesSellPercentage, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
+        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
         return bot!
     }
     

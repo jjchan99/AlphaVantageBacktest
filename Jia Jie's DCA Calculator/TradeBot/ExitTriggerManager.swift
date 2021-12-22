@@ -23,7 +23,7 @@ struct ExitTriggerManager {
         return exitTrigger
     }
     
-    static func exitDidTrigger(tb: TradeBot, completion: @escaping () -> Void) {
+    static func resetOrExitTrigger(tb: TradeBot, completion: @escaping () -> Void) {
             for (condition) in tb.conditions {
                 guard condition.buyOrSell == .sell else { continue }
                 switch condition.technicalIndicator {
@@ -41,7 +41,7 @@ struct ExitTriggerManager {
             }
     }
     
-    static func exitDidTrigger(tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
+    static func resetAndExitTrigger(tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
         var copy = tb.conditions
         let group = DispatchGroup()
         for (outerIndex, conditions) in tb.conditions.enumerated() {

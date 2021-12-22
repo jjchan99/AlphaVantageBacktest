@@ -67,10 +67,15 @@ struct TradeBot: CloudKitInterchangeable {
     }
     
     func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
+        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot, completion: {
+            
+        }) {
         for index in condition.andCondition.indices {
             let condition = condition.andCondition[index]
-            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
+            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot, completion: {
+                
+            })
+            {
                 continue
             } else {
                 return false

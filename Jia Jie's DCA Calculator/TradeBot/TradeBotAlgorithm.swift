@@ -8,7 +8,7 @@
 import Foundation
 struct TradeBotAlgorithm {
     
-    static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
+    static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot, completion: () -> Void) -> Bool {
         var inputValue: Double?
         var xxx: Double?
         
@@ -44,6 +44,14 @@ struct TradeBotAlgorithm {
             guard xxx != nil, inputValue != nil else { return false }
             
             
+            ExitTriggerManager.resetOrExitTrigger(tb: bot) {
+                
+            }
+                 
+            ExitTriggerManager.resetAndExitTrigger(tb: bot) {
+                
+            }
+               
             return inputValue > xxx
         
         default:

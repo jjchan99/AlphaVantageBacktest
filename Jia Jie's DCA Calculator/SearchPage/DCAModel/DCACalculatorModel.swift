@@ -57,19 +57,6 @@ struct DCACalculator {
         
         return (dcaResultArray, meta!)
     }
-    
-    internal func getAdjustedOpen(_ data: OHLC) -> Double {
-        let open = Double(data.open)
-        let close = Double(data.close)
-        let adjustedClose = Double(data.adjustedClose)
-
-        if let open = open, let adjustedClose = adjustedClose, let close = close {
-            let adjustedOpen = open * adjustedClose / close
-            return adjustedOpen
-        } else {
-            fatalError()
-        }
-    }
 }
 
 extension DCACalculator {
@@ -83,7 +70,7 @@ extension DCACalculator {
         
         var accumulatedShares: Double = 0
         for idx in 0..<OHLCData.count {
-            let previousOpen: Double = getAdjustedOpen(OHLCData[idx])
+            let previousOpen: Double = Double(OHLCData[idx].open)!
             let additionalShares = idx == 0 ? initialInvestment / previousOpen : monthlyInvestment / previousOpen
             accumulatedShares += additionalShares
 //            print("check this: accumulated investment \(accumulatedInvestment) at monthIndex \(monthIndex). accumulated shares is \(accumulatedShares)")

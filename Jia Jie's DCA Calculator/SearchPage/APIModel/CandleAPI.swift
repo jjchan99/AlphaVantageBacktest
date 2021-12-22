@@ -28,7 +28,7 @@ struct CandleAPI {
         case .intraday:
             return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(query)&interval=5min&apikey=\(key0)&outputsize=full")
         case .daily:
-            return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=\(query)&outputsize=full&apikey=\(key1)")
+            return URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=\(query)&outputsize=full&apikey=\(key1)")
         }
     }
     

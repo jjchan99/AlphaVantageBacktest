@@ -121,6 +121,20 @@ struct TradeBot: CloudKitInterchangeable {
                     guard account.accumulatedShares > 0 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
+                        
+                        switch exitTrigger {
+                        case .some(exitTrigger) where exitTrigger! >= 0:
+                    ExitTriggerManager.resetOrExitTrigger(tb: self) {
+                            didEvaluate(true)
+                    }
+                        case .some(exitTrigger) where exitTrigger! < 0:
+                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self) {
+                            didEvaluate(true)
+                         }
+                        default:
+                            break
+                        }
+                        
                     break
                     }
                 }

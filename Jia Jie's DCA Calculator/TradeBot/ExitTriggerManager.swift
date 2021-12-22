@@ -20,6 +20,25 @@ struct ExitTriggerManager {
         return exitTrigger
     }
     
+    static func exitDidTrigger(tb: TradeBot) {
+        let newCondition: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+        for (outerIndex, conditions) in tb.conditions.enumerated() {
+            guard conditions.buyOrSell == .sell else { continue }
+            switch conditions.technicalIndicator {
+            case .exitTrigger:
+                let record = conditions.update(newCondition: newCondition)
+                CloudKitUtility.update(item: conditions) { success in
+                    
+                }
+            default:
+                break
+            }
+            
+            
+        }
+        return 
+    }
+    
     static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)

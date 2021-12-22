@@ -43,6 +43,7 @@ struct TradeBotAlgorithm {
             print("The date is \(inputValue). We sell after \(xxx). Therefore it is \(inputValue > xxx).")
             guard xxx != nil, inputValue != nil else { return false }
             
+            
             return inputValue > xxx
         
         default:

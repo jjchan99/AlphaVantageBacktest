@@ -11,10 +11,9 @@ import Foundation
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
+    var monthlyBudget: Double? = nil
     var account: Account
     var conditions: [EvaluationCondition] = []
-    let cashBuyPercentage: Double
-    let sharesSellPercentage: Double
     let record: CKRecord
     let effectiveAfter: String
     var exitTrigger: Int?
@@ -23,15 +22,11 @@ struct TradeBot: CloudKitInterchangeable {
         let budget = record["budget"] as! Double
         let cash = record["cash"] as! Double
         let accumulatedShares = record["accumulatedShares"] as! Double
-        let cashBuyPercentage = record["cashBuyPercentage"] as! Double
-        let sharesSellPercentage = record["sharesSellPercentage"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
         let exitTrigger = record["exitTrigger"] as! Int?
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
-        self.cashBuyPercentage = cashBuyPercentage
-        self.sharesSellPercentage = sharesSellPercentage
         self.record = record
         self.effectiveAfter = effectiveAfter
         self.exitTrigger = exitTrigger
@@ -54,14 +49,12 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], cashBuyPercentage: Double, sharesSellPercentage: Double, effectiveAfter: String, exitTrigger: Int? = nil) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
                     "cash": budget,
                     "accumulatedShares": 0,
-                    "cashBuyPercentage": cashBuyPercentage,
-                    "sharesSellPercentage": sharesSellPercentage,
                     "effectiveAfter": effectiveAfter
                 ])
             if let exitTrigger = exitTrigger {
@@ -100,9 +93,9 @@ struct TradeBot: CloudKitInterchangeable {
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(MonthlyAdapter.getMonthlyInvestment(cbp: cashBuyPercentage, budget: budget)) / close
+                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
                     default:
-                        account.accumulatedShares += account.decrement(cashBuyPercentage * account.cash) / close
+                        account.accumulatedShares += account.decrement(account.cash) / close
                     }
                         
                     switch exitTrigger {
@@ -126,7 +119,7 @@ struct TradeBot: CloudKitInterchangeable {
                 case .sell:
                     guard account.accumulatedShares > 0 else { continue }
                     if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    account.cash += account.decrement(shares: account.accumulatedShares * sharesSellPercentage) * close
+                    account.cash += account.decrement(shares: account.accumulatedShares) * close
                     break
                     }
                 }
@@ -266,19 +259,5 @@ enum BuyOrSell: Int, CustomStringConvertible {
         }
     }
     case buy, sell
-}
-
-struct MonthlyAdapter {
-    
-    //MARK: Where Budget = Initial Investment
-    
-    static func getMonthlyInvestment(cbp: Double, budget: Double) -> Double {
-        return cbp * budget
-    }
-    
-    static func monthlyInvestmentToCbp(monthlyInvestment: Double, budget: Double) -> Double {
-        return monthlyInvestment / budget
-    }
-    
 }
 

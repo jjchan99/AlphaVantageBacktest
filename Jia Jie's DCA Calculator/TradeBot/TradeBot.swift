@@ -113,25 +113,14 @@ struct TradeBot: CloudKitInterchangeable {
                         }
                         self.conditions.append(newCondition)
                         case .some(exitTrigger) where exitTrigger! < 0:
-                        ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
+                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
                             Log.queue(action: "This should be on a background thread")
                             didEvaluate(true)
                         }
                         default:
                           break
                     }
-                        
-//                        if exitTrigger != nil {
-//                            print("entry triggered on \(latest.stamp)")
-//                            let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest.stamp), value: exitTrigger!)
-//                            let dateString = DateManager.string(fromDate: date)
-//                            let withoutNoise = DateManager.removeNoise(fromString: dateString)
-//                            let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
-//                            conditions.append(exitTrigger)
-//                            CloudKitUtility.saveChild(child: exitTrigger, for: self) { completion in
-//                                didEvaluate(completion)
-//                        }
-//                        }
+                    
                     break
                     }
                 case .sell:

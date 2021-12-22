@@ -20,15 +20,17 @@ struct ExitTriggerManager {
         return exitTrigger
     }
     
-    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) {
+    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
         let group = DispatchGroup()
-        for conditions in tb.conditions {
+        var copy = tb.conditions
+        
+        for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.buyOrSell == .sell else { continue }
 //            conditions.andCondition.append(exitTrigger)
-            for andConditions in conditions.andCondition where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
+            for (index, andConditions) in conditions.andCondition.enumerated() where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
                 let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
                 group.enter()
                 let record = andConditions.update(newCondition: exitTrigger)
@@ -38,8 +40,12 @@ struct ExitTriggerManager {
                 group.notify(queue: .global()) {
                     completion()
                 }
+                
+                copy[outerIndex].andCondition[index] = exitTrigger
             }
         }
+        
+        return copy
     }
     
 }

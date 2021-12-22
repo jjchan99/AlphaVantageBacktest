@@ -43,15 +43,17 @@ struct ExitTriggerManager {
     
     static func exitDidTrigger(tb: TradeBot, completion: @escaping () -> Void) -> [EvaluationCondition] {
         var copy = tb.conditions
+        let group = DispatchGroup()
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.buyOrSell == .sell else { continue }
             for (index, andConditions) in conditions.andCondition.enumerated() {
                 switch andConditions.technicalIndicator {
                 case .exitTrigger:
+                    group.enter()
                 let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
                 let record = andConditions.update(newCondition: exitTrigger)
                 CloudKitUtility.update(item: record) { success in
-                    
+                    group.leave()
                 }
                 copy[outerIndex].andCondition[index] = exitTrigger
                 default:
@@ -59,6 +61,10 @@ struct ExitTriggerManager {
             }
             }
         }
+        group.notify(queue: .global()) {
+            completion()
+        }
+        
         return copy
     }
     
@@ -80,12 +86,12 @@ struct ExitTriggerManager {
                 CloudKitUtility.update(item: record) { success in
                     group.leave()
                 }
-                group.notify(queue: .global()) {
-                    completion()
-                }
-                
                 copy[outerIndex].andCondition[index] = exitTrigger
             }
+        }
+        
+        group.notify(queue: .global()) {
+            completion()
         }
         
         return copy

@@ -124,7 +124,7 @@ struct TradeBot: CloudKitInterchangeable {
                         
                         switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
-                    ExitTriggerManager.resetOrExitTrigger(tb: self) {
+                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self) {
                             didEvaluate(true)
                     }
                         case .some(exitTrigger) where exitTrigger! < 0:

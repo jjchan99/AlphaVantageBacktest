@@ -11,6 +11,7 @@ struct TradeBotAlgorithm {
     private static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
         var inputValue: Double?
         var xxx: Double?
+        bot.dm.append(description: "test")
         
         switch condition.technicalIndicator {
         case .monthlyPeriodic:
@@ -22,7 +23,6 @@ struct TradeBotAlgorithm {
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
             let description: String = ""
-            bot.dm.append(description: description)
             let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
             
             return outcome

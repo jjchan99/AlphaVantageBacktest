@@ -19,6 +19,12 @@ struct TradeBot: CloudKitInterchangeable {
     var exitTrigger: Int?
     var dm = DescriptionManager()
     
+    func uploadDescriptions(completion: @escaping (Bool) -> Void) {
+        dm.upload(tb: self) { success in
+        completion(success)
+        }
+    }
+    
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
         let cash = record["cash"] as! Double

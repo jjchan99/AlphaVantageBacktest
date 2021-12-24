@@ -8,7 +8,7 @@
 import Foundation
 struct TradeBotAlgorithm {
     
-    private static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> TBAlgoDescription {
+    private static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
         var inputValue: Double?
         var xxx: Double?
         
@@ -23,7 +23,7 @@ struct TradeBotAlgorithm {
             
             let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
             
-            return .init(outcome: outcome, description: "", stamp: "")
+            return outcome
         case .movingAverage, .RSI:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
@@ -44,11 +44,11 @@ struct TradeBotAlgorithm {
             
             print("The date is \(inputValue). We sell after \(xxx). Therefore it is \(inputValue > xxx).")
             guard xxx != nil, inputValue != nil else { return
-                    .init(outcome: false, description: "", stamp: "")
+                    false
             }
                
             let outcome = inputValue > xxx
-            return .init(outcome: outcome, description: "", stamp: "")
+            return outcome
         
         default:
             
@@ -58,14 +58,14 @@ struct TradeBotAlgorithm {
         }
         
         guard xxx != nil, inputValue != nil else { return
-                .init(outcome: false, description: "", stamp: "")
+                false
         }
         
         print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
         
         let outcome = condition.aboveOrBelow.evaluate(inputValue!, xxx!)
         
-        return .init(outcome: outcome, description: "", stamp: "")
+        return outcome
     }
     
     //MARK: SCENARIO 1: INDICATORS BASED ON OPEN. ELEMENT IS ALWAYS MOST RECENT. SECNARIO 2: INDICATORS BASED ON CLOSE. ELEMENT IS PREVIOUS FOR INDICATORS. ELEMENT IS MOST RECENT FOR PRICE INPUT (USING OPEN).
@@ -118,10 +118,10 @@ struct TradeBotAlgorithm {
     }
     
     static func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome {
+        if performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
         for index in condition.andCondition.indices {
             let condition = condition.andCondition[index]
-            if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome
+            if performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
             {
                 continue
             } else {

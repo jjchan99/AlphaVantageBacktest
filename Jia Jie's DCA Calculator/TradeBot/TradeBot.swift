@@ -17,6 +17,7 @@ struct TradeBot: CloudKitInterchangeable {
     let record: CKRecord
     let effectiveAfter: String
     var exitTrigger: Int?
+    var dm = DescriptionManager()
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double

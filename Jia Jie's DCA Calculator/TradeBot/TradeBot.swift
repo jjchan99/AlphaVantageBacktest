@@ -65,23 +65,6 @@ struct TradeBot: CloudKitInterchangeable {
         
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
-    
-    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
-        for index in condition.andCondition.indices {
-            let condition = condition.andCondition[index]
-            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
-            {
-                continue
-            } else {
-                return false
-            }
-        }
-        return true
-        } else {
-            return false
-        }
-    }
 
     mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
         let close = latest.close
@@ -91,7 +74,7 @@ struct TradeBot: CloudKitInterchangeable {
                 switch condition.buyOrSell {
                 case .buy:
                     guard account.cash >= 1 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
                         account.accumulatedShares += account.decrement(monthlyBudget!) / close
@@ -119,7 +102,7 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                 case .sell:
                     guard account.accumulatedShares > 0 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
                         
                         switch exitTrigger {
@@ -151,7 +134,7 @@ extension TradeBot {
                 switch condition.buyOrSell {
                 case .buy:
                     guard account.cash >= 1 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
                         account.accumulatedShares += account.decrement(monthlyBudget!) / close
@@ -179,7 +162,7 @@ extension TradeBot {
                     }
                 case .sell:
                     guard account.accumulatedShares > 0 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
                         
                         switch exitTrigger {

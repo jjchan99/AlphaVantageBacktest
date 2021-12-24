@@ -7,10 +7,15 @@
 
 import Foundation
 struct Timeline {
-    let description: String
     let stamp: String
     var previousCash: Double
     var newCash: Double
     var previousShares: Double
     var newShares: Double
+}
+
+struct TBAlgoDescription {
+    let outcome: Bool
+    let description: String
+    let stamp: String
 }

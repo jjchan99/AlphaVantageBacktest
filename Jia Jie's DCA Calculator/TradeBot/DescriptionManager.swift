@@ -16,6 +16,11 @@ class DescriptionManager {
             completion(success)
         }
     }
+    
+    func append(description: String) {
+        let description: DescriptionRecord = .init(description: description)!
+        descriptions.append(description)
+    }
 }
 
 struct DescriptionRecord: CloudKitInterchangeable, CloudChild {

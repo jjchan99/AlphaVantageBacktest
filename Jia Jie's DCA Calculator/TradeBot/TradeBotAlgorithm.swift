@@ -22,6 +22,7 @@ struct TradeBotAlgorithm {
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
             let description: String = ""
+            bot.dm.append(description: description)
             let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
             
             return outcome

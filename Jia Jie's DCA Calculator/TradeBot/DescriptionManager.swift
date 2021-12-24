@@ -6,12 +6,33 @@
 //
 
 import Foundation
+import CloudKit
+
 class DescriptionManager {
-    var descriptions: [String] = []
+    var descriptions: [DescriptionRecord] = []
     
     func upload(tb: TradeBot, completion: @escaping (Bool) -> Void) {
         CloudKitUtility.saveArray(array: descriptions, for: tb) { success in
             completion(success)
         }
     }
+}
+
+struct DescriptionRecord: CloudKitInterchangeable, CloudChild {
+    init?(record: CKRecord) {
+        let description = record["description"] as! String
+        self.description = description
+        self.record = record
+    }
+    
+    init?(description: String) {
+        let record = CKRecord(recordType: "Description")
+        record["description"] = description
+        self.init(record: record)
+    }
+    
+    var record: CKRecord
+     
+    let description: String
+
 }

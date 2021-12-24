@@ -21,6 +21,7 @@ struct TradeBotAlgorithm {
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
+            let description: String = ""
             let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
             
             return outcome
@@ -42,7 +43,7 @@ struct TradeBotAlgorithm {
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
-            print("The date is \(inputValue). We sell after \(xxx). Therefore it is \(inputValue > xxx).")
+            let description: String = "The date is \(inputValue). We sell after \(xxx). Therefore it is \(inputValue > xxx)."
             guard xxx != nil, inputValue != nil else { return
                     false
             }
@@ -61,9 +62,8 @@ struct TradeBotAlgorithm {
                 false
         }
         
-        print("Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!)).")
-        
         let outcome = condition.aboveOrBelow.evaluate(inputValue!, xxx!)
+        let description: String = "Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!))."
         
         return outcome
     }

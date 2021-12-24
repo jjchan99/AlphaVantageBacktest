@@ -7,5 +7,11 @@
 
 import Foundation
 class DescriptionManager {
-    var emptyArray: [String] = []
+    var descriptions: [String] = []
+    
+    func upload(tb: TradeBot, completion: @escaping (Bool) -> Void) {
+        CloudKitUtility.saveArray(array: descriptions, for: tb) { success in
+            completion(success)
+        }
+    }
 }

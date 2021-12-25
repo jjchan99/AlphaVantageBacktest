@@ -43,7 +43,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
             "buyOrSell" : newCondition.buyOrSell.rawValue
         ])
         //MARK: Needs to append new and conditions to local instance without need to re-fetch
-        return .init(record: record)!
+        return EvaluationCondition(record: record)!
     }
     
     let technicalIndicator: TechnicalIndicators

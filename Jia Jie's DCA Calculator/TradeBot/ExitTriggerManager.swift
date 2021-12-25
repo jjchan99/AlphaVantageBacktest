@@ -63,6 +63,7 @@ struct ExitTriggerManager {
                 if !backtest {
                 let record = andConditions.update(newCondition: exitTrigger)
                 CloudKitUtility.update(item: record) { success in
+                    print("Reset and exit trigger")
                     group.leave()
                 }
                 }

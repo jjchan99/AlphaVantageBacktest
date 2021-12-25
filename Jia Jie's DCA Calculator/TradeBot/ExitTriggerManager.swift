@@ -68,7 +68,7 @@ struct ExitTriggerManager {
                 }
                 }
                     
-                copy[outerIndex].andCondition[index] = exitTrigger
+                    copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: 99999999)
                 default:
                     break
             }
@@ -103,7 +103,7 @@ struct ExitTriggerManager {
                     group.leave()
                 } }
                 
-                copy[outerIndex].andCondition[index] = exitTrigger
+                copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: Int(withoutNoise)!)
             }
         }
         

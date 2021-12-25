@@ -46,7 +46,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
         return EvaluationCondition(record: record)!
     }
     
-    let technicalIndicator: TechnicalIndicators
+    var technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
     let buyOrSell: BuyOrSell
     var andCondition: [EvaluationCondition] = []

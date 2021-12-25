@@ -17,6 +17,13 @@ struct TradeBot: CloudKitInterchangeable {
     let record: CKRecord
     let effectiveAfter: String
     var exitTrigger: Int?
+    var dm = DescriptionManager()
+    
+    func uploadDescriptions(completion: @escaping (Bool) -> Void) {
+        dm.upload(tb: self) { success in
+        completion(success)
+        }
+    }
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
@@ -65,23 +72,6 @@ struct TradeBot: CloudKitInterchangeable {
         
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
-    
-    func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
-        for index in condition.andCondition.indices {
-            let condition = condition.andCondition[index]
-            if TradeBotAlgorithm.performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
-            {
-                continue
-            } else {
-                return false
-            }
-        }
-        return true
-        } else {
-            return false
-        }
-    }
 
     mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
         let close = latest.close
@@ -91,7 +81,7 @@ struct TradeBot: CloudKitInterchangeable {
                 switch condition.buyOrSell {
                 case .buy:
                     guard account.cash >= 1 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:
                         account.accumulatedShares += account.decrement(monthlyBudget!) / close
@@ -119,16 +109,76 @@ struct TradeBot: CloudKitInterchangeable {
                     }
                 case .sell:
                     guard account.accumulatedShares > 0 else { continue }
-                    if checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
                         
                         switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
-                    ExitTriggerManager.resetOrExitTrigger(tb: self) {
+                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self) {
                             didEvaluate(true)
                     }
                         case .some(exitTrigger) where exitTrigger! < 0:
                         self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self) {
+                            didEvaluate(true)
+                         }
+                        default:
+                            break
+                        }
+                        
+                    break
+                    }
+                }
+            }
+    }
+}
+
+extension TradeBot {
+    mutating func backtest(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
+        let close = latest.close
+       
+        //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
+        for condition in self.conditions {
+                switch condition.buyOrSell {
+                case .buy:
+                    guard account.cash >= 1 else { continue }
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    switch condition.technicalIndicator {
+                    case .monthlyPeriodic:
+                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
+                    default:
+                        account.accumulatedShares += account.decrement(account.cash) / close
+                    }
+                        
+                    switch exitTrigger {
+                        case .some(exitTrigger) where exitTrigger! >= 0:
+                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self, backtest: true) {
+                            Log.queue(action: "This should be on a background thread")
+                            didEvaluate(true)
+                        }
+                        self.conditions.append(newCondition)
+                        case .some(exitTrigger) where exitTrigger! < 0:
+                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self, backtest: true) {
+                            Log.queue(action: "This should be on a background thread")
+                            didEvaluate(true)
+                        }
+                        default:
+                          break
+                    }
+                    
+                    break
+                    }
+                case .sell:
+                    guard account.accumulatedShares > 0 else { continue }
+                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
+                    account.cash += account.decrement(shares: account.accumulatedShares) * close
+                        
+                        switch exitTrigger {
+                        case .some(exitTrigger) where exitTrigger! >= 0:
+                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self, backtest: true) {
+                            didEvaluate(true)
+                    }
+                        case .some(exitTrigger) where exitTrigger! < 0:
+                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self, backtest: true) {
                             didEvaluate(true)
                          }
                         default:

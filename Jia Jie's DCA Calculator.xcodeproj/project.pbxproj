@@ -83,7 +83,6 @@
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
 		1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB596C92760F047005385AF /* FetchLatest.swift */; };
 		1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBF218527718B52007E426B /* EvaluationCondition.swift */; };
-		1DBF2188277193F0007E426B /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBF2187277193F0007E426B /* Transaction.swift */; };
 		1DC3C9D4273BAFF200900600 /* CandleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D3273BAFF200900600 /* CandleViewController.swift */; };
 		1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */; };
 		1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC3C9D8273BB10900900600 /* CandleView.swift */; };
@@ -105,7 +104,9 @@
 		1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */; };
 		1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6327183898005C7CB7 /* IndicatorView.swift */; };
 		1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */; };
+		1DF3B7EF27761EDE00411D0A /* DescriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF3B7EE27761EDE00411D0A /* DescriptionManager.swift */; };
 		1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */; };
+		1DFBD22D2774D0BB00E44F11 /* Backtest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFBD22C2774D0BB00E44F11 /* Backtest.swift */; };
 		1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */; };
 		1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF278C276AF22000FCAE6D /* DateManager.swift */; };
 /* End PBXBuildFile section */
@@ -211,7 +212,6 @@
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		1DB596C92760F047005385AF /* FetchLatest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchLatest.swift; sourceTree = "<group>"; };
 		1DBF218527718B52007E426B /* EvaluationCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvaluationCondition.swift; sourceTree = "<group>"; };
-		1DBF2187277193F0007E426B /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		1DC3C9D3273BAFF200900600 /* CandleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewController.swift; sourceTree = "<group>"; };
 		1DC3C9D6273BB0F000900600 /* CandleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleViewModel.swift; sourceTree = "<group>"; };
 		1DC3C9D8273BB10900900600 /* CandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleView.swift; sourceTree = "<group>"; };
@@ -233,7 +233,9 @@
 		1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOHLCHandler.swift; sourceTree = "<group>"; };
 		1DF13C6327183898005C7CB7 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
 		1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchModeButtonView.swift; sourceTree = "<group>"; };
+		1DF3B7EE27761EDE00411D0A /* DescriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionManager.swift; sourceTree = "<group>"; };
 		1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageModel.swift; sourceTree = "<group>"; };
+		1DFBD22C2774D0BB00E44F11 /* Backtest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backtest.swift; sourceTree = "<group>"; };
 		1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotAccountCorodinator.swift; sourceTree = "<group>"; };
 		1DFF278C276AF22000FCAE6D /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -283,8 +285,9 @@
 				1DFF278C276AF22000FCAE6D /* DateManager.swift */,
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DB596C92760F047005385AF /* FetchLatest.swift */,
+				1DFBD22C2774D0BB00E44F11 /* Backtest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
-				1DBF2187277193F0007E426B /* Transaction.swift */,
+				1DF3B7EE27761EDE00411D0A /* DescriptionManager.swift */,
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
 				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
@@ -714,6 +717,7 @@
 				1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */,
 				1D469FA22758AC800073978D /* BackgroundView.swift in Sources */,
 				1D2CDC612765EBBA000B693D /* ChartLibraryOutput.swift in Sources */,
+				1DFBD22D2774D0BB00E44F11 /* Backtest.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
@@ -737,7 +741,6 @@
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
 				1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */,
-				1DBF2188277193F0007E426B /* Transaction.swift in Sources */,
 				1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */,
 				1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */,
 				1DC58277275D240700FD1592 /* CloudViewModel.swift in Sources */,
@@ -750,6 +753,7 @@
 				1D06C6B027440DCA00374255 /* CandleIndicator.swift in Sources */,
 				1D85ED59270B67A600D6D4C1 /* Double+Extensions.swift in Sources */,
 				1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */,
+				1DF3B7EF27761EDE00411D0A /* DescriptionManager.swift in Sources */,
 				1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */,
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
 				1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */,

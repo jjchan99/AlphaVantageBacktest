@@ -56,9 +56,11 @@ class FetchLatest {
             //MARK: UPDATE EFFECTIVE AFTER
             let record = bot.update(effectiveAfter: sorted.first!.key, cash: bot.account.cash, accumulatedShares: bot.account.accumulatedShares)
             CloudKitUtility.update(item: record) { success in
-                DispatchQueue.main.async {
-                    completion(record)
-                }
+//                record.uploadDescriptions { success in
+                    DispatchQueue.main.async {
+                        completion(record)
+                    }
+//                }
             }
         }
     }

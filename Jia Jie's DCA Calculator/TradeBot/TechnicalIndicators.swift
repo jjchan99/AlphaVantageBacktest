@@ -27,11 +27,11 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case .monthlyPeriodic:
             return "monthly end investment"
         case .stopOrder(value: let value):
-            return "stop order initiates at \(value)"
+            return "stop order at price of \(value)"
         case .profitTarget(value: let value):
             return "stop order initiates when profit is at \(value)"
         case .exitTrigger(value: let value):
-            return "exiting on \(value)"
+            return "exiting on \(DateManager.addNoise(fromString: "\(value)"))"
         }
     }
 

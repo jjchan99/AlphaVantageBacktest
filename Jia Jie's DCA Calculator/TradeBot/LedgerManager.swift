@@ -9,11 +9,14 @@ import Foundation
 import CloudKit
 
 class LedgerManager {
-    var entries: [LedgerRecord] = []
+    var entries: [LedgerRecord] = [] { didSet {
+        print("DID SET BABY!!!!!")
+    }}
     
     func upload(tb: TradeBot, completion: @escaping (Bool) -> Void) {
-        CloudKitUtility.saveArray(array: entries, for: tb) { success in
+        CloudKitUtility.saveArray(array: entries, for: tb) { [unowned self] success in
             completion(success)
+            print("Inspect entries: \(entries)")
         }
     }
     

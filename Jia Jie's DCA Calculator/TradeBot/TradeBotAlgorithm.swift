@@ -13,18 +13,6 @@ struct TradeBotAlgorithm {
         var xxx: Double?
         
         switch condition.technicalIndicator {
-        case .monthlyPeriodic:
-    
-            var inputValue: Date!
-            var xxx: Date!
-            
-            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
-            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
-            
-            let description: String = "It is a new month"
-            let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
-            
-            return (outcome, description)
         case .movingAverage, .RSI:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
@@ -85,8 +73,6 @@ struct TradeBotAlgorithm {
             return element.RSI as! T?
         case .bollingerBands:
             return element.open as! T?
-        case .monthlyPeriodic:
-            return DateManager.date(from: element.stamp) as! T?
         case .stopOrder:
             //MARK: INPUT: LATEST OPEN
             return element.open as! T?
@@ -106,8 +92,6 @@ struct TradeBotAlgorithm {
             return value * 100 as! T?
         case let .bollingerBands(percentage: b):
             return element.valueAtPercent(percent: b) as! T?
-        case .monthlyPeriodic:
-            return DateManager.date(from: element.stamp) as! T?
         case .stopOrder(let value):
             return value as! T?
         case .profitTarget(value: let value):

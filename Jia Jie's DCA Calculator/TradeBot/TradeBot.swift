@@ -11,7 +11,6 @@ import Foundation
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
-    var monthlyBudget: Double? = nil
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
@@ -82,12 +81,9 @@ struct TradeBot: CloudKitInterchangeable {
                 case .buy:
                     guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    switch condition.technicalIndicator {
-                    case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
-                    default:
-                        account.accumulatedShares += account.decrement(account.cash) / close
-                    }
+                  
+                    account.accumulatedShares += account.decrement(account.cash) / close
+                    
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
@@ -142,12 +138,9 @@ extension TradeBot {
                 case .buy:
                     guard account.cash >= 1 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    switch condition.technicalIndicator {
-                    case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
-                    default:
+                  
                         account.accumulatedShares += account.decrement(account.cash) / close
-                    }
+                    
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:

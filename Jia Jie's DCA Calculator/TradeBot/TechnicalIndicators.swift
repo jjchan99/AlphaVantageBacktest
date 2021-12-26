@@ -11,7 +11,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
     case movingAverage(period: Int),
          bollingerBands(percentage: Double),
          RSI(period: Int, value: Double),
-         monthlyPeriodic,
          stopOrder(value: Double),
          profitTarget(value: Double),
          exitTrigger(value: Int)
@@ -24,8 +23,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return ("bollingerBand percent")
         case let .RSI(period: period, value: value):
             return "\(period) period RSI"
-        case .monthlyPeriodic:
-            return "monthly end investment"
         case .stopOrder(value: let value):
             return "stop order price"
         case .profitTarget(value: let value):
@@ -43,8 +40,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return percentage
         case let .RSI(period: period, value: value):
             return Double(2 * period) + (value)
-        case .monthlyPeriodic:
-            return 69
         case .stopOrder(value: let value):
             return value + 1000000
         case .profitTarget(value: let value):
@@ -65,9 +60,6 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             
         case let x where x >= 50:
             return .movingAverage(period: Int(rawValue))
-            
-        case let x where x == 69:
-            return .monthlyPeriodic
             
         case let x where x >= 4 && x <= 29:
             let period = floor(rawValue) * 0.5

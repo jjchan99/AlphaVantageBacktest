@@ -21,17 +21,17 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case let .movingAverage(period: period):
             return ("\(period) day moving average")
         case let .bollingerBands(percentage: percentage):
-            return ("\(percentage)%B")
+            return ("bollingerBand percent")
         case let .RSI(period: period, value: value):
-            return "\(period) period RSI value of \(value)"
+            return "\(period) period RSI"
         case .monthlyPeriodic:
             return "monthly end investment"
         case .stopOrder(value: let value):
-            return "stop order at price of \(value)"
+            return "stop order price"
         case .profitTarget(value: let value):
-            return "stop order initiates when profit is at \(value)"
+            return "stop order profit"
         case .exitTrigger(value: let value):
-            return "exiting on \(DateManager.addNoise(fromString: "\(value)"))"
+            return "exit date"
         }
     }
 

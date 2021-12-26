@@ -21,10 +21,10 @@ struct TradeBotAlgorithm {
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
-            let description: String = ""
+            let description: String = "It is a new month"
             let outcome = DateManager.checkIfNewMonth(previous: inputValue, next: xxx)
             
-            return outcome
+            return (outcome, description)
         case .movingAverage, .RSI:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
@@ -43,13 +43,13 @@ struct TradeBotAlgorithm {
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
-            let description: String = "The date is \(inputValue). We sell after \(xxx). Therefore it is \(inputValue > xxx)."
+            let description: String = "The date is \(inputValue). Exit date is \(xxx). Condition is \(inputValue > xxx)."
             guard xxx != nil, inputValue != nil else { return
-                    false
+                    (false, "")
             }
                
             let outcome = inputValue > xxx
-            return outcome
+            return (outcome, description)
         
         default:
             
@@ -59,13 +59,13 @@ struct TradeBotAlgorithm {
         }
         
         guard xxx != nil, inputValue != nil else { return
-                false
+            (false, "")
         }
         
         let outcome = condition.aboveOrBelow.evaluate(inputValue!, xxx!)
-        let description: String = "Evaluating that the value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). I have evaluated this to be \(condition.aboveOrBelow.evaluate(inputValue!, xxx!))."
+        let description: String = "The value of \(inputValue!) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx!). Condition is \(condition.aboveOrBelow.evaluate(inputValue!, xxx!))."
         
-        return outcome
+        return (outcome, description)
     }
     
     //MARK: SCENARIO 1: INDICATORS BASED ON OPEN. ELEMENT IS ALWAYS MOST RECENT. SECNARIO 2: INDICATORS BASED ON CLOSE. ELEMENT IS PREVIOUS FOR INDICATORS. ELEMENT IS MOST RECENT FOR PRICE INPUT (USING OPEN).
@@ -118,20 +118,24 @@ struct TradeBotAlgorithm {
     }
     
     static func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        
-        
-        if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome {
+        var description: String = ""
+        let check = performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
+        if check.outcome {
+            description.append(check.description)
         for index in condition.andCondition.indices {
             let condition = condition.andCondition[index]
-            if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome
+            
+            let check = performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
+            if check.outcome
             {
+                description.append("\n\(check.description)")
                 continue
             } else {
                 return false
             }
         }
             
-        
+        bot.lm.append(description: description, latest: latest, bot: bot, condition: condition)
         return true
         } else {
             return false

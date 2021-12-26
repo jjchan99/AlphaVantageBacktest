@@ -17,8 +17,10 @@ class LedgerManager {
         }
     }
     
-    func append(entry: LedgerRecord) {
-        entries.append(entry)
+    func append(description: String, latest: OHLCCloudElement, bot: TradeBot, condition: EvaluationCondition) {
+        let deltaShares = condition.buyOrSell == .buy ? bot.account.cash / latest.close : 0
+        let deltaCash = condition.buyOrSell == .sell ? bot.account.accumulatedShares * latest.close : 0
+        entries.append(.init(description: description, stamp: latest.stamp, deltaCash: deltaCash, deltaShares: deltaShares)!)
     }
 }
 

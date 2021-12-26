@@ -8,10 +8,9 @@
 import Foundation
 struct TradeBotAlgorithm {
     
-    private static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
+    private static func performCheck(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> (outcome: Bool, description: String) {
         var inputValue: Double?
         var xxx: Double?
-        bot.dm.append(description: "test")
         
         switch condition.technicalIndicator {
         case .monthlyPeriodic:
@@ -119,16 +118,20 @@ struct TradeBotAlgorithm {
     }
     
     static func checkNext(condition: EvaluationCondition, previous: OHLCCloudElement, latest: OHLCCloudElement, bot: TradeBot) -> Bool {
-        if performCheck(condition: condition, previous: previous, latest: latest, bot: bot) {
+        
+        
+        if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome {
         for index in condition.andCondition.indices {
             let condition = condition.andCondition[index]
-            if performCheck(condition: condition, previous: previous, latest: latest, bot: bot)
+            if performCheck(condition: condition, previous: previous, latest: latest, bot: bot).outcome
             {
                 continue
             } else {
                 return false
             }
         }
+            
+        
         return true
         } else {
             return false

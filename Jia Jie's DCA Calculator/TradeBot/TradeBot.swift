@@ -17,10 +17,10 @@ struct TradeBot: CloudKitInterchangeable {
     let record: CKRecord
     let effectiveAfter: String
     var exitTrigger: Int?
-    var dm = DescriptionManager()
+    var lm = LedgerManager()
     
-    func uploadDescriptions(completion: @escaping (Bool) -> Void) {
-        dm.upload(tb: self) { success in
+    func uploadEntries(completion: @escaping (Bool) -> Void) {
+        lm.upload(tb: self) { success in
         completion(success)
         }
     }
@@ -80,7 +80,7 @@ struct TradeBot: CloudKitInterchangeable {
         for condition in self.conditions {
                 switch condition.buyOrSell {
                 case .buy:
-                    guard account.cash >= 1 else { continue }
+                    guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     switch condition.technicalIndicator {
                     case .monthlyPeriodic:

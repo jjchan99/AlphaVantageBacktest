@@ -96,32 +96,7 @@ struct InputCustomizationView: View {
                     } header: {
                         Text("Custom targets")
                     }
-                    Section {
-                        Button() {
-                            isPresented = true
-                        } label: {
-                        HStack {
-                            Image(systemName: "dollarsign.circle")
-                            VStack(alignment: .leading) {
-                            Text("Monthly Dollar-Cost Averaging")
-                                    .font(.caption.bold())
-                            Text("Invest at regular monthly intervals")
-                                    .font(.caption2)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .opacity(0.3)
-                            }
-                            .frame(height: 0.1 * Dimensions.height)
-                        }
-                        .sheet(isPresented: $isPresented) {
-                            BPercentPopupView()
-                              
-                        }
-                        .foregroundColor(.black)
-                    } header: {
-                       Text("Periodic")
-                    }
+                   
                 }
             }
             .navigationTitle("Entry strategy")

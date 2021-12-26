@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class InputViewModel: ObservableObject {
-    let factory = BotFactory()
+    var factory = BotFactory()
     let symbol: String = "TSLA"
-    let width: CGFloat = .init(50).wScaled()
+    let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]

@@ -16,38 +16,65 @@ struct PopupView: View {
     @State private var isPresented = false
     @State private var selected = 1
     let selectedColor: Color = Color.yellow
-    @State private var selectedButtonIdx: Int = 0
+    @State private var selectedWindowIdx: Int = 0
+    @State private var selectedPositionIdx: Int = 0
     @State private var isOn = false
+    
+    @ViewBuilder func movingAverageBody() -> some View {
+        VStack {
+            HStack {
+            Text("Step 1. Select window")
+                .padding()
+                Spacer()
+            }
+                Picker("Selected", selection: $selectedWindowIdx) {
+                    Text("20").tag(0)
+                    Text("50").tag(1)
+                    Text("100").tag(2)
+                    Text("200").tag(3)
+                }.pickerStyle(SegmentedPickerStyle())
+                .frame(width: 0.985 * vm.width)
+            HStack {
+            Text("Step 2. Buy when price is...")
+                    .padding()
+            Spacer()
+            }
+            Picker("Selected", selection: $selectedPositionIdx) {
+                Text("Above").tag(0)
+                Text("Below").tag(1)
+            }.pickerStyle(SegmentedPickerStyle())
+            .frame(width: 0.985 * vm.width)
+            
+            Text("You have opted for a \(selectedPositionIdx == 0 ? "short" : "long") strategy")
+            
+            HStack {
+                Button("Cancel") {
+                    
+                }
+                .buttonStyle(.borderedProminent)
+            Button("Set") {
+                 vm.factory
+                    .addCondition(EvaluationCondition(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy
+                                                            , andCondition: [])!)
+            }
+            .buttonStyle(.borderedProminent)
+            
+            }
+            
+        }
+    }
     
     var body: some View {
         NavigationView {
             VStack {
-                Slider(value: $percentB, in: 0...100)
-                Text("\(percentB, specifier: "%.1f")")
-                
-                HStack {
-                    Button("Buy") {
-                        selectedButtonIdx = 0
-                    }.buttonStyle(.borderedProminent)
-                        .tint(selectedButtonIdx == 0 ? .mint : self.selectedColor)
-                     
-                      
-                    Button("Sell") {
-                        selectedButtonIdx = 1
-                    }.buttonStyle(.borderedProminent)
-                        .tint(selectedButtonIdx == 1 ? .mint : self.selectedColor)
-                }
-                
-                Picker("Selected", selection: $selectedButtonIdx) {
-                    Text("hello").tag(0)
-                    Text("James English").tag(1)
-                }
+//                Slider(value: $percentB, in: 0...100)
+//                Text("\(percentB, specifier: "%.1f")")
+                movingAverageBody()
                 Spacer()
+
                 }
                 .navigationTitle(vm.titleFrame[frame][titleIdx])
-                .navigationBarTitleDisplayMode(.inline)
             
         }
-       
     }
 }

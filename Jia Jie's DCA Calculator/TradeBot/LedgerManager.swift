@@ -40,7 +40,7 @@ struct LedgerRecord: CloudKitInterchangeable, CloudChild {
     }
     
     init?(description: String, stamp: String, deltaCash: Double, deltaShares: Double) {
-        let record = CKRecord(recordType: "Description")
+        let record = CKRecord(recordType: "Entry")
         record.setValuesForKeys([
             "description" : description,
             "stamp" : stamp,

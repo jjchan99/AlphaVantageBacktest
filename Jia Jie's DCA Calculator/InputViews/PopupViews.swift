@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct BPercentPopupView: View {
+struct PopupView: View {
     @EnvironmentObject var vm: InputViewModel
+    var titleIdx: Int 
+    var frame: Int
     @State private var percentB: Double = 0
     @State private var isPresented = false
     @State private var selected = 1
@@ -42,11 +44,10 @@ struct BPercentPopupView: View {
                 }
                 Spacer()
                 }
-                .navigationTitle("Moving Average")
+                .navigationTitle(vm.titleFrame[frame][titleIdx])
                 .navigationBarTitleDisplayMode(.inline)
             
         }
        
     }
 }
-

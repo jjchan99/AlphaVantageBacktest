@@ -13,6 +13,16 @@ class InputViewModel: ObservableObject {
     let symbol: String = "TSLA"
     let width: CGFloat = .init(50).wScaled()
     let height: CGFloat = .init(50).hScaled()
+    
+    let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
+    let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
+    
+    let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
+    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
+    
+    var titleFrame: [[String]] {
+        return [titles, titlesSection2]
+    }
 }
 
 struct InputMenuView: View {
@@ -29,11 +39,6 @@ struct InputMenuView: View {
 
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
-    var titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
-    var description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
-    
-    var titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
-    var descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
     @State private var isPresented: Bool = false { didSet {print("LEO GURA!!!!")}}
     
     var body: some View {
@@ -41,16 +46,16 @@ struct InputCustomizationView: View {
             VStack {
                 Form {
                     Section {
-                        List(0..<titles.count, id: \.self) { idx in
+                        List(0..<vm.titles.count, id: \.self) { idx in
                             Button() {
                                 isPresented = true
                             } label: {
                             HStack {
                                 Image(systemName: "dollarsign.circle")
                                 VStack(alignment: .leading) {
-                                Text(titles[idx])
+                                    Text(vm.titles[idx])
                                         .font(.caption.bold())
-                                Text(description[idx])
+                                    Text(vm.description[idx])
                                         .font(.caption2)
                                 }
                                 Spacer()
@@ -60,7 +65,7 @@ struct InputCustomizationView: View {
                             .frame(height: 0.1 * Dimensions.height)
                             }
                             .sheet(isPresented: $isPresented) {
-                                BPercentPopupView()
+                                PopupView(titleIdx: idx, frame: 0)
                             }
                             .foregroundColor(.black)
                             
@@ -69,16 +74,16 @@ struct InputCustomizationView: View {
                         Text("Trading Indicators")
                     }
                     Section {
-                        List(0..<titlesSection2.count, id: \.self) { idx in
+                        List(0..<vm.titlesSection2.count, id: \.self) { idx in
                             Button() {
                                 isPresented = true
                             } label: {
                             HStack {
                                 Image(systemName: "dollarsign.circle")
                                 VStack(alignment: .leading) {
-                                Text(titlesSection2[idx])
+                                    Text(vm.titlesSection2[idx])
                                         .font(.caption.bold())
-                                Text(descriptionSection2[idx])
+                                    Text(vm.descriptionSection2[idx])
                                         .font(.caption2)
                                 }
                                 Spacer()
@@ -88,7 +93,7 @@ struct InputCustomizationView: View {
                             .frame(height: 0.1 * Dimensions.height)
                             }
                             .sheet(isPresented: $isPresented) {
-                                BPercentPopupView()
+                                PopupView(titleIdx: idx, frame: 1)
                             }
                             .foregroundColor(.black)
                             
@@ -101,7 +106,6 @@ struct InputCustomizationView: View {
             }
             .navigationTitle("Entry strategy")
         }
-       
     }
 }
 

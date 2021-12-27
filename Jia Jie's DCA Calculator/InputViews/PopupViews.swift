@@ -24,6 +24,64 @@ struct PopupView: View {
         Text("HELLO WORLD!!!!")
     }
     
+    func actionOnSet() {
+        switch frame {
+        case 0:
+            switch titleIdx {
+            case 0:
+                vm.buyInputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+            case 1:
+                vm.buyInputs["bb"] = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+            case 2:
+                vm.buyInputs["RSI"] = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+            default:
+                fatalError()
+          
+            }
+        case 1:
+            switch titleIdx {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
+        }
+        presentationMode.wrappedValue.dismiss()
+    }
+    
+    @ViewBuilder func formBottomHalf() -> some View {
+        HStack {
+        Text("Step 2. Buy when price is...")
+                .padding()
+        Spacer()
+        }
+        Picker("Selected", selection: $selectedPositionIdx) {
+            Text("Above").tag(0)
+            Text("Below").tag(1)
+        }.pickerStyle(SegmentedPickerStyle())
+        .frame(width: 0.985 * vm.width)
+        
+        Text("You have opted for a \(selectedPositionIdx == 0 ? "short" : "long") strategy")
+        
+        HStack {
+            Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            }
+            .buttonStyle(.borderedProminent)
+        Button("Set") {
+            actionOnSet()
+        }
+        .buttonStyle(.borderedProminent)
+        
+        }
+    }
+    
     @ViewBuilder func movingAverageBody() -> some View {
         VStack {
             HStack {
@@ -38,32 +96,7 @@ struct PopupView: View {
                     Text("200").tag(3)
                 }.pickerStyle(SegmentedPickerStyle())
                 .frame(width: 0.985 * vm.width)
-            HStack {
-            Text("Step 2. Buy when price is...")
-                    .padding()
-            Spacer()
-            }
-            Picker("Selected", selection: $selectedPositionIdx) {
-                Text("Above").tag(0)
-                Text("Below").tag(1)
-            }.pickerStyle(SegmentedPickerStyle())
-            .frame(width: 0.985 * vm.width)
-            
-            Text("You have opted for a \(selectedPositionIdx == 0 ? "short" : "long") strategy")
-            
-            HStack {
-                Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
-                }
-                .buttonStyle(.borderedProminent)
-            Button("Set") {
-                vm.buyInputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
-                presentationMode.wrappedValue.dismiss()
-            }
-            .buttonStyle(.borderedProminent)
-            
-            }
-            
+           formBottomHalf()
         }
     }
     
@@ -99,7 +132,7 @@ struct PopupView: View {
     }
     
     func restoreMA() {
-        if let input = vm._buyInputs["movingAverage"] {
+        if let input = vm.buyInputs["movingAverage"] {
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -109,7 +142,7 @@ struct PopupView: View {
             }
         }
         
-        if let input2 = vm._buyInputs["movingAverage"] {
+        if let input2 = vm.buyInputs["movingAverage"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -130,6 +163,16 @@ struct PopupView: View {
                 fatalError()
             }
         }
+        
+        if let input2 = vm.buyInputs["bb"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
+        }
     }
         
     func restoreRSI() {
@@ -146,7 +189,11 @@ struct PopupView: View {
         }
     
     @ViewBuilder func bbBody() -> some View {
-        
+        VStack {
+            Slider(value: $selectedPercentage, in: 0...100)
+            Text("\(selectedPercentage, specifier: "%.1f")")
+        formBottomHalf()
+        }
     }
     
     @ViewBuilder func form() -> some View {
@@ -196,3 +243,5 @@ struct PopupView: View {
         }
     }
 }
+
+

@@ -12,13 +12,8 @@ struct PopupView: View {
     @EnvironmentObject var vm: InputViewModel
     var titleIdx: Int 
     var frame: Int
-    @State private var percentB: Double = 0
-    @State private var isPresented = false
-    @State private var selected = 1
-    let selectedColor: Color = Color.yellow
     @State private var selectedWindowIdx: Int = 0
     @State private var selectedPositionIdx: Int = 0
-    @State private var isOn = false
     
     @Environment(\.presentationMode) var presentationMode
     

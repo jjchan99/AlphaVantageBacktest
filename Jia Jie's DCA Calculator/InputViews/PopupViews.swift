@@ -19,6 +19,10 @@ struct PopupView: View {
     var window: [Int] = [20, 50, 100, 200]
     var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
+    @ViewBuilder func rsiBody() -> some View {
+        Text("HELLO WORLD!!!!")
+    }
+    
     @ViewBuilder func movingAverageBody() -> some View {
         VStack {
             HStack {
@@ -71,7 +75,7 @@ struct PopupView: View {
             case 1:
                 movingAverageBody()
             case 2:
-                movingAverageBody()
+                rsiBody()
             default:
                 fatalError()
           

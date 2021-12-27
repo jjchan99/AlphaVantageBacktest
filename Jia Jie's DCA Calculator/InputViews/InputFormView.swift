@@ -13,6 +13,7 @@ class InputViewModel: ObservableObject {
     let symbol: String = "TSLA"
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
+    var bot: TradeBot = BotAccountCoordinator.specimen()
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -24,9 +25,28 @@ class InputViewModel: ObservableObject {
         return [titles, titlesSection2]
     }
     
-    var buyInputs: [String: EvaluationCondition] = [:] { didSet {
-        print(buyInputs)
-    }}
+    var buyInputs: [String: EvaluationCondition] = [:]
+    
+    var _buyInputs: [String: EvaluationCondition] {
+        var copy: [String: EvaluationCondition] = [:]
+        for conditions in bot.conditions where conditions.buyOrSell == .buy {
+            switch conditions.technicalIndicator {
+            case .movingAverage:
+                copy["movingAverage"] = conditions
+            case .exitTrigger:
+                copy["exitTrigger"] = conditions
+            case .RSI:
+                copy["RSI"] = conditions
+            case .bollingerBands:
+                copy["bb"] = conditions
+            case .profitTarget:
+                copy["profitTarget"] = conditions
+            case .stopOrder:
+                copy["stopOrder"] = conditions
+            }
+        }
+        return copy
+    }
 }
 
 struct InputMenuView: View {

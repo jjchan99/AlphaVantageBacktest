@@ -119,6 +119,10 @@ struct PopupView: View {
         }
     }
     
+    @ViewBuilder func bbBody() -> some View {
+        
+    }
+    
     @ViewBuilder func form() -> some View {
         switch frame {
         case 0:
@@ -126,7 +130,7 @@ struct PopupView: View {
             case 0:
                 movingAverageBody()
             case 1:
-                movingAverageBody()
+                bbBody()
             case 2:
                 rsiBody()
             default:

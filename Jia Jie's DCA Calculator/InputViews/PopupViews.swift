@@ -58,7 +58,7 @@ struct PopupView: View {
                 }
                 .buttonStyle(.borderedProminent)
             Button("Set") {
-                vm.inputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+                vm.buyInputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
                 presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)
@@ -81,7 +81,7 @@ struct PopupView: View {
             
         }
         .onAppear {
-            if let input = vm.inputs["movingAverage"] {
+            if let input = vm.buyInputs["movingAverage"] {
                 let i = input.technicalIndicator
                 switch i {
                 case .movingAverage(period: let period):
@@ -91,7 +91,7 @@ struct PopupView: View {
                 }
             }
             
-            if let input2 = vm.inputs["movingAverage"] {
+            if let input2 = vm.buyInputs["movingAverage"] {
                 let i = input2.aboveOrBelow
                 switch i {
                 case .priceBelow:

@@ -20,6 +20,9 @@ struct PopupView: View {
     @State private var selectedPositionIdx: Int = 0
     @State private var isOn = false
     
+    var window: [Int] = [20, 50, 100, 200]
+    var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
+    
     @ViewBuilder func movingAverageBody() -> some View {
         VStack {
             HStack {
@@ -53,9 +56,7 @@ struct PopupView: View {
                 }
                 .buttonStyle(.borderedProminent)
             Button("Set") {
-                 vm.factory
-                    .addCondition(EvaluationCondition(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, buyOrSell: .buy
-                                                            , andCondition: [])!)
+                vm.inputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
             }
             .buttonStyle(.borderedProminent)
             

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class InputViewModel: ObservableObject {
-    var factory = BotFactory()
+    var factory = BotFactory() { didSet { print("Factory set: \(factory.evaluationConditions)")}}
     let symbol: String = "TSLA"
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
@@ -23,6 +23,10 @@ class InputViewModel: ObservableObject {
     var titleFrame: [[String]] {
         return [titles, titlesSection2]
     }
+    
+    var inputs: [String: EvaluationCondition] = [:] { didSet {
+        print(inputs)
+    }}
 }
 
 struct InputMenuView: View {

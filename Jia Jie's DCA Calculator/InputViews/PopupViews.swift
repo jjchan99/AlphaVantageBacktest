@@ -20,6 +20,8 @@ struct PopupView: View {
     @State private var selectedPositionIdx: Int = 0
     @State private var isOn = false
     
+    @Environment(\.presentationMode) var presentationMode
+    
     var window: [Int] = [20, 50, 100, 200]
     var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
@@ -52,11 +54,12 @@ struct PopupView: View {
             
             HStack {
                 Button("Cancel") {
-                    
+                    presentationMode.wrappedValue.dismiss()
                 }
                 .buttonStyle(.borderedProminent)
             Button("Set") {
                 vm.inputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+                presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)
             
@@ -75,6 +78,28 @@ struct PopupView: View {
 
                 }
                 .navigationTitle(vm.titleFrame[frame][titleIdx])
+            
+        }
+        .onAppear {
+            if let input = vm.inputs["movingAverage"] {
+                let i = input.technicalIndicator
+                switch i {
+                case .movingAverage(period: let period):
+                    selectedWindowIdx = window.firstIndex(of: period)!
+                default:
+                    fatalError()
+                }
+            }
+            
+            if let input2 = vm.inputs["movingAverage"] {
+                let i = input2.aboveOrBelow
+                switch i {
+                case .priceBelow:
+                    selectedPositionIdx = 1
+                case .priceAbove:
+                    selectedPositionIdx = 0
+                }
+            }
             
         }
     }

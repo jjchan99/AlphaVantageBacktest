@@ -32,7 +32,7 @@ struct CustomTabView: View {
                 viewModel.selectedIndex = 2
                 viewModel.index2tapped!()
             }) {
-                Image(systemName: "questionmark").foregroundColor(viewModel.selectedIndex == 2 ? .black : .gray).padding(.horizontal)
+                Image(systemName: "plus.circle").foregroundColor(viewModel.selectedIndex == 2 ? .black : .gray).padding(.horizontal)
             }
         }
         .background(Color.white)

@@ -158,7 +158,7 @@ struct PopupView: View {
             let i = input.technicalIndicator
             switch i {
             case .bollingerBands(percentage: let percentage):
-                selectedPercentage = percentage
+                selectedPercentage = percentage * 100
             default:
                 fatalError()
             }

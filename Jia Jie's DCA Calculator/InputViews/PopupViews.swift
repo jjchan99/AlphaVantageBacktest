@@ -66,6 +66,59 @@ struct PopupView: View {
         }
     }
     
+    func restoreInputs() {
+        switch frame {
+        case 0:
+            switch titleIdx {
+            case 0:
+                restoreMA()
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+                
+            }
+        case 1:
+            switch titleIdx {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
+            
+        }
+    }
+    
+    func restoreMA() {
+        if let input = vm.buyInputs["movingAverage"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .movingAverage(period: let period):
+                selectedWindowIdx = window.firstIndex(of: period)!
+            default:
+                fatalError()
+            }
+        }
+        
+        if let input2 = vm.buyInputs["movingAverage"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
+        }
+    }
+    
     @ViewBuilder func form() -> some View {
         switch frame {
         case 0:
@@ -109,26 +162,7 @@ struct PopupView: View {
             
         }
         .onAppear {
-            if let input = vm.buyInputs["movingAverage"] {
-                let i = input.technicalIndicator
-                switch i {
-                case .movingAverage(period: let period):
-                    selectedWindowIdx = window.firstIndex(of: period)!
-                default:
-                    fatalError()
-                }
-            }
-            
-            if let input2 = vm.buyInputs["movingAverage"] {
-                let i = input2.aboveOrBelow
-                switch i {
-                case .priceBelow:
-                    selectedPositionIdx = 1
-                case .priceAbove:
-                    selectedPositionIdx = 0
-                }
-            }
-            
+            restoreInputs()
         }
     }
 }

@@ -25,7 +25,9 @@ class InputViewModel: ObservableObject {
         return [titles, titlesSection2]
     }
     
-    var buyInputs: [String: EvaluationCondition] = [:]
+    var buyInputs: [String: EvaluationCondition] = [:] { didSet {
+        print("buyInputs: \(buyInputs)")
+    }}
     
     var _buyInputs: [String: EvaluationCondition] {
         var copy: [String: EvaluationCondition] = [:]

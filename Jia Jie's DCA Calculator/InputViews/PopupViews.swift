@@ -14,6 +14,7 @@ struct PopupView: View {
     var frame: Int
     @State private var selectedWindowIdx: Int = 0
     @State private var selectedPositionIdx: Int = 0
+    @State private var selectedPercentage: Double = 0
     @Environment(\.presentationMode) var presentationMode
     
     var window: [Int] = [20, 50, 100, 200]
@@ -73,9 +74,9 @@ struct PopupView: View {
             case 0:
                 restoreMA()
             case 1:
-                break
+                restoreBB()
             case 2:
-                break
+                restoreRSI()
             default:
                 fatalError()
                 
@@ -98,7 +99,7 @@ struct PopupView: View {
     }
     
     func restoreMA() {
-        if let input = vm.buyInputs["movingAverage"] {
+        if let input = vm._buyInputs["movingAverage"] {
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -108,7 +109,7 @@ struct PopupView: View {
             }
         }
         
-        if let input2 = vm.buyInputs["movingAverage"] {
+        if let input2 = vm._buyInputs["movingAverage"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -118,6 +119,31 @@ struct PopupView: View {
             }
         }
     }
+    
+    func restoreBB() {
+        if let input = vm.buyInputs["bb"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .bollingerBands(percentage: let percentage):
+                selectedPercentage = percentage
+            default:
+                fatalError()
+            }
+        }
+    }
+        
+    func restoreRSI() {
+            if let input = vm.buyInputs["RSI"] {
+                let i = input.technicalIndicator
+                switch i {
+                case .RSI(period: let period, value: let percentage):
+                    selectedPercentage = percentage
+                    selectedWindowIdx = window.firstIndex(of: period)!
+                default:
+                    fatalError()
+                }
+            }
+        }
     
     @ViewBuilder func bbBody() -> some View {
         

@@ -14,7 +14,6 @@ struct PopupView: View {
     var frame: Int
     @State private var selectedWindowIdx: Int = 0
     @State private var selectedPositionIdx: Int = 0
-    
     @Environment(\.presentationMode) var presentationMode
     
     var window: [Int] = [20, 50, 100, 200]
@@ -63,12 +62,42 @@ struct PopupView: View {
         }
     }
     
+    @ViewBuilder func form() -> some View {
+        switch frame {
+        case 0:
+            switch titleIdx {
+            case 0:
+                movingAverageBody()
+            case 1:
+                movingAverageBody()
+            case 2:
+                movingAverageBody()
+            default:
+                fatalError()
+          
+            }
+        case 1:
+            switch titleIdx {
+            case 0:
+                movingAverageBody()
+            case 1:
+                movingAverageBody()
+            case 2:
+                movingAverageBody()
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
-                movingAverageBody()
+                form()
                 Spacer()
 
                 }

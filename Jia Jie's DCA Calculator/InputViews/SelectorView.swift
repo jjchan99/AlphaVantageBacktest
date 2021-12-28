@@ -12,7 +12,6 @@ struct SelectorView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-        NavigationView {
             VStack {
                 Form {
         Section {
@@ -72,7 +71,6 @@ struct SelectorView: View {
             Text("Custom targets")
         }
         
-    }
     }
     }
     }

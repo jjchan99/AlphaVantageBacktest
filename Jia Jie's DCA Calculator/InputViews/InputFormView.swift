@@ -167,6 +167,7 @@ struct InputCustomizationView: View {
                     
                     NavigationLink {
                         SelectorView()
+                            .navigationTitle("Hello friend")
                     } label: {
                         HStack {
                         Image(systemName: "plus.circle")
@@ -181,5 +182,6 @@ struct InputCustomizationView: View {
             }
             .navigationTitle("Entry strategy")
         }
+       
     }
 }

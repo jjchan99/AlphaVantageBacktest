@@ -11,7 +11,7 @@ import UIKit
 import SwiftUI
 import Combine
 
-class CandleViewController: UIViewController {
+class CandleViewController: UIHostingController<AnyView> {
     
     let symbol: String
     let viewModel = CandleViewModel<OHLCCloudElement>()
@@ -23,7 +23,7 @@ class CandleViewController: UIViewController {
     
     init(symbol: String) {
         self.symbol = symbol
-        super.init(nibName: nil, bundle: nil)
+        super.init(rootView: AnyView(CandleView().environmentObject(viewModel)))
     }
     
     required init?(coder: NSCoder) {
@@ -31,9 +31,6 @@ class CandleViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        hc = UIHostingController(rootView: AnyView(CandleView().environmentObject(viewModel)))
-        view.addSubview(hc!.view)
-        hc!.setup()
         coordinator!.iterate()
         OHLC(mode: .days5)
       

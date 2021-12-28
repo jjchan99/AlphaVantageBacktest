@@ -77,8 +77,8 @@ struct TradeBot: CloudKitInterchangeable {
        
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for condition in self.conditions {
-                switch condition.buyOrSell {
-                case .buy:
+                switch condition.enterOrExit {
+                case .enter:
                     guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                   
@@ -103,7 +103,7 @@ struct TradeBot: CloudKitInterchangeable {
                     
                     break
                     }
-                case .sell:
+                case .exit:
                     guard account.accumulatedShares > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
@@ -129,60 +129,7 @@ struct TradeBot: CloudKitInterchangeable {
 }
 
 extension TradeBot {
-    mutating func backtest(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
-        let close = latest.close
-       
-        //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        for condition in self.conditions {
-                switch condition.buyOrSell {
-                case .buy:
-                    guard account.cash >= 1 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                  
-                        account.accumulatedShares += account.decrement(account.cash) / close
-                    
-                        
-                    switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self, backtest: true) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
-                        self.conditions.append(newCondition)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self, backtest: true) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
-                        default:
-                          break
-                    }
-                    
-                    break
-                    }
-                case .sell:
-                    guard account.accumulatedShares > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    account.cash += account.decrement(shares: account.accumulatedShares) * close
-                        
-                        switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self, backtest: true) {
-                            didEvaluate(true)
-                    }
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self, backtest: true) {
-                            didEvaluate(true)
-                         }
-                        default:
-                            break
-                        }
-                        
-                    break
-                    }
-                }
-            }
-    }
+    
 }
 
 struct Account {
@@ -230,15 +177,15 @@ enum AboveOrBelow: Int, CustomStringConvertible {
     }
 }
 
-enum BuyOrSell: Int, CustomStringConvertible {
+enum EnterOrExit: Int, CustomStringConvertible {
     var description: String {
         switch self {
-        case .buy:
-            return "buy"
-        case .sell:
-            return "sell"
+        case .enter:
+            return "enter"
+        case .exit:
+            return "exit"
         }
     }
-    case buy, sell
+    case enter, exit
 }
 

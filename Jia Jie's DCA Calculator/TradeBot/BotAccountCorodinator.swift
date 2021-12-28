@@ -20,13 +20,13 @@ class BotAccountCoordinator {
 //
 //        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
 //
-        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
+        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
         
-        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, buyOrSell: .sell, andCondition: [exitTrigger])!
+        let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, enterOrExit: .exit, andCondition: [exitTrigger])!
         
-        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.5), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [BotFactory.copyCondition(exitTrigger)])!
+        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.5), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [BotFactory.copyCondition(exitTrigger)])!
 //
-        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 50), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
+        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 50), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [])!
 //
 //        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.7), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
@@ -198,6 +198,6 @@ class BotFactory {
     }
     
     static func copyCondition(_ e: EvaluationCondition) -> EvaluationCondition {
-        return EvaluationCondition.init(technicalIndicator: e.technicalIndicator, aboveOrBelow: e.aboveOrBelow, buyOrSell: e.buyOrSell, andCondition: e.andCondition)!
+        return EvaluationCondition.init(technicalIndicator: e.technicalIndicator, aboveOrBelow: e.aboveOrBelow, enterOrExit: e.enterOrExit, andCondition: e.andCondition)!
     }
 }

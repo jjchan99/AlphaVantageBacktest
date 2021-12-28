@@ -13,20 +13,20 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
         let aboveOrBelowRawValue = record["aboveOrBelow"] as! Int
-        let buyOrSellRawValue = record["buyOrSell"] as! Int
+        let enterOrExitRawValue = record["enterOrExit"] as! Int
         
         self.technicalIndicator = TechnicalIndicators.build(rawValue: technicalIndicatorRawValue)
         self.aboveOrBelow = AboveOrBelow(rawValue: aboveOrBelowRawValue)!
-        self.buyOrSell = BuyOrSell(rawValue: buyOrSellRawValue)!
+        self.enterOrExit = EnterOrExit(rawValue: enterOrExitRawValue)!
         self.record = record
     }
     
-    init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, buyOrSell: BuyOrSell, andCondition: [EvaluationCondition]) {
+    init?(technicalIndicator: TechnicalIndicators, aboveOrBelow: AboveOrBelow, enterOrExit: EnterOrExit, andCondition: [EvaluationCondition]) {
         let record = CKRecord(recordType: "EvaluationCondition")
                 record.setValuesForKeys([
                     "technicalIndicator": technicalIndicator.rawValue,
                     "aboveOrBelow": aboveOrBelow.rawValue,
-                    "buyOrSell": buyOrSell.rawValue,
+                    "enterOrExit": enterOrExit.rawValue,
                 ])
         self.init(record: record)
         self.andCondition = andCondition
@@ -40,7 +40,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
         record.setValuesForKeys([
             "technicalIndicator" : newCondition.technicalIndicator.rawValue,
             "aboveOrBelow" : newCondition.aboveOrBelow.rawValue,
-            "buyOrSell" : newCondition.buyOrSell.rawValue
+            "enterOrExit" : newCondition.enterOrExit.rawValue
         ])
         //MARK: Needs to append new and conditions to local instance without need to re-fetch
         return EvaluationCondition(record: record)!
@@ -48,10 +48,10 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     
     var technicalIndicator: TechnicalIndicators
     let aboveOrBelow: AboveOrBelow
-    let buyOrSell: BuyOrSell
+    let enterOrExit: EnterOrExit
     var andCondition: [EvaluationCondition] = []
     
     var description: String {
-        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(buyOrSell)"
+        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(enterOrExit)"
     }
 }

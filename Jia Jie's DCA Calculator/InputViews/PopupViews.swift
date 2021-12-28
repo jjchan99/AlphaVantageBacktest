@@ -29,11 +29,11 @@ struct PopupView: View {
         case 0:
             switch titleIdx {
             case 0:
-                vm.setValue(key: "movingAverage", value: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
+                vm.setValue(key: "movingAverage", value: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
             case 1:
-                vm.setValue(key: "bb", value: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
+                vm.setValue(key: "bb", value: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
             case 2:
-                vm.setValue(key: "RSI", value: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
+                vm.setValue(key: "RSI", value: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
             default:
                 fatalError()
           

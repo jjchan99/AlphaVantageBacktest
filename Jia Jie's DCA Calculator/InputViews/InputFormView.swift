@@ -105,9 +105,9 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    var _buyInputs: [String: EvaluationCondition] {
+    var _enterInputs: [String: EvaluationCondition] {
         var copy: [String: EvaluationCondition] = [:]
-        for conditions in bot.conditions where conditions.buyOrSell == .buy {
+        for conditions in bot.conditions where conditions.enterOrExit == .enter {
             for andConditions in conditions.andCondition where conditions.andCondition.count > 0 {
                 switch andConditions.technicalIndicator {
             case .movingAverage:

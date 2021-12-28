@@ -67,8 +67,6 @@ struct PopupView: View {
         }.pickerStyle(SegmentedPickerStyle())
         .frame(width: 0.985 * vm.width)
         
-        Text("You have opted for a \(selectedPositionIdx == 0 ? "short" : "long") strategy")
-        
         HStack {
             Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()

@@ -161,11 +161,23 @@ struct InputMenuView: View {
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false { didSet {print("LEO GURA!!!!")}}
+    @State var long: Bool = true
     
     var body: some View {
         NavigationView {
             VStack {
                 Form {
+                    Section {
+                        Picker("Selected", selection: $long) {
+                            Text("Go long").tag(true)
+                            Text("Go short").tag(false)
+                        }.pickerStyle(SegmentedPickerStyle())
+                        .frame(width: 0.985 * vm.width)
+                    } header: {
+                       Text("Indicate your position")
+                    }
+                    
+                    
                     Section {
                         List(0..<vm.titles.count, id: \.self) { idx in
                             Button() {

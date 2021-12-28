@@ -167,9 +167,19 @@ struct InputCustomizationView: View {
                     
                     List {
                         ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
+                            VStack {
                             Section(header: Text(key)) {
                                 Text("Kenneth is Kenneth")
                             }
+                            
+                                Button("Edit") {
+                                    isPresented = true
+                                }
+                                .sheet(isPresented: $isPresented) {
+                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0)
+                                }
+                            }
+                            
                     }
                     }
                     

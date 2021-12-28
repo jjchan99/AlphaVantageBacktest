@@ -63,7 +63,7 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    private(set) var entryInputs: [String: EvaluationCondition] = [:] { didSet {
+    @Published private(set) var entryInputs: [String: EvaluationCondition] = [:] { didSet {
         print(entryInputs)
     }}
     
@@ -163,6 +163,14 @@ struct InputCustomizationView: View {
                         .frame(width: 0.985 * vm.width)
                     } header: {
                        Text("Indicate your position")
+                    }
+                    
+                    List {
+                        ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
+                            Section(header: Text(key)) {
+                                Text("Kenneth is Kenneth")
+                            }
+                    }
                     }
                     
                     NavigationLink(isActive: $isActive) {

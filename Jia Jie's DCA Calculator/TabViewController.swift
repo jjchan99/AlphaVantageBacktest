@@ -69,9 +69,4 @@ extension UIHostingController {
                    controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
                ])
     }
-    
-    func setup() {
-            let controller = self
-            controller.view.frame = UIScreen.main.bounds
-    }
 }

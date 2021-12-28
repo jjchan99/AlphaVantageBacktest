@@ -21,17 +21,6 @@ class InputViewController: UIViewController {
         controller.didMove(toParent: self)
         
         // Do any additional setup after loading the view.
-        setup()
-    }
-    
-    func setup() {
-        let controller = hostingController!
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-                   controller.view.widthAnchor.constraint(equalTo: view.widthAnchor),
-                   controller.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
-                   controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                   controller.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-               ])
+        controller.setup()
     }
 }

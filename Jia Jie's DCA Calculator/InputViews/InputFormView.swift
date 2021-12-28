@@ -176,7 +176,7 @@ struct InputCustomizationView: View {
                                     isPresented = true
                                 }
                                 .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0)
+                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0, entryForm: false)
                                 }
                             }
                             

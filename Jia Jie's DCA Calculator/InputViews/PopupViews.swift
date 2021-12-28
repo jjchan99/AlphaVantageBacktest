@@ -227,6 +227,8 @@ struct PopupView: View {
         }
     }
     
+    var entryForm: Bool
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -240,7 +242,9 @@ struct PopupView: View {
             
         }
         .onAppear {
+            if !entryForm {
             restoreInputs()
+            }
         }
     }
 }

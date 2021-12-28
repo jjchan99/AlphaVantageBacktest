@@ -34,7 +34,7 @@ struct SelectorView: View {
                 .frame(height: 0.1 * Dimensions.height)
                 }
                 .sheet(isPresented: $isPresented) {
-                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 0)
+                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 0, entryForm: true)
                 }
                 .foregroundColor(.black)
                 
@@ -62,7 +62,7 @@ struct SelectorView: View {
                 .frame(height: 0.1 * Dimensions.height)
                 }
                 .sheet(isPresented: $isPresented) {
-                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 1)
+                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 1, entryForm: true)
                 }
                 .foregroundColor(.black)
                 

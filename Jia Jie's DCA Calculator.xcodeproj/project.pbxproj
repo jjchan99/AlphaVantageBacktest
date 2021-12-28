@@ -100,7 +100,6 @@
 		1DCBBE3F276BA16D0079D5CA /* InputFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */; };
 		1DD26EE3272C536600BEDF32 /* DateIndicatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */; };
 		1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */; };
-		1DD29271276C8E91009AF2C2 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD29270276C8E91009AF2C2 /* InputViewController.swift */; };
 		1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */; };
 		1DDF323C2737C73F00451CD1 /* BarGraphRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */; };
 		1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */; };
@@ -231,7 +230,6 @@
 		1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFormView.swift; sourceTree = "<group>"; };
 		1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateIndicatorModel.swift; sourceTree = "<group>"; };
 		1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateIndicatorView.swift; sourceTree = "<group>"; };
-		1DD29270276C8E91009AF2C2 /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBarRenderer.swift; sourceTree = "<group>"; };
 		1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphRenderer.swift; sourceTree = "<group>"; };
 		1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOHLCHandler.swift; sourceTree = "<group>"; };
@@ -540,7 +538,6 @@
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */,
 				1DC58887276CB39300046591 /* PopupViews.swift */,
-				1DD29270276C8E91009AF2C2 /* InputViewController.swift */,
 			);
 			path = InputViews;
 			sourceTree = "<group>";
@@ -767,7 +764,6 @@
 				1D12102D2736F98100B58B67 /* FinancialsViewModel.swift in Sources */,
 				1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */,
 				1D273F2B27788DE200B44BFE /* TechnicalIndicators.swift in Sources */,
-				1DD29271276C8E91009AF2C2 /* InputViewController.swift in Sources */,
 				1DC3C9DD273BB98F00900600 /* DailyModel.swift in Sources */,
 				1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */,
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,

@@ -136,8 +136,12 @@ struct Account {
     var cash: Double
     var accumulatedShares: Double
     
-    func profit(quote: Double, budget: Double) -> Double {
+    func longProfit(quote: Double, budget: Double) -> Double {
         (accumulatedShares * quote + cash) - budget
+    }
+    
+    func shortProfit(quote: Double, budget: Double) -> Double {
+        (budget - cash) - (accumulatedShares * quote)
     }
 
     mutating func decrement(_ amount: Double) -> Double {

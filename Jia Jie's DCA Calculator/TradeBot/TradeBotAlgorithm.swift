@@ -20,7 +20,7 @@ struct TradeBotAlgorithm {
             
         case .profitTarget:
             
-            inputValue = bot.account.profit(quote: latest.close, budget: bot.budget)
+            inputValue = bot.account.longProfit(quote: latest.close, budget: bot.budget)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
         case .exitTrigger:

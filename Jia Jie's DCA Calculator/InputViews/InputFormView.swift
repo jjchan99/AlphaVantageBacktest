@@ -174,11 +174,8 @@ struct InputCustomizationView: View {
                         }
                     }
                 }
-            
             .navigationTitle("Entry strategy")
         }
-        .safeAreaInset(edge: .top) {
-            Color.white.frame(height: 0.05 * Dimensions.height).opacity(1)
-        }
+        .frame(height: 0.91 * Dimensions.height)
     }
 }

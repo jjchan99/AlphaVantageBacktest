@@ -173,9 +173,10 @@ struct InputCustomizationView: View {
                         Text("Add entry trigger")
                         }
                     }
+                    
                 }
             .navigationTitle("Entry strategy")
         }
-        .frame(height: 0.91 * Dimensions.height)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }

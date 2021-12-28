@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -14,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let tabBarController = TabViewController()
     let navController = UINavigationController()
     var navCoordinator: NavigationCoordinator?
+    var viewModel = InputViewModel()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -25,10 +27,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navCoordinator = NavigationCoordinator(navigationController: navController)
         navCoordinator!.pushSearchViewController()
         let homeViewController = CloudKitViewController()
-        let inputViewController = InputViewController()
+        let inputViewController = UIHostingController(rootView: AnyView(InputCustomizationView().environmentObject(viewModel)))
         tabBarController.viewControllers = [navController, homeViewController, inputViewController]
         window!.rootViewController = tabBarController
         window!.makeKeyAndVisible()
+       
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

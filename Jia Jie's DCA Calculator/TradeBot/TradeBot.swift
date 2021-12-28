@@ -11,7 +11,7 @@ import Foundation
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
-    var monthlyBudget: Double? = nil
+    let long: Bool 
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
@@ -31,12 +31,14 @@ struct TradeBot: CloudKitInterchangeable {
         let accumulatedShares = record["accumulatedShares"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
         let exitTrigger = record["exitTrigger"] as! Int?
+        let long = record["long"] as! Bool
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
         self.record = record
         self.effectiveAfter = effectiveAfter
         self.exitTrigger = exitTrigger
+        self.long = long
     }
     
     func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
@@ -56,13 +58,14 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil, long: Bool = true) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
                     "cash": budget,
                     "accumulatedShares": 0,
-                    "effectiveAfter": effectiveAfter
+                    "effectiveAfter": effectiveAfter,
+                    "long" : long
                 ])
             if let exitTrigger = exitTrigger {
               record.setValue(exitTrigger, forKey: "exitTrigger")
@@ -78,16 +81,12 @@ struct TradeBot: CloudKitInterchangeable {
        
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
         for condition in self.conditions {
-                switch condition.buyOrSell {
-                case .buy:
+                switch condition.enterOrExit {
+                case .enter:
                     guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    switch condition.technicalIndicator {
-                    case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
-                    default:
-                        account.accumulatedShares += account.decrement(account.cash) / close
-                    }
+                     
+                        account.accumulatedShares += account.decrement(long ? account.cash : budget) / close
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
@@ -107,7 +106,7 @@ struct TradeBot: CloudKitInterchangeable {
                     
                     break
                     }
-                case .sell:
+                case .exit:
                     guard account.accumulatedShares > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                     account.cash += account.decrement(shares: account.accumulatedShares) * close
@@ -133,71 +132,19 @@ struct TradeBot: CloudKitInterchangeable {
 }
 
 extension TradeBot {
-    mutating func backtest(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
-        let close = latest.close
-       
-        //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        for condition in self.conditions {
-                switch condition.buyOrSell {
-                case .buy:
-                    guard account.cash >= 1 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    switch condition.technicalIndicator {
-                    case .monthlyPeriodic:
-                        account.accumulatedShares += account.decrement(monthlyBudget!) / close
-                    default:
-                        account.accumulatedShares += account.decrement(account.cash) / close
-                    }
-                        
-                    switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self, backtest: true) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
-                        self.conditions.append(newCondition)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self, backtest: true) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
-                        default:
-                          break
-                    }
-                    
-                    break
-                    }
-                case .sell:
-                    guard account.accumulatedShares > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    account.cash += account.decrement(shares: account.accumulatedShares) * close
-                        
-                        switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self, backtest: true) {
-                            didEvaluate(true)
-                    }
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self, backtest: true) {
-                            didEvaluate(true)
-                         }
-                        default:
-                            break
-                        }
-                        
-                    break
-                    }
-                }
-            }
-    }
+    
 }
 
 struct Account {
     var cash: Double
     var accumulatedShares: Double
     
-    func profit(quote: Double, budget: Double) -> Double {
+    func longProfit(quote: Double, budget: Double) -> Double {
         (accumulatedShares * quote + cash) - budget
+    }
+    
+    func shortProfit(quote: Double, budget: Double) -> Double {
+        (budget - cash) - (accumulatedShares * quote)
     }
 
     mutating func decrement(_ amount: Double) -> Double {
@@ -237,15 +184,15 @@ enum AboveOrBelow: Int, CustomStringConvertible {
     }
 }
 
-enum BuyOrSell: Int, CustomStringConvertible {
+enum EnterOrExit: Int, CustomStringConvertible {
     var description: String {
         switch self {
-        case .buy:
-            return "buy"
-        case .sell:
-            return "sell"
+        case .enter:
+            return "enter"
+        case .exit:
+            return "exit"
         }
     }
-    case buy, sell
+    case enter, exit
 }
 

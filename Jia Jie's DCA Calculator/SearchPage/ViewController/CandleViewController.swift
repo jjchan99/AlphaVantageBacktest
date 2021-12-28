@@ -33,7 +33,7 @@ class CandleViewController: UIViewController {
     override func viewDidLoad() {
         hc = UIHostingController(rootView: AnyView(CandleView().environmentObject(viewModel)))
         view.addSubview(hc!.view)
-        hc!.view.activateConstraints(reference: view, constraints: [.top(), .leading()], identifier: "hc")
+        hc!.setup()
         coordinator!.iterate()
         OHLC(mode: .days5)
       

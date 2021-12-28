@@ -20,7 +20,9 @@ class TabViewController: UITabBarController {
         self.hostingController = UIHostingController(rootView: AnyView(tabView.environmentObject(viewModel)))
         let customTabView = hostingController!.view!
         view.addSubview(customTabView)
-        hostingController!.view.activateConstraints(reference: view, constraints: [.bottom(), .leading()], identifier: "tabView")
+        let controller = hostingController!
+        controller.didMove(toParent: self)
+        controller.setupTab(view)
     }
     
     override func viewDidLoad() {
@@ -39,6 +41,7 @@ class TabViewController: UITabBarController {
         viewModel.index2tapped = { [unowned self] in
             selectedViewController = viewControllers![2]
         }
+        definesPresentationContext = true
     }
     
     func registerForKeyboardNotifications() {
@@ -54,4 +57,21 @@ class TabViewController: UITabBarController {
 
 
     
+}
+
+extension UIHostingController {
+    func setupTab(_ view: UIView) {
+        let controller = self
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+                   controller.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+                   controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                   controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+               ])
+    }
+    
+    func setup() {
+            let controller = self
+            controller.view.frame = UIScreen.main.bounds
+    }
 }

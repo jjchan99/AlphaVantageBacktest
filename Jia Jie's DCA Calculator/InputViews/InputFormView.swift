@@ -167,11 +167,9 @@ struct InputCustomizationView: View {
                     
                     List {
                         ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
-                            VStack {
-                            Section(header: Text(key)) {
-                                Text("Kenneth is Kenneth")
-                            }
-                            
+                            HStack {
+                                Text(key)
+                            Spacer()
                                 Button("Edit") {
                                     isPresented = true
                                 }

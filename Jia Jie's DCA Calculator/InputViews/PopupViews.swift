@@ -29,11 +29,11 @@ struct PopupView: View {
         case 0:
             switch titleIdx {
             case 0:
-                vm.buyInputs["movingAverage"] = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+                vm.setValue(key: "movingAverage", value: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
             case 1:
-                vm.buyInputs["bb"] = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+                vm.setValue(key: "bb", value: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
             case 2:
-                vm.buyInputs["RSI"] = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])
+                vm.setValue(key: "RSI", value: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], buyOrSell: .buy, andCondition: [])!, entry: true)
             default:
                 fatalError()
           
@@ -132,7 +132,7 @@ struct PopupView: View {
     }
     
     func restoreMA() {
-        if let input = vm.buyInputs["movingAverage"] {
+        if let input = vm.entryInputs["movingAverage"] {
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -142,7 +142,7 @@ struct PopupView: View {
             }
         }
         
-        if let input2 = vm.buyInputs["movingAverage"] {
+        if let input2 = vm.entryInputs["movingAverage"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -154,7 +154,7 @@ struct PopupView: View {
     }
     
     func restoreBB() {
-        if let input = vm.buyInputs["bb"] {
+        if let input = vm.entryInputs["bb"] {
             let i = input.technicalIndicator
             switch i {
             case .bollingerBands(percentage: let percentage):
@@ -164,7 +164,7 @@ struct PopupView: View {
             }
         }
         
-        if let input2 = vm.buyInputs["bb"] {
+        if let input2 = vm.entryInputs["bb"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -176,7 +176,7 @@ struct PopupView: View {
     }
         
     func restoreRSI() {
-            if let input = vm.buyInputs["RSI"] {
+            if let input = vm.entryInputs["RSI"] {
                 let i = input.technicalIndicator
                 switch i {
                 case .RSI(period: let period, value: let percentage):

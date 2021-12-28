@@ -25,13 +25,106 @@ class InputViewModel: ObservableObject {
         return [titles, titlesSection2]
     }
     
-    var buyInputs: [String: EvaluationCondition] = [:] { didSet {
-        print("buyInputs: \(buyInputs)")
+    func setValue(key: String, value: EvaluationCondition, entry: Bool) {
+
+        switch value.technicalIndicator {
+        case .RSI:
+            if entry {
+            guard exitInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            } else {
+            guard entryInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            }
+        case .bollingerBands:
+            if entry {
+            guard exitInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            } else {
+            guard entryInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            }
+        case .movingAverage:
+            if entry {
+            guard exitInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            } else {
+            guard entryInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            }
+        case .stopOrder:
+            if entry {
+            guard exitInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            } else {
+            guard entryInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
+            }
+        default:
+            break
+        }
+        
+        if entry {
+           entryInputs[key] = value
+        } else {
+           exitInputs[key] = value
+        }
+    }
+    
+    private(set) var entryInputs: [String: EvaluationCondition] = [:] { didSet {
+        print(entryInputs)
     }}
+    
+    private(set) var exitInputs: [String: EvaluationCondition] = [:] { didSet {
+        print(exitInputs)
+    }}
+    
+    func sendToAndPool(conditions: EvaluationCondition) {
+        switch conditions.technicalIndicator {
+        case .movingAverage:
+            break
+        case .exitTrigger:
+            break
+        case .RSI:
+            break
+        case .bollingerBands:
+            break
+        case .profitTarget:
+            break
+        case .stopOrder:
+            break
+        }
+    }
+    
+    func sendToOrPool(conditions: EvaluationCondition) {
+        switch conditions.technicalIndicator {
+        case .movingAverage:
+            break
+        case .exitTrigger:
+            break
+        case .RSI:
+            break
+        case .bollingerBands:
+            break
+        case .profitTarget:
+            break
+        case .stopOrder:
+            break
+        }
+    }
     
     var _buyInputs: [String: EvaluationCondition] {
         var copy: [String: EvaluationCondition] = [:]
         for conditions in bot.conditions where conditions.buyOrSell == .buy {
+            for andConditions in conditions.andCondition where conditions.andCondition.count > 0 {
+                switch andConditions.technicalIndicator {
+            case .movingAverage:
+                    break
+            case .exitTrigger:
+                    break
+            case .RSI:
+                    break
+            case .bollingerBands:
+                    break
+            case .profitTarget:
+                    break
+            case .stopOrder:
+                    break
+                }
+            }
+        
             switch conditions.technicalIndicator {
             case .movingAverage:
                 copy["movingAverage"] = conditions
@@ -46,6 +139,8 @@ class InputViewModel: ObservableObject {
             case .stopOrder:
                 copy["stopOrder"] = conditions
             }
+            
+           
         }
         return copy
     }

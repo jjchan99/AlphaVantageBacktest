@@ -20,7 +20,19 @@ class TabViewController: UITabBarController {
         self.hostingController = UIHostingController(rootView: AnyView(tabView.environmentObject(viewModel)))
         let customTabView = hostingController!.view!
         view.addSubview(customTabView)
-        hostingController!.view.activateConstraints(reference: view, constraints: [.bottom(), .leading()], identifier: "tabView")
+        let controller = hostingController!
+        controller.didMove(toParent: self)
+        setup()
+    }
+    
+    func setup() {
+        let controller = hostingController!
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+                   controller.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+                   controller.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                   controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+               ])
     }
     
     override func viewDidLoad() {

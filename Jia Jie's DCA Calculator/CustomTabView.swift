@@ -37,6 +37,6 @@ struct CustomTabView: View {
         }
         .background(Color.white)
         .clipShape(Capsule())
-        .padding()
+        
     }
 }

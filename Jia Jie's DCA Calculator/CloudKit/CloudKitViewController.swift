@@ -11,10 +11,9 @@ import Combine
 import CloudKit
 import SwiftUI
 
-class CloudKitViewController: UIViewController {
+class CloudKitViewController: UIHostingController<AnyView> {
 
     var subscribers = Set<AnyCancellable>()
-    var hostingController: UIHostingController<AnyView>?
     var viewModel = CloudViewModel()
     
     var userName: String = ""
@@ -24,12 +23,6 @@ class CloudKitViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hostingController = UIHostingController(rootView: AnyView(CloudView().environmentObject(viewModel)))
-        view.addSubview(hostingController!.view)
-        hostingController!.view.activateConstraints(reference: view, constraints: [], identifier: "cloudView")
-        view.backgroundColor = .white
-        let controller = hostingController!
-        controller.setup()
         
 //        FetchLatest.update { [unowned self] tb in
 //            Log.queue(action: "HALLELUJAH!!! \(tb)")
@@ -41,7 +34,7 @@ class CloudKitViewController: UIViewController {
     }
     
     init() {
-        super.init(nibName: nil, bundle: nil)
+        super.init(rootView: AnyView(CloudView().environmentObject(viewModel)))
         getiCloudStatus()
         requestPermission()
         getCurrentUserName()

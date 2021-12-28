@@ -11,6 +11,7 @@ import Foundation
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
+    let long: Bool = true
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
@@ -81,9 +82,8 @@ struct TradeBot: CloudKitInterchangeable {
                 case .enter:
                     guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                  
-                    account.accumulatedShares += account.decrement(account.cash) / close
-                    
+                     
+                        account.accumulatedShares += account.decrement(long ? account.cash : budget) / close
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:

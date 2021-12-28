@@ -57,7 +57,7 @@ struct PopupView: View {
     
     @ViewBuilder func formBottomHalf() -> some View {
         HStack {
-        Text("Step 2. Buy when price is...")
+        Text("Step 2. Enter when price is...")
                 .padding()
         Spacer()
         }

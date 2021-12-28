@@ -76,6 +76,7 @@
 		1D92AE84274E86150076F449 /* MovingAverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE83274E86150076F449 /* MovingAverageView.swift */; };
 		1D92AE86274E86450076F449 /* TradingVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D92AE85274E86450076F449 /* TradingVolumeView.swift */; };
 		1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D93493527633A2100D815DE /* NumericProtocol.swift */; };
+		1D9A3BC2277B3F2800FDEA24 /* SelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */; };
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
 		1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF22756659500055702 /* BollingerBandsModel.swift */; };
@@ -206,6 +207,7 @@
 		1D92AE83274E86150076F449 /* MovingAverageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageView.swift; sourceTree = "<group>"; };
 		1D92AE85274E86450076F449 /* TradingVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradingVolumeView.swift; sourceTree = "<group>"; };
 		1D93493527633A2100D815DE /* NumericProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericProtocol.swift; sourceTree = "<group>"; };
+		1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorView.swift; sourceTree = "<group>"; };
 		1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleView.swift; sourceTree = "<group>"; };
 		1DA32BF02756172900055702 /* RSIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSIModel.swift; sourceTree = "<group>"; };
 		1DA32BF22756659500055702 /* BollingerBandsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BollingerBandsModel.swift; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 			isa = PBXGroup;
 			children = (
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
+				1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */,
 				1DC58887276CB39300046591 /* PopupViews.swift */,
 				1DD29270276C8E91009AF2C2 /* InputViewController.swift */,
 			);
@@ -758,6 +761,7 @@
 				1D20600F26F71837007EA13F /* CalculatorViewController.swift in Sources */,
 				1DF3B7EF27761EDE00411D0A /* LedgerManager.swift in Sources */,
 				1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */,
+				1D9A3BC2277B3F2800FDEA24 /* SelectorView.swift in Sources */,
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
 				1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */,
 				1D12102D2736F98100B58B67 /* FinancialsViewModel.swift in Sources */,

@@ -146,21 +146,9 @@ class InputViewModel: ObservableObject {
     }
 }
 
-struct InputMenuView: View {
-    
-    @EnvironmentObject var vm: InputViewModel
-    var body: some View {
-        GridStack(rows: 3, columns: 3) { row, col in
-            HStack {
-           
-            }
-        }
-    }
-}
-
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
-    @State private var isPresented: Bool = false { didSet {print("LEO GURA!!!!")}}
+    @State private var isPresented: Bool = false 
     @State var long: Bool = true
     
     var body: some View {
@@ -177,85 +165,13 @@ struct InputCustomizationView: View {
                        Text("Indicate your position")
                     }
                     
-                    
-                    Section {
-                        List(0..<vm.titles.count, id: \.self) { idx in
-                            Button() {
-                                isPresented = true
-                            } label: {
-                            HStack {
-                                Image(systemName: "dollarsign.circle")
-                                VStack(alignment: .leading) {
-                                    Text(vm.titles[idx])
-                                        .font(.caption.bold())
-                                    Text(vm.description[idx])
-                                        .font(.caption2)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .opacity(0.3)
-                            }
-                            .frame(height: 0.1 * Dimensions.height)
-                            }
-                            .sheet(isPresented: $isPresented) {
-                                PopupView(titleIdx: idx, frame: 0)
-                            }
-                            .foregroundColor(.black)
-                            
-                        }
-                    } header: {
-                        Text("Trading Indicators")
-                    }
-                    Section {
-                        List(0..<vm.titlesSection2.count, id: \.self) { idx in
-                            Button() {
-                                isPresented = true
-                            } label: {
-                            HStack {
-                                Image(systemName: "dollarsign.circle")
-                                VStack(alignment: .leading) {
-                                    Text(vm.titlesSection2[idx])
-                                        .font(.caption.bold())
-                                    Text(vm.descriptionSection2[idx])
-                                        .font(.caption2)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .opacity(0.3)
-                            }
-                            .frame(height: 0.1 * Dimensions.height)
-                            }
-                            .sheet(isPresented: $isPresented) {
-                                PopupView(titleIdx: idx, frame: 1)
-                            }
-                            .foregroundColor(.black)
-                            
-                        }
-                    } header: {
-                        Text("Custom targets")
-                    }
                    
+                    SelectorView()
+                    
+                    
                 }
             }
             .navigationTitle("Entry strategy")
-        }
-    }
-}
-
-struct GridStack<Content: View>: View {
-    let rows: Int
-    let columns: Int
-    @ViewBuilder let content: (Int, Int) -> Content
-
-    var body: some View {
-        VStack {
-            ForEach(0..<rows, id: \.self) { row in
-                HStack {
-                    ForEach(0..<columns, id: \.self) { column in
-                        content(row, column)
-                    }
-                }
-            }
         }
     }
 }

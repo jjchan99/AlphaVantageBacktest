@@ -18,7 +18,6 @@ class InputViewController: UIViewController {
         view.addSubview(hostingController!.view)
         view.backgroundColor = .white
         let controller = hostingController!
-        controller.didMove(toParent: self)
         
         // Do any additional setup after loading the view.
         controller.setup()

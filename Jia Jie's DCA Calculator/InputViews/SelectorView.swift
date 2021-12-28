@@ -12,7 +12,6 @@ struct SelectorView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-            VStack {
                 Form {
         Section {
             List(0..<vm.titles.count, id: \.self) { idx in
@@ -70,8 +69,7 @@ struct SelectorView: View {
         } header: {
             Text("Custom targets")
         }
-        
     }
     }
-    }
+    
 }

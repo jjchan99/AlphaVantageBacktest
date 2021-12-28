@@ -153,7 +153,6 @@ struct InputCustomizationView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
                 Form {
                     Section {
                         Picker("Selected", selection: $long) {
@@ -174,14 +173,12 @@ struct InputCustomizationView: View {
                         Text("Add entry trigger")
                         }
                     }
-
-                  
-                    
-                    
                 }
-            }
+            
             .navigationTitle("Entry strategy")
         }
-       
+        .safeAreaInset(edge: .top) {
+            Color.white.frame(height: 0.05 * Dimensions.height).opacity(1)
+        }
     }
 }

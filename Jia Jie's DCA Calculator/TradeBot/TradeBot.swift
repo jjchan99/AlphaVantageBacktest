@@ -11,7 +11,7 @@ import Foundation
 struct TradeBot: CloudKitInterchangeable {
 
     let budget: Double
-    let long: Bool = true
+    let long: Bool 
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
@@ -31,12 +31,14 @@ struct TradeBot: CloudKitInterchangeable {
         let accumulatedShares = record["accumulatedShares"] as! Double
         let effectiveAfter = record["effectiveAfter"] as! String
         let exitTrigger = record["exitTrigger"] as! Int?
+        let long = record["long"] as! Bool
         
         self.budget = budget
         self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
         self.record = record
         self.effectiveAfter = effectiveAfter
         self.exitTrigger = exitTrigger
+        self.long = long
     }
     
     func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
@@ -56,13 +58,14 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil) {
+    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil, long: Bool = true) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": budget,
                     "cash": budget,
                     "accumulatedShares": 0,
-                    "effectiveAfter": effectiveAfter
+                    "effectiveAfter": effectiveAfter,
+                    "long" : long
                 ])
             if let exitTrigger = exitTrigger {
               record.setValue(exitTrigger, forKey: "exitTrigger")

@@ -165,8 +165,16 @@ struct InputCustomizationView: View {
                        Text("Indicate your position")
                     }
                     
-                   
-                    SelectorView()
+                    NavigationLink {
+                        SelectorView()
+                    } label: {
+                        HStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add entry trigger")
+                        }
+                    }
+
+                  
                     
                     
                 }

@@ -12,6 +12,9 @@ struct SelectorView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
+        NavigationView {
+            VStack {
+                Form {
         Section {
             List(0..<vm.titles.count, id: \.self) { idx in
                 Button() {
@@ -69,5 +72,8 @@ struct SelectorView: View {
             Text("Custom targets")
         }
         
+    }
+    }
+    }
     }
 }

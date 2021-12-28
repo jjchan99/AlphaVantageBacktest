@@ -150,6 +150,7 @@ struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false 
     @State var long: Bool = true
+    @State var isActive : Bool = false
     
     var body: some View {
         NavigationView {
@@ -164,8 +165,8 @@ struct InputCustomizationView: View {
                        Text("Indicate your position")
                     }
                     
-                    NavigationLink {
-                        SelectorView()
+                    NavigationLink(isActive: $isActive) {
+                        SelectorView(rootIsActive: self.$isActive)
                             .navigationTitle("Hello friend")
                     } label: {
                         HStack {
@@ -173,6 +174,7 @@ struct InputCustomizationView: View {
                         Text("Add entry trigger")
                         }
                     }
+                    .isDetailLink(false)
                     
                 }
             .navigationTitle("Entry strategy")

@@ -9,13 +9,15 @@ import Foundation
 import SwiftUI
 
 struct PopupView: View {
+    @Binding var shouldPopToRootView : Bool
     @EnvironmentObject var vm: InputViewModel
     var titleIdx: Int 
     var frame: Int
     @State private var selectedWindowIdx: Int = 0
     @State private var selectedPositionIdx: Int = 0
     @State private var selectedPercentage: Double = 0
-    @Environment(\.presentationMode) var presentationMode
+//    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var window: [Int] = [20, 50, 100, 200]
     var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
@@ -53,6 +55,7 @@ struct PopupView: View {
             fatalError()
         }
         presentationMode.wrappedValue.dismiss()
+        self.shouldPopToRootView = false 
     }
     
     @ViewBuilder func formBottomHalf() -> some View {

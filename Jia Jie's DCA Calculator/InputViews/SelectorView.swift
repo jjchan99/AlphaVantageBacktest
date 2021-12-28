@@ -10,6 +10,7 @@ import SwiftUI
 struct SelectorView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false
+    @Binding var rootIsActive : Bool
     
     var body: some View {
                 Form {
@@ -33,7 +34,7 @@ struct SelectorView: View {
                 .frame(height: 0.1 * Dimensions.height)
                 }
                 .sheet(isPresented: $isPresented) {
-                    PopupView(titleIdx: idx, frame: 0)
+                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 0)
                 }
                 .foregroundColor(.black)
                 
@@ -61,7 +62,7 @@ struct SelectorView: View {
                 .frame(height: 0.1 * Dimensions.height)
                 }
                 .sheet(isPresented: $isPresented) {
-                    PopupView(titleIdx: idx, frame: 1)
+                    PopupView(shouldPopToRootView: self.$rootIsActive, titleIdx: idx, frame: 1)
                 }
                 .foregroundColor(.black)
                 

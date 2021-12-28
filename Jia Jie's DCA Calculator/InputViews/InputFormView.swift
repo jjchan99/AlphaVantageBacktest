@@ -164,8 +164,9 @@ struct InputCustomizationView: View {
                     } header: {
                        Text("Indicate your position")
                     }
-                    
-                    List {
+                    Section {
+                        List {
+                            
                         ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
@@ -177,8 +178,8 @@ struct InputCustomizationView: View {
                                     PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0, entryForm: false)
                                 }
                             }
-                            
-                    }
+                        }
+
                     }
                     
                     NavigationLink(isActive: $isActive) {
@@ -191,6 +192,9 @@ struct InputCustomizationView: View {
                         }
                     }
                     .isDetailLink(false)
+                    } header: {
+                        Text("Your entry triggers")
+                    }
                     
                 }
             .navigationTitle("Entry strategy")

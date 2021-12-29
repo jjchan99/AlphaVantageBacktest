@@ -14,6 +14,27 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
+    var repo = InputRepository()
+    var window: [Int] = [20, 50, 100, 200]
+    var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
+    
+    //MARK: - INPUT STATES
+    @Published var section: Int = 0 { didSet {
+//        Log.queue(action: "section: \(section)")
+    }}
+    @Published var index: Int = 0 { didSet {
+//        Log.queue(action: "index: \(index)")
+    }}
+    
+    @Published var selectedWindowIdx: Int = 0 { didSet {
+//        Log.queue(action: "selected window: \(selectedWindowIdx)")
+    }}
+    @Published var selectedPositionIdx: Int = 0 { didSet {
+//        Log.queue(action: "selected position: \(selectedPositionIdx)")
+    }}
+    @Published var selectedPercentage: Double = 0 { didSet {
+//        Log.queue(action: "selected percentage: \(selectedPercentage)")
+    }}
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -25,146 +46,220 @@ class InputViewModel: ObservableObject {
         return [titles, titlesSection2]
     }
     
-    func setValue(key: String, value: EvaluationCondition, entry: Bool) {
-
-        switch value.technicalIndicator {
-        case .RSI:
-            if entry {
-            guard exitInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            } else {
-            guard entryInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
+    //MARK: - INDEXPATH OPERATIONS
+    
+    func actionOnSet() {
+        switch section {
+        case 0:
+            switch self.index {
+            case 0:
+                repo.createEntryTrade(for: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+            case 1:
+                repo.createEntryTrade(for: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+            case 2:
+                repo.createEntryTrade(for: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+            default:
+                fatalError()
+          
             }
-        case .bollingerBands:
-            if entry {
-            guard exitInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            } else {
-            guard entryInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            }
-        case .movingAverage:
-            if entry {
-            guard exitInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            } else {
-            guard entryInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            }
-        case .stopOrder:
-            if entry {
-            guard exitInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
-            } else {
-            guard entryInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
+        case 1:
+            switch self.index {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
             }
         default:
-            break
+            fatalError()
         }
+        selectedPercentage = 0
+        selectedPositionIdx = 0
+        selectedWindowIdx = 0
         
-        if entry {
-           entryInputs[key] = value
-        } else {
-           exitInputs[key] = value
-        }
+        index = 0
+        section = 0
     }
     
-    func setTradeValue(key: String, value: EvaluationCondition, entry: Bool) {
-        
-        if entry {
-            entryTradeInputs[key] = value
-            for (key, value) in entryInputs {
-                entryInputs[key]?.andCondition.append(value)
+    //MARK: - RESTORATION OPERATIONS
+    
+    func restoreInputs() {
+        switch section {
+        case 0:
+            switch index {
+            case 0:
+                restoreMA()
+            case 1:
+                restoreBB()
+            case 2:
+                restoreRSI()
+            default:
+                fatalError()
+                
             }
-        } else {
+        case 1:
+            switch index {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
             
         }
     }
     
-   
-    
-    @Published private(set) var entryInputs: [String: EvaluationCondition] = [:] { didSet {
-        print(entryInputs)
-    }}
-    
-    @Published private(set) var entryTradeInputs: [String: EvaluationCondition] = [:]
-    
-    private(set) var exitInputs: [String: EvaluationCondition] = [:] { didSet {
-        print(exitInputs)
-    }}
-    
-    func sendToAndPool(conditions: EvaluationCondition) {
-        switch conditions.technicalIndicator {
-        case .movingAverage:
-            break
-        case .exitTrigger:
-            break
-        case .RSI:
-            break
-        case .bollingerBands:
-            break
-        case .profitTarget:
-            break
-        case .stopOrder:
-            break
+    func restoreMA() {
+        if let input = repo.entryTriggers["movingAverage"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .movingAverage(period: let period):
+                selectedWindowIdx = window.firstIndex(of: period)!
+            default:
+                fatalError()
+            }
+        }
+        
+        if let input2 = repo.entryTriggers["movingAverage"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
         }
     }
     
-    func sendToOrPool(conditions: EvaluationCondition) {
-        switch conditions.technicalIndicator {
-        case .movingAverage:
-            break
-        case .exitTrigger:
-            break
-        case .RSI:
-            break
-        case .bollingerBands:
-            break
-        case .profitTarget:
-            break
-        case .stopOrder:
-            break
+    func restoreBB() {
+        if let input = repo.entryTriggers["bb"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .bollingerBands(percentage: let percentage):
+                selectedPercentage = percentage * 100
+            default:
+                fatalError()
+            }
+        }
+        
+        if let input2 = repo.entryTriggers["bb"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
         }
     }
-    
-    var _enterInputs: [String: EvaluationCondition] {
-        var copy: [String: EvaluationCondition] = [:]
-        for conditions in bot.conditions where conditions.enterOrExit == .enter {
-            for andConditions in conditions.andCondition where conditions.andCondition.count > 0 {
-                switch andConditions.technicalIndicator {
-            case .movingAverage:
-                    break
-            case .exitTrigger:
-                    break
-            case .RSI:
-                    break
-            case .bollingerBands:
-                    break
-            case .profitTarget:
-                    break
-            case .stopOrder:
-                    break
+        
+    func restoreRSI() {
+        if let input = repo.entryTriggers["RSI"] {
+                let i = input.technicalIndicator
+                switch i {
+                case .RSI(period: let period, value: let percentage):
+                    selectedPercentage = percentage
+                    selectedWindowIdx = window.firstIndex(of: period)!
+                default:
+                    fatalError()
                 }
             }
-        
-            switch conditions.technicalIndicator {
-            case .movingAverage:
-                copy["movingAverage"] = conditions
-            case .exitTrigger:
-                copy["exitTrigger"] = conditions
-            case .RSI:
-                copy["RSI"] = conditions
-            case .bollingerBands:
-                copy["bb"] = conditions
-            case .profitTarget:
-                copy["profitTarget"] = conditions
-            case .stopOrder:
-                copy["stopOrder"] = conditions
-            }
-            
-           
         }
-        return copy
-    }
+   
+    
+    
+    
+//    func setValue(key: String, value: EvaluationCondition, entry: Bool) {
+//
+//        switch value.technicalIndicator {
+//        case .RSI:
+//            if entry {
+//            guard exitInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            } else {
+//            guard entryInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            }
+//        case .bollingerBands:
+//            if entry {
+//            guard exitInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            } else {
+//            guard entryInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            }
+//        case .movingAverage:
+//            if entry {
+//            guard exitInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            } else {
+//            guard entryInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            }
+//        case .stopOrder:
+//            if entry {
+//            guard exitInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            } else {
+//            guard entryInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
+//            }
+//        default:
+//            break
+//        }
+//
+//        if entry {
+//           entryInputs[key] = value
+//        } else {
+//           exitInputs[key] = value
+//        }
+//    }
+   
+    
+//    var _enterInputs: [String: EvaluationCondition] {
+//        var copy: [String: EvaluationCondition] = [:]
+//        for conditions in bot.conditions where conditions.enterOrExit == .enter {
+//            for andConditions in conditions.andCondition where conditions.andCondition.count > 0 {
+//                switch andConditions.technicalIndicator {
+//            case .movingAverage:
+//                    break
+//            case .exitTrigger:
+//                    break
+//            case .RSI:
+//                    break
+//            case .bollingerBands:
+//                    break
+//            case .profitTarget:
+//                    break
+//            case .stopOrder:
+//                    break
+//                }
+//            }
+//
+//            switch conditions.technicalIndicator {
+//            case .movingAverage:
+//                copy["movingAverage"] = conditions
+//            case .exitTrigger:
+//                copy["exitTrigger"] = conditions
+//            case .RSI:
+//                copy["RSI"] = conditions
+//            case .bollingerBands:
+//                copy["bb"] = conditions
+//            case .profitTarget:
+//                copy["profitTarget"] = conditions
+//            case .stopOrder:
+//                copy["stopOrder"] = conditions
+//            }
+//
+//
+//        }
+//        return copy
+//    }
 }
 
 struct InputCustomizationView: View {
     @EnvironmentObject var vm: InputViewModel
-    @State private var isPresented: Bool = false 
+    @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
     
@@ -181,12 +276,9 @@ struct InputCustomizationView: View {
                        Text("Indicate your position")
                     }
                     Section {
-    
-                      
-                        
                         List {
                             
-                        ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
                             Spacer()
@@ -194,7 +286,7 @@ struct InputCustomizationView: View {
                                     isPresented = true
                                 }
                                 .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0, entryForm: false)
+                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
                                 }
                             }
                         }
@@ -202,7 +294,6 @@ struct InputCustomizationView: View {
                     }
                     
                    
-                        
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive)
@@ -211,36 +302,6 @@ struct InputCustomizationView: View {
                             HStack {
                             Image(systemName: "plus.circle")
                             Text("Add entry trigger")
-                            }
-                        }
-                        .isDetailLink(false)
-                    }
-                    
-                    Section {
-                        List {
-                            
-                        ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
-                            HStack {
-                                Text(key)
-                            Spacer()
-                                Button("Edit") {
-                                    isPresented = true
-                                }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0, entryForm: false)
-                                }
-                            }
-                        }
-
-                    }
-                    } header: {
-                        NavigationLink(isActive: $isActive) {
-                            SelectorView(rootIsActive: self.$isActive)
-                                .navigationTitle("Hello friend")
-                        } label: {
-                            HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add trade conditions")
                             }
                         }
                         .isDetailLink(false)

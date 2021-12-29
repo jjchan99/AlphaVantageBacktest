@@ -123,6 +123,8 @@ struct PopupView: View {
         .onAppear {
             if !entryForm {
                 vm.restoreInputs()
+            } else {
+                vm.resetInputs()
             }
         }
     }

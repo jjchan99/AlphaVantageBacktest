@@ -76,14 +76,15 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
-        selectedPercentage = 0
-        selectedPositionIdx = 0
-        selectedWindowIdx = 0
-        
         index = 0
         section = 0
     }
     
+    func resetInputs() {
+        selectedPercentage = 0
+        selectedPositionIdx = 0
+        selectedWindowIdx = 0
+    }
     //MARK: - RESTORATION OPERATIONS
     
     func restoreInputs() {

@@ -9,59 +9,27 @@ import Foundation
 import SwiftUI
 
 struct PopupView: View {
+    @Binding var shouldPopToRootView : Bool
     @EnvironmentObject var vm: InputViewModel
-    var titleIdx: Int 
-    var frame: Int
-    @State private var selectedWindowIdx: Int = 0
-    @State private var selectedPositionIdx: Int = 0
-    @State private var selectedPercentage: Double = 0
-    @Environment(\.presentationMode) var presentationMode
+
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    var window: [Int] = [20, 50, 100, 200]
-    var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
+    init(shouldPopToRootView: Binding<Bool>, entryForm: Bool) {
+        self._shouldPopToRootView = shouldPopToRootView
+        self.entryForm = entryForm
+    }
     
     @ViewBuilder func rsiBody() -> some View {
         Text("HELLO WORLD!!!!")
     }
-    
-    func actionOnSet() {
-        switch frame {
-        case 0:
-            switch titleIdx {
-            case 0:
-                vm.setValue(key: "movingAverage", value: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
-            case 1:
-                vm.setValue(key: "bb", value: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
-            case 2:
-                vm.setValue(key: "RSI", value: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!, entry: true)
-            default:
-                fatalError()
-          
-            }
-        case 1:
-            switch titleIdx {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            default:
-                fatalError()
-            }
-        default:
-            fatalError()
-        }
-        presentationMode.wrappedValue.dismiss()
-    }
-    
+
     @ViewBuilder func formBottomHalf() -> some View {
         HStack {
         Text("Step 2. Enter when price is...")
                 .padding()
         Spacer()
         }
-        Picker("Selected", selection: $selectedPositionIdx) {
+        Picker("Selected", selection: $vm.selectedPositionIdx) {
             Text("Above").tag(0)
             Text("Below").tag(1)
         }.pickerStyle(SegmentedPickerStyle())
@@ -69,11 +37,13 @@ struct PopupView: View {
         
         HStack {
             Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
+                self.presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
-            actionOnSet()
+            vm.actionOnSet()
+            self.presentationMode.wrappedValue.dismiss()
+            self.shouldPopToRootView = false
         }
         .buttonStyle(.borderedProminent)
         
@@ -87,7 +57,7 @@ struct PopupView: View {
                 .padding()
                 Spacer()
             }
-                Picker("Selected", selection: $selectedWindowIdx) {
+            Picker("Selected", selection: $vm.selectedWindowIdx) {
                     Text("20").tag(0)
                     Text("50").tag(1)
                     Text("100").tag(2)
@@ -98,106 +68,18 @@ struct PopupView: View {
         }
     }
     
-    func restoreInputs() {
-        switch frame {
-        case 0:
-            switch titleIdx {
-            case 0:
-                restoreMA()
-            case 1:
-                restoreBB()
-            case 2:
-                restoreRSI()
-            default:
-                fatalError()
-                
-            }
-        case 1:
-            switch titleIdx {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            default:
-                fatalError()
-            }
-        default:
-            fatalError()
-            
-        }
-    }
-    
-    func restoreMA() {
-        if let input = vm.entryInputs["movingAverage"] {
-            let i = input.technicalIndicator
-            switch i {
-            case .movingAverage(period: let period):
-                selectedWindowIdx = window.firstIndex(of: period)!
-            default:
-                fatalError()
-            }
-        }
-        
-        if let input2 = vm.entryInputs["movingAverage"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
-        }
-    }
-    
-    func restoreBB() {
-        if let input = vm.entryInputs["bb"] {
-            let i = input.technicalIndicator
-            switch i {
-            case .bollingerBands(percentage: let percentage):
-                selectedPercentage = percentage * 100
-            default:
-                fatalError()
-            }
-        }
-        
-        if let input2 = vm.entryInputs["bb"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
-        }
-    }
-        
-    func restoreRSI() {
-            if let input = vm.entryInputs["RSI"] {
-                let i = input.technicalIndicator
-                switch i {
-                case .RSI(period: let period, value: let percentage):
-                    selectedPercentage = percentage
-                    selectedWindowIdx = window.firstIndex(of: period)!
-                default:
-                    fatalError()
-                }
-            }
-        }
-    
     @ViewBuilder func bbBody() -> some View {
         VStack {
-            Slider(value: $selectedPercentage, in: 0...100)
-            Text("\(selectedPercentage, specifier: "%.1f")")
+            Slider(value: $vm.selectedPercentage, in: 0...100)
+            Text("\(vm.selectedPercentage, specifier: "%.1f")")
         formBottomHalf()
         }
     }
     
     @ViewBuilder func form() -> some View {
-        switch frame {
+        switch vm.section {
         case 0:
-            switch titleIdx {
+            switch vm.index {
             case 0:
                 movingAverageBody()
             case 1:
@@ -209,7 +91,7 @@ struct PopupView: View {
           
             }
         case 1:
-            switch titleIdx {
+            switch vm.index {
             case 0:
                 movingAverageBody()
             case 1:
@@ -224,6 +106,8 @@ struct PopupView: View {
         }
     }
     
+    var entryForm: Bool
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -233,11 +117,15 @@ struct PopupView: View {
                 Spacer()
 
                 }
-                .navigationTitle(vm.titleFrame[frame][titleIdx])
+            .navigationTitle(vm.titleFrame[vm.section][vm.index])
             
         }
         .onAppear {
-            restoreInputs()
+            if !entryForm {
+                vm.restoreInputs()
+            } else {
+                vm.resetInputs()
+            }
         }
     }
 }

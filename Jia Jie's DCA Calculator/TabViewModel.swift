@@ -11,9 +11,6 @@ import SwiftUI
 class TabViewModel: ObservableObject {
     @Published var selectedIndex: Int = 0
     
-    let width = CGFloat(428).wScaled()
-    let height = CGFloat(926).hScaled()
-    
     var index0tapped: (() -> ())?
     var index1tapped: (() -> ())?
     var index2tapped: (() -> ())?

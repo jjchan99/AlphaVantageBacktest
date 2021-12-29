@@ -165,6 +165,9 @@ struct InputCustomizationView: View {
                        Text("Indicate your position")
                     }
                     Section {
+    
+                      
+                        
                         List {
                             
                         ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
@@ -182,18 +185,19 @@ struct InputCustomizationView: View {
 
                     }
                     
-                    NavigationLink(isActive: $isActive) {
-                        SelectorView(rootIsActive: self.$isActive)
-                            .navigationTitle("Hello friend")
-                    } label: {
-                        HStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add entry trigger")
-                        }
-                    }
-                    .isDetailLink(false)
+                   
+                        
                     } header: {
-                        Text("Your entry triggers")
+                        NavigationLink(isActive: $isActive) {
+                            SelectorView(rootIsActive: self.$isActive)
+                                .navigationTitle("Hello friend")
+                        } label: {
+                            HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add entry trigger")
+                            }
+                        }
+                        .isDetailLink(false)
                     }
                     
                 }

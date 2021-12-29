@@ -15,7 +15,7 @@ class InputRepository: ObservableObject {
     
     @Published private(set) var entryTrade: [String: EvaluationCondition] = [:]
     
-    private func getKey(for condition: EvaluationCondition) -> String {
+    func getKey(for condition: EvaluationCondition) -> String {
         switch condition.technicalIndicator {
         case .movingAverage:
             return "MA"

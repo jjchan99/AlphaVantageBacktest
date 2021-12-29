@@ -35,6 +35,7 @@ struct InputCustomizationView: View {
                             Spacer()
                                 Button("Edit") {
                                     isPresented = true
+                                    vm.restoreInputs(condition: vm.repo.entryTriggers[key]!)
                                 }
                                 .sheet(isPresented: $isPresented) {
                                     PopupView(shouldPopToRootView: self.$isActive, entryForm: false)

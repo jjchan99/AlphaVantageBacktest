@@ -80,6 +80,32 @@ class InputViewModel: ObservableObject {
         section = 0
     }
     
+    func restoreInputs(condition: EvaluationCondition) {
+        let key = repo.getKey(for: condition)
+        switch key {
+        case "MA":
+            section = 0
+            index = 0
+        case "BB":
+            section = 0
+            index = 1
+        case "RSI":
+            section = 0
+            index = 2
+        case "stopOrder":
+            section = 1
+            index = 0
+        case "exitTrigger":
+            section = 1
+            index = 1
+        case "profitTarget":
+            section = 1
+            index = 2
+        default:
+            fatalError()
+        }
+    }
+    
     func resetInputs() {
         selectedPercentage = 0
         selectedPositionIdx = 0

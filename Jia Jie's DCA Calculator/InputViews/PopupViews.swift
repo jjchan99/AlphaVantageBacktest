@@ -36,7 +36,7 @@ struct PopupView: View {
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
-           
+            vm.actionOnSet()
         }
         .buttonStyle(.borderedProminent)
         

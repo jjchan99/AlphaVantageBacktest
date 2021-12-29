@@ -18,6 +18,8 @@ struct SelectorView: View {
             List(0..<vm.titles.count, id: \.self) { idx in
                 Button() {
                     isPresented = true
+                    vm.section = 0
+                    vm.index = idx
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -46,6 +48,8 @@ struct SelectorView: View {
             List(0..<vm.titlesSection2.count, id: \.self) { idx in
                 Button() {
                     isPresented = true
+                    vm.section = 1
+                    vm.index = idx
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")

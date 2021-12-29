@@ -539,8 +539,8 @@
 		1DCBBE3D276BA1310079D5CA /* InputViews */ = {
 			isa = PBXGroup;
 			children = (
-				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1D351A75277CD1020089E9F2 /* InputViewModel.swift */,
+				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1D351A73277C9D280089E9F2 /* InputRepository.swift */,
 				1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */,
 				1DC58887276CB39300046591 /* PopupViews.swift */,

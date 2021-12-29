@@ -200,6 +200,36 @@ struct InputCustomizationView: View {
                         .isDetailLink(false)
                     }
                     
+                    Section {
+                        List {
+                            
+                        ForEach(Array(vm.entryInputs.keys), id: \.self) { key in
+                            HStack {
+                                Text(key)
+                            Spacer()
+                                Button("Edit") {
+                                    isPresented = true
+                                }
+                                .sheet(isPresented: $isPresented) {
+                                    PopupView(shouldPopToRootView: self.$isActive, titleIdx: 0, frame: 0, entryForm: false)
+                                }
+                            }
+                        }
+
+                    }
+                    } header: {
+                        NavigationLink(isActive: $isActive) {
+                            SelectorView(rootIsActive: self.$isActive)
+                                .navigationTitle("Hello friend")
+                        } label: {
+                            HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add trade conditions")
+                            }
+                        }
+                        .isDetailLink(false)
+                    }
+                    
                 }
             .navigationTitle("Entry strategy")
         }

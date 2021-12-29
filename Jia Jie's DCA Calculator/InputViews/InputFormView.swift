@@ -63,9 +63,25 @@ class InputViewModel: ObservableObject {
         }
     }
     
+    func setTradeValue(key: String, value: EvaluationCondition, entry: Bool) {
+        
+        if entry {
+            entryTradeInputs[key] = value
+            for (key, value) in entryInputs {
+                entryInputs[key]?.andCondition.append(value)
+            }
+        } else {
+            
+        }
+    }
+    
+   
+    
     @Published private(set) var entryInputs: [String: EvaluationCondition] = [:] { didSet {
         print(entryInputs)
     }}
+    
+    @Published private(set) var entryTradeInputs: [String: EvaluationCondition] = [:]
     
     private(set) var exitInputs: [String: EvaluationCondition] = [:] { didSet {
         print(exitInputs)

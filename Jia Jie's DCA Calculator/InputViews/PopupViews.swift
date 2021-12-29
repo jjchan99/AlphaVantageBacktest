@@ -14,6 +14,11 @@ struct PopupView: View {
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    init(shouldPopToRootView: Binding<Bool>, entryForm: Bool) {
+        self._shouldPopToRootView = shouldPopToRootView
+        self.entryForm = entryForm
+    }
+    
     @ViewBuilder func rsiBody() -> some View {
         Text("HELLO WORLD!!!!")
     }
@@ -32,11 +37,13 @@ struct PopupView: View {
         
         HStack {
             Button("Cancel") {
-                
+                self.presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
             vm.actionOnSet()
+            self.presentationMode.wrappedValue.dismiss()
+            self.shouldPopToRootView = false
         }
         .buttonStyle(.borderedProminent)
         

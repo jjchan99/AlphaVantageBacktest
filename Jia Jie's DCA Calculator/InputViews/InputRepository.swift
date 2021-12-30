@@ -32,6 +32,18 @@ class InputRepository: ObservableObject {
         }
     }
     
+    enum Dict {
+        case entryTriggers, entryTrade
+    }
+    
+    func get(dict: Dict) -> [String: EvaluationCondition] {
+        switch dict {
+        case .entryTriggers:
+            return entryTriggers
+        case .entryTrade:
+            return entryTrade
+        }
+    }
     
     
     func createEntryTrigger(for condition: EvaluationCondition) {

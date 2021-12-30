@@ -49,16 +49,18 @@ class InputViewModel: ObservableObject {
     
     //MARK: - INDEXPATH OPERATIONS
     
-    func actionOnSet() {
+    func actionOnSet(for dict: InputRepository.Dict) {
+        let action = repo.getAction(dict: dict)
+        
         switch section {
         case 0:
             switch self.index {
             case 0:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             case 1:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             case 2:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             default:
                 fatalError()
           

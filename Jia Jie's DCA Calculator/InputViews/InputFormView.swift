@@ -14,6 +14,8 @@ struct InputCustomizationView: View {
     @State var long: Bool = true
     @State var isActive : Bool = false
     
+    @State var section2active : Bool = false
+    
     var body: some View {
         NavigationView {
                 Form {
@@ -26,6 +28,42 @@ struct InputCustomizationView: View {
                     } header: {
                        Text("Indicate your position")
                     }
+                    Section {
+                        List {
+                            
+                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
+                            HStack {
+                                Text(key)
+
+                            Spacer()
+                                Button("Edit") {
+                                    vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
+                                    vm.restoreInputs(for: .entryTriggers)
+                                    isPresented = true
+                                }
+                                .sheet(isPresented: $isPresented) {
+                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
+                                }
+                            }
+                        }
+
+                    }
+                       
+                    
+                   
+                    } header: {
+                        NavigationLink(isActive: $isActive) {
+                            SelectorView(rootIsActive: self.$isActive)
+                                .navigationTitle("Entry Trigger")
+                        } label: {
+                            HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add entry trigger")
+                            }
+                        }
+                        .isDetailLink(false)
+                    }
+                    
                     Section {
                         List {
                             
@@ -45,16 +83,17 @@ struct InputCustomizationView: View {
                         }
 
                     }
+                       
                     
                    
                     } header: {
-                        NavigationLink(isActive: $isActive) {
-                            SelectorView(rootIsActive: self.$isActive)
-                                .navigationTitle("Hello friend")
+                        NavigationLink(isActive: $section2active) {
+                            SelectorView(rootIsActive: self.$section2active)
+                                .navigationTitle("Trade Condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus.circle")
-                            Text("Add entry trigger")
+                            Text("Add trade condition")
                             }
                         }
                         .isDetailLink(false)

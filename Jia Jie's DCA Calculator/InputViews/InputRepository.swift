@@ -45,12 +45,21 @@ class InputRepository: ObservableObject {
         }
     }
     
+    func getAction(dict: Dict) -> (EvaluationCondition) -> (Void) {
+        switch dict {
+        case .entryTriggers:
+            return createEntryTrigger
+        case .entryTrade:
+            return createEntryTrade
+        }
+    }
     
-    func createEntryTrigger(for condition: EvaluationCondition) {
+    
+    lazy var createEntryTrigger: (EvaluationCondition) -> (Void) = { [unowned self] condition in
        entryTriggers[getKey(for: condition)] = condition
     }
     
-    func createEntryTrade(for condition: EvaluationCondition) {
+    lazy var createEntryTrade: (EvaluationCondition) -> (Void) = { [unowned self] condition in
        entryTrade[getKey(for: condition)] = condition
     }
     

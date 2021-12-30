@@ -37,11 +37,15 @@ struct PopupView: View {
         
         HStack {
             Button("Cancel") {
+                vm.resetInputs()
+                vm.resetIndexPath()
                 self.presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
             vm.actionOnSet()
+            vm.resetInputs()
+            vm.resetIndexPath()
             self.presentationMode.wrappedValue.dismiss()
             self.shouldPopToRootView = false
         }
@@ -121,11 +125,10 @@ struct PopupView: View {
             
         }
         .onAppear {
-            if !entryForm {
-                vm.restoreInputs()
-            } else {
+            if entryForm {
                 vm.resetInputs()
             }
+            
         }
     }
 }

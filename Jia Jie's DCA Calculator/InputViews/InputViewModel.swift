@@ -17,6 +17,7 @@ class InputViewModel: ObservableObject {
     var repo = InputRepository()
     var window: [Int] = [20, 50, 100, 200]
     var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
+   
     
     //MARK: - INPUT STATES
     @Published var section: Int = 0 { didSet {
@@ -76,11 +77,9 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
-        index = 0
-        section = 0
     }
     
-    func restoreInputs(condition: EvaluationCondition) {
+    func restoreIndexPath(condition: EvaluationCondition) {
         let key = repo.getKey(for: condition)
         switch key {
         case "MA":
@@ -111,18 +110,23 @@ class InputViewModel: ObservableObject {
         selectedPositionIdx = 0
         selectedWindowIdx = 0
     }
+    
+    func resetIndexPath() {
+        section = 0
+        index = 0
+    }
     //MARK: - RESTORATION OPERATIONS
     
-    func restoreInputs() {
+    func restoreInputs(for dict: InputRepository.Dict) {
         switch section {
         case 0:
             switch index {
             case 0:
-                restoreMA()
+                restoreMA(for: dict)
             case 1:
-                restoreBB()
+                restoreBB(for: dict)
             case 2:
-                restoreRSI()
+                restoreRSI(for: dict)
             default:
                 fatalError()
                 
@@ -144,8 +148,11 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func restoreMA() {
-        if let input = repo.entryTriggers["movingAverage"] {
+   
+    
+    func restoreMA(for dict: InputRepository.Dict) {
+        let dict = repo.get(dict: dict)
+        if let input = dict["MA"] {
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -155,7 +162,7 @@ class InputViewModel: ObservableObject {
             }
         }
         
-        if let input2 = repo.entryTriggers["movingAverage"] {
+        if let input2 = dict["MA"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -166,8 +173,9 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func restoreBB() {
-        if let input = repo.entryTriggers["bb"] {
+    func restoreBB(for dict: InputRepository.Dict) {
+        let dict = repo.get(dict: dict)
+        if let input = dict["BB"] {
             let i = input.technicalIndicator
             switch i {
             case .bollingerBands(percentage: let percentage):
@@ -177,7 +185,7 @@ class InputViewModel: ObservableObject {
             }
         }
         
-        if let input2 = repo.entryTriggers["bb"] {
+        if let input2 = repo.entryTriggers["BB"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -188,8 +196,9 @@ class InputViewModel: ObservableObject {
         }
     }
         
-    func restoreRSI() {
-        if let input = repo.entryTriggers["RSI"] {
+    func restoreRSI(for dict: InputRepository.Dict) {
+        let dict = repo.get(dict: dict)
+        if let input = dict["RSI"] {
                 let i = input.technicalIndicator
                 switch i {
                 case .RSI(period: let period, value: let percentage):

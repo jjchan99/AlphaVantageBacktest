@@ -32,6 +32,17 @@ class InputRepository: ObservableObject {
         }
     }
     
+    func getDict(index: Int) -> InputRepository.Dict {
+        switch index {
+        case 0:
+            return .entryTriggers
+        case 1:
+            return .entryTrade
+        default:
+            fatalError()
+        }
+    }
+    
     enum Dict {
         case entryTriggers, entryTrade
     }

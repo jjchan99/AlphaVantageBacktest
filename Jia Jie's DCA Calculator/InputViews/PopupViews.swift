@@ -43,7 +43,7 @@ struct PopupView: View {
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
-            vm.actionOnSet(for: .entryTriggers)
+            vm.actionOnSet()
             vm.resetInputs()
             vm.resetIndexPath()
             self.presentationMode.wrappedValue.dismiss()

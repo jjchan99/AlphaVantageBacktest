@@ -37,8 +37,9 @@ struct InputCustomizationView: View {
 
                             Spacer()
                                 Button("Edit") {
+                                    vm.selectedDictIndex = 0
                                     vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
-                                    vm.restoreInputs(for: .entryTriggers)
+                                    vm.restoreInputs()
                                     isPresented = true
                                 }
                                 .sheet(isPresented: $isPresented) {
@@ -53,7 +54,7 @@ struct InputCustomizationView: View {
                    
                     } header: {
                         NavigationLink(isActive: $isActive) {
-                            SelectorView(rootIsActive: self.$isActive)
+                            SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
                                 .navigationTitle("Entry Trigger")
                         } label: {
                             HStack {
@@ -67,13 +68,14 @@ struct InputCustomizationView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTrade.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
-                                    vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
-                                    vm.restoreInputs(for: .entryTriggers)
+                                    vm.selectedDictIndex = 1
+                                    vm.restoreIndexPath(condition: vm.repo.entryTrade[key])
+                                    vm.restoreInputs()
                                     isPresented = true
                                 }
                                 .sheet(isPresented: $isPresented) {
@@ -88,7 +90,7 @@ struct InputCustomizationView: View {
                    
                     } header: {
                         NavigationLink(isActive: $section2active) {
-                            SelectorView(rootIsActive: self.$section2active)
+                            SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
                                 .navigationTitle("Trade Condition")
                         } label: {
                             HStack {
@@ -103,5 +105,6 @@ struct InputCustomizationView: View {
             .navigationTitle("Entry strategy")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+     
     }
 }

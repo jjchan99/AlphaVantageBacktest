@@ -37,6 +37,8 @@ class InputViewModel: ObservableObject {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
     }}
     
+    @Published var selectedDictIndex: Int = 0 
+    
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
@@ -50,15 +52,18 @@ class InputViewModel: ObservableObject {
     //MARK: - INDEXPATH OPERATIONS
     
     func actionOnSet() {
+        let dict = repo.getDict(index: selectedDictIndex)
+        let action = repo.getAction(dict: dict)
+        
         switch section {
         case 0:
             switch self.index {
             case 0:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             case 1:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             case 2:
-                repo.createEntryTrigger(for: EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                action(EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
             default:
                 fatalError()
           
@@ -79,7 +84,8 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func restoreIndexPath(condition: EvaluationCondition) {
+    func restoreIndexPath(condition: EvaluationCondition?) {
+        guard let condition = condition else { return }
         let key = repo.getKey(for: condition)
         switch key {
         case "MA":
@@ -117,7 +123,8 @@ class InputViewModel: ObservableObject {
     }
     //MARK: - RESTORATION OPERATIONS
     
-    func restoreInputs(for dict: InputRepository.Dict) {
+    func restoreInputs() {
+        let dict = repo.getDict(index: selectedDictIndex)
         switch section {
         case 0:
             switch index {

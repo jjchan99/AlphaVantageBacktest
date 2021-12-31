@@ -14,6 +14,8 @@ struct InputCustomizationView: View {
     @State var long: Bool = true
     @State var isActive : Bool = false
     
+    @State var section2active : Bool = false
+    
     var body: some View {
         NavigationView {
                 Form {
@@ -32,10 +34,12 @@ struct InputCustomizationView: View {
                             ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
+
                             Spacer()
                                 Button("Edit") {
+                                    vm.selectedDictIndex = 0
                                     vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
-                                    vm.restoreInputs(for: .entryTriggers)
+                                    vm.restoreInputs()
                                     isPresented = true
                                 }
                                 .sheet(isPresented: $isPresented) {
@@ -45,12 +49,13 @@ struct InputCustomizationView: View {
                         }
 
                     }
+                       
                     
                    
                     } header: {
                         NavigationLink(isActive: $isActive) {
-                            SelectorView(rootIsActive: self.$isActive)
-                                .navigationTitle("Hello friend")
+                            SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
+                                .navigationTitle("Entry Trigger")
                         } label: {
                             HStack {
                             Image(systemName: "plus.circle")
@@ -60,9 +65,46 @@ struct InputCustomizationView: View {
                         .isDetailLink(false)
                     }
                     
+                    Section {
+                        List {
+                            
+                            ForEach(Array(vm.repo.entryTrade.keys), id: \.self) { key in
+                            HStack {
+                                Text(key)
+                            Spacer()
+                                Button("Edit") {
+                                    vm.selectedDictIndex = 1
+                                    vm.restoreIndexPath(condition: vm.repo.entryTrade[key])
+                                    vm.restoreInputs()
+                                    isPresented = true
+                                }
+                                .sheet(isPresented: $isPresented) {
+                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
+                                }
+                            }
+                        }
+
+                    }
+                       
+                    
+                   
+                    } header: {
+                        NavigationLink(isActive: $section2active) {
+                            SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
+                                .navigationTitle("Trade Condition")
+                        } label: {
+                            HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add trade condition")
+                            }
+                        }
+                        .isDetailLink(false)
+                    }
+                    
                 }
             .navigationTitle("Entry strategy")
         }
         .navigationViewStyle(StackNavigationViewStyle())
+     
     }
 }

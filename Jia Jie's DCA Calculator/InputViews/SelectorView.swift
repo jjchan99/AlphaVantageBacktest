@@ -11,6 +11,13 @@ struct SelectorView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false
     @Binding var rootIsActive : Bool
+    var selectedDictIndex: Int
+   
+    
+    init(rootIsActive: Binding<Bool>, selectedDictIndex: Int) {
+        self._rootIsActive = rootIsActive
+        self.selectedDictIndex = selectedDictIndex
+    }
     
     var body: some View {
                 Form {
@@ -75,6 +82,9 @@ struct SelectorView: View {
             Text("Custom targets")
         }
     }
+                .onAppear {
+                    vm.selectedDictIndex = selectedDictIndex
+                }
     }
     
 }

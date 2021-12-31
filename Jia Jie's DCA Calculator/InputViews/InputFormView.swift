@@ -47,6 +47,7 @@ struct InputCustomizationView: View {
                                 }
                             }
                         }
+                        .onDelete { _ in }
 
                     }
                        
@@ -103,6 +104,10 @@ struct InputCustomizationView: View {
                     
                 }
             .navigationTitle("Entry strategy")
+            .toolbar {
+                EditButton()
+                    
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
      

@@ -84,6 +84,22 @@ class InputViewModel: ObservableObject {
         }
     }
     
+    func compile() {
+        for (key , conditions) in repo.entryTriggers {
+            for (_, andCondition) in repo.entryTrade {
+                //DO SOMETHING ABOUT IT
+        }
+    }
+    }
+    
+    func build() {
+        compile()
+        for (_, condition) in repo.entryTriggers {
+            factory = factory
+                .addCondition(condition)
+        }
+    }
+    
     func restoreIndexPath(condition: EvaluationCondition?) {
         guard let condition = condition else { return }
         let key = repo.getKey(for: condition)
@@ -154,8 +170,6 @@ class InputViewModel: ObservableObject {
             
         }
     }
-    
-   
     
     func restoreMA(for dict: InputRepository.Dict) {
         let dict = repo.get(dict: dict)

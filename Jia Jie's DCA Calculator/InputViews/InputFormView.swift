@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct InputCustomizationView: View {
+struct InputFormView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false
     @State var long: Bool = true

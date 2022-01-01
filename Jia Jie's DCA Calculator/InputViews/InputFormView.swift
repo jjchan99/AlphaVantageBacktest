@@ -102,6 +102,15 @@ struct InputFormView: View {
                         .isDetailLink(false)
                     }
                     
+                    Section {
+                        NavigationLink {
+                         InputFormView()
+                        } label: {
+                         Text("Set exit Triggers")
+                        }
+                    }
+                    .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)
+                    
                 }
             .navigationTitle("Entry strategy")
             .toolbar {

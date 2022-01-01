@@ -37,7 +37,9 @@ class InputViewModel: ObservableObject {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
     }}
     
-    @Published var selectedDictIndex: Int = 0 
+    @Published var selectedDictIndex: Int = 0
+    
+    @Published var entry: Bool = true
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -52,7 +54,7 @@ class InputViewModel: ObservableObject {
     //MARK: - INDEXPATH OPERATIONS
     
     func actionOnSet() {
-        let dict = repo.getDict(index: selectedDictIndex)
+        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         let action = repo.getAction(dict: dict)
         
         switch section {
@@ -140,7 +142,7 @@ class InputViewModel: ObservableObject {
     //MARK: - RESTORATION OPERATIONS
     
     func restoreInputs() {
-        let dict = repo.getDict(index: selectedDictIndex)
+        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         switch section {
         case 0:
             switch index {
@@ -206,7 +208,7 @@ class InputViewModel: ObservableObject {
             }
         }
         
-        if let input2 = repo.entryTriggers["BB"] {
+        if let input2 = dict["BB"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:

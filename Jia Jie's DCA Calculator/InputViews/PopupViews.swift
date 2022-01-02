@@ -50,6 +50,11 @@ struct PopupView: View {
             self.shouldPopToRootView = false
         }
         .buttonStyle(.borderedProminent)
+        .disabled(!vm.validationState)
+            
+            if !vm.validationState {
+                Text("Clash of the titans")
+            }
         
         }
     }

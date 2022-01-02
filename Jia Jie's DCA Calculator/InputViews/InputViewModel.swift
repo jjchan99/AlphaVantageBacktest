@@ -31,7 +31,7 @@ class InputViewModel: ObservableObject {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
     @Published var selectedPositionIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected position: \(selectedPositionIdx)")
+        validationState = updateValidationState()
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
@@ -40,6 +40,8 @@ class InputViewModel: ObservableObject {
     @Published var selectedDictIndex: Int = 0
     
     @Published var entry: Bool = true
+    
+    @Published var validationState: Bool = true
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -64,34 +66,34 @@ class InputViewModel: ObservableObject {
     }
     
     //MARK: - INDEXPATH OPERATIONS
-    func validate(condition: EvaluationCondition, action: (EvaluationCondition) -> (Void)) {
+    func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
         let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
         
         switch validationResult {
         case .success:
-            action(condition)
+            if let action = action {
+                action(condition)
+            }
+            return true
         case .failure(let error):
             print(error)
-            return
+            return false
         }
     }
     
-    func actionOnSet() {
-        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-        let action = repo.getAction(dict: dict)
-        
+    func updateValidationState() -> Bool {
         switch section {
         case 0:
             switch self.index {
             case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                return validate(condition: condition, action: nil)
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                return validate(condition: condition, action: nil)
             case 2:
                 let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                return validate(condition: condition, action: nil)
             default:
                 fatalError()
           
@@ -110,6 +112,44 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
+        return validationState
+    }
+    
+    func actionOnSet() -> Bool {
+        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+        let action = repo.getAction(dict: dict)
+        
+        switch section {
+        case 0:
+            switch self.index {
+            case 0:
+                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            case 1:
+                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            case 2:
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            default:
+                fatalError()
+          
+            }
+        case 1:
+            switch self.index {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
+        }
+        return validationState
     }
     
     func compile() {

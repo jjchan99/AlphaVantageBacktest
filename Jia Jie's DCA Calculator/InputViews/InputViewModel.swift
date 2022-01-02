@@ -35,6 +35,7 @@ class InputViewModel: ObservableObject {
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
+        validationState = updateValidationState()
     }}
     
     @Published var selectedDictIndex: Int = 0

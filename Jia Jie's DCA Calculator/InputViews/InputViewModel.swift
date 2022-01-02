@@ -44,6 +44,8 @@ class InputViewModel: ObservableObject {
     
     @Published var validationState: Bool = true
     
+    @Published var validationMessage: String = ""
+    
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
@@ -68,8 +70,11 @@ class InputViewModel: ObservableObject {
     
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
-        let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
-        let validationResult2 = InputValidation.validate(entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)], condition)
+        let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
+        let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
+        
+        let validationResult = InputValidation.validate(previouslySetTriggerCondition, condition)
+        let validationResult2 = InputValidation.validate(previouslySetTradeCondition, condition)
         
         switch (validationResult, validationResult2) {
         case (.success, .success):
@@ -78,6 +83,7 @@ class InputViewModel: ObservableObject {
             }
             return true
         default:
+            validationMessage = previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage
             return false
         }
     }

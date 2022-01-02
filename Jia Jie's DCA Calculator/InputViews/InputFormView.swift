@@ -106,7 +106,7 @@ struct InputFormView: View {
                         NavigationLink {
                          ExitFormView()
                         } label: {
-                         Text("Set exit Triggers")
+                         Text("Set exit triggers")
                         }
                     }
                     .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)

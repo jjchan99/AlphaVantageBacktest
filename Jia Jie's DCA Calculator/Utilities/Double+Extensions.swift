@@ -17,6 +17,10 @@ extension Double {
         return String(format: "%.2f", self)
     }
     
+    var zeroDecimalPlaceString: String {
+        return String(format: "%.0f", self)
+    }
+    
     var currencyFormat: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency

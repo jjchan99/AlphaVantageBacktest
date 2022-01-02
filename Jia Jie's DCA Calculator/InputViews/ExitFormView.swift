@@ -51,7 +51,7 @@ struct ExitFormView: View {
                                 .navigationTitle("Exit Trigger")
                         } label: {
                             HStack {
-                            Image(systemName: "plus.circle")
+                            Image(systemName: "plus")
                             Text("Add exit trigger")
                             }
                         }
@@ -87,7 +87,7 @@ struct ExitFormView: View {
                                 .navigationTitle("Exit Condition")
                         } label: {
                             HStack {
-                            Image(systemName: "plus.circle")
+                            Image(systemName: "plus")
                             Text("Add exit condition")
                             }
                         }

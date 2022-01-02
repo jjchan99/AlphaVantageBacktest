@@ -121,7 +121,7 @@ struct PopupView: View {
                 Spacer()
 
                 }
-            .navigationTitle(vm.titleFrame[vm.section][vm.index])
+            .navigationTitle(vm.entry ? vm.entryTitleFrame[vm.section][vm.index] : vm.exitTitleFrame[vm.section][vm.index])
             
         }
         .onAppear {

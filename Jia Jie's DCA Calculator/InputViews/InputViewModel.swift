@@ -47,8 +47,20 @@ class InputViewModel: ObservableObject {
     let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
     let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
     
-    var titleFrame: [[String]] {
+    var entryTitleFrame: [[String]] {
+        return [titles, []]
+    }
+    
+    var exitTitleFrame: [[String]] {
         return [titles, titlesSection2]
+    }
+    
+    var entryDescriptionFrame: [[String]] {
+        return [description, []]
+    }
+    
+    var exitDescriptionFrame: [[String]] {
+        return [description, descriptionSection2]
     }
     
     //MARK: - INDEXPATH OPERATIONS

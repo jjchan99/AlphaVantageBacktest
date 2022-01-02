@@ -39,6 +39,24 @@ struct TradeBotAlgorithm {
             let outcome = inputValue > xxx
             return (outcome, description)
         
+        case .bollingerBands:
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+            guard let xxx = xxx, let inputValue = inputValue else { return
+                (false, "")
+            }
+            
+            let outcome = condition.aboveOrBelow.evaluate(inputValue, xxx)
+            && condition.aboveOrBelow == .priceAbove
+            ? inputValue < previous.upperBollingerBand!
+            : inputValue > previous.lowerBollingerBand!
+            
+            let description: String = "The value of \(inputValue) is \(condition.aboveOrBelow) the \(condition.technicalIndicator) of \(xxx). Condition is \(condition.aboveOrBelow.evaluate(inputValue, xxx))."
+            
+            return (outcome, description)
+            
         default:
             
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)

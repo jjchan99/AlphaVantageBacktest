@@ -31,6 +31,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "exit date"
         }
     }
+    
 
     var rawValue: Double {
         switch self {

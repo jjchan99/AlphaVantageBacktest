@@ -54,4 +54,21 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     var description: String {
         "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(enterOrExit)"
     }
+    
+    var validationMessage: String {
+        switch self.technicalIndicator {
+        case .movingAverage(period: let period):
+            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator."
+        case .bollingerBands(percentage: let percentage):
+            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
+        case .RSI(period: let period, value: let value):
+            return ""
+        case .stopOrder(value: let value):
+            return ""
+        case .profitTarget(value: let value):
+            return ""
+        case .exitTrigger(value: let value):
+            return ""
+        }
+    }
 }

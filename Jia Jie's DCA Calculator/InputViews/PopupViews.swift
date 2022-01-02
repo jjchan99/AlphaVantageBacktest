@@ -25,7 +25,7 @@ struct PopupView: View {
 
     @ViewBuilder func formBottomHalf() -> some View {
         HStack {
-        Text("Step 2. Enter when price is...")
+        Text("Enter when the ticker is")
                 .padding()
         Spacer()
         }
@@ -34,7 +34,16 @@ struct PopupView: View {
             Text("Below").tag(1)
         }.pickerStyle(SegmentedPickerStyle())
         .frame(width: 0.985 * vm.width)
-        
+        if !vm.validationState {
+            HStack(alignment: .center) {
+            Image(systemName: "exclamationmark.circle")
+                    .foregroundColor(.red)
+                Text(vm.validationMessage)
+                    .font(.footnote)
+                    .foregroundColor(.red)
+            }
+        }
+        Spacer()
         HStack {
             Button("Cancel") {
                 vm.resetInputs()
@@ -52,9 +61,7 @@ struct PopupView: View {
         .buttonStyle(.borderedProminent)
         .disabled(!vm.validationState)
             
-            if !vm.validationState {
-                Text("Clash of the titans")
-            }
+           
         
         }
     }
@@ -62,7 +69,7 @@ struct PopupView: View {
     @ViewBuilder func movingAverageBody() -> some View {
         VStack {
             HStack {
-            Text("Step 1. Select window")
+            Text("Select window")
                 .padding()
                 Spacer()
             }
@@ -80,7 +87,7 @@ struct PopupView: View {
     @ViewBuilder func bbBody() -> some View {
         VStack {
             Slider(value: $vm.selectedPercentage, in: 0...100)
-            Text("\(vm.selectedPercentage, specifier: "%.1f")")
+            Text("\(vm.selectedPercentage, specifier: "%.0f")%")
         formBottomHalf()
         }
     }

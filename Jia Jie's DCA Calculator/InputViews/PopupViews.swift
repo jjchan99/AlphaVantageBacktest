@@ -34,7 +34,13 @@ struct PopupView: View {
             Text("Below").tag(1)
         }.pickerStyle(SegmentedPickerStyle())
         .frame(width: 0.985 * vm.width)
-        
+        if !vm.validationState {
+            HStack {
+            Image(systemName: "exclamationmark.circle")
+            Text("Clash of the titans")
+            }
+        }
+        Spacer()
         HStack {
             Button("Cancel") {
                 vm.resetInputs()
@@ -52,9 +58,7 @@ struct PopupView: View {
         .buttonStyle(.borderedProminent)
         .disabled(!vm.validationState)
             
-            if !vm.validationState {
-                Text("Clash of the titans")
-            }
+           
         
         }
     }

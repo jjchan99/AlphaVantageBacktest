@@ -69,6 +69,7 @@ class InputViewModel: ObservableObject {
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
         let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
+        let message: String = "Condition clashes with previously set \(entry ? "exit" : "entry") condition. "
         
         switch validationResult {
         case .success:
@@ -116,7 +117,7 @@ class InputViewModel: ObservableObject {
         return validationState
     }
     
-    func actionOnSet() -> Bool {
+    func actionOnSet() {
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         let action = repo.getAction(dict: dict)
         
@@ -125,13 +126,13 @@ class InputViewModel: ObservableObject {
             switch self.index {
             case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: action)
+                validate(condition: condition, action: action)
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: action)
+                validate(condition: condition, action: action)
             case 2:
                 let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: action)
+                validate(condition: condition, action: action)
             default:
                 fatalError()
           

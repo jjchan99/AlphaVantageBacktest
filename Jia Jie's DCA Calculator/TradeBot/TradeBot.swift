@@ -173,6 +173,15 @@ enum AboveOrBelow: Int, CustomStringConvertible {
         return "below"
     }
     }
+    
+    var opposingDescription: String {
+        switch self {
+        case .priceAbove:
+            return "below"
+        case .priceBelow:
+            return "above"
+        }
+    }
 
     func evaluate(_ price: Double, _ technicalIndicator: Double) -> Bool {
         switch self {
@@ -191,6 +200,15 @@ enum EnterOrExit: Int, CustomStringConvertible {
             return "enter"
         case .exit:
             return "exit"
+        }
+    }
+    
+    var opposingDescription: String {
+        switch self {
+        case .enter:
+            return "exit"
+        case .exit:
+            return "enter"
         }
     }
     case enter, exit

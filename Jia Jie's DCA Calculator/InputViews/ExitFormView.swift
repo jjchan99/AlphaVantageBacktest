@@ -1,14 +1,14 @@
 //
-//  InputForm.swift
+//  ExitForm.swift
 //  Jia Jie's DCA Calculator
 //
-//  Created by Jia Jie Chan on 17/12/21.
+//  Created by Jia Jie Chan on 2/1/22.
 //
 
 import Foundation
 import SwiftUI
 
-struct InputFormView: View {
+struct ExitFormView: View {
     @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false
     @State var long: Bool = true
@@ -17,28 +17,20 @@ struct InputFormView: View {
     @State var section2active : Bool = false
     
     var body: some View {
-        NavigationView {
+       
                 Form {
-                    Section {
-                        Picker("Selected", selection: $long) {
-                            Text("Go long").tag(true)
-                            Text("Go short").tag(false)
-                        }.pickerStyle(SegmentedPickerStyle())
-                        .frame(width: 0.985 * vm.width)
-                    } header: {
-                       Text("Indicate your position")
-                    }
+                   
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.exitTriggers.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
 
                             Spacer()
                                 Button("Edit") {
                                     vm.selectedDictIndex = 0
-                                    vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
+                                    vm.restoreIndexPath(condition: vm.repo.exitTriggers[key]!)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -56,11 +48,11 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
-                                .navigationTitle("Entry Trigger")
+                                .navigationTitle("Exit Trigger")
                         } label: {
                             HStack {
                             Image(systemName: "plus.circle")
-                            Text("Add entry trigger")
+                            Text("Add exit trigger")
                             }
                         }
                         .isDetailLink(false)
@@ -69,13 +61,13 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTrade.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.exitTrade.keys), id: \.self) { key in
                             HStack {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
                                     vm.selectedDictIndex = 1
-                                    vm.restoreIndexPath(condition: vm.repo.entryTrade[key])
+                                    vm.restoreIndexPath(condition: vm.repo.exitTrade[key])
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -92,36 +84,27 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $section2active) {
                             SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
-                                .navigationTitle("Trade Condition")
+                                .navigationTitle("Exit Condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus.circle")
-                            Text("Add trade condition")
+                            Text("Add exit condition")
                             }
                         }
                         .isDetailLink(false)
                     }
-                    
-                    Section {
-                        NavigationLink {
-                         ExitFormView()
-                        } label: {
-                         Text("Set exit Triggers")
-                        }
-                    }
-                    .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)
-                    
                 }
-            .navigationTitle("Entry strategy")
+            .navigationTitle("Exit strategy")
             .toolbar {
                 EditButton()
                     
             }
             .onAppear {
-                vm.entry = true
+                vm.resetInputs()
+                vm.resetIndexPath()
+                vm.entry = false
             }
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
      
     }
 }
+

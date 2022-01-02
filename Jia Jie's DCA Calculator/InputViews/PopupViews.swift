@@ -50,6 +50,11 @@ struct PopupView: View {
             self.shouldPopToRootView = false
         }
         .buttonStyle(.borderedProminent)
+        .disabled(!vm.validationState)
+            
+            if !vm.validationState {
+                Text("Clash of the titans")
+            }
         
         }
     }
@@ -121,7 +126,7 @@ struct PopupView: View {
                 Spacer()
 
                 }
-            .navigationTitle(vm.titleFrame[vm.section][vm.index])
+            .navigationTitle(vm.entry ? vm.entryTitleFrame[vm.section][vm.index] : vm.exitTitleFrame[vm.section][vm.index])
             
         }
         .onAppear {

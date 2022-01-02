@@ -31,13 +31,17 @@ class InputViewModel: ObservableObject {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
     @Published var selectedPositionIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected position: \(selectedPositionIdx)")
+        validationState = updateValidationState()
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
     }}
     
-    @Published var selectedDictIndex: Int = 0 
+    @Published var selectedDictIndex: Int = 0
+    
+    @Published var entry: Bool = true
+    
+    @Published var validationState: Bool = true
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -45,25 +49,51 @@ class InputViewModel: ObservableObject {
     let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
     let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
     
-    var titleFrame: [[String]] {
+    var entryTitleFrame: [[String]] {
+        return [titles, []]
+    }
+    
+    var exitTitleFrame: [[String]] {
         return [titles, titlesSection2]
     }
     
-    //MARK: - INDEXPATH OPERATIONS
+    var entryDescriptionFrame: [[String]] {
+        return [description, []]
+    }
     
-    func actionOnSet() {
-        let dict = repo.getDict(index: selectedDictIndex)
-        let action = repo.getAction(dict: dict)
+    var exitDescriptionFrame: [[String]] {
+        return [description, descriptionSection2]
+    }
+    
+    //MARK: - INDEXPATH OPERATIONS
+    func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
+        let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
         
+        switch validationResult {
+        case .success:
+            if let action = action {
+                action(condition)
+            }
+            return true
+        case .failure(let error):
+            print(error)
+            return false
+        }
+    }
+    
+    func updateValidationState() -> Bool {
         switch section {
         case 0:
             switch self.index {
             case 0:
-                action(EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: nil)
             case 1:
-                action(EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: nil)
             case 2:
-                action(EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: nil)
             default:
                 fatalError()
           
@@ -81,6 +111,60 @@ class InputViewModel: ObservableObject {
             }
         default:
             fatalError()
+        }
+        return validationState
+    }
+    
+    func actionOnSet() -> Bool {
+        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+        let action = repo.getAction(dict: dict)
+        
+        switch section {
+        case 0:
+            switch self.index {
+            case 0:
+                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            case 1:
+                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            case 2:
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                return validate(condition: condition, action: action)
+            default:
+                fatalError()
+          
+            }
+        case 1:
+            switch self.index {
+            case 0:
+                break
+            case 1:
+                break
+            case 2:
+                break
+            default:
+                fatalError()
+            }
+        default:
+            fatalError()
+        }
+        return validationState
+    }
+    
+    func compile() {
+        for (key , conditions) in repo.entryTriggers {
+            for (_, andCondition) in repo.entryTrade {
+                //DO SOMETHING ABOUT IT
+        }
+    }
+    }
+    
+    func build() {
+        compile()
+        for (_, condition) in repo.entryTriggers {
+            factory = factory
+                .addCondition(condition)
         }
     }
     
@@ -124,7 +208,7 @@ class InputViewModel: ObservableObject {
     //MARK: - RESTORATION OPERATIONS
     
     func restoreInputs() {
-        let dict = repo.getDict(index: selectedDictIndex)
+        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         switch section {
         case 0:
             switch index {
@@ -154,8 +238,6 @@ class InputViewModel: ObservableObject {
             
         }
     }
-    
-   
     
     func restoreMA(for dict: InputRepository.Dict) {
         let dict = repo.get(dict: dict)
@@ -192,7 +274,7 @@ class InputViewModel: ObservableObject {
             }
         }
         
-        if let input2 = repo.entryTriggers["BB"] {
+        if let input2 = dict["BB"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
@@ -216,86 +298,4 @@ class InputViewModel: ObservableObject {
                 }
             }
         }
-   
-    
-    
-    
-//    func setValue(key: String, value: EvaluationCondition, entry: Bool) {
-//
-//        switch value.technicalIndicator {
-//        case .RSI:
-//            if entry {
-//            guard exitInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            } else {
-//            guard entryInputs["RSI"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            }
-//        case .bollingerBands:
-//            if entry {
-//            guard exitInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            } else {
-//            guard entryInputs["bb"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            }
-//        case .movingAverage:
-//            if entry {
-//            guard exitInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            } else {
-//            guard entryInputs["movingAverage"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            }
-//        case .stopOrder:
-//            if entry {
-//            guard exitInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            } else {
-//            guard entryInputs["stopOrder"]?.aboveOrBelow != value.aboveOrBelow else { return }
-//            }
-//        default:
-//            break
-//        }
-//
-//        if entry {
-//           entryInputs[key] = value
-//        } else {
-//           exitInputs[key] = value
-//        }
-//    }
-   
-    
-//    var _enterInputs: [String: EvaluationCondition] {
-//        var copy: [String: EvaluationCondition] = [:]
-//        for conditions in bot.conditions where conditions.enterOrExit == .enter {
-//            for andConditions in conditions.andCondition where conditions.andCondition.count > 0 {
-//                switch andConditions.technicalIndicator {
-//            case .movingAverage:
-//                    break
-//            case .exitTrigger:
-//                    break
-//            case .RSI:
-//                    break
-//            case .bollingerBands:
-//                    break
-//            case .profitTarget:
-//                    break
-//            case .stopOrder:
-//                    break
-//                }
-//            }
-//
-//            switch conditions.technicalIndicator {
-//            case .movingAverage:
-//                copy["movingAverage"] = conditions
-//            case .exitTrigger:
-//                copy["exitTrigger"] = conditions
-//            case .RSI:
-//                copy["RSI"] = conditions
-//            case .bollingerBands:
-//                copy["bb"] = conditions
-//            case .profitTarget:
-//                copy["profitTarget"] = conditions
-//            case .stopOrder:
-//                copy["stopOrder"] = conditions
-//            }
-//
-//
-//        }
-//        return copy
-//    }
 }

@@ -82,6 +82,7 @@
 		1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */; };
 		1DA32BF12756172900055702 /* RSIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF02756172900055702 /* RSIModel.swift */; };
 		1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA32BF22756659500055702 /* BollingerBandsModel.swift */; };
+		1DA75DA82780D168006AE390 /* ExitFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA75DA72780D168006AE390 /* ExitFormView.swift */; };
 		1DB20751274FDCE60015B1B7 /* SingleCandleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB20750274FDCE60015B1B7 /* SingleCandleRenderer.swift */; };
 		1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413526F1E857001FBC77 /* DCAResultModel.swift */; };
 		1DB5413826F1EA52001FBC77 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB5413726F1EA52001FBC77 /* Protocols.swift */; };
@@ -214,6 +215,7 @@
 		1D9CF74B2745784A00D33DB8 /* SingleCandleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleView.swift; sourceTree = "<group>"; };
 		1DA32BF02756172900055702 /* RSIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSIModel.swift; sourceTree = "<group>"; };
 		1DA32BF22756659500055702 /* BollingerBandsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BollingerBandsModel.swift; sourceTree = "<group>"; };
+		1DA75DA72780D168006AE390 /* ExitFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitFormView.swift; sourceTree = "<group>"; };
 		1DB20750274FDCE60015B1B7 /* SingleCandleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCandleRenderer.swift; sourceTree = "<group>"; };
 		1DB5413526F1E857001FBC77 /* DCAResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultModel.swift; sourceTree = "<group>"; };
 		1DB5413726F1EA52001FBC77 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				1D351A75277CD1020089E9F2 /* InputViewModel.swift */,
 				1D351A73277C9D280089E9F2 /* InputRepository.swift */,
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
+				1DA75DA72780D168006AE390 /* ExitFormView.swift */,
 				1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */,
 				1DC58887276CB39300046591 /* PopupViews.swift */,
 			);
@@ -785,6 +788,7 @@
 				1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */,
 				1DC3C9D9273BB10900900600 /* CandleView.swift in Sources */,
 				1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */,
+				1DA75DA82780D168006AE390 /* ExitFormView.swift in Sources */,
 				1DB596CA2760F047005385AF /* FetchLatest.swift in Sources */,
 				1D7927A8275B4A3E00DD2E6B /* GraphManager.swift in Sources */,
 				1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */,

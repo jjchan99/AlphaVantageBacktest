@@ -22,7 +22,7 @@ struct SelectorView: View {
     var body: some View {
                 Form {
         Section {
-            List(0..<vm.titles.count, id: \.self) { idx in
+            List(vm.entry ? 0..<vm.entryTitleFrame[0].count : 0..<vm.exitTitleFrame[0].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
                     vm.section = 0
@@ -31,9 +31,9 @@ struct SelectorView: View {
                 HStack {
                     Image(systemName: "dollarsign.circle")
                     VStack(alignment: .leading) {
-                        Text(vm.titles[idx])
+                        Text(vm.entry ? vm.entryTitleFrame[0][idx] : vm.exitTitleFrame[0][idx])
                             .font(.caption.bold())
-                        Text(vm.description[idx])
+                        Text(vm.entry ? vm.entryDescriptionFrame[0][idx] : vm.exitDescriptionFrame[0][idx])
                             .font(.caption2)
                     }
                     Spacer()
@@ -52,7 +52,7 @@ struct SelectorView: View {
             Text("Trading Indicators")
         }
         Section {
-            List(0..<vm.titlesSection2.count, id: \.self) { idx in
+            List(vm.entry ? 0..<vm.entryTitleFrame[1].count : 0..<vm.exitTitleFrame[1].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
                     vm.section = 1
@@ -61,9 +61,9 @@ struct SelectorView: View {
                 HStack {
                     Image(systemName: "dollarsign.circle")
                     VStack(alignment: .leading) {
-                        Text(vm.titlesSection2[idx])
+                        Text(vm.entry ? vm.entryTitleFrame[1][idx] : vm.exitTitleFrame[1][idx])
                             .font(.caption.bold())
-                        Text(vm.descriptionSection2[idx])
+                        Text(vm.entry ? vm.entryDescriptionFrame[1][idx] : vm.exitDescriptionFrame[1][idx])
                             .font(.caption2)
                     }
                     Spacer()

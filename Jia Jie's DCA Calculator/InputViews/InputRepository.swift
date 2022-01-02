@@ -101,6 +101,8 @@ class InputRepository: ObservableObject {
 }
 
 struct InputValidation {
+
+    
     enum ValidationError: Error {
         case clashingCondition
     }
@@ -110,7 +112,26 @@ struct InputValidation {
         guard first.aboveOrBelow != second.aboveOrBelow else {
             return .failure(ValidationError.clashingCondition)
         }
-        return .success(true)
+        if _validate(first, second) {
+            return .success(true)
+        } else {
+            return .failure(ValidationError.clashingCondition)
+        }
+    }
+    
+    private static func _validate(_ first: EvaluationCondition, _ second: EvaluationCondition) -> Bool {
+        
+        switch (first.technicalIndicator, second.technicalIndicator) {
+        case (.bollingerBands(percentage: let percentB), .bollingerBands(percentage: let percentBB)):
+            if first.aboveOrBelow == .priceAbove {
+                guard percentB >= percentBB else { return false }
+            } else {
+                guard percentBB >= percentB else { return false }
+            }
+        default:
+            break
+        }
+        return true
     }
     
     

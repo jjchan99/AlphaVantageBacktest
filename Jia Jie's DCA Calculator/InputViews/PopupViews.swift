@@ -37,7 +37,7 @@ struct PopupView: View {
         if !vm.validationState {
             HStack {
             Image(systemName: "exclamationmark.circle")
-            Text("Clash of the titans")
+            Text("Condition clash")
             }
         }
         Spacer()

@@ -101,18 +101,20 @@ class InputRepository: ObservableObject {
     
     func validate() {
         for (key, value) in exitTriggers {
-            let x = entryTrade[key]!
+            if let x = entryTrade[key] {
             InputValidation.validate(value, x)
-            for andConditions in x.andCondition {
-                InputValidation.validate(value, andConditions)
+            }
+            if let y = entryTriggers[key] {
+                InputValidation.validate(value, y)
             }
         }
         
         for (key, value) in exitTrade {
-            let x = entryTrade[key]!
+            if let x = entryTrade[key] {
             InputValidation.validate(value, x)
-            for andConditions in x.andCondition {
-                InputValidation.validate(value, andConditions)
+            }
+            if let y = entryTriggers[key] {
+                InputValidation.validate(value, y)
             }
         }
     }

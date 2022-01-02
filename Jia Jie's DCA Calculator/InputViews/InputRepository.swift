@@ -98,34 +98,22 @@ class InputRepository: ObservableObject {
     lazy var createEntryTrade: (EvaluationCondition) -> (Void) = { [unowned self] condition in
        entryTrade[getKey(for: condition)] = condition
     }
-    
-    func validate() {
-        for (key, value) in exitTriggers {
-            if let x = entryTrade[key] {
-            InputValidation.validate(value, x)
-            }
-            if let y = entryTriggers[key] {
-                InputValidation.validate(value, y)
-            }
-        }
-        
-        for (key, value) in exitTrade {
-            if let x = entryTrade[key] {
-            InputValidation.validate(value, x)
-            }
-            if let y = entryTriggers[key] {
-                InputValidation.validate(value, y)
-            }
-        }
-    }
-    
-   
 }
 
 struct InputValidation {
-    static func validate(_ first: EvaluationCondition, _ second: EvaluationCondition) {
-        guard first.aboveOrBelow != second.aboveOrBelow else { fatalError() }
+    enum ValidationError: Error {
+        case clashingCondition
     }
+    
+    static func validate(_ first: EvaluationCondition?, _ second: EvaluationCondition) -> Result<Bool, Error> {
+        guard let first = first else { return .success(true) }
+        guard first.aboveOrBelow != second.aboveOrBelow else {
+            return .failure(ValidationError.clashingCondition)
+        }
+        return .success(true)
+    }
+    
+    
    
 }
 

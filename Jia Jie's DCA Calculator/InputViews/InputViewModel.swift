@@ -64,6 +64,16 @@ class InputViewModel: ObservableObject {
     }
     
     //MARK: - INDEXPATH OPERATIONS
+    func validate(condition: EvaluationCondition, action: (EvaluationCondition) -> (Void)) {
+        let validationResult = InputValidation.validate(entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)], condition)
+        
+        switch validationResult {
+        case .success:
+            action(condition)
+        case .failure:
+            return
+        }
+    }
     
     func actionOnSet() {
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
@@ -73,11 +83,14 @@ class InputViewModel: ObservableObject {
         case 0:
             switch self.index {
             case 0:
-                action(EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                validate(condition: condition, action: action)
             case 1:
-                action(EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                validate(condition: condition, action: action)
             case 2:
-                action(EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!)
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                validate(condition: condition, action: action)
             default:
                 fatalError()
           

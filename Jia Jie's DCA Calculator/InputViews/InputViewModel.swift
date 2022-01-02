@@ -65,12 +65,13 @@ class InputViewModel: ObservableObject {
     
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: (EvaluationCondition) -> (Void)) {
-        let validationResult = InputValidation.validate(entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)], condition)
+        let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
         
         switch validationResult {
         case .success:
             action(condition)
-        case .failure:
+        case .failure(let error):
+            print(error)
             return
         }
     }

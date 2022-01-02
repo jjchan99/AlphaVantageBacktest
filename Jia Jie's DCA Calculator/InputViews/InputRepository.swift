@@ -99,5 +99,31 @@ class InputRepository: ObservableObject {
        entryTrade[getKey(for: condition)] = condition
     }
     
+    func validate() {
+        for (key, value) in exitTriggers {
+            let x = entryTrade[key]!
+            InputValidation.validate(value, x)
+            for andConditions in x.andCondition {
+                InputValidation.validate(value, andConditions)
+            }
+        }
+        
+        for (key, value) in exitTrade {
+            let x = entryTrade[key]!
+            InputValidation.validate(value, x)
+            for andConditions in x.andCondition {
+                InputValidation.validate(value, andConditions)
+            }
+        }
+    }
+    
    
 }
+
+struct InputValidation {
+    static func validate(_ first: EvaluationCondition, _ second: EvaluationCondition) {
+        guard first.aboveOrBelow != second.aboveOrBelow else { fatalError() }
+    }
+   
+}
+

@@ -60,7 +60,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
         case .movingAverage(period: let period):
             return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator."
         case .bollingerBands(percentage: let percentage):
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \(percentage * 100) percent threshold."
+            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \(percentage.twoDecimalPlaceString)% threshold."
         case .RSI(period: let period, value: let value):
             return ""
         case .stopOrder(value: let value):

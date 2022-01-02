@@ -69,16 +69,15 @@ class InputViewModel: ObservableObject {
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
         let validationResult = InputValidation.validate(entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)], condition)
-        let message: String = "Condition clashes with previously set \(entry ? "exit" : "entry") condition. "
+        let validationResult2 = InputValidation.validate(entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)], condition)
         
-        switch validationResult {
-        case .success:
+        switch (validationResult, validationResult2) {
+        case (.success, .success):
             if let action = action {
                 action(condition)
             }
             return true
-        case .failure(let error):
-            print(error)
+        default:
             return false
         }
     }
@@ -151,7 +150,6 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
-        return validationState
     }
     
     func compile() {

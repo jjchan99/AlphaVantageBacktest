@@ -22,11 +22,21 @@ struct PopupView: View {
     }
     
     @ViewBuilder func rsiBody() -> some View {
-        VStack {
+        Section {
+            
         Slider(value: $vm.selectedPercentage, in: 0...1)
-        Text("\(vm.selectedPercentage * 100, specifier: "%.0f")%")
-        Stepper("Period: \(vm.stepperValue)", value: $vm.stepperValue, in: 2...14)
-            .padding()
+      
+        } header: {
+        Text("RSI threshold: \(vm.selectedPercentage * 100, specifier: "%.0f")%")
+        }
+        
+        Section {
+            HStack {
+            Stepper("", value: $vm.stepperValue, in: 2...14)
+            Spacer()
+            }
+        } header: {
+            Text("Period: \(vm.stepperValue)")
         }
     }
     
@@ -64,17 +74,18 @@ struct PopupView: View {
         Text("Below").tag(1)
     }.pickerStyle(SegmentedPickerStyle())
     .frame(width: 0.985 * vm.width)
-    if !vm.validationState {
-        HStack(alignment: .center) {
-        Image(systemName: "exclamationmark.circle")
-                .foregroundColor(.red)
-            Text(vm.validationMessage)
-                .font(.footnote)
-                .foregroundColor(.red)
-        }
-    }
         } header: {
             Text("Enter when the ticker is")
+        } footer: {
+            if !vm.validationState {
+                HStack(alignment: .center) {
+                Image(systemName: "exclamationmark.circle")
+                        .foregroundColor(.red)
+                    Text(vm.validationMessage)
+                        .font(.footnote)
+                        .foregroundColor(.red)
+                }
+            }
         }
     }
     
@@ -111,11 +122,13 @@ struct PopupView: View {
     }
     
     @ViewBuilder func bbBody() -> some View {
-        VStack {
+        Section {
             Slider(value: $vm.selectedPercentage, in: 0...100)
-            Text("\(vm.selectedPercentage, specifier: "%.0f")%")
+        } header: {
+            Text("Set threshold: \(vm.selectedPercentage, specifier: "%.0f")%")
         }
     }
+    
     
     @ViewBuilder func section() -> some View {
         switch vm.section {

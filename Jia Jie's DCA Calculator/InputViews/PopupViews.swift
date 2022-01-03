@@ -31,7 +31,6 @@ struct PopupView: View {
     }
     
     @ViewBuilder func holdingPeriodBody() -> some View {
-        Form {
         Section {
         TextField("Enter number of days", text: Binding(
             get: { String(vm.stepperValue) },
@@ -55,7 +54,6 @@ struct PopupView: View {
             .padding()
         } header: {
             Text("Enter number of days")
-        }
         }
         }
     
@@ -84,8 +82,6 @@ struct PopupView: View {
         HStack {
             if !hideButton {
             Button("Cancel") {
-                vm.resetInputs()
-                vm.resetIndexPath()
                 self.presentationMode.wrappedValue.dismiss()
             }
             .buttonStyle(.borderedProminent)

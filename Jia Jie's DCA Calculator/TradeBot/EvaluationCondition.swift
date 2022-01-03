@@ -42,7 +42,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
             "aboveOrBelow" : newCondition.aboveOrBelow.rawValue,
             "enterOrExit" : newCondition.enterOrExit.rawValue
         ])
-        //MARK: Needs to append new and conditions to local instance without need to re-fetch
+        
         return EvaluationCondition(record: record)!
     }
     

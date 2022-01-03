@@ -38,6 +38,8 @@ class InputViewModel: ObservableObject {
         validationState = updateValidationState()
     }}
     
+    @Published var stepperValue: Int = 2
+    
     @Published var selectedDictIndex: Int = 0
     
     @Published var entry: Bool = true

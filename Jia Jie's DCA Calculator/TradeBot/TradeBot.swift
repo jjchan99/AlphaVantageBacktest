@@ -19,12 +19,6 @@ struct TradeBot: CloudKitInterchangeable {
     var exitTrigger: Int?
     var lm = LedgerManager()
     
-    func uploadEntries(completion: @escaping (Bool) -> Void) {
-        lm.upload(tb: self) { success in
-        completion(success)
-        }
-    }
-    
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
         let cash = record["cash"] as! Double
@@ -41,20 +35,9 @@ struct TradeBot: CloudKitInterchangeable {
         self.long = long
     }
     
-    func update(effectiveAfter: String?, cash: Double? = nil, accumulatedShares: Double? = nil) -> Self {
+    func update() -> Self {
         let record = self.record
-        
-        //MARK: SCENARIO 1: UPDATING EFFECTIVE AFTER
-        if let effectiveAfter = effectiveAfter {
-            record["effectiveAfter"] = effectiveAfter
-        }
-        
-        //MARK: SCENARIO 2: BUYING/SELLING - REQUIRES UPDATES IN ACCOUNT AND TRANSACTION HISTORY.
-        if let cash = cash, let accumulatedShares = accumulatedShares {
-            record["cash"] = cash
-            record["accumulatedShares"] = accumulatedShares
-        }
-        
+
         return TradeBot(record: record)!
     }
     
@@ -90,16 +73,10 @@ struct TradeBot: CloudKitInterchangeable {
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
-                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
+                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self)
                         self.conditions.append(newCondition)
                         case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self) {
-                            Log.queue(action: "This should be on a background thread")
-                            didEvaluate(true)
-                        }
+                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self)
                         default:
                           break
                     }
@@ -113,13 +90,9 @@ struct TradeBot: CloudKitInterchangeable {
                         
                         switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
-                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self) {
-                            didEvaluate(true)
-                    }
+                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self)
                         case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self) {
-                            didEvaluate(true)
-                         }
+                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self)
                         default:
                             break
                         }

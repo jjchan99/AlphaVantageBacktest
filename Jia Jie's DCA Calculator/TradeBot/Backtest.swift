@@ -21,9 +21,7 @@ struct Backtest {
             let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
             
             if previous != nil && sorted[idx].key > date {
-                bot.evaluate(previous: previous!, latest: OHLC) { success in
-
-                }
+                bot.evaluate(previous: previous!, latest: OHLC) { _ in }
             }
             
             previous = OHLC

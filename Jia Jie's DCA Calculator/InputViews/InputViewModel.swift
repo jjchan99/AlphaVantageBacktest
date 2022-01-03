@@ -35,7 +35,6 @@ class InputViewModel: ObservableObject {
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
-        print(selectedPercentage)
         validationState = updateValidationState()
     }}
     
@@ -53,7 +52,7 @@ class InputViewModel: ObservableObject {
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
-    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
+    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Number of days to close a position when entry is triggered"]
     
     var entryTitleFrame: [[String]] {
         return [titles, []]
@@ -208,6 +207,7 @@ class InputViewModel: ObservableObject {
         selectedPercentage = 0
         selectedPositionIdx = 0
         selectedWindowIdx = 0
+        stepperValue = 2
     }
     
     func resetIndexPath() {
@@ -306,5 +306,15 @@ class InputViewModel: ObservableObject {
                     fatalError()
                 }
             }
+        
+        if let input2 = dict["RSI"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
+        }
         }
 }

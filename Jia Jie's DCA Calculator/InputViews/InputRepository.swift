@@ -128,6 +128,12 @@ struct InputValidation {
             } else {
                 guard percentBB >= percentB else { return false }
             }
+        case (.RSI(period: let period, value: let value), .RSI(period: let period2, value: let value2)):
+            if first.aboveOrBelow == .priceAbove {
+                guard value > value2 else { return false }
+            } else {
+                guard value2 > value else { return false }
+            }
         default:
             break
         }

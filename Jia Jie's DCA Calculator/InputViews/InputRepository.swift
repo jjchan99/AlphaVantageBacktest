@@ -10,7 +10,7 @@ import Foundation
 class InputRepository: ObservableObject {
     
     @Published private(set) var entryTriggers: [String: EvaluationCondition] = [:] { didSet {
-        Log.queue(action: "set entry triggers")
+        print(entryTriggers)
     }}
     
     @Published private(set) var entryTrade: [String: EvaluationCondition] = [:]

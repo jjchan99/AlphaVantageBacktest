@@ -20,8 +20,12 @@ struct PopupView: View {
     }
     
     @ViewBuilder func rsiBody() -> some View {
+        VStack {
+        Slider(value: $vm.selectedPercentage, in: 0...1)
+        Text("\(vm.selectedPercentage * 100, specifier: "%.0f")%")
         Stepper("Period: \(vm.stepperValue)", value: $vm.stepperValue, in: 2...14)
             .padding()
+        }
     }
 
     @ViewBuilder func formBottomHalf() -> some View {

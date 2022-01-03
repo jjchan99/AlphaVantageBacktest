@@ -21,10 +21,10 @@ class InputViewModel: ObservableObject {
     
     //MARK: - INPUT STATES
     @Published var section: Int = 0 { didSet {
-//        Log.queue(action: "section: \(section)")
+        Log.queue(action: "section: \(section)")
     }}
     @Published var index: Int = 0 { didSet {
-//        Log.queue(action: "index: \(index)")
+        Log.queue(action: "index: \(index)")
     }}
     
     @Published var selectedWindowIdx: Int = 0 { didSet {
@@ -35,6 +35,7 @@ class InputViewModel: ObservableObject {
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
+        print(selectedPercentage)
         validationState = updateValidationState()
     }}
     
@@ -101,7 +102,7 @@ class InputViewModel: ObservableObject {
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
             case 2:
-                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: stepperValue, value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
             default:
                 fatalError()
@@ -133,13 +134,13 @@ class InputViewModel: ObservableObject {
             switch self.index {
             case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                action(condition)
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                action(condition)
             case 2:
-                let condition = EvaluationCondition(technicalIndicator: .RSI(period: window[selectedWindowIdx], value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                validate(condition: condition, action: action)
+                let condition = EvaluationCondition(technicalIndicator: .RSI(period: stepperValue, value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                action(condition)
             default:
                 fatalError()
           
@@ -300,7 +301,7 @@ class InputViewModel: ObservableObject {
                 switch i {
                 case .RSI(period: let period, value: let percentage):
                     selectedPercentage = percentage
-                    selectedWindowIdx = window.firstIndex(of: period)!
+                    stepperValue = period
                 default:
                     fatalError()
                 }

@@ -35,7 +35,6 @@ class InputViewModel: ObservableObject {
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
-        print(selectedPercentage)
         validationState = updateValidationState()
     }}
     
@@ -208,6 +207,7 @@ class InputViewModel: ObservableObject {
         selectedPercentage = 0
         selectedPositionIdx = 0
         selectedWindowIdx = 0
+        stepperValue = 2
     }
     
     func resetIndexPath() {
@@ -306,5 +306,15 @@ class InputViewModel: ObservableObject {
                     fatalError()
                 }
             }
+        
+        if let input2 = dict["RSI"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
+        }
         }
 }

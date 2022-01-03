@@ -20,7 +20,12 @@ struct PopupView: View {
     }
     
     @ViewBuilder func rsiBody() -> some View {
-        Text("HELLO WORLD!!!!")
+        VStack {
+        Slider(value: $vm.selectedPercentage, in: 0...1)
+        Text("\(vm.selectedPercentage * 100, specifier: "%.0f")%")
+        Stepper("Period: \(vm.stepperValue)", value: $vm.stepperValue, in: 2...14)
+            .padding()
+        }
     }
 
     @ViewBuilder func formBottomHalf() -> some View {
@@ -80,7 +85,6 @@ struct PopupView: View {
                     Text("200").tag(3)
                 }.pickerStyle(SegmentedPickerStyle())
                 .frame(width: 0.985 * vm.width)
-           formBottomHalf()
         }
     }
     
@@ -88,7 +92,6 @@ struct PopupView: View {
         VStack {
             Slider(value: $vm.selectedPercentage, in: 0...100)
             Text("\(vm.selectedPercentage, specifier: "%.0f")%")
-        formBottomHalf()
         }
     }
     
@@ -130,6 +133,7 @@ struct PopupView: View {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
                 form()
+                formBottomHalf()
                 Spacer()
 
                 }

@@ -85,8 +85,8 @@ struct TradeBotAlgorithm {
     // Alternative: Compare most recent open to most recent open, buy on most recent close. (Change indicator parameter as 'open'). Again, slight advantage is recency. (Recency of indicator value from previous to most recent).
     static func getInputValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
-        case .movingAverage:
-            return element.movingAverage as! T?
+        case .movingAverage(let period):
+            return element.movingAverage[period] as! T?
         case .RSI:
             return element.RSI as! T?
         case .bollingerBands:
@@ -104,8 +104,8 @@ struct TradeBotAlgorithm {
     //MARK: INDICATOR VALUE IS ALWAYS PREVIOUS
     static func getIndicatorValue<T: Comparable>(i: TechnicalIndicators, element: OHLCCloudElement) -> T? {
         switch i {
-        case .movingAverage:
-            return element.movingAverage as! T?
+        case .movingAverage(let period):
+            return element.movingAverage[period] as! T?
         case let .RSI(period: _, value: value):
             return value * 100 as! T?
         case let .bollingerBands(percentage: b):

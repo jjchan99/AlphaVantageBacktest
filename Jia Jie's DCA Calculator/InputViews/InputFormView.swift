@@ -59,7 +59,7 @@ struct InputFormView: View {
                                 .navigationTitle("Entry Trigger")
                         } label: {
                             HStack {
-                            Image(systemName: "plus.circle")
+                            Image(systemName: "plus")
                             Text("Add entry trigger")
                             }
                         }
@@ -95,7 +95,7 @@ struct InputFormView: View {
                                 .navigationTitle("Trade Condition")
                         } label: {
                             HStack {
-                            Image(systemName: "plus.circle")
+                            Image(systemName: "plus")
                             Text("Add trade condition")
                             }
                         }

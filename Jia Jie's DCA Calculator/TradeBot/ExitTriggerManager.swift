@@ -11,36 +11,21 @@ import Combine
 struct ExitTriggerManager {
     static var subs = Set<AnyCancellable>()
     
-    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot, backtest: Bool = false, completion: @escaping () -> Void) -> EvaluationCondition {
+    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot) -> EvaluationCondition {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
         let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
-//        conditions.append(exitTrigger)
-        if !backtest {
-        CloudKitUtility.saveChild(child: exitTrigger, for: tb) { success in
-            completion()
-        }
-        }
         
         return exitTrigger
     }
     
-    static func resetOrExitTrigger(tb: TradeBot, backtest: Bool = false, completion: @escaping () -> Void) -> [EvaluationCondition] {
+    static func resetOrExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
         var copy = tb.conditions
         for (index, condition) in tb.conditions.enumerated() {
                 guard condition.enterOrExit == .exit else { continue }
                 switch condition.technicalIndicator {
                 case .exitTrigger:
-                    if !backtest {
-                    CloudKitUtility.delete(item: condition)
-                        .sink { _ in
-                            
-                        } receiveValue: { success in
-                            completion()
-                        }
-                        .store(in: &subs)
-                    }
                     copy.remove(at: index)
                 default:
                     break
@@ -49,7 +34,7 @@ struct ExitTriggerManager {
         return copy
     }
     
-    static func resetAndExitTrigger(tb: TradeBot, backtest: Bool = false, completion: @escaping () -> Void) -> [EvaluationCondition] {
+    static func resetAndExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
         var copy = tb.conditions
         let group = DispatchGroup()
         for (outerIndex, conditions) in tb.conditions.enumerated() {
@@ -58,15 +43,7 @@ struct ExitTriggerManager {
                 switch andConditions.technicalIndicator {
                 case .exitTrigger:
                     group.enter()
-                    let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
-                
-                if !backtest {
-                let record = andConditions.update(newCondition: exitTrigger)
-                CloudKitUtility.update(item: record) { success in
-                    print("Reset and exit trigger")
-                    group.leave()
-                }
-                }
+            
                     
                     copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: 99999999)
                 default:
@@ -74,41 +51,25 @@ struct ExitTriggerManager {
             }
             }
         }
-        group.notify(queue: .global()) {
-            completion()
-        }
-        
+      
         return copy
     }
     
     
-    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot, backtest: Bool = false, completion: @escaping () -> Void) -> [EvaluationCondition] {
+    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot) -> [EvaluationCondition] {
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
-        let group = DispatchGroup()
+     
         var copy = tb.conditions
         
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.enterOrExit == .exit else { continue }
 //            conditions.andCondition.append(exitTrigger)
             for (index, andConditions) in conditions.andCondition.enumerated() where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
-                let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
-                
-                
-                if !backtest {
-                group.enter()
-                let record = andConditions.update(newCondition: exitTrigger)
-                 CloudKitUtility.update(item: record) { success in
-                    group.leave()
-                } }
-                
+        
                 copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: Int(withoutNoise)!)
             }
-        }
-        
-        group.notify(queue: .global()) {
-            completion()
         }
         
         return copy

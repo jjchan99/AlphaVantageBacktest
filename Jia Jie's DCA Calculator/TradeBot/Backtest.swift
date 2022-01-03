@@ -10,7 +10,7 @@ import Foundation
 struct Backtest {
     
     static func from(date: String, daily: Daily, bot: TradeBot) {
-        let technicalManager = OHLCTechnicalManager(window: 200)
+        let technicalManager = OHLCTechnicalManager()
         var bot = bot
         var value = daily
         let sorted = value.sorted!
@@ -21,9 +21,7 @@ struct Backtest {
             let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
             
             if previous != nil && sorted[idx].key > date {
-                bot.evaluate(previous: previous!, latest: OHLC) { success in
-
-                }
+                bot.evaluate(previous: previous!, latest: OHLC) { _ in }
             }
             
             previous = OHLC

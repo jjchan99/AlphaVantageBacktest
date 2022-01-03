@@ -8,16 +8,8 @@
 import Foundation
 class OHLCTechnicalManager {
     
-    let window: Int
-    
-    init(window: Int) {
-        self.window = window
-        self.movingAverageCalculator = .init(window: window)
-        self.bollingerBandsCalculator = .init(window: window)
-    }
-    
-    var movingAverageCalculator: SimpleMovingAverageCalculator
-    var bollingerBandsCalculator: BollingerBandCalculator
+    var movingAverageCalculator: [Int: SimpleMovingAverageCalculator] = [20: SimpleMovingAverageCalculator(window: 20), 50: SimpleMovingAverageCalculator(window: 50), 100: SimpleMovingAverageCalculator(window: 100), 200: SimpleMovingAverageCalculator(window: 200)]
+    var bollingerBandsCalculator = BollingerBandCalculator(window: 20)
     var rsiCalculator: RSICalculator?
     
     func addOHLCCloudElement(key: String, value: TimeSeriesDaily) -> OHLCCloudElement {
@@ -30,8 +22,16 @@ class OHLCTechnicalManager {
         
         
         //MARK: TECHNICAL INDICATORS
-        if rsiCalculator == nil { rsiCalculator = .init(period: 14, indexData: close) }
-        let movingAverage = movingAverageCalculator.generate(indexData: close)
+        if rsiCalculator == nil {
+            rsiCalculator = .init(period: 14, indexData: close)
+        }
+        
+        var movingAverage = [Int: Double]()
+        movingAverage[20] = movingAverageCalculator[20]!.generate(indexData: close)
+        movingAverage[50] = movingAverageCalculator[50]!.generate(indexData: close)
+        movingAverage[100] = movingAverageCalculator[100]!.generate(indexData: close)
+        movingAverage[200] = movingAverageCalculator[200]!.generate(indexData: close)
+        
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
         let rsi = rsiCalculator!.generate(indexData: close)
         

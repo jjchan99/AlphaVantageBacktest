@@ -43,7 +43,7 @@ class GraphManager: NSObject, OHLCManager, Coordinator {
     }
     
     let sorted: [(key: String, value: TimeSeriesDaily)]
-    let technicalManager = OHLCTechnicalManager(window: 200)
+    let technicalManager = OHLCTechnicalManager()
     let statisticsManager = OHLCStatisticsManager()
     
     var OHLCDataForRelevantPeriod: [CandleMode: [OHLCCloudElement]] = {
@@ -183,7 +183,7 @@ class OHLCStatisticsManager {
         case .low:
             return value.low
         case .movingAverage:
-            return value.movingAverage
+            return value.movingAverage[200]
         case .RSI:
             return value.RSI
         case .upperBollingerBand:

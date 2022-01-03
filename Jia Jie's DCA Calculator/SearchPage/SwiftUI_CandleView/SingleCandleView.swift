@@ -58,7 +58,7 @@ struct SingleCandleView: View {
                     Text("low: \(candles[idx!].data.low)")
                     Text("close: \(candles[idx!].data.close)")
                     Text("change: \(candles[idx!].data.percentageChange ?? 0)")
-                    Text("movingAverage: \(candles[idx!].data.movingAverage)")
+                    Text("movingAverage: \(candles[idx!].data.movingAverage[200]!)")
                     }
                 }
             }

@@ -17,7 +17,7 @@ struct OHLCCloudElement {
  
     let percentageChange: Double?
     let RSI: Double?
-    let movingAverage: Double
+    let movingAverage: [Int: Double] 
     let standardDeviation: Double?
     let upperBollingerBand: Double?
     let lowerBollingerBand: Double?

@@ -13,7 +13,7 @@ class FetchLatest {
     
     
     static func update(completion: @escaping (TradeBot) -> Void) {
-        let technicalManager = OHLCTechnicalManager(window: 200)
+        let technicalManager = OHLCTechnicalManager()
         let group = DispatchGroup()
         var value: Daily!
         var bot: TradeBot! 

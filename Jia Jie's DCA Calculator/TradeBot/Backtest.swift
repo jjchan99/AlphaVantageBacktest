@@ -10,7 +10,7 @@ import Foundation
 struct Backtest {
     
     static func from(date: String, daily: Daily, bot: TradeBot) {
-        let technicalManager = OHLCTechnicalManager(window: 200)
+        let technicalManager = OHLCTechnicalManager()
         var bot = bot
         var value = daily
         let sorted = value.sorted!

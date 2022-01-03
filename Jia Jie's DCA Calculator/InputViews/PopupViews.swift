@@ -91,8 +91,6 @@ struct PopupView: View {
             .buttonStyle(.borderedProminent)
         Button("Set") {
             vm.actionOnSet()
-            vm.resetInputs()
-            vm.resetIndexPath()
             self.presentationMode.wrappedValue.dismiss()
             self.shouldPopToRootView = false
         }

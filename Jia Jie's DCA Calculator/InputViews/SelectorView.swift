@@ -82,9 +82,9 @@ struct SelectorView: View {
             Text(vm.entry ? "" : "Custom targets")
         }
     }
-                .onAppear {
-                    vm.selectedDictIndex = selectedDictIndex
-                }
+        .onAppear {
+            vm.selectedDictIndex = selectedDictIndex
+        }
     }
     
 }

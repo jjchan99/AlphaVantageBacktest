@@ -52,7 +52,7 @@ class InputViewModel: ObservableObject {
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
-    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Automatically close a position after x days"]
+    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Number of days to close a position when entry is triggered"]
     
     var entryTitleFrame: [[String]] {
         return [titles, []]

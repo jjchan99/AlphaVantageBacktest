@@ -7,10 +7,12 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct PopupView: View {
     @Binding var shouldPopToRootView : Bool
     @EnvironmentObject var vm: InputViewModel
+    @State var hideButton: Bool = false
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -27,6 +29,36 @@ struct PopupView: View {
             .padding()
         }
     }
+    
+    @ViewBuilder func holdingPeriodBody() -> some View {
+        Form {
+        Section {
+        TextField("Enter number of days", text: Binding(
+            get: { String(vm.stepperValue) },
+            set: { vm.stepperValue = Int($0) ?? 0 }
+        ))
+                .textFieldStyle(.plain)
+            .frame(width: 0.2 * Dimensions.width)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    HStack {
+                    Button {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    } label: {
+                        Text("Done")
+                    }
+                    Spacer()
+                    }
+                }
+            }
+            .keyboardType(.numberPad)
+            .padding()
+        } header: {
+            Text("Enter number of days")
+        }
+        }
+        }
+    
 
     @ViewBuilder func formBottomHalf() -> some View {
         HStack {
@@ -50,6 +82,7 @@ struct PopupView: View {
         }
         Spacer()
         HStack {
+            if !hideButton {
             Button("Cancel") {
                 vm.resetInputs()
                 vm.resetIndexPath()
@@ -65,7 +98,7 @@ struct PopupView: View {
         }
         .buttonStyle(.borderedProminent)
         .disabled(!vm.validationState)
-            
+            }
            
         
         }
@@ -116,7 +149,7 @@ struct PopupView: View {
             case 1:
                 movingAverageBody()
             case 2:
-                movingAverageBody()
+                holdingPeriodBody()
             default:
                 fatalError()
             }

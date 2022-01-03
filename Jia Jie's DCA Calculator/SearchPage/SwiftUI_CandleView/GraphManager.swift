@@ -185,7 +185,7 @@ class OHLCStatisticsManager {
         case .movingAverage:
             return value.movingAverage[200]
         case .RSI:
-            return value.RSI
+            return value.RSI[14]
         case .upperBollingerBand:
             return value.upperBollingerBand
         case .lowerBollingerBand:

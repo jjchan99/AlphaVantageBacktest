@@ -10,7 +10,7 @@ class OHLCTechnicalManager {
     
     var movingAverageCalculator: [Int: SimpleMovingAverageCalculator] = [20: SimpleMovingAverageCalculator(window: 20), 50: SimpleMovingAverageCalculator(window: 50), 100: SimpleMovingAverageCalculator(window: 100), 200: SimpleMovingAverageCalculator(window: 200)]
     var bollingerBandsCalculator = BollingerBandCalculator(window: 20)
-    var rsiCalculator: RSICalculator?
+    var rsiCalculator: [Int: RSICalculator] = [:]
     
     func addOHLCCloudElement(key: String, value: TimeSeriesDaily) -> OHLCCloudElement {
         let open = Double(value.open)!
@@ -22,8 +22,10 @@ class OHLCTechnicalManager {
         
         
         //MARK: TECHNICAL INDICATORS
-        if rsiCalculator == nil {
-            rsiCalculator = .init(period: 14, indexData: close)
+        if rsiCalculator.isEmpty {
+            for idx in 2..<15 {
+                rsiCalculator[idx] = .init(period: idx, indexData: close)
+            }
         }
         
         var movingAverage = [Int: Double]()
@@ -33,9 +35,14 @@ class OHLCTechnicalManager {
         movingAverage[200] = movingAverageCalculator[200]!.generate(indexData: close)
         
         let bollingerBand = bollingerBandsCalculator.generate(indexData: close)
-        let rsi = rsiCalculator!.generate(indexData: close)
         
-        let element: OHLCCloudElement = .init(stamp: stamp, open: open, high: high, low: low, close: close, volume: volume, percentageChange: nil, RSI: rsi.relativeStrengthIndex, movingAverage: movingAverage, standardDeviation: bollingerBand.standardDeviation, upperBollingerBand: bollingerBand.upperBollingerBand, lowerBollingerBand: bollingerBand.lowerBollingerBand)
+        var rsi = [Int: Double]()
+        
+        for idx in 2..<15 {
+            rsi[idx] = rsiCalculator[idx]!.generate(indexData: close).relativeStrengthIndex
+        }
+        
+        let element: OHLCCloudElement = .init(stamp: stamp, open: open, high: high, low: low, close: close, volume: volume, percentageChange: nil, RSI: rsi, movingAverage: movingAverage, standardDeviation: bollingerBand.standardDeviation, upperBollingerBand: bollingerBand.upperBollingerBand, lowerBollingerBand: bollingerBand.lowerBollingerBand)
         return element
         
     }

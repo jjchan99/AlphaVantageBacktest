@@ -57,17 +57,17 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     
     var validationMessage: String {
         switch self.technicalIndicator {
-        case .movingAverage(period: let period):
+        case .movingAverage:
             return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator."
         case .bollingerBands(percentage: let percentage):
             return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .RSI(period: let period, value: let value):
+        case .RSI:
             return ""
-        case .stopOrder(value: let value):
+        case .stopOrder:
             return ""
-        case .profitTarget(value: let value):
+        case .profitTarget:
             return ""
-        case .exitTrigger(value: let value):
+        case .exitTrigger:
             return ""
         }
     }

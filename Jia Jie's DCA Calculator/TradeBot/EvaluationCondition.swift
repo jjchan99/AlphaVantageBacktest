@@ -63,7 +63,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
             return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
         case .RSI(_, let percentage):
             return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .stopOrder:
+        case .lossTarget:
             return ""
         case .profitTarget:
             return ""

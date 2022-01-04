@@ -51,8 +51,8 @@ class InputViewModel: ObservableObject {
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
-    let titlesSection2: [String] = ["Profit/Loss Target", "Setup Price", "Define holding period"]
-    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Constrain orders based on a targeted price", "Number of days to close a position when entry is triggered"]
+    let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
+    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Your account's net worth less invested funds", "Number of days to close a position when entry is triggered"]
     
     var entryTitleFrame: [[String]] {
         return [titles, []]

@@ -29,8 +29,8 @@ class InputRepository: ObservableObject {
             return "BB"
         case .RSI:
             return "RSI"
-        case .stopOrder:
-            return "stopOrder"
+        case .lossTarget:
+            return "lossTarget"
         case .exitTrigger:
             return "exitTrigger"
         case .profitTarget:

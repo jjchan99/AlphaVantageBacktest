@@ -110,11 +110,13 @@ struct Account {
     var accumulatedShares: Double
     
     func longProfit(quote: Double, budget: Double) -> Double {
-        (accumulatedShares * quote + cash) - budget
+        let value = (accumulatedShares * quote + cash) - budget
+        return value / budget
     }
     
     func shortProfit(quote: Double, budget: Double) -> Double {
-        (budget - cash) - (accumulatedShares * quote)
+        let value = (budget - cash) - (accumulatedShares * quote)
+        return value / budget
     }
 
     mutating func decrement(_ amount: Double) -> Double {

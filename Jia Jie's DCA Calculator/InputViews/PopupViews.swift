@@ -129,6 +129,14 @@ struct PopupView: View {
         }
     }
     
+    @ViewBuilder func plBody() -> some View {
+        Section {
+            Slider(value: $vm.selectedPercentage, in: 0...100)
+        } header: {
+            Text("Set profit target: \(vm.selectedPercentage, specifier: "%.0f")%")
+        }
+    }
+    
     
     @ViewBuilder func section() -> some View {
         switch vm.section {

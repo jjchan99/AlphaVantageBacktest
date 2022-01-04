@@ -13,7 +13,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
          RSI(period: Int, value: Double),
          lossTarget(value: Double),
          profitTarget(value: Double),
-         exitTrigger(value: Int)
+         exitTrigger(value: Int),
+         movingAverageOperation(period1: Int, period2: Int)
 
     var description: String {
         switch self {
@@ -29,6 +30,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return "exit at profit"
         case .exitTrigger(value: let value):
             return "exit date"
+        case .movingAverageOperation:
+            return ""
         }
     }
     
@@ -47,6 +50,8 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
             return value + 2
         case .exitTrigger(value: let value):
             return Double(value)
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return Double(Int("\(period1)\(period2)")!)
         }
     }
     

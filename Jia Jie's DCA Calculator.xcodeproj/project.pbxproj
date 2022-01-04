@@ -41,6 +41,7 @@
 		1D2CDC612765EBBA000B693D /* ChartLibraryOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */; };
 		1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */; };
 		1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D32802C2701C1AB00C60A6C /* Animations.swift */; };
+		1D34C003278470EA0006C8DA /* MovingAverageOperationDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D34C002278470EA0006C8DA /* MovingAverageOperationDecoder.swift */; };
 		1D351A74277C9D280089E9F2 /* InputRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D351A73277C9D280089E9F2 /* InputRepository.swift */; };
 		1D351A76277CD1020089E9F2 /* InputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D351A75277CD1020089E9F2 /* InputViewModel.swift */; };
 		1D469FA22758AC800073978D /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D469FA12758AC800073978D /* BackgroundView.swift */; };
@@ -172,6 +173,7 @@
 		1D2CDC602765EBBA000B693D /* ChartLibraryOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryOutput.swift; sourceTree = "<group>"; };
 		1D2E4AA42757C7F8002729E4 /* PercentageChangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentageChangeModel.swift; sourceTree = "<group>"; };
 		1D32802C2701C1AB00C60A6C /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
+		1D34C002278470EA0006C8DA /* MovingAverageOperationDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageOperationDecoder.swift; sourceTree = "<group>"; };
 		1D351A73277C9D280089E9F2 /* InputRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRepository.swift; sourceTree = "<group>"; };
 		1D351A75277CD1020089E9F2 /* InputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewModel.swift; sourceTree = "<group>"; };
 		1D469FA12758AC800073978D /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				1DFBD22C2774D0BB00E44F11 /* Backtest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
 				1D273F2A27788DE100B44BFE /* TechnicalIndicators.swift */,
+				1D34C002278470EA0006C8DA /* MovingAverageOperationDecoder.swift */,
 				1DF3B7EE27761EDE00411D0A /* LedgerManager.swift */,
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
 				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
@@ -780,6 +783,7 @@
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,
 				1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */,
+				1D34C003278470EA0006C8DA /* MovingAverageOperationDecoder.swift in Sources */,
 				1DCBBE3F276BA16D0079D5CA /* InputFormView.swift in Sources */,
 				1D1210242736DC2A00B58B67 /* PageViewController.swift in Sources */,
 				1D93493627633A2100D815DE /* NumericProtocol.swift in Sources */,

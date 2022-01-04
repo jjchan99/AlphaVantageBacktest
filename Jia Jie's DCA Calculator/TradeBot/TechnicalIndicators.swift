@@ -64,6 +64,10 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
         case let x where x >= 1000000:
             return .lossTarget(value: rawValue - 1000000)
             
+        case let x where x >= 2020 && x <= 200200:
+            let decoded = MAOperationDecoder.decode(rawValue: rawValue)
+            return .movingAverageOperation(period1: decoded.period1, period2: decoded.period2)
+            
         case let x where x >= 40:
             return .movingAverage(period: Int(rawValue / 2))
             

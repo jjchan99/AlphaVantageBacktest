@@ -35,6 +35,8 @@ class InputRepository: ObservableObject {
             return "exitTrigger"
         case .profitTarget:
             return "profitTarget"
+        case .movingAverageOperation:
+            return "MAOperation"
         }
     }
     

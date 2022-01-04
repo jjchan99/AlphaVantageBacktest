@@ -69,6 +69,8 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
             return ""
         case .exitTrigger:
             return ""
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return ""
         }
     }
 }

@@ -23,6 +23,11 @@ struct TradeBotAlgorithm {
             inputValue = bot.account.longProfit(quote: latest.close, budget: bot.budget)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
+        case .movingAverageOperation:
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
         case .exitTrigger:
             
             var inputValue: String!
@@ -98,6 +103,8 @@ struct TradeBotAlgorithm {
             return nil
         case .exitTrigger:
             return element.stamp as! T?
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return element.movingAverage[period1] as! T?
         }
     }
     
@@ -114,6 +121,8 @@ struct TradeBotAlgorithm {
             return value as! T?
         case .profitTarget(value: let value):
             return value as! T?
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return element.movingAverage[period2] as! T?
         case .exitTrigger(value: let value):
             return DateManager.addNoise(fromString: "\(value)") as! T?
         }

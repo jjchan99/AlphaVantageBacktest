@@ -18,9 +18,14 @@ struct TradeBotAlgorithm {
             inputValue = getInputValue(i: condition.technicalIndicator, element: latest)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
-        case .profitTarget:
+        case .profitTarget, .lossTarget:
             
             inputValue = bot.account.longProfit(quote: latest.close, budget: bot.budget)
+            xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
+            
+        case .movingAverageOperation:
+            
+            inputValue = getInputValue(i: condition.technicalIndicator, element: previous)
             xxx = getIndicatorValue(i: condition.technicalIndicator, element: previous)
             
         case .exitTrigger:
@@ -91,13 +96,15 @@ struct TradeBotAlgorithm {
             return element.RSI as! T?
         case .bollingerBands:
             return element.open as! T?
-        case .stopOrder:
+        case .lossTarget:
             //MARK: INPUT: LATEST OPEN
-            return element.open as! T?
+            return nil
         case .profitTarget:
             return nil
         case .exitTrigger:
             return element.stamp as! T?
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return element.movingAverage[period1] as! T?
         }
     }
     
@@ -110,10 +117,12 @@ struct TradeBotAlgorithm {
             return value * 100 as! T?
         case let .bollingerBands(percentage: b):
             return element.valueAtPercent(percent: b) as! T?
-        case .stopOrder(let value):
+        case .lossTarget(let value):
             return value as! T?
         case .profitTarget(value: let value):
             return value as! T?
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return element.movingAverage[period2] as! T?
         case .exitTrigger(value: let value):
             return DateManager.addNoise(fromString: "\(value)") as! T?
         }

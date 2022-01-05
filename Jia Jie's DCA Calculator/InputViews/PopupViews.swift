@@ -109,20 +109,20 @@ struct PopupView: View {
     }
     
     @ViewBuilder func movingAverageBody() -> some View {
+        Section {
         if selectedTabIndex == 0 {
-            Section {
             Picker("Selected", selection: $vm.selectedWindowIdx) {
                     Text("20").tag(0)
                     Text("50").tag(1)
                     Text("100").tag(2)
                     Text("200").tag(3)
-                }.pickerStyle(SegmentedPickerStyle())
-                .frame(width: 0.985 * vm.width)
-            } header: {
-                Text("Select window")
-            }
+                }
+            .pickerStyle(SegmentedPickerStyle())
         } else {
             Text("Hello world!")
+        }
+        } header: {
+            selectedTabIndex == 0 ? Text("Select Window") : Text("")
         }
     }
     

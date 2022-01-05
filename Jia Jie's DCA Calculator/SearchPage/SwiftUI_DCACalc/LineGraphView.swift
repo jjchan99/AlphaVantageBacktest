@@ -16,7 +16,7 @@ struct LineGraphView: View {
     @State var graphPoints: [CGPoint] = []
     @State var path = Path()
     let g1: Color = Color(#colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1))
-    let g2: Color = Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1))
+    let g2: Color = Color(#colorLiteral(red: 0.9092124074, green: 0.9092124074, blue: 0.9092124074, alpha: 1))
     let g3: Color = Color(#colorLiteral(red: 1, green: 0, blue: 0, alpha: 1))
     @State var area = Path()
     @State var spec: Specifications<Double> = .init(count: 0, type: .line(zero: false), title: "", height: 0, width: 0, padding: 0, max: 0, min: 0)

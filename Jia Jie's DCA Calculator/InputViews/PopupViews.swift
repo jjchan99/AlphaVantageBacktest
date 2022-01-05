@@ -13,6 +13,7 @@ struct PopupView: View {
     @Binding var shouldPopToRootView : Bool
     @EnvironmentObject var vm: InputViewModel
     @State var hideButton: Bool = false
+    @State private var selectedTabIndex: Int = 0
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -108,6 +109,7 @@ struct PopupView: View {
     }
     
     @ViewBuilder func movingAverageBody() -> some View {
+        if selectedTabIndex == 0 {
             Section {
             Picker("Selected", selection: $vm.selectedWindowIdx) {
                     Text("20").tag(0)
@@ -119,6 +121,9 @@ struct PopupView: View {
             } header: {
                 Text("Select window")
             }
+        } else {
+            Text("Hello world!")
+        }
     }
     
     @ViewBuilder func bbBody() -> some View {
@@ -172,9 +177,13 @@ struct PopupView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
+                if vm.section == 0 && vm.index == 0 {
+                SlidingTabView(selection: self.$selectedTabIndex, tabs: ["First", "Second"])
+                }
+                
                 Form {
                 section()
                 sectionBottomHalf()

@@ -120,7 +120,7 @@ struct InputFormView: View {
             .onAppear {
                 vm.entry = true
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
-//                UITableView.appearance().backgroundColor = #colorLiteral(red: 0.9231201485, green: 0.9764705896, blue: 0.8780086591, alpha: 1)
+                UITableView.appearance().backgroundColor = #colorLiteral(red: 0.9586906126, green: 0.9586906126, blue: 0.9586906126, alpha: 1)
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())

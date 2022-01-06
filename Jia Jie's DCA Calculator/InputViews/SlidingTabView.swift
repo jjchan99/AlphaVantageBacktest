@@ -6,7 +6,7 @@ public struct SlidingTabView : View {
     // MARK: Internal State
     
     /// Internal state to keep track of the selection index
-    @State private var selectionState: Int = 0 {
+    @State private var selectionState: Int {
         didSet {
             selection = selectionState
         }
@@ -63,6 +63,8 @@ public struct SlidingTabView : View {
         self.activeTabColor = activeTabColor
         self.selectionBarHeight = selectionBarHeight
         self.selectionBarBackgroundHeight = selectionBarBackgroundHeight
+        
+        self.selectionState = selection.wrappedValue
     }
     
     // MARK: View Construction

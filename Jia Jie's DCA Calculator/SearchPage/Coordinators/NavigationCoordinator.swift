@@ -66,7 +66,7 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
         if let vc = fromViewController as? PageViewController {
             childDidExit(vc.coordinator)
         } else {
-            fatalError()
+            fatalError() //MARK: Fatal Error
         }
     }
     

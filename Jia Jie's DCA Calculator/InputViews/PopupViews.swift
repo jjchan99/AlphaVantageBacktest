@@ -13,6 +13,10 @@ struct PopupView: View {
     @Binding var shouldPopToRootView : Bool
     @EnvironmentObject var vm: InputViewModel
     @State var hideButton: Bool = false
+   
+    
+    
+
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -67,6 +71,23 @@ struct PopupView: View {
         }
         }
     
+    @ViewBuilder func sectionBottomHalfHeader() -> some View {
+        switch vm.selectedTabIndex {
+        case 1:
+        Group {
+          Text("Enter when 1st period crosses") +
+          Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+          Text("2nd period")
+        }
+        default:
+        Group {
+            Text("Enter when ticker") +
+            Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+            Text("indicator")
+        }
+        }
+    }
+    
     @ViewBuilder func sectionBottomHalf() -> some View {
         Section {
     Picker("Selected", selection: $vm.selectedPositionIdx) {
@@ -75,7 +96,7 @@ struct PopupView: View {
     }.pickerStyle(SegmentedPickerStyle())
     .frame(width: 0.985 * vm.width)
         } header: {
-            Text("Enter when the ticker is")
+            sectionBottomHalfHeader()
         } footer: {
             if !vm.validationState {
                 HStack(alignment: .center) {
@@ -108,17 +129,42 @@ struct PopupView: View {
     }
     
     @ViewBuilder func movingAverageBody() -> some View {
-            Section {
+        if vm.selectedTabIndex == 0 {
+        Section {
             Picker("Selected", selection: $vm.selectedWindowIdx) {
                     Text("20").tag(0)
                     Text("50").tag(1)
                     Text("100").tag(2)
                     Text("200").tag(3)
-                }.pickerStyle(SegmentedPickerStyle())
-                .frame(width: 0.985 * vm.width)
+                }
+            .pickerStyle(SegmentedPickerStyle())
+        } header: {
+            Text("Select Period")
+        }
+        } else {
+            Section {
+                Picker("Selected", selection: $vm.selectedWindowIdx) {
+                        Text("20").tag(0)
+                        Text("50").tag(1)
+                        Text("100").tag(2)
+                        Text("200").tag(3)
+                    }
+                .pickerStyle(SegmentedPickerStyle())
             } header: {
-                Text("Select window")
+                Text("Select First Period")
             }
+            Section {
+                Picker("Selected", selection: $vm.anotherSelectedWindowIdx) {
+                        Text("20").tag(0)
+                        Text("50").tag(1)
+                        Text("100").tag(2)
+                        Text("200").tag(3)
+                    }
+                .pickerStyle(SegmentedPickerStyle())
+            } header: {
+                Text("Select Second Period")
+            }
+        }
     }
     
     @ViewBuilder func bbBody() -> some View {
@@ -172,9 +218,13 @@ struct PopupView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
+                if vm.section == 0 && vm.index == 0 {
+                    SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
+                }
+                
                 Form {
                 section()
                 sectionBottomHalf()

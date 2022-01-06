@@ -27,9 +27,16 @@ class InputViewModel: ObservableObject {
         Log.queue(action: "index: \(index)")
     }}
     
+    @Published var selectedTabIndex: Int = 0 
+    
     @Published var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
+    
+    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
+//        Log.queue(action: "selected window: \(selectedWindowIdx)")
+    }}
+    
     @Published var selectedPositionIdx: Int = 0 { didSet {
         validationState = updateValidationState()
     }}
@@ -95,8 +102,16 @@ class InputViewModel: ObservableObject {
         case 0:
             switch self.index {
             case 0:
+                switch selectedTabIndex {
+                case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
+                
+                case 1:
+                   break
+                default:
+                    fatalError()
+                }
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
@@ -132,8 +147,16 @@ class InputViewModel: ObservableObject {
         case 0:
             switch self.index {
             case 0:
+                switch selectedTabIndex {
+                case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 action(condition)
+                case 1:
+                let condition = EvaluationCondition(technicalIndicator: .movingAverageOperation(period1: window[selectedWindowIdx], period2: window[anotherSelectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                action(condition)
+                default:
+                    fatalError()
+                }
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 action(condition)
@@ -183,6 +206,7 @@ class InputViewModel: ObservableObject {
         case "MA":
             section = 0
             index = 0
+            selectedTabIndex = 0
         case "BB":
             section = 0
             index = 1
@@ -198,6 +222,10 @@ class InputViewModel: ObservableObject {
         case "profitTarget":
             section = 1
             index = 2
+        case "MAOperation":
+            section = 0
+            index = 0
+            selectedTabIndex = 1
         default:
             fatalError()
         }
@@ -207,12 +235,14 @@ class InputViewModel: ObservableObject {
         selectedPercentage = 0
         selectedPositionIdx = 0
         selectedWindowIdx = 0
+        anotherSelectedWindowIdx = 0
         stepperValue = 2
     }
     
     func resetIndexPath() {
         section = 0
         index = 0
+        selectedTabIndex = 0
     }
     //MARK: - RESTORATION OPERATIONS
     
@@ -222,7 +252,14 @@ class InputViewModel: ObservableObject {
         case 0:
             switch index {
             case 0:
-                restoreMA(for: dict)
+                switch selectedTabIndex {
+                case 0:
+                    restoreMA(for: dict)
+                case 1:
+                    restoreMACrossover(for: dict)
+                default:
+                    fatalError()
+                }
             case 1:
                 restoreBB(for: dict)
             case 2:
@@ -245,6 +282,30 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
             
+        }
+    }
+    
+    func restoreMACrossover(for dict: InputRepository.Dict) {
+        let dict = repo.get(dict: dict)
+        if let input = dict["MAOperation"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .movingAverageOperation(period1: let period1, period2: let period2):
+                selectedWindowIdx = window.firstIndex(of: period1)!
+                anotherSelectedWindowIdx = window.firstIndex(of: period2)!
+            default:
+                fatalError()
+            }
+        }
+        
+        if let input2 = dict["MAOperation"] {
+            let i = input2.aboveOrBelow
+            switch i {
+            case .priceBelow:
+                selectedPositionIdx = 1
+            case .priceAbove:
+                selectedPositionIdx = 0
+            }
         }
     }
     

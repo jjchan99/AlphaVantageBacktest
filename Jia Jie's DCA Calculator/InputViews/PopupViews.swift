@@ -72,19 +72,28 @@ struct PopupView: View {
         }
     
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
-        switch vm.selectedTabIndex {
-        case 1:
-        Group {
-          Text("Enter when 1st period crosses") +
-          Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
-          Text("2nd period")
-        }
+        switch (vm.section, vm.index) {
+        case (0, 0):
+            switch vm.selectedTabIndex {
+            case 1:
+            Group {
+              Text("Enter when 1st period crosses") +
+              Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+              Text("2nd period")
+            }
+            default:
+            Group {
+                Text("Enter when ticker") +
+                Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+                Text("indicator")
+            }
+            }
         default:
-        Group {
-            Text("Enter when ticker") +
-            Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
-            Text("indicator")
-        }
+            Group {
+                Text("Enter when ticker") +
+                Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+                Text("indicator")
+            }
         }
     }
     

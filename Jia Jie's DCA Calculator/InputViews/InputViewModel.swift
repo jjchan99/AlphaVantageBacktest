@@ -27,9 +27,16 @@ class InputViewModel: ObservableObject {
         Log.queue(action: "index: \(index)")
     }}
     
+    @Published var selectedTabIndex: Int = 0 
+    
     @Published var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
+    
+    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
+//        Log.queue(action: "selected window: \(selectedWindowIdx)")
+    }}
+    
     @Published var selectedPositionIdx: Int = 0 { didSet {
         validationState = updateValidationState()
     }}
@@ -95,8 +102,16 @@ class InputViewModel: ObservableObject {
         case 0:
             switch self.index {
             case 0:
+                switch selectedTabIndex {
+                case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
+                
+                case 1:
+                   break
+                default:
+                    fatalError()
+                }
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 return validate(condition: condition, action: nil)
@@ -132,8 +147,16 @@ class InputViewModel: ObservableObject {
         case 0:
             switch self.index {
             case 0:
+                switch selectedTabIndex {
+                case 0:
                 let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 action(condition)
+                case 1:
+                let condition = EvaluationCondition(technicalIndicator: .movingAverageOperation(period1: window[selectedWindowIdx], period2: window[anotherSelectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
+                action(condition)
+                default:
+                    fatalError()
+                }
             case 1:
                 let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
                 action(condition)

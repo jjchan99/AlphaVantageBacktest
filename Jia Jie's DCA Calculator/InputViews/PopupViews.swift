@@ -15,6 +15,7 @@ struct PopupView: View {
     @State var hideButton: Bool = false
     @State private var selectedTabIndex: Int = 0
 
+
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     init(shouldPopToRootView: Binding<Bool>, entryForm: Bool) {
@@ -76,7 +77,7 @@ struct PopupView: View {
     }.pickerStyle(SegmentedPickerStyle())
     .frame(width: 0.985 * vm.width)
         } header: {
-            Text("Enter when the ticker is")
+            Text("Enter when the ticker is \(vm.selectedPositionIdx == 0 ? "above" : "below") indicator")
         } footer: {
             if !vm.validationState {
                 HStack(alignment: .center) {
@@ -109,8 +110,8 @@ struct PopupView: View {
     }
     
     @ViewBuilder func movingAverageBody() -> some View {
-        Section {
         if selectedTabIndex == 0 {
+        Section {
             Picker("Selected", selection: $vm.selectedWindowIdx) {
                     Text("20").tag(0)
                     Text("50").tag(1)
@@ -118,11 +119,32 @@ struct PopupView: View {
                     Text("200").tag(3)
                 }
             .pickerStyle(SegmentedPickerStyle())
-        } else {
-            Text("Hello world!")
-        }
         } header: {
-            selectedTabIndex == 0 ? Text("Select Window") : Text("")
+            Text("Select Moving Average Period")
+        }
+        } else {
+            Section {
+                Picker("Selected", selection: $vm.selectedWindowIdx) {
+                        Text("20").tag(0)
+                        Text("50").tag(1)
+                        Text("100").tag(2)
+                        Text("200").tag(3)
+                    }
+                .pickerStyle(SegmentedPickerStyle())
+            } header: {
+                Text("Select First Window")
+            }
+            Section {
+                Picker("Selected", selection: $vm.selectedWindowIdx) {
+                        Text("20").tag(0)
+                        Text("50").tag(1)
+                        Text("100").tag(2)
+                        Text("200").tag(3)
+                    }
+                .pickerStyle(SegmentedPickerStyle())
+            } header: {
+                Text("Select Second Window")
+            }
         }
     }
     
@@ -181,7 +203,7 @@ struct PopupView: View {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
                 if vm.section == 0 && vm.index == 0 {
-                SlidingTabView(selection: self.$selectedTabIndex, tabs: ["First", "Second"])
+                SlidingTabView(selection: self.$selectedTabIndex, tabs: ["Singular", "Crossover"])
                 }
                 
                 Form {

@@ -61,6 +61,9 @@
 		1D784B08275A68F600F91392 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D784B07275A68F600F91392 /* CloudKitUtility.swift */; };
 		1D7927A8275B4A3E00DD2E6B /* GraphManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A7275B4A3E00DD2E6B /* GraphManager.swift */; };
 		1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */; };
+		1D79C48727884ACF00DC17CD /* InputState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48627884ACF00DC17CD /* InputState.swift */; };
+		1D79C48927884B4F00DC17CD /* IndexPathState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48827884B4F00DC17CD /* IndexPathState.swift */; };
+		1D79C48B27884BA600DC17CD /* ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48A27884BA600DC17CD /* ValidationState.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -195,6 +198,9 @@
 		1D784B07275A68F600F91392 /* CloudKitUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitUtility.swift; sourceTree = "<group>"; };
 		1D7927A7275B4A3E00DD2E6B /* GraphManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphManager.swift; sourceTree = "<group>"; };
 		1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCCloudElement.swift; sourceTree = "<group>"; };
+		1D79C48627884ACF00DC17CD /* InputState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputState.swift; sourceTree = "<group>"; };
+		1D79C48827884B4F00DC17CD /* IndexPathState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPathState.swift; sourceTree = "<group>"; };
+		1D79C48A27884BA600DC17CD /* ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationState.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -544,6 +550,9 @@
 			isa = PBXGroup;
 			children = (
 				1D351A75277CD1020089E9F2 /* InputViewModel.swift */,
+				1D79C48827884B4F00DC17CD /* IndexPathState.swift */,
+				1D79C48A27884BA600DC17CD /* ValidationState.swift */,
+				1D79C48627884ACF00DC17CD /* InputState.swift */,
 				1D351A73277C9D280089E9F2 /* InputRepository.swift */,
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1DA75DA72780D168006AE390 /* ExitFormView.swift */,
@@ -710,6 +719,7 @@
 				1D1210262736E1F100B58B67 /* FinancialsViewController.swift in Sources */,
 				1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */,
 				1D351A74277C9D280089E9F2 /* InputRepository.swift in Sources */,
+				1D79C48927884B4F00DC17CD /* IndexPathState.swift in Sources */,
 				1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */,
 				1D2B4F2C27667B80001A3B96 /* DragGestureModel.swift in Sources */,
 				1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */,
@@ -727,6 +737,7 @@
 				1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */,
 				1D54094B274815DE004D0501 /* AlgorithmBook.swift in Sources */,
 				1D187F6F2738468500F4B594 /* PieChartRenderer.swift in Sources */,
+				1D79C48727884ACF00DC17CD /* InputState.swift in Sources */,
 				1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */,
 				1D784B04275A4C7600F91392 /* CloudKitViewController.swift in Sources */,
 				1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */,
@@ -737,6 +748,7 @@
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
+				1D79C48B27884BA600DC17CD /* ValidationState.swift in Sources */,
 				1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */,
 				1D8888FF26EF9A28003B43CE /* Logger.swift in Sources */,
 				1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */,

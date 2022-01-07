@@ -14,46 +14,17 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
-    var repo = InputRepository()
     var window: [Int] = [20, 50, 100, 200]
     var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
-   
     
-    //MARK: - INPUT STATES
-    @Published var section: Int = 0 { didSet {
-        Log.queue(action: "section: \(section)")
-    }}
-    @Published var index: Int = 0 { didSet {
-        Log.queue(action: "index: \(index)")
-    }}
-    
-    @Published var selectedTabIndex: Int = 0 
-    
-    @Published var selectedWindowIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected window: \(selectedWindowIdx)")
-    }}
-    
-    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected window: \(selectedWindowIdx)")
-    }}
-    
-    @Published var selectedPositionIdx: Int = 0 { didSet {
-        validationState = updateValidationState()
-    }}
-    @Published var selectedPercentage: Double = 0 { didSet {
-//        Log.queue(action: "selected percentage: \(selectedPercentage)")
-        validationState = updateValidationState()
-    }}
-    
-    @Published var stepperValue: Int = 2
-    
-    @Published var selectedDictIndex: Int = 0
+    //MARK: - STATE CONTAINERS
+    var repo = InputRepository()
+    var inputState = InputState()
+    var indexPathState = IndexPathState()
+    var validationState = ValidationState()
     
     @Published var entry: Bool = true
     
-    @Published var validationState: Bool = true
-    
-    @Published var validationMessage: String = ""
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
@@ -76,9 +47,11 @@ class InputViewModel: ObservableObject {
     var exitDescriptionFrame: [[String]] {
         return [description, descriptionSection2]
     }
+   
     
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
+        
         let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
         let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
         
@@ -92,15 +65,23 @@ class InputViewModel: ObservableObject {
             }
             return true
         default:
-            validationMessage = previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage
+            validationState.validationMessage = previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage
             return false
         }
     }
     
     func updateValidationState() -> Bool {
+        let section = indexPathState.section
+        let index = indexPathState.index
+        let selectedTabIndex = indexPathState.selectedTabIndex
+        let selectedWindowIdx = inputState.selectedWindowIdx
+        let selectedPositionIdx = inputState.selectedPositionIdx
+        let selectedPercentage = inputState.selectedPercentage
+        let stepperValue = inputState.stepperValue
+        
         switch section {
         case 0:
-            switch self.index {
+            switch index {
             case 0:
                 switch selectedTabIndex {
                 case 0:
@@ -123,7 +104,7 @@ class InputViewModel: ObservableObject {
           
             }
         case 1:
-            switch self.index {
+            switch index {
             case 0:
                 break
             case 1:
@@ -136,16 +117,26 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
-        return validationState
+       
     }
     
     func actionOnSet() {
+        let selectedDictIndex = indexPathState.selectedDictIndex
+        let section = indexPathState.section
+        let index = indexPathState.index
+        let selectedPositionIdx = inputState.selectedPositionIdx
+        let selectedTabIndex = indexPathState.selectedTabIndex
+        let selectedWindowIdx = inputState.selectedWindowIdx
+        let selectedPercentage = inputState.selectedPercentage
+        let anotherSelectedWindowIdx = inputState.anotherSelectedWindowIdx
+        let stepperValue = inputState.stepperValue
+        
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         let action = repo.getAction(dict: dict)
         
         switch section {
         case 0:
-            switch self.index {
+            switch index {
             case 0:
                 switch selectedTabIndex {
                 case 0:
@@ -168,7 +159,7 @@ class InputViewModel: ObservableObject {
           
             }
         case 1:
-            switch self.index {
+            switch index {
             case 0:
                 break
             case 1:
@@ -198,6 +189,7 @@ class InputViewModel: ObservableObject {
                 .addCondition(condition)
         }
     }
+
     
     func restoreIndexPath(condition: EvaluationCondition?) {
         guard let condition = condition else { return }

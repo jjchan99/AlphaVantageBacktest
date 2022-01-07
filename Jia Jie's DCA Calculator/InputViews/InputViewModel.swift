@@ -65,7 +65,7 @@ class InputViewModel: ObservableObject {
             }
             return true
         default:
-            validationState.validationMessage = previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage
+            validationState.set(validationMessage: previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage)
             return false
         }
     }
@@ -117,7 +117,7 @@ class InputViewModel: ObservableObject {
         default:
             fatalError()
         }
-       
+        fatalError()
     }
     
     func actionOnSet() {
@@ -196,49 +196,38 @@ class InputViewModel: ObservableObject {
         let key = repo.getKey(for: condition)
         switch key {
         case "MA":
-            section = 0
-            index = 0
-            selectedTabIndex = 0
+            indexPathState.set(section: 0, index: 0, selectedTabIndex: 0)
         case "BB":
-            section = 0
-            index = 1
+            indexPathState.set(section: 0, index: 1)
         case "RSI":
-            section = 0
-            index = 2
+            indexPathState.set(section: 0, index: 2)
         case "stopOrder":
-            section = 1
-            index = 0
+            indexPathState.set(section: 1, index: 0)
         case "exitTrigger":
-            section = 1
-            index = 1
+            indexPathState.set(section: 1, index: 1)
         case "profitTarget":
-            section = 1
-            index = 2
+            indexPathState.set(section: 1, index: 2)
         case "MAOperation":
-            section = 0
-            index = 0
-            selectedTabIndex = 1
+            indexPathState.set(section: 0, index: 0, selectedTabIndex: 1)
         default:
             fatalError()
         }
     }
     
     func resetInputs() {
-        selectedPercentage = 0
-        selectedPositionIdx = 0
-        selectedWindowIdx = 0
-        anotherSelectedWindowIdx = 0
-        stepperValue = 2
+        inputState.reset()
     }
     
     func resetIndexPath() {
-        section = 0
-        index = 0
-        selectedTabIndex = 0
+        indexPathState.reset()
     }
     //MARK: - RESTORATION OPERATIONS
     
     func restoreInputs() {
+        let selectedDictIndex = indexPathState.selectedDictIndex
+        let section = indexPathState.section
+        let selectedTabIndex = indexPathState.selectedTabIndex
+        let index = indexPathState.index
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         switch section {
         case 0:
@@ -283,8 +272,7 @@ class InputViewModel: ObservableObject {
             let i = input.technicalIndicator
             switch i {
             case .movingAverageOperation(period1: let period1, period2: let period2):
-                selectedWindowIdx = window.firstIndex(of: period1)!
-                anotherSelectedWindowIdx = window.firstIndex(of: period2)!
+                inputState.set(selectedWindowIdx: window.firstIndex(of: period1)!, anotherSelectedWindowIdx: window.firstIndex(of: period2)!)
             default:
                 fatalError()
             }
@@ -294,9 +282,11 @@ class InputViewModel: ObservableObject {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
-                selectedPositionIdx = 1
+                inputState.set(selectedPositionIdx: 1)
+            
             case .priceAbove:
-                selectedPositionIdx = 0
+                inputState.set(selectedPositionIdx: 0)
+              
             }
         }
     }
@@ -307,7 +297,7 @@ class InputViewModel: ObservableObject {
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
-                selectedWindowIdx = window.firstIndex(of: period)!
+                inputState.set(selectedWindowIdx: window.firstIndex(of: period)!)
             default:
                 fatalError()
             }
@@ -317,9 +307,9 @@ class InputViewModel: ObservableObject {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
-                selectedPositionIdx = 1
+                inputState.set(selectedPositionIdx: 1)
             case .priceAbove:
-                selectedPositionIdx = 0
+                inputState.set(selectedPositionIdx: 0)
             }
         }
     }
@@ -330,7 +320,7 @@ class InputViewModel: ObservableObject {
             let i = input.technicalIndicator
             switch i {
             case .bollingerBands(percentage: let percentage):
-                selectedPercentage = percentage * 100
+                inputState.set(selectedPercentage: percentage * 100)
             default:
                 fatalError()
             }
@@ -340,9 +330,9 @@ class InputViewModel: ObservableObject {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
-                selectedPositionIdx = 1
+                inputState.set(selectedPositionIdx: 1)
             case .priceAbove:
-                selectedPositionIdx = 0
+                inputState.set(selectedPositionIdx: 0)
             }
         }
     }
@@ -353,8 +343,7 @@ class InputViewModel: ObservableObject {
                 let i = input.technicalIndicator
                 switch i {
                 case .RSI(period: let period, value: let percentage):
-                    selectedPercentage = percentage
-                    stepperValue = period
+                    inputState.set(selectedPercentage: percentage, stepperValue: period)
                 default:
                     fatalError()
                 }
@@ -364,9 +353,9 @@ class InputViewModel: ObservableObject {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:
-                selectedPositionIdx = 1
+                inputState.set(selectedPositionIdx: 1)
             case .priceAbove:
-                selectedPositionIdx = 0
+                inputState.set(selectedPositionIdx: 0)
             }
         }
         }

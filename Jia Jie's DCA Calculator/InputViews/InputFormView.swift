@@ -37,7 +37,6 @@ struct InputFormView: View {
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.indexPathState.set(selectedDictIndex: 0)
                                     vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
                                     vm.restoreInputs()
                                     isPresented = true
@@ -74,7 +73,6 @@ struct InputFormView: View {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
-                                    vm.indexPathState.set(selectedDictIndex: 1)
                                     vm.restoreIndexPath(condition: vm.repo.entryTrade[key])
                                     vm.restoreInputs()
                                     isPresented = true

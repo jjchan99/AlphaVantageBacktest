@@ -360,3 +360,11 @@ class InputViewModel: ObservableObject {
         }
         }
 }
+
+//protocol IndexPathState {
+//    
+//}
+//
+//class MA: IndexPathState {
+//    
+//}

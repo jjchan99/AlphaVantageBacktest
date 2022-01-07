@@ -12,7 +12,7 @@ struct SelectorView: View {
     @State private var isPresented: Bool = false
     @Binding var rootIsActive : Bool
     var selectedDictIndex: Int
-   
+    
     
     init(rootIsActive: Binding<Bool>, selectedDictIndex: Int) {
         self._rootIsActive = rootIsActive
@@ -25,8 +25,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[0].count : 0..<vm.exitTitleFrame[0].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
-                    vm.section = 0
-                    vm.index = idx
+                    vm.indexPathState.set(section: 0, index: idx)
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -55,8 +54,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[1].count : 0..<vm.exitTitleFrame[1].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
-                    vm.section = 1
-                    vm.index = idx
+                    vm.indexPathState.set(section: 1, index: idx)
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -83,7 +81,7 @@ struct SelectorView: View {
         }
     }
         .onAppear {
-            vm.selectedDictIndex = selectedDictIndex
+            vm.indexPathState.set(selectedDictIndex: selectedDictIndex)
         }
     }
     

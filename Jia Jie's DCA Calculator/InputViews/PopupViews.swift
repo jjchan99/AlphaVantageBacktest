@@ -28,7 +28,7 @@ struct PopupView: View {
     @ViewBuilder func rsiBody() -> some View {
         Section {
             
-        Slider(value: $vm.selectedPercentage, in: 0...1)
+            Slider(value: $vm.inputState.selectedPercentage, in: 0...1)
       
         } header: {
         Text("RSI threshold: \(vm.selectedPercentage * 100, specifier: "%.0f")%")

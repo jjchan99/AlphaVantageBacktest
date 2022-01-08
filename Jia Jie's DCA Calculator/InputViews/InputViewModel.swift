@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class InputViewModel<State: IdxPathState>: ObservableObject {
+class InputViewModel: ObservableObject {
     var factory = BotFactory() { didSet { print("Factory set: \(factory.evaluationConditions)")}}
     let symbol: String = "TSLA"
     let width: CGFloat = .init(375).wScaled()
@@ -18,11 +18,11 @@ class InputViewModel<State: IdxPathState>: ObservableObject {
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
     var inputState = InputState()
-    var indexPathState: State!
+    var indexPathState: State<Any>!
     var validationState = ValidationState()
     
-    private func transitionState(state: State) {
-        self.indexPathState = state
+    private func transitionState<State: IdxPathState>(state: State) {
+        self.indexPathState = state.environmentObject(self)
     }
     
     @Published var entry: Bool = true

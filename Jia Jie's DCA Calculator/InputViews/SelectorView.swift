@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 struct SelectorView: View {
-    @EnvironmentObject var vm: InputViewModel<MA>
+    @EnvironmentObject var vm: InputViewModel
     @State private var isPresented: Bool = false
     @Binding var rootIsActive : Bool
     var selectedDictIndex: Int

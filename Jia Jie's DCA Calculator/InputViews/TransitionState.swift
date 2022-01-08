@@ -13,7 +13,7 @@ protocol IdxPathState: View {
 }
 
 struct MA: IdxPathState {
-    @EnvironmentObject var context: InputViewModel<MA>
+    @EnvironmentObject var context: InputViewModel
     
     let title: String = "Moving Average"
     
@@ -69,7 +69,7 @@ struct MA: IdxPathState {
 }
 
 struct MACrossover: IdxPathState {
-    @EnvironmentObject var context: InputViewModel<MACrossover>
+    @EnvironmentObject var context: InputViewModel
     
     let title: String = "Moving Average"
     
@@ -139,7 +139,7 @@ struct MACrossover: IdxPathState {
 }
 
 struct BB: IdxPathState {
-    @EnvironmentObject var context: InputViewModel<BB>
+    @EnvironmentObject var context: InputViewModel
     
     let title: String = "Bollinger Bands®"
     
@@ -190,7 +190,7 @@ struct BB: IdxPathState {
 }
 
 struct RSI: IdxPathState {
-    @EnvironmentObject var context: InputViewModel<RSI>
+    @EnvironmentObject var context: InputViewModel
     
     let title: String = "Relative Strength Index"
     

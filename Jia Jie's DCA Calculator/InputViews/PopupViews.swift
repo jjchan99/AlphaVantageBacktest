@@ -11,7 +11,7 @@ import Combine
 
 struct PopupView: View {
     @Binding var shouldPopToRootView : Bool
-    @EnvironmentObject var vm: InputViewModel<MA>
+    @EnvironmentObject var vm: InputViewModel
     @State var hideButton: Bool = false
    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>

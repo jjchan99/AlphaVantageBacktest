@@ -12,23 +12,26 @@ class InputState: ObservableObject {
     private static var window: [Int] = [20, 50, 100, 200]
     private static var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
-    @Published var selectedWindowIdx: Int = 0 { didSet {
+    var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        print("DO SOMETHING ABOUT IT! \(selectedWindowIdx)")
     }}
     
-    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
+    var anotherSelectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        print("DO SOMETHING ABOUT IT! \(anotherSelectedWindowIdx)")
     }}
     
-    @Published var selectedPositionIdx: Int = 0 { didSet {
+    var selectedPositionIdx: Int = 0 { didSet {
 //        validationState = updateValidationState()
+        print("DO SOMETHING ABOUT IT! \(selectedPositionIdx)")
     }}
-    @Published var selectedPercentage: Double = 0 { didSet {
+    var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
 //        validationState = updateValidationState()
     }}
     
-    @Published var stepperValue: Int = 2
+    var stepperValue: Int = 2
     
     func getWindow() -> Int {
         return InputState.window[selectedWindowIdx]

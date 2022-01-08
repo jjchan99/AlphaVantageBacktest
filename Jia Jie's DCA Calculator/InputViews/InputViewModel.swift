@@ -17,9 +17,9 @@ class InputViewModel: ObservableObject {
     
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
-    var inputState = InputState()
+    @Published var inputState = InputState()
     var indexPathState: IdxPathState!
-    var validationState = ValidationState()
+    @Published var validationState = ValidationState()
     
     private func transitionState(state: IdxPathState) {
         self.indexPathState = state

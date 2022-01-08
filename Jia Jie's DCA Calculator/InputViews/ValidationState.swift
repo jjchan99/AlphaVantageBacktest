@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class ValidationState: ObservableObject {
-    @Published private(set) var validationState: Bool = true
+    private(set) var validationState: Bool = true
     
-    @Published private(set)var validationMessage: String = ""
+    private(set)var validationMessage: String = ""
     
     func set(validationState: Bool? = nil, validationMessage: String? = nil) {
         if let validationState = validationState {

@@ -113,7 +113,7 @@ struct PopupView: View {
             .navigationBarTitleDisplayMode(.inline)
             
         }
-        .onAppear {
+        .onDisappear {
             if entryForm {
                 vm.resetInputs()
             }

@@ -129,7 +129,6 @@ class MACrossover: IdxPathState {
     }
     
     struct v: View {
-        
     @EnvironmentObject var context: InputViewModel
     var body: some View {
         Section {

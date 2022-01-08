@@ -32,7 +32,15 @@ class InputViewModel: ObservableObject {
     
     @Published var entry: Bool = true
     @Published var selectedDictIndex: Int = 0
-    @Published var selectedTabIndex: Int = 0
+    @Published var selectedTabIndex: Int = 0 { willSet {
+        if newValue == 1 {
+            transitionState(key: "MAOperation")
+        } else if newValue == 0 {
+            transitionState(key: "MA")
+        } else {
+            fatalError()
+        }
+    }}
     
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]

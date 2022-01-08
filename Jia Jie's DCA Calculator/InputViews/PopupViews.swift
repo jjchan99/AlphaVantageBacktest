@@ -95,11 +95,9 @@ struct PopupView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-//                Slider(value: $percentB, in: 0...100)
-//                Text("\(percentB, specifier: "%.1f")")
-//                if vm.section == 0 && vm.index == 0 {
-//                    SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
-//                }
+                if vm.indexPathState as? MA != nil || vm.indexPathState as? MACrossover != nil {
+                    SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
+                }
                 
                 Form {
                 vm.indexPathState.body()

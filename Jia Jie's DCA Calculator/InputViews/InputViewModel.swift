@@ -14,48 +14,38 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
+    
+    //MARK: - STATE CONTAINERS
     var repo = InputRepository()
-    var window: [Int] = [20, 50, 100, 200]
-    var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
-   
+    @Published var inputState = InputState()
+    var indexPathState: IdxPathState!
+    @Published var validationState = ValidationState()
     
-    //MARK: - INPUT STATES
-    @Published var section: Int = 0 { didSet {
-        Log.queue(action: "section: \(section)")
-    }}
-    @Published var index: Int = 0 { didSet {
-        Log.queue(action: "index: \(index)")
-    }}
+    private func transitionState(state: IdxPathState) {
+        self.indexPathState = state
+        state.setContext(context: self)
+    }
     
-    @Published var selectedTabIndex: Int = 0 
-    
-    @Published var selectedWindowIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected window: \(selectedWindowIdx)")
-    }}
-    
-    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
-//        Log.queue(action: "selected window: \(selectedWindowIdx)")
-    }}
-    
-    @Published var selectedPositionIdx: Int = 0 { didSet {
-        validationState = updateValidationState()
-    }}
-    @Published var selectedPercentage: Double = 0 { didSet {
-//        Log.queue(action: "selected percentage: \(selectedPercentage)")
-        validationState = updateValidationState()
-    }}
-    
-    @Published var stepperValue: Int = 2
-    
-    @Published var selectedDictIndex: Int = 0
+    init() {
+        print("I'm sticking to my integrity")
+    }
     
     @Published var entry: Bool = true
+    @Published var selectedDictIndex: Int = 0
+    @Published var selectedTabIndex: Int = 0 { willSet {
+        if newValue == 1 {
+            transitionState(key: "MAOperation")
+        } else if newValue == 0 {
+            transitionState(key: "MA")
+        } else {
+            fatalError()
+        }
+    }}
     
-    @Published var validationState: Bool = true
-    
-    @Published var validationMessage: String = ""
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
+    let keysAtSection0: [String] = ["MA", "BB" , "RSI"]
+    let keysAtSection1: [String] = ["PL", "LT" , "HP"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
@@ -76,9 +66,11 @@ class InputViewModel: ObservableObject {
     var exitDescriptionFrame: [[String]] {
         return [description, descriptionSection2]
     }
+   
     
     //MARK: - INDEXPATH OPERATIONS
     func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
+        
         let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
         let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
         
@@ -92,95 +84,21 @@ class InputViewModel: ObservableObject {
             }
             return true
         default:
-            validationMessage = previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage
+            validationState.set(validationMessage: previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage)
             return false
         }
     }
     
     func updateValidationState() -> Bool {
-        switch section {
-        case 0:
-            switch self.index {
-            case 0:
-                switch selectedTabIndex {
-                case 0:
-                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: nil)
-                
-                case 1:
-                   break
-                default:
-                    fatalError()
-                }
-            case 1:
-                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: nil)
-            case 2:
-                let condition = EvaluationCondition(technicalIndicator: .RSI(period: stepperValue, value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                return validate(condition: condition, action: nil)
-            default:
-                fatalError()
-          
-            }
-        case 1:
-            switch self.index {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            default:
-                fatalError()
-            }
-        default:
-            fatalError()
-        }
-        return validationState
+       let condition = indexPathState.getCondition()
+       return validate(condition: condition, action: nil)
     }
     
     func actionOnSet() {
+        let condition = indexPathState.getCondition()
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         let action = repo.getAction(dict: dict)
-        
-        switch section {
-        case 0:
-            switch self.index {
-            case 0:
-                switch selectedTabIndex {
-                case 0:
-                let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: window[selectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                action(condition)
-                case 1:
-                let condition = EvaluationCondition(technicalIndicator: .movingAverageOperation(period1: window[selectedWindowIdx], period2: window[anotherSelectedWindowIdx]), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                action(condition)
-                default:
-                    fatalError()
-                }
-            case 1:
-                let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: selectedPercentage * 0.01), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                action(condition)
-            case 2:
-                let condition = EvaluationCondition(technicalIndicator: .RSI(period: stepperValue, value: selectedPercentage), aboveOrBelow: position[selectedPositionIdx], enterOrExit: .enter, andCondition: [])!
-                action(condition)
-            default:
-                fatalError()
-          
-            }
-        case 1:
-            switch self.index {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            default:
-                fatalError()
-            }
-        default:
-            fatalError()
-        }
+        action(condition)
     }
     
     func compile() {
@@ -199,183 +117,70 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func restoreIndexPath(condition: EvaluationCondition?) {
-        guard let condition = condition else { return }
-        let key = repo.getKey(for: condition)
-        switch key {
-        case "MA":
-            section = 0
-            index = 0
-            selectedTabIndex = 0
-        case "BB":
-            section = 0
-            index = 1
-        case "RSI":
-            section = 0
-            index = 2
-        case "stopOrder":
-            section = 1
-            index = 0
-        case "exitTrigger":
-            section = 1
-            index = 1
-        case "profitTarget":
-            section = 1
-            index = 2
-        case "MAOperation":
-            section = 0
-            index = 0
-            selectedTabIndex = 1
-        default:
-            fatalError()
-        }
-    }
-    
     func resetInputs() {
-        selectedPercentage = 0
-        selectedPositionIdx = 0
-        selectedWindowIdx = 0
-        anotherSelectedWindowIdx = 0
-        stepperValue = 2
-    }
-    
-    func resetIndexPath() {
-        section = 0
-        index = 0
-        selectedTabIndex = 0
+        inputState.reset()
     }
     //MARK: - RESTORATION OPERATIONS
     
     func restoreInputs() {
-        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-        switch section {
-        case 0:
-            switch index {
-            case 0:
-                switch selectedTabIndex {
-                case 0:
-                    restoreMA(for: dict)
-                case 1:
-                    restoreMACrossover(for: dict)
-                default:
-                    fatalError()
-                }
-            case 1:
-                restoreBB(for: dict)
-            case 2:
-                restoreRSI(for: dict)
-            default:
-                fatalError()
-                
-            }
-        case 1:
-            switch index {
-            case 0:
-                break
-            case 1:
-                break
-            case 2:
-                break
-            default:
-                fatalError()
-            }
+        indexPathState.restoreInputs()
+    }
+    
+    func getDict() -> [String: EvaluationCondition] {
+        let dictType = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+        let dict = repo.get(dict: dictType)
+        return dict
+    }
+    
+    func getEnterOrExit() -> EnterOrExit {
+        return entry ? .enter : .exit
+    }
+}
+
+extension InputViewModel {
+    func transitionState(condition: EvaluationCondition?) {
+        guard let condition = condition else { return }
+        let key = repo.getKey(for: condition)
+        switch key {
+        case "MA":
+            transitionState(state: MA())
+        case "BB":
+            transitionState(state: BB())
+        case "RSI":
+            transitionState(state: RSI())
+        case "stopOrder":
+            transitionState(state: MA())
+        case "exitTrigger":
+            transitionState(state: MA())
+        case "profitTarget":
+            transitionState(state: MA())
+        case "MAOperation":
+            transitionState(state: MACrossover())
         default:
             fatalError()
-            
         }
     }
     
-    func restoreMACrossover(for dict: InputRepository.Dict) {
-        let dict = repo.get(dict: dict)
-        if let input = dict["MAOperation"] {
-            let i = input.technicalIndicator
-            switch i {
-            case .movingAverageOperation(period1: let period1, period2: let period2):
-                selectedWindowIdx = window.firstIndex(of: period1)!
-                anotherSelectedWindowIdx = window.firstIndex(of: period2)!
-            default:
-                fatalError()
-            }
-        }
-        
-        if let input2 = dict["MAOperation"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
+    func transitionState(key: String) {
+        switch key {
+        case "MA":
+            transitionState(state: MA())
+        case "BB":
+            transitionState(state: BB())
+        case "RSI":
+            transitionState(state: RSI())
+        case "PL":
+            transitionState(state: MA())
+        case "LT":
+            transitionState(state: MA())
+        case "HP":
+            transitionState(state: HP())
+        case "MAOperation":
+            transitionState(state: MACrossover())
+        default:
+            fatalError()
         }
     }
-    
-    func restoreMA(for dict: InputRepository.Dict) {
-        let dict = repo.get(dict: dict)
-        if let input = dict["MA"] {
-            let i = input.technicalIndicator
-            switch i {
-            case .movingAverage(period: let period):
-                selectedWindowIdx = window.firstIndex(of: period)!
-            default:
-                fatalError()
-            }
-        }
-        
-        if let input2 = dict["MA"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
-        }
-    }
-    
-    func restoreBB(for dict: InputRepository.Dict) {
-        let dict = repo.get(dict: dict)
-        if let input = dict["BB"] {
-            let i = input.technicalIndicator
-            switch i {
-            case .bollingerBands(percentage: let percentage):
-                selectedPercentage = percentage * 100
-            default:
-                fatalError()
-            }
-        }
-        
-        if let input2 = dict["BB"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
-        }
-    }
-        
-    func restoreRSI(for dict: InputRepository.Dict) {
-        let dict = repo.get(dict: dict)
-        if let input = dict["RSI"] {
-                let i = input.technicalIndicator
-                switch i {
-                case .RSI(period: let period, value: let percentage):
-                    selectedPercentage = percentage
-                    stepperValue = period
-                default:
-                    fatalError()
-                }
-            }
-        
-        if let input2 = dict["RSI"] {
-            let i = input2.aboveOrBelow
-            switch i {
-            case .priceBelow:
-                selectedPositionIdx = 1
-            case .priceAbove:
-                selectedPositionIdx = 0
-            }
-        }
-        }
 }
+
+

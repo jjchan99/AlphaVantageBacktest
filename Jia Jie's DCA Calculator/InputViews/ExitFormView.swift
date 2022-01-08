@@ -29,8 +29,7 @@ struct ExitFormView: View {
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.selectedDictIndex = 0
-                                    vm.restoreIndexPath(condition: vm.repo.exitTriggers[key]!)
+                                    vm.transitionState(condition: vm.repo.exitTriggers[key]!)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -66,8 +65,7 @@ struct ExitFormView: View {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
-                                    vm.selectedDictIndex = 1
-                                    vm.restoreIndexPath(condition: vm.repo.exitTrade[key])
+                                    vm.transitionState(condition: vm.repo.exitTrade[key])
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -101,7 +99,6 @@ struct ExitFormView: View {
             }
             .onAppear {
                 vm.resetInputs()
-                vm.resetIndexPath()
                 vm.entry = false
             }
      

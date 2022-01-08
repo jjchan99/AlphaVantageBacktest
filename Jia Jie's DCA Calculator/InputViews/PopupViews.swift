@@ -102,8 +102,7 @@ struct PopupView: View {
 //                }
                 
                 Form {
-                vm.indexPathState.body
-                        .environmentObject(self.vm)
+                vm.indexPathState.body(context: vm)
                 sectionBottomHalf()
                 }
                 setButton()

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct InputFormView: View {
-    @EnvironmentObject var vm: InputViewModel
+    @EnvironmentObject var vm: InputViewModel<MA>
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false

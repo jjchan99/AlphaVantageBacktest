@@ -21,11 +21,11 @@ class InputState: ObservableObject {
     }}
     
     @Published var selectedPositionIdx: Int = 0 { didSet {
-        validationState = updateValidationState()
+//        validationState = updateValidationState()
     }}
     @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
-        validationState = updateValidationState()
+//        validationState = updateValidationState()
     }}
     
     @Published var stepperValue: Int = 2

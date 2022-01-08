@@ -7,14 +7,21 @@
 
 import SwiftUI
 
-protocol IdxPathState: View {
+protocol IdxPathState: AnyObject {
     func getCondition() -> EvaluationCondition
     func restoreInputs()
+    func setContext(context: InputViewModel)
+    var body: AnyView { get }
+    var title: String { get }
 }
 
-struct MA: IdxPathState {
-    @EnvironmentObject var context: InputViewModel
+class MA: IdxPathState {
+    weak var context: InputViewModel!
     
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
+   
     let title: String = "Moving Average"
     
     func getCondition() -> EvaluationCondition {
@@ -43,8 +50,15 @@ struct MA: IdxPathState {
             case .priceAbove:
                 context.inputState.set(selectedPositionIdx: 0)
             }
-     }
+    }
     
+    var body: AnyView {
+        return AnyView(v())
+    }
+    
+    struct v: View {
+    @EnvironmentObject var context: InputViewModel
+        
     var body: some View {
         Section {
             Picker("Selected", selection: $context.inputState.selectedWindowIdx) {
@@ -58,6 +72,7 @@ struct MA: IdxPathState {
             Text("Select Period")
         }
     }
+    }
     
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
         Group {
@@ -66,10 +81,14 @@ struct MA: IdxPathState {
             Text("indicator")
         }
     }
+    
 }
 
-struct MACrossover: IdxPathState {
-    @EnvironmentObject var context: InputViewModel
+class MACrossover: IdxPathState {
+    weak var context: InputViewModel!
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
     
     let title: String = "Moving Average"
     
@@ -104,6 +123,13 @@ struct MACrossover: IdxPathState {
         }
      }
     
+    var body: AnyView {
+        return AnyView(v())
+    }
+    
+    struct v: View {
+        
+    @EnvironmentObject var context: InputViewModel
     var body: some View {
         Section {
             Picker("Selected", selection: $context.inputState.selectedWindowIdx) {
@@ -128,6 +154,7 @@ struct MACrossover: IdxPathState {
             Text("Select Second Period")
         }
     }
+    }
     
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
         Group {
@@ -136,10 +163,14 @@ struct MACrossover: IdxPathState {
           Text("2nd period")
         }
     }
+    
 }
 
-struct BB: IdxPathState {
-    @EnvironmentObject var context: InputViewModel
+class BB: IdxPathState {
+    weak var context: InputViewModel!
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
     
     let title: String = "Bollinger Bands®"
     
@@ -171,13 +202,18 @@ struct BB: IdxPathState {
             }
         }
      }
-    
+    var body: AnyView {
+        return AnyView(v())
+    }
+    struct v: View {
+        @EnvironmentObject var context: InputViewModel
     var body: some View {
         Section {
             Slider(value: $context.inputState.selectedPercentage, in: 0...100)
         } header: {
             Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
         }
+    }
     }
     
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
@@ -187,10 +223,14 @@ struct BB: IdxPathState {
             Text("indicator")
         }
     }
+    
 }
 
-struct RSI: IdxPathState {
-    @EnvironmentObject var context: InputViewModel
+class RSI: IdxPathState {
+    weak var context: InputViewModel!
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
     
     let title: String = "Relative Strength Index"
     
@@ -224,7 +264,11 @@ struct RSI: IdxPathState {
             }
         }
      }
-    
+    var body: AnyView {
+        return AnyView(v())
+    }
+    struct v: View {
+        @EnvironmentObject var context: InputViewModel
     var body: some View {
         Section {
             
@@ -243,6 +287,8 @@ struct RSI: IdxPathState {
             Text("Period: \(context.inputState.stepperValue)")
         }
     }
+    }
+    
     
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
         Group {
@@ -251,6 +297,7 @@ struct RSI: IdxPathState {
             Text("indicator")
         }
     }
+    
 }
 
 

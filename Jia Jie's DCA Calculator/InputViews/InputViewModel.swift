@@ -18,11 +18,12 @@ class InputViewModel: ObservableObject {
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
     var inputState = InputState()
-    var indexPathState: State<Any>!
+    var indexPathState: IdxPathState!
     var validationState = ValidationState()
     
-    private func transitionState<State: IdxPathState>(state: State) {
-        self.indexPathState = state.environmentObject(self)
+    private func transitionState(state: IdxPathState) {
+        self.indexPathState = state
+        state.setContext(context: self)
     }
     
     @Published var entry: Bool = true
@@ -130,19 +131,19 @@ extension InputViewModel {
         let key = repo.getKey(for: condition)
         switch key {
         case "MA":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "BB":
-            transitionState(state: BB() as! State)
+            transitionState(state: BB())
         case "RSI":
-            transitionState(state: RSI() as! State)
+            transitionState(state: RSI())
         case "stopOrder":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "exitTrigger":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "profitTarget":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "MAOperation":
-            transitionState(state: MACrossover() as! State)
+            transitionState(state: MACrossover())
         default:
             fatalError()
         }
@@ -151,19 +152,19 @@ extension InputViewModel {
     func transitionState(key: String) {
         switch key {
         case "MA":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "BB":
-            transitionState(state: BB() as! State)
+            transitionState(state: BB())
         case "RSI":
-            transitionState(state: RSI() as! State)
+            transitionState(state: RSI())
         case "PL":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "LT":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "HP":
-            transitionState(state: MA() as! State)
+            transitionState(state: MA())
         case "MAOperation":
-            transitionState(state: MACrossover() as! State)
+            transitionState(state: MACrossover())
         default:
             fatalError()
         }

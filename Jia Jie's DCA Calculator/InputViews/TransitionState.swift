@@ -12,7 +12,7 @@ protocol IdxPathState: AnyObject {
     func restoreInputs()
     func setContext(context: InputViewModel)
     func sectionBottomHalfHeader() -> AnyView
-    func body(context: InputViewModel) -> AnyView
+    func body() -> AnyView
     var title: String { get }
 }
 
@@ -53,8 +53,8 @@ class MA: IdxPathState {
             }
     }
     
-    func body(context: InputViewModel) -> AnyView {
-        return AnyView(v().environmentObject(context))
+    func body() -> AnyView {
+        return AnyView(v())
     }
     
     struct v: View {
@@ -124,8 +124,8 @@ class MACrossover: IdxPathState {
         }
      }
     
-    func body(context: InputViewModel) -> AnyView {
-        return AnyView(v().environmentObject(context))
+    func body() -> AnyView {
+        return AnyView(v())
     }
     
     struct v: View {
@@ -203,8 +203,8 @@ class BB: IdxPathState {
             }
         }
      }
-    func body(context: InputViewModel) -> AnyView {
-        return AnyView(v().environmentObject(context))
+    func body() -> AnyView {
+        return AnyView(v())
     }
     
     struct v: View {
@@ -266,8 +266,8 @@ class RSI: IdxPathState {
             }
         }
      }
-    func body(context: InputViewModel) -> AnyView {
-        return AnyView(v().environmentObject(context))
+    func body() -> AnyView {
+        return AnyView(v())
     }
     
     struct v: View {

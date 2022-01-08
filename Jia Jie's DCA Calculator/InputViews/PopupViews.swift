@@ -59,11 +59,11 @@ struct PopupView: View {
         } header: {
             vm.indexPathState.sectionBottomHalfHeader()
         } footer: {
-            if !vm.validationState {
+            if !vm.validationState.validationState {
                 HStack(alignment: .center) {
                 Image(systemName: "exclamationmark.circle")
                         .foregroundColor(.red)
-                    Text(vm.validationMessage)
+                    Text(vm.validationState.validationMessage)
                         .font(.footnote)
                         .foregroundColor(.red)
                 }
@@ -84,7 +84,7 @@ struct PopupView: View {
             self.shouldPopToRootView = false
         }
         .buttonStyle(.borderedProminent)
-        .disabled(!vm.validationState)
+        .disabled(!vm.validationState.validationState)
             }
         }
     }
@@ -97,19 +97,19 @@ struct PopupView: View {
             VStack(spacing: 0) {
 //                Slider(value: $percentB, in: 0...100)
 //                Text("\(percentB, specifier: "%.1f")")
-                if vm.section == 0 && vm.index == 0 {
-                    SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
-                }
+//                if vm.section == 0 && vm.index == 0 {
+//                    SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
+//                }
                 
                 Form {
-                section()
+                vm.indexPathState.body
                 sectionBottomHalf()
                 }
                 setButton()
                 Spacer()
 
                 }
-            .navigationTitle(vm.entry ? vm.entryTitleFrame[vm.section][vm.index] : vm.exitTitleFrame[vm.section][vm.index])
+            .navigationTitle(vm.indexPathState.title)
             .navigationBarTitleDisplayMode(.inline)
             
         }

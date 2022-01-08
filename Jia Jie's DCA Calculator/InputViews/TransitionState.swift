@@ -15,6 +15,8 @@ protocol IdxPathState: View {
 struct MA: IdxPathState {
     @EnvironmentObject var context: InputViewModel<MA>
     
+    let title: String = "Moving Average"
+    
     func getCondition() -> EvaluationCondition {
         let condition = EvaluationCondition(technicalIndicator: .movingAverage(period: context.inputState.getWindow()), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
         return condition
@@ -60,7 +62,7 @@ struct MA: IdxPathState {
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
         Group {
             Text("Enter when ticker") +
-            Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+            Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
         }
     }
@@ -68,6 +70,8 @@ struct MA: IdxPathState {
 
 struct MACrossover: IdxPathState {
     @EnvironmentObject var context: InputViewModel<MACrossover>
+    
+    let title: String = "Moving Average"
     
     func getCondition() -> EvaluationCondition {
         let condition = EvaluationCondition(technicalIndicator: .movingAverageOperation(period1: context.inputState.getWindow(), period2: context.inputState.getAnotherWindow()), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
@@ -128,7 +132,7 @@ struct MACrossover: IdxPathState {
     @ViewBuilder func sectionBottomHalfHeader() -> some View {
         Group {
           Text("Enter when 1st period crosses") +
-          Text(" \(vm.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+            Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
           Text("2nd period")
         }
     }
@@ -136,6 +140,8 @@ struct MACrossover: IdxPathState {
 
 struct BB: IdxPathState {
     @EnvironmentObject var context: InputViewModel<BB>
+    
+    let title: String = "Bollinger Bands®"
     
     func getCondition() -> EvaluationCondition {
         let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: context.inputState.selectedPercentage * 0.01), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
@@ -185,6 +191,8 @@ struct BB: IdxPathState {
 
 struct RSI: IdxPathState {
     @EnvironmentObject var context: InputViewModel<RSI>
+    
+    let title: String = "Relative Strength Index"
     
     func getCondition() -> EvaluationCondition {
         

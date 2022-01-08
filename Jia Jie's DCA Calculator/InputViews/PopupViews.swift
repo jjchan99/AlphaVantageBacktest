@@ -57,7 +57,7 @@ struct PopupView: View {
     }.pickerStyle(SegmentedPickerStyle())
     .frame(width: 0.985 * vm.width)
         } header: {
-//            vm.indexPathState.sectionBottomHalfHeader()
+            vm.indexPathState.sectionBottomHalfHeader()
         } footer: {
             if !vm.validationState.validationState {
                 HStack(alignment: .center) {
@@ -103,7 +103,7 @@ struct PopupView: View {
                 
                 Form {
                 vm.indexPathState.body
-                        .environmentObject(vm)
+                        .environmentObject(self.vm)
                 sectionBottomHalf()
                 }
                 setButton()

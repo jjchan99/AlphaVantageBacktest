@@ -11,6 +11,7 @@ protocol IdxPathState: AnyObject {
     func getCondition() -> EvaluationCondition
     func restoreInputs()
     func setContext(context: InputViewModel)
+    func sectionBottomHalfHeader() -> AnyView
     var body: AnyView { get set }
     var title: String { get }
 }
@@ -72,12 +73,12 @@ class MA: IdxPathState {
     }
     }
     
-    @ViewBuilder func sectionBottomHalfHeader() -> some View {
-        Group {
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Group {
             Text("Enter when ticker") +
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
-        }
+        })
     }
     
 }
@@ -152,12 +153,12 @@ class MACrossover: IdxPathState {
     }
     }
     
-    @ViewBuilder func sectionBottomHalfHeader() -> some View {
-        Group {
-          Text("Enter when 1st period crosses") +
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Group {
+            Text("Enter when 1st period crosses") +
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
-          Text("2nd period")
-        }
+            Text("2nd period")
+        })
     }
     
 }
@@ -210,12 +211,12 @@ class BB: IdxPathState {
     }
     }
     
-    @ViewBuilder func sectionBottomHalfHeader() -> some View {
-        Group {
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Group {
             Text("Enter when ticker") +
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
-        }
+        })
     }
     
 }
@@ -282,12 +283,12 @@ class RSI: IdxPathState {
     }
     
     
-    @ViewBuilder func sectionBottomHalfHeader() -> some View {
-        Group {
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Group {
             Text("Enter when ticker") +
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
-        }
+        })
     }
     
 }

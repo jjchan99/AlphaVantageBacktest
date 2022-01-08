@@ -17,7 +17,7 @@ protocol IdxPathState: AnyObject {
 }
 
 class MA: IdxPathState {
-    weak var context: InputViewModel!
+    private(set) weak var context: InputViewModel!
     
     func setContext(context: InputViewModel) {
         self.context = context
@@ -86,7 +86,7 @@ class MA: IdxPathState {
 }
 
 class MACrossover: IdxPathState {
-    weak var context: InputViewModel!
+    private(set) weak var context: InputViewModel!
     func setContext(context: InputViewModel) {
         self.context = context
     }
@@ -167,7 +167,7 @@ class MACrossover: IdxPathState {
 }
 
 class BB: IdxPathState {
-    weak var context: InputViewModel!
+    private(set) weak var context: InputViewModel!
     func setContext(context: InputViewModel) {
         self.context = context
     }
@@ -228,7 +228,7 @@ class BB: IdxPathState {
 }
 
 class RSI: IdxPathState {
-    weak var context: InputViewModel!
+    private(set) weak var context: InputViewModel!
     func setContext(context: InputViewModel) {
         self.context = context
     }
@@ -300,6 +300,67 @@ class RSI: IdxPathState {
         })
     }
     
+}
+
+class HP: IdxPathState {
+    private(set) weak var context: InputViewModel!
+    
+    func getCondition() -> EvaluationCondition {
+        fatalError()
+    }
+    
+    func restoreInputs() {
+        let dict = context.getDict()
+    }
+    
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
+    
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Group {
+            Text("Enter when ticker") +
+            Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
+            Text("indicator")
+        })
+    }
+    
+    func body() -> AnyView {
+        return AnyView(v())
+    }
+    
+    var title: String = "Define Holding Period"
+    
+    
+    struct v: View {
+    @EnvironmentObject var context: InputViewModel
+        var body: some View {
+    Section {
+    TextField("Enter number of days", text: Binding(
+        get: { String(context.inputState.stepperValue) },
+        set: { context.inputState.stepperValue = Int($0) ?? 0 }
+    ))
+            .textFieldStyle(.plain)
+        .frame(width: 0.2 * Dimensions.width)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                HStack {
+                Button {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                } label: {
+                    Text("Done")
+                }
+                Spacer()
+                }
+            }
+        }
+        .keyboardType(.numberPad)
+        .padding()
+    } header: {
+        Text("Enter number of days")
+    }
+        }
+    }
 }
 
 

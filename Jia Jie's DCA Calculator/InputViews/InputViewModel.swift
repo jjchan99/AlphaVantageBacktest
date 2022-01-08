@@ -174,7 +174,7 @@ extension InputViewModel {
         case "LT":
             transitionState(state: MA())
         case "HP":
-            transitionState(state: MA())
+            transitionState(state: HP())
         case "MAOperation":
             transitionState(state: MACrossover())
         default:

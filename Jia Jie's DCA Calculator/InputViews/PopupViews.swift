@@ -22,33 +22,6 @@ struct PopupView: View {
     }
     
     
-    @ViewBuilder func holdingPeriodBody() -> some View {
-        Section {
-        TextField("Enter number of days", text: Binding(
-            get: { String(vm.inputState.stepperValue) },
-            set: { vm.inputState.stepperValue = Int($0) ?? 0 }
-        ))
-                .textFieldStyle(.plain)
-            .frame(width: 0.2 * Dimensions.width)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    HStack {
-                    Button {
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    } label: {
-                        Text("Done")
-                    }
-                    Spacer()
-                    }
-                }
-            }
-            .keyboardType(.numberPad)
-            .padding()
-        } header: {
-            Text("Enter number of days")
-        }
-    }
-    
     @ViewBuilder func sectionBottomHalf() -> some View {
         Section {
             Picker("Selected", selection: $vm.inputState.selectedPositionIdx) {

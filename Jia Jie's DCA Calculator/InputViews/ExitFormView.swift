@@ -29,7 +29,7 @@ struct ExitFormView: View {
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.restoreIndexPath(condition: vm.repo.exitTriggers[key]!)
+                                    vm.transitionState(condition: vm.repo.exitTriggers[key]!)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

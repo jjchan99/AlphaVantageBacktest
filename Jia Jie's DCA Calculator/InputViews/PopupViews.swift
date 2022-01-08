@@ -31,24 +31,24 @@ struct PopupView: View {
             Slider(value: $vm.inputState.selectedPercentage, in: 0...1)
       
         } header: {
-        Text("RSI threshold: \(vm.selectedPercentage * 100, specifier: "%.0f")%")
+            Text("RSI threshold: \(vm.inputState.selectedPercentage * 100, specifier: "%.0f")%")
         }
         
         Section {
             HStack {
-            Stepper("", value: $vm.stepperValue, in: 2...14)
+                Stepper("", value: $vm.inputState.stepperValue, in: 2...14)
             Spacer()
             }
         } header: {
-            Text("Period: \(vm.stepperValue)")
+            Text("Period: \(vm.inputState.stepperValue)")
         }
     }
     
     @ViewBuilder func holdingPeriodBody() -> some View {
         Section {
         TextField("Enter number of days", text: Binding(
-            get: { String(vm.stepperValue) },
-            set: { vm.stepperValue = Int($0) ?? 0 }
+            get: { String(vm.inputState.stepperValue) },
+            set: { vm.inputState.stepperValue = Int($0) ?? 0 }
         ))
                 .textFieldStyle(.plain)
             .frame(width: 0.2 * Dimensions.width)

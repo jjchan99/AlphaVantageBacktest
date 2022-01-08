@@ -21,7 +21,7 @@ class InputViewModel: ObservableObject {
     var indexPathState: IdxPathState!
     var validationState = ValidationState()
     
-    func transitionState(state: IdxPathState) {
+    private func transitionState(state: IdxPathState) {
         self.indexPathState = state
         self.indexPathState.setContext(context: self)
     }
@@ -32,6 +32,8 @@ class InputViewModel: ObservableObject {
     
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
+    let keysAtSection0: [String] = ["MA", "BB" , "RSI"]
+    let keysAtSection1: [String] = ["PL", "LT" , "HP"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
@@ -102,9 +104,29 @@ class InputViewModel: ObservableObject {
                 .addCondition(condition)
         }
     }
-
     
-    func restoreIndexPath(condition: EvaluationCondition?) {
+    func resetInputs() {
+        inputState.reset()
+    }
+    //MARK: - RESTORATION OPERATIONS
+    
+    func restoreInputs() {
+        indexPathState.restoreInputs()
+    }
+    
+    func getDict() -> [String: EvaluationCondition] {
+        let dictType = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+        let dict = repo.get(dict: dictType)
+        return dict
+    }
+    
+    func getEnterOrExit() -> EnterOrExit {
+        return entry ? .enter : .exit
+    }
+}
+
+extension InputViewModel {
+    func transitionState(condition: EvaluationCondition?) {
         guard let condition = condition else { return }
         let key = repo.getKey(for: condition)
         switch key {
@@ -127,30 +149,26 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func resetInputs() {
-        inputState.reset()
+    func transitionState(key: String) {
+        switch key {
+        case "MA":
+            transitionState(state: MA())
+        case "BB":
+            transitionState(state: BB())
+        case "RSI":
+            transitionState(state: RSI())
+        case "PL":
+            transitionState(state: MA())
+        case "LT":
+            transitionState(state: MA())
+        case "HP":
+            transitionState(state: MA())
+        case "MAOperation":
+            transitionState(state: MACrossover())
+        default:
+            fatalError()
+        }
     }
-    //MARK: - RESTORATION OPERATIONS
-    
-    func restoreInputs() {
-        indexPathState.restoreInputs()
-    }
-    
-    func getDict() -> [String: EvaluationCondition] {
-        let dictType = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-        let dict = repo.get(dict: dictType)
-        return dict
-    }
-    
-    func getEnterOrExit() -> EnterOrExit {
-        return entry ? .enter : .exit
-    }
-}
-
-protocol IdxPathState: AnyObject {
-    func getCondition() -> EvaluationCondition
-    func restoreInputs()
-    func setContext(context: InputViewModel)
 }
 
 

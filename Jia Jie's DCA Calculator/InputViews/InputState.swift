@@ -12,18 +12,18 @@ class InputState: ObservableObject {
     private static var window: [Int] = [20, 50, 100, 200]
     private static var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
-    @Published private(set) var selectedWindowIdx: Int = 0 { didSet {
+    @Published var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
     
-    @Published private(set) var anotherSelectedWindowIdx: Int = 0 { didSet {
+    @Published var anotherSelectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
     
-    @Published private(set) var selectedPositionIdx: Int = 0 { didSet {
+    @Published var selectedPositionIdx: Int = 0 { didSet {
         validationState = updateValidationState()
     }}
-    @Published private(set) var selectedPercentage: Double = 0 { didSet {
+    @Published var selectedPercentage: Double = 0 { didSet {
 //        Log.queue(action: "selected percentage: \(selectedPercentage)")
         validationState = updateValidationState()
     }}

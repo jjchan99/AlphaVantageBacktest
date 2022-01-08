@@ -37,7 +37,7 @@ struct InputFormView: View {
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.restoreIndexPath(condition: vm.repo.entryTriggers[key]!)
+                                    vm.transitionState(condition: vm.repo.entryTriggers[key]!)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -73,7 +73,7 @@ struct InputFormView: View {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
-                                    vm.restoreIndexPath(condition: vm.repo.entryTrade[key])
+                                    vm.transitionState(condition: vm.repo.entryTrade[key])
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

@@ -25,7 +25,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[0].count : 0..<vm.exitTitleFrame[0].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
-                    vm.indexPathState.set(section: 0, index: idx)
+                    vm.transitionState(key: vm.keysAtSection0[idx])
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -54,7 +54,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[1].count : 0..<vm.exitTitleFrame[1].count, id: \.self) { idx in
                 Button() {
                     isPresented = true
-                    vm.indexPathState.set(section: 1, index: idx)
+                    vm.transitionState(key: vm.keysAtSection1[idx])
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")

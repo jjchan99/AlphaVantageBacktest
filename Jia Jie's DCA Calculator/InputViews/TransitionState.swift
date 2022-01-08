@@ -5,6 +5,12 @@
 //  Created by Jia Jie Chan on 8/1/22.
 //
 
+protocol IdxPathState: AnyObject {
+    func getCondition() -> EvaluationCondition
+    func restoreInputs()
+    func setContext(context: InputViewModel)
+}
+
 class MA: IdxPathState {
     private(set) weak var context: InputViewModel?
     

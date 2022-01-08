@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ExitFormView: View {
-    @EnvironmentObject var vm: InputViewModel
+    @EnvironmentObject var vm: InputViewModel<MA>
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
@@ -65,7 +65,7 @@ struct ExitFormView: View {
                                 Text(key)
                             Spacer()
                                 Button("Edit") {
-                                    vm.restoreIndexPath(condition: vm.repo.exitTrade[key])
+                                    vm.transitionState(condition: vm.repo.exitTrade[key])
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

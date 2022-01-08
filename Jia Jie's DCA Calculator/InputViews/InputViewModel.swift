@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class InputViewModel: ObservableObject {
+class InputViewModel<State: IdxPathState>: ObservableObject {
     var factory = BotFactory() { didSet { print("Factory set: \(factory.evaluationConditions)")}}
     let symbol: String = "TSLA"
     let width: CGFloat = .init(375).wScaled()
@@ -18,12 +18,11 @@ class InputViewModel: ObservableObject {
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
     var inputState = InputState()
-    var indexPathState: IdxPathState!
+    var indexPathState: State!
     var validationState = ValidationState()
     
-    private func transitionState(state: IdxPathState) {
+    private func transitionState(state: State) {
         self.indexPathState = state
-        self.indexPathState.setContext(context: self)
     }
     
     @Published var entry: Bool = true
@@ -131,19 +130,19 @@ extension InputViewModel {
         let key = repo.getKey(for: condition)
         switch key {
         case "MA":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "BB":
-            transitionState(state: BB())
+            transitionState(state: BB() as! State)
         case "RSI":
-            transitionState(state: RSI())
+            transitionState(state: RSI() as! State)
         case "stopOrder":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "exitTrigger":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "profitTarget":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "MAOperation":
-            transitionState(state: MACrossover())
+            transitionState(state: MACrossover() as! State)
         default:
             fatalError()
         }
@@ -152,19 +151,19 @@ extension InputViewModel {
     func transitionState(key: String) {
         switch key {
         case "MA":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "BB":
-            transitionState(state: BB())
+            transitionState(state: BB() as! State)
         case "RSI":
-            transitionState(state: RSI())
+            transitionState(state: RSI() as! State)
         case "PL":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "LT":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "HP":
-            transitionState(state: MA())
+            transitionState(state: MA() as! State)
         case "MAOperation":
-            transitionState(state: MACrossover())
+            transitionState(state: MACrossover() as! State)
         default:
             fatalError()
         }

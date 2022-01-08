@@ -28,7 +28,7 @@ class InputState: ObservableObject {
         validationState = updateValidationState()
     }}
     
-    @Published private(set) var stepperValue: Int = 2
+    @Published var stepperValue: Int = 2
     
     func getWindow() -> Int {
         return InputState.window[selectedWindowIdx]

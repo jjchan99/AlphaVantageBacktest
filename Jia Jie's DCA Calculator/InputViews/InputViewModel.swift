@@ -26,6 +26,10 @@ class InputViewModel: ObservableObject {
         state.setContext(context: self)
     }
     
+    init() {
+        print("I'm sticking to my integrity")
+    }
+    
     @Published var entry: Bool = true
     @Published var selectedDictIndex: Int = 0
     @Published var selectedTabIndex: Int = 0

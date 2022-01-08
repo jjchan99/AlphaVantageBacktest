@@ -11,7 +11,7 @@ protocol IdxPathState: AnyObject {
     func getCondition() -> EvaluationCondition
     func restoreInputs()
     func setContext(context: InputViewModel)
-    var body: AnyView { get }
+    var body: AnyView { get set }
     var title: String { get }
 }
 
@@ -52,9 +52,7 @@ class MA: IdxPathState {
             }
     }
     
-    var body: AnyView {
-        return AnyView(v())
-    }
+    var body: AnyView = AnyView(v())
     
     struct v: View {
     @EnvironmentObject var context: InputViewModel
@@ -123,9 +121,7 @@ class MACrossover: IdxPathState {
         }
      }
     
-    var body: AnyView {
-        return AnyView(v())
-    }
+    var body: AnyView = AnyView(v())
     
     struct v: View {
         
@@ -202,9 +198,7 @@ class BB: IdxPathState {
             }
         }
      }
-    var body: AnyView {
-        return AnyView(v())
-    }
+    var body: AnyView = AnyView(v())
     struct v: View {
         @EnvironmentObject var context: InputViewModel
     var body: some View {
@@ -264,9 +258,7 @@ class RSI: IdxPathState {
             }
         }
      }
-    var body: AnyView {
-        return AnyView(v())
-    }
+    var body: AnyView = AnyView(v())
     struct v: View {
         @EnvironmentObject var context: InputViewModel
     var body: some View {

@@ -101,7 +101,7 @@ class MACrossover: IdxPathState {
     func restoreInputs() {
         let dict = context.getDict()
         
-        if let input = dict["MAOperation"] {
+        if let input = dict["MACrossover"] {
             let i = input.technicalIndicator
             switch i {
             case .movingAverageOperation(period1: let period1, period2: let period2):
@@ -111,7 +111,7 @@ class MACrossover: IdxPathState {
             }
         }
         
-        if let input2 = dict["MAOperation"] {
+        if let input2 = dict["MACrossover"] {
             let i = input2.aboveOrBelow
             switch i {
             case .priceBelow:

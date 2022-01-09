@@ -81,7 +81,7 @@ struct SelectorView: View {
         }
     }
         .onAppear {
-           
+        
         }
     }
     

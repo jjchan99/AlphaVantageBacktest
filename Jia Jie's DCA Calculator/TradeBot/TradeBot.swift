@@ -9,8 +9,6 @@ import CloudKit
 import Foundation
 
 struct TradeBot: CloudKitInterchangeable {
-
-    let budget: Double
     let long: Bool 
     var account: Account
     var conditions: [EvaluationCondition] = []
@@ -25,8 +23,7 @@ struct TradeBot: CloudKitInterchangeable {
         let exitTrigger = record["exitTrigger"] as! Int?
         let long = record["long"] as! Bool
         
-        self.budget = budget
-        self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
+        self.account = .init(budget: budget, cash: cash, accumulatedShares: accumulatedShares)
         self.record = record
         self.exitTrigger = exitTrigger
         self.long = long
@@ -38,13 +35,12 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil, long: Bool = true) {
+    init?(account: Account, conditions: [EvaluationCondition], exitTrigger: Int? = nil, long: Bool = true) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
-                    "budget": budget,
-                    "cash": budget,
+                    "budget": account.budget,
+                    "cash": account.budget,
                     "accumulatedShares": 0,
-                    "effectiveAfter": effectiveAfter,
                     "long" : long
                 ])
             if let exitTrigger = exitTrigger {
@@ -66,7 +62,7 @@ struct TradeBot: CloudKitInterchangeable {
                     guard account.cash > 0 else { continue }
                     if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
                      
-                        account.accumulatedShares += account.decrement(long ? account.cash : budget) / close
+                        account.accumulatedShares += account.decrement(long ? account.cash : account.budget) / close
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
@@ -105,15 +101,16 @@ extension TradeBot {
 }
 
 struct Account {
+    let budget: Double
     var cash: Double
     var accumulatedShares: Double
     
-    func longProfit(quote: Double, budget: Double) -> Double {
+    func longProfit(quote: Double) -> Double {
         let value = (accumulatedShares * quote + cash) - budget
         return value / budget
     }
     
-    func shortProfit(quote: Double, budget: Double) -> Double {
+    func shortProfit(quote: Double) -> Double {
         let value = (budget - cash) - (accumulatedShares * quote)
         return value / budget
     }

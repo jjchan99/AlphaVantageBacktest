@@ -70,8 +70,7 @@ struct TradeBot: CloudKitInterchangeable {
                         
                     switch exitTrigger {
                         case .some(exitTrigger) where exitTrigger! >= 0:
-                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self)
-                        self.conditions.append(newCondition)
+                        self.conditions = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self)
                         case .some(exitTrigger) where exitTrigger! < 0:
                         self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self)
                         default:

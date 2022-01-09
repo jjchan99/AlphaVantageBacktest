@@ -11,13 +11,17 @@ import Combine
 struct ExitTriggerManager {
     static var subs = Set<AnyCancellable>()
     
-    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot) -> EvaluationCondition {
+    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot) -> [EvaluationCondition] {
+        var copy = tb.conditions
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
         let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        for (index, condition) in tb.conditions.enumerated() where condition.technicalIndicator == .exitTrigger(value: 99999999) {
+             copy[index] = exitTrigger
+        }
         
-        return exitTrigger
+        return copy
     }
     
     static func resetOrExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
@@ -26,7 +30,7 @@ struct ExitTriggerManager {
                 guard condition.enterOrExit == .exit else { continue }
                 switch condition.technicalIndicator {
                 case .exitTrigger:
-                    copy.remove(at: index)
+                    copy[index].technicalIndicator = .exitTrigger(value: 99999999)
                 default:
                     break
                 }
@@ -36,15 +40,12 @@ struct ExitTriggerManager {
     
     static func resetAndExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
         var copy = tb.conditions
-        let group = DispatchGroup()
+     
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.enterOrExit == .exit else { continue }
             for (index, andConditions) in conditions.andCondition.enumerated() {
                 switch andConditions.technicalIndicator {
                 case .exitTrigger:
-                    group.enter()
-            
-                    
                     copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: 99999999)
                 default:
                     break

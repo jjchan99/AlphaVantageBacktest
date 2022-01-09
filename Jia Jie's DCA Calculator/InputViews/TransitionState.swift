@@ -306,7 +306,7 @@ class HP: IdxPathState {
     private(set) weak var context: InputViewModel!
     
     func getCondition() -> EvaluationCondition {
-        fatalError()
+        
     }
     
     func restoreInputs() {

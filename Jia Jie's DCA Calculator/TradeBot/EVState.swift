@@ -9,53 +9,54 @@ import Foundation
 
 protocol EvaluationState: AnyObject {
     func perform() -> Bool
-    func setContext(context: [String: Any])
+    func setContext(context: ContextObject)
+}
+
+class ContextObject {
+    
+    internal init(account: Account, previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
+        self.account = account
+        self.previous = previous
+        self.mostRecent = mostRecent
+    }
+    
+    var account: Account
+    var previous: OHLCCloudElement
+    var mostRecent: OHLCCloudElement
 }
 
 class MA_EVState: EvaluationState {
-    
+  
     typealias T = Double
-    private(set) var context: [String: Any]!
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
     
-    func setContext(context: [String: Any]) {
+    func setContext(context: ContextObject) {
         self.context = context
     }
     
-    private func targetValue() -> Double {
-        
-    }
-    
-    private func getTicker() -> OHLCCloudElement {
-        for item in context where item is OHLCCloudElement {
-            let item = item as! OHLCCloudElement
-            return item
-        }
-    }
-    
-    private func currentValue(window: Int) -> Double {
-        for item in context where item is EvaluationCondition {
-            let item = item as! EvaluationCondition
-            switch item.technicalIndicator {
-            case .movingAverage(period: let period):
-                return getTicker().movingAverage[period]!
-            default:
-                fatalError()
-            }
-        }
-        fatalError()
-    }
-    
     func perform() -> Bool {
-        
+        switch condition.technicalIndicator {
+        case .movingAverage(period: let period):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.mostRecent.open > context.mostRecent.movingAverage[period]!
+            case .priceBelow:
+                return context.mostRecent.open < context.mostRecent.movingAverage[period]!
+            }
+        default:
+            fatalError()
+        }
     }
+    
     
 }
 
-class Context {
+class Test {
     var objectA: EvaluationState!
     
     func test() {
-        objectA.perform()
+        objectA
     }
 
 }

@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol EvaluationState: AnyObject {
+protocol EvaluationState {
     func perform() -> Bool
     func setContext(context: ContextObject)
 }
 
-class ContextObject {
+struct ContextObject {
     
     internal init(account: Account, previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
         self.account = account
@@ -25,14 +25,14 @@ class ContextObject {
     var mostRecent: OHLCCloudElement
 }
 
-class MA_EVState: EvaluationState {
+struct MA_EVState: EvaluationState {
   
     typealias T = Double
     private(set) var context: ContextObject!
     var condition: EvaluationCondition!
     
     func setContext(context: ContextObject) {
-        self.context = context
+        
     }
     
     func perform() -> Bool {
@@ -48,15 +48,92 @@ class MA_EVState: EvaluationState {
             fatalError()
         }
     }
+}
+
+struct BB_EVState: EvaluationState {
+  
+    typealias T = Double
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
     
+    func setContext(context: ContextObject) {
+       
+    }
     
+    func perform() -> Bool {
+        switch condition.technicalIndicator {
+        case .bollingerBands(percentage: let percent):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.mostRecent.open > context.mostRecent.valueAtPercent(percent: percent)!
+            case .priceBelow:
+                return context.mostRecent.open < context.mostRecent.valueAtPercent(percent: percent)!
+            }
+        default:
+            fatalError()
+        }
+    }
+}
+
+struct MAOperation_EVState: EvaluationState {
+  
+    typealias T = Double
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
+    
+    func setContext(context: ContextObject) {
+        
+    }
+    
+    func perform() -> Bool {
+        switch condition.technicalIndicator {
+        case .movingAverageOperation(period1: let p1, period2: let p2):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.mostRecent.movingAverage[p1]! > context.mostRecent.movingAverage[p2]!
+            case .priceBelow:
+                return context.mostRecent.movingAverage[p1]! < context.mostRecent.movingAverage[p2]!
+            }
+        default:
+            fatalError()
+        }
+    }
+}
+
+struct RSI_EVState: EvaluationState {
+  
+    typealias T = Double
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
+    
+    func setContext(context: ContextObject) {
+        
+    }
+    
+    func perform() -> Bool {
+        switch condition.technicalIndicator {
+        case .RSI(period: let period, value: let value):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.mostRecent.open > context.mostRecent.RSI[period]!
+            case .priceBelow:
+                return context.mostRecent.open < context.mostRecent.RSI[period]!
+            }
+        default:
+            fatalError()
+        }
+    }
 }
 
 class Test {
     var objectA: EvaluationState!
     
     func test() {
-        objectA
+        let test = MA_EVState()
+        objectA = test
+        objectA = test
+        let test2 = BB_EVState()
+        objectA = test2
     }
 
 }

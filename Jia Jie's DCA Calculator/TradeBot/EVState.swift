@@ -125,6 +125,27 @@ struct RSI_EVState: EvaluationState {
     }
 }
 
+struct EVStateFactory {
+    static func getEVState(condition: EvaluationCondition) -> EvaluationState {
+        switch condition.technicalIndicator {
+        case .movingAverage(period: let period):
+            return MA_EVState()
+        case .bollingerBands(percentage: let percentage):
+            return MA_EVState()
+        case .RSI(period: let period, value: let value):
+            return MA_EVState()
+        case .lossTarget(value: let value):
+            return MA_EVState()
+        case .profitTarget(value: let value):
+            return MA_EVState()
+        case .exitTrigger(value: let value):
+            return MA_EVState()
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return MA_EVState()
+        }
+    }
+}
+
 class Test {
     var objectA: EvaluationState!
     
@@ -134,6 +155,12 @@ class Test {
         objectA = test
         let test2 = BB_EVState()
         objectA = test2
+        objectA.perform()
     }
-
+    
+    static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
+        var state: EvaluationState = EVStateFactory.getEVState(condition: condition)
+        return state.perform()
+    }
 }
+

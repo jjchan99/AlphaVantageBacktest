@@ -197,10 +197,9 @@ struct EVStateFactory {
 }
 
 class EvaluationAlgorithm {
-    var objectA: EvaluationState!
     
-    static private func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
-        var state: EvaluationState = EVStateFactory.getEVState(condition: condition)
+    private static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
+        let state: EvaluationState = EVStateFactory.getEVState(condition: condition)
         return state.perform()
     }
     

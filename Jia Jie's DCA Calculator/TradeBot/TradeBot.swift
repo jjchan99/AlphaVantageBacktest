@@ -52,7 +52,7 @@ struct TradeBot: CloudKitInterchangeable {
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
 
-    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
+    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
         let close = latest.close
        
         //MARK: CONDITION SATISFIED, INVEST 10% OF CASH

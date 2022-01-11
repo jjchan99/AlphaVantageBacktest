@@ -146,21 +146,27 @@ struct EVStateFactory {
     }
 }
 
-class Test {
+class EvaluationAlgorithm {
     var objectA: EvaluationState!
     
-    func test() {
-        let test = MA_EVState()
-        objectA = test
-        objectA = test
-        let test2 = BB_EVState()
-        objectA = test2
-        objectA.perform()
-    }
-    
-    static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
+    static private func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
         var state: EvaluationState = EVStateFactory.getEVState(condition: condition)
         return state.perform()
+    }
+    
+    static func check(context: ContextObject, condition: EvaluationCondition) -> Bool {
+        if checkCondition(context: context, condition: condition) {
+            for andConditions in condition.andCondition {
+                if checkCondition(context: context, condition: andConditions) {
+                    continue
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+        return true
     }
 }
 

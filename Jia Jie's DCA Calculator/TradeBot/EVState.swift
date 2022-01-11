@@ -252,8 +252,19 @@ extension TBTemplateMethod {
 }
 
 struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
+    var holdingPeriod: Int
+    var context: ContextObject
+    var tb: TradeBot
+    
     func hook() {
-        
+        switch holdingPeriod {
+            case holdingPeriod where holdingPeriod >= 0:
+            ExitTriggerManager.orUpload(latest: context.mostRecent, exitAfter: holdingPeriod, tb: tb)
+            case holdingPeriod where holdingPeriod < 0:
+            ExitTriggerManager.andUpload(latest: context.mostRecent, exitAfter: holdingPeriod, tb: tb)
+            default:
+              break
+        }
     }
 }
 

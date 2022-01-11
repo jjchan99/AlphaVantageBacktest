@@ -125,23 +125,73 @@ struct RSI_EVState: EvaluationState {
     }
 }
 
+struct PT_EVState: EvaluationState {
+  
+    typealias T = Double
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
+    
+    func setContext(context: ContextObject) {
+        
+    }
+    
+    func perform() -> Bool {
+        switch condition.technicalIndicator {
+        case .profitTarget(value: let target):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.account.longProfit(quote: context.mostRecent.close) > target
+            case .priceBelow:
+                return context.account.longProfit(quote: context.mostRecent.close) > target
+            }
+        default:
+            fatalError()
+        }
+    }
+}
+
+struct HP_EVState: EvaluationState {
+  
+    typealias T = Double
+    private(set) var context: ContextObject!
+    var condition: EvaluationCondition!
+    
+    func setContext(context: ContextObject) {
+        
+    }
+    
+    func perform() -> Bool {
+        switch condition.technicalIndicator {
+        case .exitTrigger(value: let value):
+            switch condition.aboveOrBelow {
+            case .priceAbove:
+                return context.mostRecent.stamp > String(value)
+            case .priceBelow:
+                return context.mostRecent.stamp < String(value)
+            }
+        default:
+            fatalError()
+        }
+    }
+}
+
 struct EVStateFactory {
     static func getEVState(condition: EvaluationCondition) -> EvaluationState {
         switch condition.technicalIndicator {
         case .movingAverage(period: let period):
             return MA_EVState()
         case .bollingerBands(percentage: let percentage):
-            return MA_EVState()
+            return BB_EVState()
         case .RSI(period: let period, value: let value):
-            return MA_EVState()
+            return RSI_EVState()
         case .lossTarget(value: let value):
-            return MA_EVState()
+            return PT_EVState()
         case .profitTarget(value: let value):
-            return MA_EVState()
+            return PT_EVState()
         case .exitTrigger(value: let value):
-            return MA_EVState()
+            return HP_EVState()
         case .movingAverageOperation(period1: let period1, period2: let period2):
-            return MA_EVState()
+            return MAOperation_EVState()
         }
     }
 }

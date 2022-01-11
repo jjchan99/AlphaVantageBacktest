@@ -220,22 +220,26 @@ struct EvaluationAlgorithm {
 }
 
 protocol TBTemplateMethod {
-    func templateMethod()
-    func check() -> Bool
+    func templateMethod(conditions: [EvaluationCondition], context: ContextObject)
+    func check(condition: EvaluationCondition, context: ContextObject) -> Bool
     func success()
     func hook()
 }
 
 extension TBTemplateMethod {
-    func templateMethod() {
-        if check() {
-            success()
-            hook()
+    func templateMethod(conditions: [EvaluationCondition], context: ContextObject) {
+        for condition in conditions {
+        if check(condition: condition, context: context) {
+          success()
+          hook()
+        } else {
+          continue
+        }
         }
     }
     
-    func check() -> Bool {
-        return true
+    func check(condition: EvaluationCondition, context: ContextObject) -> Bool {
+        return EvaluationAlgorithm.check(context: context, condition: condition)
     }
     
     func hook() {
@@ -247,8 +251,10 @@ extension TBTemplateMethod {
     }
 }
 
-struct TBAlgorithmVariant1: TBTemplateMethod {
+struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     func hook() {
         
     }
 }
+
+struct TBAlgorithmDefault: TBTemplateMethod {}

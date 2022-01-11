@@ -196,7 +196,7 @@ struct EVStateFactory {
     }
 }
 
-class EvaluationAlgorithm {
+struct EvaluationAlgorithm {
     
     private static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
         let state: EvaluationState = EVStateFactory.getEVState(condition: condition)
@@ -219,3 +219,36 @@ class EvaluationAlgorithm {
     }
 }
 
+protocol TBTemplateMethod {
+    func templateMethod()
+    func check() -> Bool
+    func success()
+    func hook()
+}
+
+extension TBTemplateMethod {
+    func templateMethod() {
+        if check() {
+            success()
+            hook()
+        }
+    }
+    
+    func check() -> Bool {
+        return true
+    }
+    
+    func hook() {
+        
+    }
+    
+    func success() {
+        
+    }
+}
+
+struct TBAlgorithmVariant1: TBTemplateMethod {
+    func hook() {
+        
+    }
+}

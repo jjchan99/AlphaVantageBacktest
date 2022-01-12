@@ -259,9 +259,9 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     func hook() {
         switch holdingPeriod {
             case holdingPeriod where holdingPeriod >= 0:
-            ExitTriggerManager.orUpload(latest: context.mostRecent, exitAfter: holdingPeriod, tb: tb)
+            ExitTriggerManager.orUpload(tb: tb, context: context)
             case holdingPeriod where holdingPeriod < 0:
-            ExitTriggerManager.andUpload(latest: context.mostRecent, exitAfter: holdingPeriod, tb: tb)
+            ExitTriggerManager.andUpload(tb: tb, context: context)
             default:
               break
         }

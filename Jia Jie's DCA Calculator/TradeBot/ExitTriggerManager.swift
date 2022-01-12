@@ -11,9 +11,9 @@ import Combine
 struct ExitTriggerManager {
     static var subs = Set<AnyCancellable>()
     
-    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot) -> [EvaluationCondition] {
+    static func orUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
         var copy = tb.conditions
-        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
+        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.exitTrigger!))
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
         let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
@@ -57,8 +57,8 @@ struct ExitTriggerManager {
     }
     
     
-    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot) -> [EvaluationCondition] {
-        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
+    static func andUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
+        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.exitTrigger!))
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
      

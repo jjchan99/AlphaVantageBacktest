@@ -12,15 +12,17 @@ protocol EvaluationState {
     func setContext(context: ContextObject)
 }
 
-struct ContextObject {
+class ContextObject {
     
-    internal init(account: Account, previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
+    internal init(account: Account, previous: OHLCCloudElement, mostRecent: OHLCCloudElement, tb: TradeBot) {
         self.account = account
         self.previous = previous
         self.mostRecent = mostRecent
+        self.tb = tb
     }
     
     var account: Account
+    var tb: TradeBot
     var previous: OHLCCloudElement
     var mostRecent: OHLCCloudElement
 }
@@ -220,52 +222,64 @@ struct EvaluationAlgorithm {
 }
 
 protocol TBTemplateMethod {
-    func templateMethod(conditions: [EvaluationCondition], context: ContextObject)
-    func check(condition: EvaluationCondition, context: ContextObject) -> Bool
-    func success()
+    var context: ContextObject { get }
+    func templateMethod()
+    func entrySuccess()
+    func exitSuccess()
     func hook()
 }
 
 extension TBTemplateMethod {
-    func templateMethod(conditions: [EvaluationCondition], context: ContextObject) {
-        for condition in conditions {
-        if check(condition: condition, context: context) {
-          success()
-          hook()
+    func templateMethod() {
+        for condition in context.tb.conditions {
+            if EvaluationAlgorithm.check(context: context, condition: condition) {
+          context.account.cash == 0 ? exitSuccess() : entrySuccess()
+          condition.enterOrExit == .enter ? hook() : hook2()
         } else {
           continue
         }
         }
     }
-    
-    func check(condition: EvaluationCondition, context: ContextObject) -> Bool {
-        return EvaluationAlgorithm.check(context: context, condition: condition)
-    }
-    
+   
     func hook() {
         
     }
     
-    func success() {
+    func hook2() {
         
+    }
+    
+    func entrySuccess() {
+        context.account.accumulatedShares += context.account.decrement(context.tb.long ? context.account.cash : context.account.budget) / context.mostRecent.close
+    }
+    
+    func exitSuccess() {
+        context.account.cash += context.account.decrement(shares: context.account.accumulatedShares) * context.mostRecent.close
     }
 }
 
 struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
-    var holdingPeriod: Int
     var context: ContextObject
-    var tb: TradeBot
     
     func hook() {
+        let holdingPeriod = context.tb.exitTrigger
         switch holdingPeriod {
-            case holdingPeriod where holdingPeriod >= 0:
-            ExitTriggerManager.orUpload(tb: tb, context: context)
-            case holdingPeriod where holdingPeriod < 0:
-            ExitTriggerManager.andUpload(tb: tb, context: context)
+            case holdingPeriod where holdingPeriod! >= 0:
+            context.tb.conditions = ExitTriggerManager.orUpload(tb: context.tb, context: context)
+            case holdingPeriod where holdingPeriod! < 0:
+            context.tb.conditions = ExitTriggerManager.andUpload(tb: context.tb, context: context)
             default:
               break
         }
     }
+    
+    func hook2() {
+        
+    }
 }
 
-struct TBAlgorithmDefault: TBTemplateMethod {}
+struct TBAlgorithmDefault: TBTemplateMethod {
+    var context: ContextObject
+    
+    
+}

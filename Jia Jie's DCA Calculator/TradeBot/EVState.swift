@@ -235,6 +235,7 @@ extension TBTemplateMethod {
             if EvaluationAlgorithm.check(context: context, condition: condition) {
           context.account.cash == 0 ? exitSuccess() : entrySuccess()
           condition.enterOrExit == .enter ? hook() : hook2()
+            break
         } else {
           continue
         }
@@ -274,7 +275,15 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     }
     
     func hook2() {
-        
+        let holdingPeriod = context.tb.exitTrigger
+        switch holdingPeriod {
+            case holdingPeriod where holdingPeriod! >= 0:
+            context.tb.conditions = ExitTriggerManager.resetOrExitTrigger(tb: context.tb)
+            case holdingPeriod where holdingPeriod! < 0:
+            context.tb.conditions = ExitTriggerManager.resetAndExitTrigger(tb: context.tb)
+            default:
+              break
+        }
     }
 }
 

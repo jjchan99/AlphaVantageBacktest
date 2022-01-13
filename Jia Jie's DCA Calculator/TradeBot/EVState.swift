@@ -171,9 +171,9 @@ struct HP_EVState: EvaluationState {
         case .holdingPeriod(value: let value):
             switch condition.aboveOrBelow {
             case .priceAbove:
-                return context.mostRecent.stamp > String(value)
+                return context.mostRecent.stamp > DateManager.addNoise(fromString: "\(value)")
             case .priceBelow:
-                return context.mostRecent.stamp < String(value)
+                return context.mostRecent.stamp < DateManager.addNoise(fromString: "\(value)")
             }
         default:
             fatalError()

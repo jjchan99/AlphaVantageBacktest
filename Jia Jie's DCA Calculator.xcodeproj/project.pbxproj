@@ -32,8 +32,6 @@
 		1D25E32A26EDD83D00EA4225 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1D25E32826EDD83D00EA4225 /* LaunchScreen.storyboard */; };
 		1D25E33226EDF47A00EA4225 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E33126EDF47A00EA4225 /* API.swift */; };
 		1D25E33626EDF85A00EA4225 /* TimeSeriesMonthlyAdjustedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D25E33526EDF85A00EA4225 /* TimeSeriesMonthlyAdjustedModel.swift */; };
-		1D260F5F27117CF300099DA8 /* Jia_Jie_s_DCA_CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D260F5E27117CF300099DA8 /* Jia_Jie_s_DCA_CalculatorTests.swift */; };
-		1D260F6D27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */; };
 		1D273F2B27788DE200B44BFE /* TechnicalIndicators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D273F2A27788DE100B44BFE /* TechnicalIndicators.swift */; };
 		1D29573626F2D7D400B40E2B /* SearchResultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */; };
 		1D29573826F2DB0700B40E2B /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D29573726F2DB0700B40E2B /* TableViewCell.swift */; };
@@ -50,7 +48,6 @@
 		1D57BE9626F7AC2A0074087D /* EasyConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */; };
 		1D67EF1027086392005E1016 /* DisplayLabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */; };
 		1D67EF1227086441005E1016 /* DateViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D67EF1127086441005E1016 /* DateViews.swift */; };
-		1D6B9365271D841B009B012E /* GraphTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6B9364271D841B009B012E /* GraphTests.swift */; };
 		1D6D33DC27077063009A86EA /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6D33DB27077063009A86EA /* Date+Extensions.swift */; };
 		1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A227006D93004BBC50 /* TitleView.swift */; };
 		1D72D2A527006E0A004BBC50 /* ViewFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */; };
@@ -64,6 +61,7 @@
 		1D79C48727884ACF00DC17CD /* InputState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48627884ACF00DC17CD /* InputState.swift */; };
 		1D79C48B27884BA600DC17CD /* ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48A27884BA600DC17CD /* ValidationState.swift */; };
 		1D79C48D27889C4700DC17CD /* TransitionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48C27889C4700DC17CD /* TransitionState.swift */; };
+		1D7AA68227907347008D3402 /* TBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7AA68127907347008D3402 /* TBTests.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
@@ -166,11 +164,7 @@
 		1D25E33126EDF47A00EA4225 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1D25E33526EDF85A00EA4225 /* TimeSeriesMonthlyAdjustedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSeriesMonthlyAdjustedModel.swift; sourceTree = "<group>"; };
 		1D260F5C27117CF300099DA8 /* Jia Jie's DCA CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Jia Jie's DCA CalculatorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1D260F5E27117CF300099DA8 /* Jia_Jie_s_DCA_CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jia_Jie_s_DCA_CalculatorTests.swift; sourceTree = "<group>"; };
-		1D260F6027117CF300099DA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D260F6A27117E5500099DA8 /* Jia Jie's DCA CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Jia Jie's DCA CalculatorUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jia_Jie_s_DCA_CalculatorUITests.swift; sourceTree = "<group>"; };
-		1D260F6E27117E5500099DA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D273F2A27788DE100B44BFE /* TechnicalIndicators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalIndicators.swift; sourceTree = "<group>"; };
 		1D29573526F2D7D400B40E2B /* SearchResultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsModel.swift; sourceTree = "<group>"; };
 		1D29573726F2DB0700B40E2B /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
@@ -187,7 +181,6 @@
 		1D57BE9526F7AC2A0074087D /* EasyConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyConstraints.swift; sourceTree = "<group>"; };
 		1D67EF0F27086392005E1016 /* DisplayLabelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLabelsView.swift; sourceTree = "<group>"; };
 		1D67EF1127086441005E1016 /* DateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViews.swift; sourceTree = "<group>"; };
-		1D6B9364271D841B009B012E /* GraphTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphTests.swift; sourceTree = "<group>"; };
 		1D6D33DB27077063009A86EA /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		1D72D2A227006D93004BBC50 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		1D72D2A427006E0A004BBC50 /* ViewFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactoryProtocol.swift; sourceTree = "<group>"; };
@@ -202,6 +195,8 @@
 		1D79C48627884ACF00DC17CD /* InputState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputState.swift; sourceTree = "<group>"; };
 		1D79C48A27884BA600DC17CD /* ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationState.swift; sourceTree = "<group>"; };
 		1D79C48C27889C4700DC17CD /* TransitionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionState.swift; sourceTree = "<group>"; };
+		1D7AA68027907346008D3402 /* Jia Jie's DCA CalculatorTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Jia Jie's DCA CalculatorTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		1D7AA68127907347008D3402 /* TBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBTests.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
@@ -334,11 +329,11 @@
 		1D25E31126EDD83A00EA4225 = {
 			isa = PBXGroup;
 			children = (
+				1D7AA68127907347008D3402 /* TBTests.swift */,
 				1D25E31C26EDD83A00EA4225 /* Jia Jie's DCA Calculator */,
-				1D260F5D27117CF300099DA8 /* Jia Jie's DCA CalculatorTests */,
-				1D260F6B27117E5500099DA8 /* Jia Jie's DCA CalculatorUITests */,
 				1D25E31B26EDD83A00EA4225 /* Products */,
 				1D784B00275A493700F91392 /* Frameworks */,
+				1D7AA68027907346008D3402 /* Jia Jie's DCA CalculatorTests-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -372,25 +367,6 @@
 				1D25E32B26EDD83D00EA4225 /* Info.plist */,
 			);
 			path = "Jia Jie's DCA Calculator";
-			sourceTree = "<group>";
-		};
-		1D260F5D27117CF300099DA8 /* Jia Jie's DCA CalculatorTests */ = {
-			isa = PBXGroup;
-			children = (
-				1D260F5E27117CF300099DA8 /* Jia_Jie_s_DCA_CalculatorTests.swift */,
-				1D6B9364271D841B009B012E /* GraphTests.swift */,
-				1D260F6027117CF300099DA8 /* Info.plist */,
-			);
-			path = "Jia Jie's DCA CalculatorTests";
-			sourceTree = "<group>";
-		};
-		1D260F6B27117E5500099DA8 /* Jia Jie's DCA CalculatorUITests */ = {
-			isa = PBXGroup;
-			children = (
-				1D260F6C27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift */,
-				1D260F6E27117E5500099DA8 /* Info.plist */,
-			);
-			path = "Jia Jie's DCA CalculatorUITests";
 			sourceTree = "<group>";
 		};
 		1D32802B2701AB0800C60A6C /* BodyView */ = {
@@ -656,6 +632,7 @@
 					};
 					1D260F5B27117CF300099DA8 = {
 						CreatedOnToolsVersion = 12.5.1;
+						LastSwiftMigration = 1310;
 						TestTargetID = 1D25E31926EDD83A00EA4225;
 					};
 					1D260F6927117E5500099DA8 = {
@@ -830,8 +807,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D6B9365271D841B009B012E /* GraphTests.swift in Sources */,
-				1D260F5F27117CF300099DA8 /* Jia_Jie_s_DCA_CalculatorTests.swift in Sources */,
+				1D7AA68227907347008D3402 /* TBTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,7 +815,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D260F6D27117E5500099DA8 /* Jia_Jie_s_DCA_CalculatorUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1032,6 +1007,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
 				INFOPLIST_FILE = "Jia Jie's DCA CalculatorTests/Info.plist";
@@ -1042,6 +1018,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "JiaJieChan.Jia-Jie-s-DCA-CalculatorTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Jia Jie's DCA CalculatorTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jia Jie's DCA Calculator.app/Jia Jie's DCA Calculator";
@@ -1052,6 +1030,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
 				INFOPLIST_FILE = "Jia Jie's DCA CalculatorTests/Info.plist";
@@ -1062,6 +1041,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "JiaJieChan.Jia-Jie-s-DCA-CalculatorTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Jia Jie's DCA CalculatorTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Jia Jie's DCA Calculator.app/Jia Jie's DCA Calculator";

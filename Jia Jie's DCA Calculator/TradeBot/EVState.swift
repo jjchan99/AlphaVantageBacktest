@@ -14,17 +14,21 @@ protocol EvaluationState {
 
 class ContextObject {
     
-    internal init(account: Account, previous: OHLCCloudElement, mostRecent: OHLCCloudElement, tb: TradeBot) {
+    internal init(account: Account, tb: TradeBot) {
         self.account = account
-        self.previous = previous
-        self.mostRecent = mostRecent
         self.tb = tb
     }
     
     var account: Account
     var tb: TradeBot
-    var previous: OHLCCloudElement
-    var mostRecent: OHLCCloudElement
+    
+    func updateTickers(previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
+        self.previous = previous
+        self.mostRecent = mostRecent
+    }
+    
+    private(set) var previous: OHLCCloudElement!
+    private(set) var mostRecent: OHLCCloudElement!
 }
 
 struct MA_EVState: EvaluationState {

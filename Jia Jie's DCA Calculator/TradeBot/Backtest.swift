@@ -12,6 +12,8 @@ struct Backtest {
     static func from(date: String, daily: Daily, bot: TradeBot) {
         let technicalManager = OHLCTechnicalManager()
         var bot = bot
+        var context: ContextObject = .init(account: bot.account, tb: bot)
+        let algo: TBTemplateMethod = bot.exitTrigger == nil ? TBAlgorithmDefault(context: context) : TBAlgorithmHoldingPeriod(context: context)
         var value = daily
         let sorted = value.sorted!
         var previous: OHLCCloudElement?
@@ -21,7 +23,8 @@ struct Backtest {
             let OHLC = technicalManager.addOHLCCloudElement(key: sorted[idx].key, value: sorted[idx].value)
             
             if previous != nil && sorted[idx].key > date {
-                bot.evaluate(previous: previous!, latest: OHLC) { _ in }
+                context.updateTickers(previous: previous!, mostRecent: OHLC)
+                algo.templateMethod()
             }
             
             previous = OHLC

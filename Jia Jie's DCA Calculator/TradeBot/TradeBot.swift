@@ -51,49 +51,6 @@ struct TradeBot: CloudKitInterchangeable {
         
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
     }
-
-    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement) {
-        let close = latest.close
-       
-        //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        for condition in self.conditions {
-                switch condition.enterOrExit {
-                case .enter:
-                    guard account.cash > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                     
-                        account.accumulatedShares += account.decrement(long ? account.cash : account.budget) / close
-                        
-                    switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                        self.conditions = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self)
-                        default:
-                          break
-                    }
-                    
-                    break
-                    }
-                case .exit:
-                    guard account.accumulatedShares > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    account.cash += account.decrement(shares: account.accumulatedShares) * close
-                        
-                        switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self)
-                        default:
-                            break
-                        }
-                        
-                    break
-                    }
-                }
-            }
-    }
 }
 
 extension TradeBot {

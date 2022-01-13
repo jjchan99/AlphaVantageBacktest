@@ -168,7 +168,7 @@ struct HP_EVState: EvaluationState {
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
-        case .exitTrigger(value: let value):
+        case .holdingPeriod(value: let value):
             switch condition.aboveOrBelow {
             case .priceAbove:
                 return context.mostRecent.stamp > String(value)
@@ -194,7 +194,7 @@ struct EVStateFactory {
             return PT_EVState()
         case .profitTarget(value: let value):
             return PT_EVState()
-        case .exitTrigger(value: let value):
+        case .holdingPeriod(value: let value):
             return HP_EVState()
         case .movingAverageOperation(period1: let period1, period2: let period2):
             return MAOperation_EVState()
@@ -267,7 +267,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     var context: ContextObject
     
     func hook() {
-        let holdingPeriod = context.tb.exitTrigger
+        let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
             case holdingPeriod where holdingPeriod! >= 0:
             context.tb.conditions = ExitTriggerManager.orUpload(tb: context.tb, context: context)
@@ -279,7 +279,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     }
     
     func hook2() {
-        let holdingPeriod = context.tb.exitTrigger
+        let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
             case holdingPeriod where holdingPeriod! >= 0:
             context.tb.conditions = ExitTriggerManager.resetOrExitTrigger(tb: context.tb)

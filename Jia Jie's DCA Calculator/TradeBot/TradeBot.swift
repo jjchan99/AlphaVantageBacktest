@@ -13,19 +13,18 @@ struct TradeBot: CloudKitInterchangeable {
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
-    var exitTrigger: Int?
-    var lm = LedgerManager()
+    var holdingPeriod: Int?
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
         let cash = record["cash"] as! Double
         let accumulatedShares = record["accumulatedShares"] as! Double
-        let exitTrigger = record["exitTrigger"] as! Int?
+        let holdingPeriod = record["holdingPeriod"] as! Int?
         let long = record["long"] as! Bool
         
         self.account = .init(budget: budget, cash: cash, accumulatedShares: accumulatedShares)
         self.record = record
-        self.exitTrigger = exitTrigger
+        self.holdingPeriod = holdingPeriod
         self.long = long
     }
     
@@ -35,7 +34,7 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(account: Account, conditions: [EvaluationCondition], exitTrigger: Int? = nil, long: Bool = true) {
+    init?(account: Account, conditions: [EvaluationCondition], holdingPeriod: Int? = nil, long: Bool = true) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
                     "budget": account.budget,
@@ -43,8 +42,8 @@ struct TradeBot: CloudKitInterchangeable {
                     "accumulatedShares": 0,
                     "long" : long
                 ])
-            if let exitTrigger = exitTrigger {
-              record.setValue(exitTrigger, forKey: "exitTrigger")
+            if let holdingPeriod = holdingPeriod {
+              record.setValue(holdingPeriod, forKey: "holdingPeriod")
              }
         self.init(record: record)
         self.conditions = conditions

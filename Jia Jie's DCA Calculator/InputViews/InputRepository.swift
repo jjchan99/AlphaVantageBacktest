@@ -31,7 +31,7 @@ class InputRepository: ObservableObject {
             return "RSI"
         case .lossTarget:
             return "LL"
-        case .exitTrigger:
+        case .holdingPeriod:
             return "HP"
         case .profitTarget:
             return "PT"

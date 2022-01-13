@@ -67,7 +67,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
             return ""
         case .profitTarget:
             return ""
-        case .exitTrigger:
+        case .holdingPeriod:
             return ""
         case .movingAverageOperation(period1: let period1, period2: let period2):
             return ""

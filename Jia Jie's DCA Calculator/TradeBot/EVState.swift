@@ -207,6 +207,7 @@ struct EvaluationAlgorithm {
     
     private static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
         let state: EvaluationState = EVStateFactory.getEVState(condition: condition)
+        state.setContext(context: context)
         return state.perform()
     }
     

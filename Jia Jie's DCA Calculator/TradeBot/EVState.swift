@@ -19,6 +19,7 @@ class ContextObject {
         self.tb = tb
     }
     
+    var lm = LedgerManager()
     var account: Account
     var tb: TradeBot
     
@@ -209,10 +210,11 @@ struct EvaluationAlgorithm {
         return state.perform()
     }
     
-    static func check(context: ContextObject, condition: EvaluationCondition) -> Bool {
+    static func check(context: ContextObject, condition: EvaluationCondition, passed: (EvaluationCondition) -> Void) -> Bool {
         if checkCondition(context: context, condition: condition) {
             for andConditions in condition.andCondition {
                 if checkCondition(context: context, condition: andConditions) {
+                    passed(condition)
                     continue
                 } else {
                     return false
@@ -221,6 +223,7 @@ struct EvaluationAlgorithm {
         } else {
             return false
         }
+        passed(condition)
         return true
     }
 }
@@ -235,8 +238,13 @@ protocol TBTemplateMethod {
 
 extension TBTemplateMethod {
     func templateMethod() {
+        
+        let passed: (EvaluationCondition) -> Void = { condition in
+            context.lm.append(description: "Passed", context: self.context, condition: condition)
+        }
+        
         for condition in context.tb.conditions {
-            if EvaluationAlgorithm.check(context: context, condition: condition) {
+            if EvaluationAlgorithm.check(context: context, condition: condition, passed: passed) {
           context.account.cash == 0 ? exitSuccess() : entrySuccess()
           condition.enterOrExit == .enter ? hook() : hook2()
             break

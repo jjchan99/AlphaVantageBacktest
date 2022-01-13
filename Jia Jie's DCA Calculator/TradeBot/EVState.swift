@@ -71,9 +71,9 @@ struct BB_EVState: EvaluationState {
         case .bollingerBands(percentage: let percent):
             switch condition.aboveOrBelow {
             case .priceAbove:
-                return context.mostRecent.open > context.mostRecent.valueAtPercent(percent: percent)!
+                return context.mostRecent.open > context.mostRecent.valueAtPercent(percent: percent)! && context.mostRecent.open < context.mostRecent.upperBollingerBand!
             case .priceBelow:
-                return context.mostRecent.open < context.mostRecent.valueAtPercent(percent: percent)!
+                return context.mostRecent.open < context.mostRecent.valueAtPercent(percent: percent)! && context.mostRecent.open > context.mostRecent.lowerBollingerBand!
             }
         default:
             fatalError()

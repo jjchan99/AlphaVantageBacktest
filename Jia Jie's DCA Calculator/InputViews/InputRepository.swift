@@ -30,13 +30,13 @@ class InputRepository: ObservableObject {
         case .RSI:
             return "RSI"
         case .lossTarget:
-            return "lossTarget"
-        case .exitTrigger:
-            return "exitTrigger"
+            return "LL"
+        case .holdingPeriod:
+            return "HP"
         case .profitTarget:
-            return "profitTarget"
+            return "PT"
         case .movingAverageOperation:
-            return "MAOperation"
+            return "MACrossover"
         }
     }
     

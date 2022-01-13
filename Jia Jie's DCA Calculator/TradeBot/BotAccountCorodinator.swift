@@ -20,7 +20,7 @@ class BotAccountCoordinator {
 //
 //        let condition3: EvaluationCondition = .init(technicalIndicator: .bollingerBands(percentage: 0.40), aboveOrBelow: .priceBelow, buyOrSell: .buy, andCondition: [])!
 //
-        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .exitTrigger(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        let exitTrigger: EvaluationCondition = .init(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
         
         let conditionZ: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, enterOrExit: .exit, andCondition: [exitTrigger])!
         
@@ -39,7 +39,7 @@ class BotAccountCoordinator {
             .addCondition(conditionZ)
             .addCondition(conditionX)
             .addCondition(conditionY)
-            .setExitTrigger(afterDays: -10)
+            .setholdingPeriod(afterDays: -10)
             .build()
 //        print(f)
         return f
@@ -160,15 +160,15 @@ class BotFactory {
     var cashBuyPercentage: Double = 0
     var sharesSellPercentage: Double = 0
     var evaluationConditions: [EvaluationCondition] = []
-    var exitTrigger: Int?
+    var holdingPeriod: Int?
     
     func setBudget(_ value: Double) -> BotFactory {
         self.budget = value
         return self
     }
     
-    func setExitTrigger(afterDays: Int) -> BotFactory {
-        self.exitTrigger = afterDays
+    func setholdingPeriod(afterDays: Int) -> BotFactory {
+        self.holdingPeriod = afterDays
         return self
     }
     
@@ -193,7 +193,7 @@ class BotFactory {
 //    }
     
     func build() -> TradeBot {
-        let bot = TradeBot(budget: budget, account: .init(cash: budget, accumulatedShares: 0), conditions: evaluationConditions, effectiveAfter: "2021-12-05", exitTrigger: exitTrigger)
+        let bot = TradeBot(account: .init(budget: budget, cash: budget, accumulatedShares: 0), conditions: evaluationConditions, holdingPeriod: holdingPeriod)
         return bot!
     }
     

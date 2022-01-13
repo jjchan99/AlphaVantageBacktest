@@ -11,10 +11,10 @@ import CloudKit
 class LedgerManager {
     var entries: [LedgerRecord] = []
     
-    func append(description: String, latest: OHLCCloudElement, bot: TradeBot, condition: EvaluationCondition) {
-        let deltaShares = condition.enterOrExit == .enter ? bot.account.cash / latest.close : -1 * bot.account.accumulatedShares
-        let deltaCash = condition.enterOrExit == .exit ? bot.account.accumulatedShares * latest.close : -1 * bot.account.cash
-        entries.append(.init(description: description, stamp: latest.stamp, deltaCash: deltaCash, deltaShares: deltaShares))
+    func append(description: String, context: ContextObject, condition: EvaluationCondition) {
+        let deltaShares = condition.enterOrExit == .enter ? context.tb.account.cash / context.mostRecent.close : -1 * context.account.accumulatedShares
+        let deltaCash = condition.enterOrExit == .exit ? context.tb.account.accumulatedShares * context.mostRecent.close : -1 * context.tb.account.cash
+        entries.append(.init(description: description, stamp: context.mostRecent.stamp, deltaCash: deltaCash, deltaShares: deltaShares))
     }
 }
 

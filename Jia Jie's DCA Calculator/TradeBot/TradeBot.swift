@@ -9,26 +9,22 @@ import CloudKit
 import Foundation
 
 struct TradeBot: CloudKitInterchangeable {
-
-    let budget: Double
     let long: Bool 
     var account: Account
     var conditions: [EvaluationCondition] = []
     let record: CKRecord
-    var exitTrigger: Int?
-    var lm = LedgerManager()
+    var holdingPeriod: Int?
     
     init?(record: CKRecord) {
         let budget = record["budget"] as! Double
         let cash = record["cash"] as! Double
         let accumulatedShares = record["accumulatedShares"] as! Double
-        let exitTrigger = record["exitTrigger"] as! Int?
+        let holdingPeriod = record["holdingPeriod"] as! Int?
         let long = record["long"] as! Bool
         
-        self.budget = budget
-        self.account = .init(cash: cash, accumulatedShares: accumulatedShares)
+        self.account = .init(budget: budget, cash: cash, accumulatedShares: accumulatedShares)
         self.record = record
-        self.exitTrigger = exitTrigger
+        self.holdingPeriod = holdingPeriod
         self.long = long
     }
     
@@ -38,66 +34,21 @@ struct TradeBot: CloudKitInterchangeable {
         return TradeBot(record: record)!
     }
     
-    init?(budget: Double, account: Account, conditions: [EvaluationCondition], effectiveAfter: String, exitTrigger: Int? = nil, long: Bool = true) {
+    init?(account: Account, conditions: [EvaluationCondition], holdingPeriod: Int? = nil, long: Bool = true) {
         let record = CKRecord(recordType: "TradeBot")
                 record.setValuesForKeys([
-                    "budget": budget,
-                    "cash": budget,
+                    "budget": account.budget,
+                    "cash": account.budget,
                     "accumulatedShares": 0,
-                    "effectiveAfter": effectiveAfter,
                     "long" : long
                 ])
-            if let exitTrigger = exitTrigger {
-              record.setValue(exitTrigger, forKey: "exitTrigger")
+            if let holdingPeriod = holdingPeriod {
+              record.setValue(holdingPeriod, forKey: "holdingPeriod")
              }
         self.init(record: record)
         self.conditions = conditions
         
         //MARK: EFFECTIVE AFTER IS LATEST OHLC DATE.
-    }
-
-    mutating func evaluate(previous: OHLCCloudElement, latest: OHLCCloudElement, didEvaluate: @escaping (Bool) -> Void) {
-        let close = latest.close
-       
-        //MARK: CONDITION SATISFIED, INVEST 10% OF CASH
-        for condition in self.conditions {
-                switch condition.enterOrExit {
-                case .enter:
-                    guard account.cash > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                     
-                        account.accumulatedShares += account.decrement(long ? account.cash : budget) / close
-                        
-                    switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                        let newCondition = ExitTriggerManager.orUpload(latest: latest.stamp, exitAfter: exitTrigger!, tb: self)
-                        self.conditions.append(newCondition)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.andUpload(latest: latest.stamp, exitAfter: abs(exitTrigger!), tb: self)
-                        default:
-                          break
-                    }
-                    
-                    break
-                    }
-                case .exit:
-                    guard account.accumulatedShares > 0 else { continue }
-                    if TradeBotAlgorithm.checkNext(condition: condition, previous: previous, latest: latest, bot: self) {
-                    account.cash += account.decrement(shares: account.accumulatedShares) * close
-                        
-                        switch exitTrigger {
-                        case .some(exitTrigger) where exitTrigger! >= 0:
-                            self.conditions = ExitTriggerManager.resetOrExitTrigger(tb: self)
-                        case .some(exitTrigger) where exitTrigger! < 0:
-                        self.conditions = ExitTriggerManager.resetAndExitTrigger(tb: self)
-                        default:
-                            break
-                        }
-                        
-                    break
-                    }
-                }
-            }
     }
 }
 
@@ -106,15 +57,16 @@ extension TradeBot {
 }
 
 struct Account {
+    let budget: Double
     var cash: Double
     var accumulatedShares: Double
     
-    func longProfit(quote: Double, budget: Double) -> Double {
+    func longProfit(quote: Double) -> Double {
         let value = (accumulatedShares * quote + cash) - budget
         return value / budget
     }
     
-    func shortProfit(quote: Double, budget: Double) -> Double {
+    func shortProfit(quote: Double) -> Double {
         let value = (budget - cash) - (accumulatedShares * quote)
         return value / budget
     }

@@ -11,13 +11,17 @@ import Combine
 struct ExitTriggerManager {
     static var subs = Set<AnyCancellable>()
     
-    static func orUpload(latest: String, exitAfter: Int, tb: TradeBot) -> EvaluationCondition {
-        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
+    static func orUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
+        var copy = tb.conditions
+        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.holdingPeriod!))
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
-        let exitTrigger = EvaluationCondition(technicalIndicator: .exitTrigger(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        let exitTrigger = EvaluationCondition(technicalIndicator: .holdingPeriod(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        for (index, condition) in tb.conditions.enumerated() where condition.technicalIndicator == .holdingPeriod(value: 99999999) {
+             copy[index] = exitTrigger
+        }
         
-        return exitTrigger
+        return copy
     }
     
     static func resetOrExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
@@ -25,8 +29,8 @@ struct ExitTriggerManager {
         for (index, condition) in tb.conditions.enumerated() {
                 guard condition.enterOrExit == .exit else { continue }
                 switch condition.technicalIndicator {
-                case .exitTrigger:
-                    copy.remove(at: index)
+                case .holdingPeriod:
+                    copy[index].technicalIndicator = .holdingPeriod(value: 99999999)
                 default:
                     break
                 }
@@ -36,16 +40,13 @@ struct ExitTriggerManager {
     
     static func resetAndExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
         var copy = tb.conditions
-        let group = DispatchGroup()
+     
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.enterOrExit == .exit else { continue }
             for (index, andConditions) in conditions.andCondition.enumerated() {
                 switch andConditions.technicalIndicator {
-                case .exitTrigger:
-                    group.enter()
-            
-                    
-                    copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: 99999999)
+                case .holdingPeriod:
+                    copy[outerIndex].andCondition[index].technicalIndicator = .holdingPeriod(value: 99999999)
                 default:
                     break
             }
@@ -56,8 +57,8 @@ struct ExitTriggerManager {
     }
     
     
-    static func andUpload(latest: String, exitAfter: Int, tb: TradeBot) -> [EvaluationCondition] {
-        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: latest), value: exitAfter)
+    static func andUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
+        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.holdingPeriod!))
         let dateString = DateManager.string(fromDate: date)
         let withoutNoise = DateManager.removeNoise(fromString: dateString)
      
@@ -66,9 +67,9 @@ struct ExitTriggerManager {
         for (outerIndex, conditions) in tb.conditions.enumerated() {
             guard conditions.enterOrExit == .exit else { continue }
 //            conditions.andCondition.append(exitTrigger)
-            for (index, andConditions) in conditions.andCondition.enumerated() where andConditions.technicalIndicator == .exitTrigger(value: 99999999) {
+            for (index, andConditions) in conditions.andCondition.enumerated() where andConditions.technicalIndicator == .holdingPeriod(value: 99999999) {
         
-                copy[outerIndex].andCondition[index].technicalIndicator = .exitTrigger(value: Int(withoutNoise)!)
+                copy[outerIndex].andCondition[index].technicalIndicator = .holdingPeriod(value: Int(withoutNoise)!)
             }
         }
         

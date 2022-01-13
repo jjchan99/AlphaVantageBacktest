@@ -109,6 +109,7 @@
 		1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */; };
 		1DD94B36273A71B900A7DC15 /* SingleBarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */; };
 		1DDF323C2737C73F00451CD1 /* BarGraphRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */; };
+		1DECF025278AECB500FA33B1 /* EVState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DECF024278AECB500FA33B1 /* EVState.swift */; };
 		1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */; };
 		1DF13C6427183898005C7CB7 /* IndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6327183898005C7CB7 /* IndicatorView.swift */; };
 		1DF13C6627183D11005C7CB7 /* SwitchModeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */; };
@@ -246,6 +247,7 @@
 		1DD26EE4272C553100BEDF32 /* DateIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateIndicatorView.swift; sourceTree = "<group>"; };
 		1DD94B35273A71B900A7DC15 /* SingleBarRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleBarRenderer.swift; sourceTree = "<group>"; };
 		1DDF323B2737C73F00451CD1 /* BarGraphRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarGraphRenderer.swift; sourceTree = "<group>"; };
+		1DECF024278AECB500FA33B1 /* EVState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EVState.swift; sourceTree = "<group>"; };
 		1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOHLCHandler.swift; sourceTree = "<group>"; };
 		1DF13C6327183898005C7CB7 /* IndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorView.swift; sourceTree = "<group>"; };
 		1DF13C6527183D11005C7CB7 /* SwitchModeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchModeButtonView.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				1DC8A2412761FC25009FBA85 /* OHLCTechnicalManager.swift */,
 				1DFBD22C2774D0BB00E44F11 /* Backtest.swift */,
 				1D18DDCE2758D9C80061A7AD /* TradeBot.swift */,
+				1DECF024278AECB500FA33B1 /* EVState.swift */,
 				1D273F2A27788DE100B44BFE /* TechnicalIndicators.swift */,
 				1D34C002278470EA0006C8DA /* MovingAverageOperationDecoder.swift */,
 				1DF3B7EE27761EDE00411D0A /* LedgerManager.swift */,
@@ -771,6 +774,7 @@
 				1D25E32026EDD83A00EA4225 /* SceneDelegate.swift in Sources */,
 				1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */,
 				1DC58277275D240700FD1592 /* CloudViewModel.swift in Sources */,
+				1DECF025278AECB500FA33B1 /* EVState.swift in Sources */,
 				1D18DDCF2758D9C80061A7AD /* TradeBot.swift in Sources */,
 				1D911E52273289BA00444991 /* TabViewModel.swift in Sources */,
 				1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */,

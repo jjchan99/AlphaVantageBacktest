@@ -11,8 +11,7 @@ struct Backtest {
     
     static func from(date: String, daily: Daily, bot: TradeBot) {
         let technicalManager = OHLCTechnicalManager()
-        var bot = bot
-        var context: ContextObject = .init(account: bot.account, tb: bot)
+        let context: ContextObject = .init(account: bot.account, tb: bot)
         let algo: TBTemplateMethod = bot.exitTrigger == nil ? TBAlgorithmDefault(context: context) : TBAlgorithmHoldingPeriod(context: context)
         var value = daily
         let sorted = value.sorted!

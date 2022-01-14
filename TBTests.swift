@@ -45,10 +45,19 @@ class TBTests: XCTestCase {
 class EVTests: XCTestCase {
     
     var sut: EvaluationState!
+    let account: Account = .init(budget: 5000, cash: 5000, accumulatedShares: 0)
+    lazy var tb: TradeBot = .init(account: account, conditions: [.init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!])!
+    lazy var context: ContextObject = .init(account: account, tb: tb)
+    let ticker1: OHLCCloudElement = .init(stamp: "", open: 0, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [200 : 1], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
+    let ticker2: OHLCCloudElement = .init(stamp: "", open: 0, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [200 : 1.1], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        sut = MA_EVState()
+        context.updateTickers(previous: ticker1, mostRecent: ticker2)
+        let state: EvaluationState = MA_EVState(context: context, condition: .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!)
+        sut = state
+        sut.setContext(context: context)
+        
     }
 
     override func tearDownWithError() throws {
@@ -58,7 +67,7 @@ class EVTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
+        XCTAssertEqual(sut.perform(), true)
     }
 
     func testPerformanceExample() throws {

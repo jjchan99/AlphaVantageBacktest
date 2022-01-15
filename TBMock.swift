@@ -14,7 +14,7 @@ struct Mock {
     }
     
     static func ticker() -> OHLCCloudElement {
-        return OHLCCloudElement(stamp: "", open: 0, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [200 : 1], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
+        return OHLCCloudElement(stamp: "", open: 1.1, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [200 : 1], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
     }
     
     static func context() -> ContextObject {

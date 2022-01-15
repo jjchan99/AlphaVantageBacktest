@@ -192,9 +192,9 @@ struct Empty_EVState: EvaluationState {
 struct EvaluationAlgorithm {
     
     private static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
-        let state: EvaluationState = Empty_EVState(context: context)
+     return Empty_EVState(context: context)
             .transition(condition: condition)
-        return state.perform()
+            .perform()
     }
     
     static func check(context: ContextObject, condition: EvaluationCondition, passed: (EvaluationCondition) -> Void) -> Bool {

@@ -61,6 +61,12 @@ class EVTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         XCTAssertEqual(sut.perform(), true)
+        sut
+            .transition(condition: Mock.condition())
+        XCTAssert(sut.perform(), true)
+        sut
+            .transition(condition: Mock.condition())
+        
     }
 
     func testPerformanceExample() throws {

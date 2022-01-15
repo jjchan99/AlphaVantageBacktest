@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1D06C6B027440DCA00374255 /* CandleIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6AF27440DC900374255 /* CandleIndicator.swift */; };
 		1D06C6B22744125D00374255 /* CandleIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D06C6B12744125D00374255 /* CandleIndicatorView.swift */; };
-		1D0AA619276F4D6A00C9182D /* TradeBotAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */; };
 		1D0AAF9A2762963700318892 /* ChartLibraryGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */; };
 		1D0F2C352723EF8A00EE5803 /* DCAResultMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */; };
 		1D0F2C372723F0FB00EE5803 /* MetaAnalysisModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */; };
@@ -74,6 +73,7 @@
 		1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */; };
 		1D8897E92708B5EF005131B0 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8897E82708B5EF005131B0 /* GraphView.swift */; };
 		1D8897EB2708B86F005131B0 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8897EA2708B86F005131B0 /* ViewModel.swift */; };
+		1D8D2B922792C6580027C9B3 /* TBMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D2B912792C6580027C9B3 /* TBMock.swift */; };
 		1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */; };
 		1D911E4E2732867300444991 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4D2732867300444991 /* TabViewController.swift */; };
 		1D911E502732878900444991 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4F2732878900444991 /* CustomTabView.swift */; };
@@ -138,7 +138,6 @@
 /* Begin PBXFileReference section */
 		1D06C6AF27440DC900374255 /* CandleIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicator.swift; sourceTree = "<group>"; };
 		1D06C6B12744125D00374255 /* CandleIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandleIndicatorView.swift; sourceTree = "<group>"; };
-		1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBotAlgorithm.swift; sourceTree = "<group>"; };
 		1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLibraryGeneric.swift; sourceTree = "<group>"; };
 		1D0F2C342723EF8A00EE5803 /* DCAResultMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCAResultMeta.swift; sourceTree = "<group>"; };
 		1D0F2C362723F0FB00EE5803 /* MetaAnalysisModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaAnalysisModel.swift; sourceTree = "<group>"; };
@@ -209,6 +208,7 @@
 		1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCACalculatorModel.swift; sourceTree = "<group>"; };
 		1D8897E82708B5EF005131B0 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		1D8897EA2708B86F005131B0 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		1D8D2B912792C6580027C9B3 /* TBMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBMock.swift; sourceTree = "<group>"; };
 		1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitTriggerManager.swift; sourceTree = "<group>"; };
 		1D911E4D2732867300444991 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		1D911E4F2732878900444991 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
@@ -306,7 +306,6 @@
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
 				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
-				1D0AA618276F4D6A00C9182D /* TradeBotAlgorithm.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
 			);
@@ -330,6 +329,7 @@
 			isa = PBXGroup;
 			children = (
 				1D7AA68127907347008D3402 /* TBTests.swift */,
+				1D8D2B912792C6580027C9B3 /* TBMock.swift */,
 				1D25E31C26EDD83A00EA4225 /* Jia Jie's DCA Calculator */,
 				1D25E31B26EDD83A00EA4225 /* Products */,
 				1D784B00275A493700F91392 /* Frameworks */,
@@ -745,6 +745,7 @@
 				1D1210312736FE4000B58B67 /* FinancialModel.swift in Sources */,
 				1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */,
 				1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */,
+				1D8D2B922792C6580027C9B3 /* TBMock.swift in Sources */,
 				1D2E4AA52757C7F8002729E4 /* PercentageChangeModel.swift in Sources */,
 				1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */,
 				1D2425B427576566003A9755 /* PageCoordinator.swift in Sources */,
@@ -776,7 +777,6 @@
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,
 				1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */,
 				1D34C0072784BA850006C8DA /* SlidingTabView.swift in Sources */,
-				1D0AA619276F4D6A00C9182D /* TradeBotAlgorithm.swift in Sources */,
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,
 				1D72D2A327006D93004BBC50 /* TitleView.swift in Sources */,

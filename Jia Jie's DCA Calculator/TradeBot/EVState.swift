@@ -23,9 +23,10 @@ class ContextObject {
     var account: Account
     var tb: TradeBot
     
-    func updateTickers(previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
+    func updateTickers(previous: OHLCCloudElement, mostRecent: OHLCCloudElement) -> Self {
         self.previous = previous
         self.mostRecent = mostRecent
+        return self
     }
     
     private(set) var previous: OHLCCloudElement!

@@ -10,16 +10,10 @@ import XCTest
 
 class TBTests: XCTestCase {
     
-    var sut: ContextObject!
-    var mockTimeSeries: [String: TimeSeriesDaily] = [
-        "2022-01-01" : .init(open: "25", high: "30", low: "20", close: "22", volume: "44")
-    ]
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        let account: Account = .init(budget: 5000, cash: 5000, accumulatedShares: 0)
-        let tb: TradeBot = BotAccountCoordinator.specimen()
-        sut = ContextObject(account: account, tb: tb)
+       
     }
 
     override func tearDownWithError() throws {
@@ -29,7 +23,6 @@ class TBTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let test = Backtest.from(date: "", daily: .init(meta: nil, timeSeries: mockTimeSeries, note: nil, sorted: nil), bot: sut.tb)
         
     }
 

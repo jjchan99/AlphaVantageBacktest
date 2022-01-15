@@ -8,8 +8,30 @@
 import Foundation
 
 protocol EvaluationState {
+    var context: ContextObject { get set }
     func perform() -> Bool
-    func setContext(context: ContextObject)
+}
+
+extension EvaluationState {
+
+    func transition(condition: EvaluationCondition) -> EvaluationState {
+        switch condition.technicalIndicator {
+        case .movingAverage(period: let period):
+            return MA_EVState(context: self.context, condition: condition)
+        case .bollingerBands(percentage: let percentage):
+            return BB_EVState(context: self.context, condition: condition)
+        case .RSI(period: let period, value: let value):
+            return RSI_EVState(context: self.context, condition: condition)
+        case .lossTarget(value: let value):
+            return PT_EVState(context: self.context, condition: condition)
+        case .profitTarget(value: let value):
+            return PT_EVState(context: self.context, condition: condition)
+        case .holdingPeriod(value: let value):
+            return HP_EVState(context: self.context, condition: condition)
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return MAOperation_EVState(context: self.context, condition: condition)
+        }
+    }
 }
 
 class ContextObject {
@@ -23,9 +45,10 @@ class ContextObject {
     var account: Account
     var tb: TradeBot
     
-    func updateTickers(previous: OHLCCloudElement, mostRecent: OHLCCloudElement) {
+    func updateTickers(previous: OHLCCloudElement, mostRecent: OHLCCloudElement) -> Self {
         self.previous = previous
         self.mostRecent = mostRecent
+        return self
     }
     
     private(set) var previous: OHLCCloudElement!
@@ -35,12 +58,8 @@ class ContextObject {
 struct MA_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -60,12 +79,8 @@ struct MA_EVState: EvaluationState {
 struct BB_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-       
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -85,12 +100,8 @@ struct BB_EVState: EvaluationState {
 struct MAOperation_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -110,12 +121,8 @@ struct MAOperation_EVState: EvaluationState {
 struct RSI_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -135,12 +142,8 @@ struct RSI_EVState: EvaluationState {
 struct PT_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -160,12 +163,8 @@ struct PT_EVState: EvaluationState {
 struct HP_EVState: EvaluationState {
   
     typealias T = Double
-    private(set) var context: ContextObject!
+    var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -182,32 +181,20 @@ struct HP_EVState: EvaluationState {
     }
 }
 
-struct EVStateFactory {
-    static func getEVState(condition: EvaluationCondition) -> EvaluationState {
-        switch condition.technicalIndicator {
-        case .movingAverage(period: let period):
-            return MA_EVState()
-        case .bollingerBands(percentage: let percentage):
-            return BB_EVState()
-        case .RSI(period: let period, value: let value):
-            return RSI_EVState()
-        case .lossTarget(value: let value):
-            return PT_EVState()
-        case .profitTarget(value: let value):
-            return PT_EVState()
-        case .holdingPeriod(value: let value):
-            return HP_EVState()
-        case .movingAverageOperation(period1: let period1, period2: let period2):
-            return MAOperation_EVState()
-        }
+struct Empty_EVState: EvaluationState {
+    var context: ContextObject
+    
+    func perform() -> Bool {
+        return true
     }
 }
 
 struct EvaluationAlgorithm {
     
     private static func checkCondition(context: ContextObject, condition: EvaluationCondition) -> Bool {
-        let state: EvaluationState = EVStateFactory.getEVState(condition: condition)
-        return state.perform()
+     return Empty_EVState(context: context)
+            .transition(condition: condition)
+            .perform()
     }
     
     static func check(context: ContextObject, condition: EvaluationCondition, passed: (EvaluationCondition) -> Void) -> Bool {

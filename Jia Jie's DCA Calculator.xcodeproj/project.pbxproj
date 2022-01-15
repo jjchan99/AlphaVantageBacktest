@@ -148,7 +148,6 @@
 		1D12102C2736F98100B58B67 /* FinancialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialsViewModel.swift; sourceTree = "<group>"; };
 		1D12102E2736FA4200B58B67 /* ROEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROEView.swift; sourceTree = "<group>"; };
 		1D1210302736FE4000B58B67 /* FinancialModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialModel.swift; sourceTree = "<group>"; };
-		1D13E50D27933453008A7508 /* AlgoMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoMock.swift; sourceTree = "<group>"; };
 		1D187F6E2738468500F4B594 /* PieChartRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartRenderer.swift; sourceTree = "<group>"; };
 		1D18DDCE2758D9C80061A7AD /* TradeBot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeBot.swift; sourceTree = "<group>"; };
 		1D1A016727325493005449A2 /* ScaleFactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleFactor.swift; sourceTree = "<group>"; };
@@ -330,7 +329,6 @@
 			isa = PBXGroup;
 			children = (
 				1D7AA68127907347008D3402 /* TBTests.swift */,
-				1D13E50D27933453008A7508 /* AlgoMock.swift */,
 				1D8D2B912792C6580027C9B3 /* TBMock.swift */,
 				1D25E31C26EDD83A00EA4225 /* Jia Jie's DCA Calculator */,
 				1D25E31B26EDD83A00EA4225 /* Products */,

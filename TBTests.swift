@@ -25,6 +25,13 @@ class TBTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
     }
+    
+    func testHoldingPeriod() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let hp = ExitTriggerManager.andUpload(tb: AlgoMock.tb(), context: AlgoMock.context())
+        XCTAssertEqual()
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

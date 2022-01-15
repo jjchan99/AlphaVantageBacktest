@@ -970,7 +970,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA Calculator/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -991,7 +991,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA Calculator/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1010,7 +1010,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA CalculatorTests/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1033,7 +1033,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA CalculatorTests/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1053,7 +1053,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA CalculatorUITests/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1072,7 +1072,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2ZMD79S6B;
-				INFOPLIST_FILE = "Jia Jie's DCA CalculatorUITests/Info.plist";
+				INFOPLIST_FILE = "/Users/jiajiechan/Desktop/jiajiemaster/jiajie/Jia Jie's DCA Calculator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

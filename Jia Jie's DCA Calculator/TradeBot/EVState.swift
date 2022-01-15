@@ -129,9 +129,9 @@ struct RSI_EVState: EvaluationState {
         case .RSI(period: let period, value: let value):
             switch condition.aboveOrBelow {
             case .priceAbove:
-                return context.mostRecent.open > context.mostRecent.RSI[period]!
+                return value > context.mostRecent.RSI[period]!
             case .priceBelow:
-                return context.mostRecent.open < context.mostRecent.RSI[period]!
+                return value < context.mostRecent.RSI[period]!
             }
         default:
             fatalError()

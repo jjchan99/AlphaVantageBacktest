@@ -63,7 +63,10 @@ class EVTests: XCTestCase {
         XCTAssertTrue(sut.perform())
         sut = sut.transition(condition: Mock.MAOperation())
         XCTAssertTrue(sut.perform())
-        
+        sut = sut.transition(condition: Mock.BB())
+        XCTAssertTrue(sut.perform())
+        sut = sut.transition(condition: Mock.RSI())
+        XCTAssertTrue(sut.perform())
     }
 
     func testPerformanceExample() throws {

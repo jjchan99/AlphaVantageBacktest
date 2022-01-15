@@ -9,11 +9,11 @@ import XCTest
 @testable import Jia_Jie_s_DCA_Calculator
 
 class TBTests: XCTestCase {
-    
+    var sut: TradeBot!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-       
+        sut = AlgoMock.tb()
     }
 
     override func tearDownWithError() throws {
@@ -29,8 +29,10 @@ class TBTests: XCTestCase {
     func testHoldingPeriod() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let hp = ExitTriggerManager.orUpload(tb: AlgoMock.tb(), context: AlgoMock.context())
-        XCTAssertEqual(hp.first!.technicalIndicator.rawValue, 20220111)
+        sut.conditions = ExitTriggerManager.orUpload(tb: AlgoMock.tb(), context: AlgoMock.context())
+        XCTAssertEqual(sut.conditions.first!.technicalIndicator.rawValue, 20220111)
+        sut.conditions = ExitTriggerManager.resetOrExitTrigger(tb: sut)
+        XCTAssertEqual(sut.conditions.first!.technicalIndicator.rawValue, 99999999)
     }
 
     func testPerformanceExample() throws {

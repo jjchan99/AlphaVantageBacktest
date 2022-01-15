@@ -71,4 +71,8 @@ struct AlgoMock {
         return EvaluationCondition(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
     }
     
+    static func activeHP() -> EvaluationCondition {
+        return EvaluationCondition(technicalIndicator: .holdingPeriod(value: 20220111), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
+    }
+    
 }

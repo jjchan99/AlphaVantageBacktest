@@ -10,7 +10,6 @@ import Foundation
 protocol EvaluationState {
     var context: ContextObject { get set }
     func perform() -> Bool
-    func setContext(context: ContextObject)
 }
 
 extension EvaluationState {
@@ -62,10 +61,6 @@ struct MA_EVState: EvaluationState {
     var context: ContextObject
     var condition: EvaluationCondition!
     
-    func setContext(context: ContextObject) {
-        
-    }
-    
     func perform() -> Bool {
         switch condition.technicalIndicator {
         case .movingAverage(period: let period):
@@ -86,10 +81,6 @@ struct BB_EVState: EvaluationState {
     typealias T = Double
     var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-       
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -112,10 +103,6 @@ struct MAOperation_EVState: EvaluationState {
     var context: ContextObject
     var condition: EvaluationCondition!
     
-    func setContext(context: ContextObject) {
-        
-    }
-    
     func perform() -> Bool {
         switch condition.technicalIndicator {
         case .movingAverageOperation(period1: let p1, period2: let p2):
@@ -136,10 +123,6 @@ struct RSI_EVState: EvaluationState {
     typealias T = Double
     var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -162,10 +145,6 @@ struct PT_EVState: EvaluationState {
     var context: ContextObject
     var condition: EvaluationCondition!
     
-    func setContext(context: ContextObject) {
-        
-    }
-    
     func perform() -> Bool {
         switch condition.technicalIndicator {
         case .profitTarget(value: let target):
@@ -186,10 +165,6 @@ struct HP_EVState: EvaluationState {
     typealias T = Double
     var context: ContextObject
     var condition: EvaluationCondition!
-    
-    func setContext(context: ContextObject) {
-        
-    }
     
     func perform() -> Bool {
         switch condition.technicalIndicator {
@@ -212,12 +187,6 @@ struct Empty_EVState: EvaluationState {
     func perform() -> Bool {
         return true
     }
-    
-    func setContext(context: ContextObject) {
-        return
-    }
-    
-    
 }
 
 struct EvaluationAlgorithm {

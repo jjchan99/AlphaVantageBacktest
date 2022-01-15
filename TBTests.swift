@@ -49,7 +49,7 @@ class EVTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        let state: EvaluationState = MA_EVState(context: Mock.context(), condition: Mock.condition())
+        let state: EvaluationState = MA_EVState(context: Mock.context(), condition: Mock.MA())
         sut = state
     }
 
@@ -60,10 +60,9 @@ class EVTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        XCTAssertEqual(sut.perform(), true)
-        sut = sut.transition(condition: Mock.condition())
-        XCTAssertEqual(sut.perform(), true)
-        sut = sut.transition(condition: Mock.condition())
+        XCTAssertTrue(sut.perform())
+        sut = sut.transition(condition: Mock.MAOperation())
+        XCTAssertTrue(sut.perform())
         
     }
 

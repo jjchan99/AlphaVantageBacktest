@@ -6,15 +6,22 @@ struct Mock {
     }
     
     static func tb() -> TradeBot {
-        return TradeBot(account: account(), conditions: [condition()])!
+        return TradeBot(account: account(), conditions: [])!
     }
     
-    static func condition() -> EvaluationCondition {
+    static func MA() -> EvaluationCondition {
         return EvaluationCondition(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
     }
     
+    static func MAOperation() -> EvaluationCondition {
+        return EvaluationCondition(technicalIndicator: .movingAverageOperation(period1: 200, period2: 50), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
+    }
+    
     static func ticker() -> OHLCCloudElement {
-        return OHLCCloudElement(stamp: "", open: 1.1, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [200 : 1], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
+        return OHLCCloudElement(stamp: "", open: 1.1, high: 0, low: 0, close: 0, volume: 0, percentageChange: nil, RSI: [:], movingAverage: [
+            200 : 1 ,
+            50 : 0.9
+        ], standardDeviation: nil, upperBollingerBand: nil, lowerBollingerBand: nil)
     }
     
     static func context() -> ContextObject {

@@ -65,6 +65,7 @@
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
 		1D8021D726FF0ABF0004F668 /* CalculatorCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */; };
 		1D8021D926FF102A0004F668 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D826FF102A0004F668 /* DIContainer.swift */; };
+		1D80516A2793FF68007F2395 /* Charts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8051692793FF68007F2395 /* Charts.swift */; };
 		1D85ED57270B64CE00D6D4C1 /* LineGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D85ED56270B64CE00D6D4C1 /* LineGraphView.swift */; };
 		1D85ED59270B67A600D6D4C1 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D85ED58270B67A600D6D4C1 /* Double+Extensions.swift */; };
 		1D85ED5B270B69E500D6D4C1 /* YAxisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D85ED5A270B69E500D6D4C1 /* YAxisView.swift */; };
@@ -200,6 +201,7 @@
 		1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D626FF0ABF0004F668 /* CalculatorCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorCoordinator.swift; sourceTree = "<group>"; };
 		1D8021D826FF102A0004F668 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		1D8051692793FF68007F2395 /* Charts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Charts.swift; sourceTree = "<group>"; };
 		1D85ED56270B64CE00D6D4C1 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
 		1D85ED58270B67A600D6D4C1 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		1D85ED5A270B69E500D6D4C1 /* YAxisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAxisView.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				1DD26EE2272C536600BEDF32 /* DateIndicatorModel.swift */,
 				1D2B4F2B27667B80001A3B96 /* DragGestureModel.swift */,
 				1D0AAF992762963700318892 /* ChartLibraryGeneric.swift */,
+				1D8051692793FF68007F2395 /* Charts.swift */,
 				1D93493527633A2100D815DE /* NumericProtocol.swift */,
 				1D2425AF27575E49003A9755 /* ControlPoints.swift */,
 			);
@@ -726,6 +729,7 @@
 				1DFBD22D2774D0BB00E44F11 /* Backtest.swift in Sources */,
 				1DD26EE5272C553100BEDF32 /* DateIndicatorView.swift in Sources */,
 				1D25E32226EDD83A00EA4225 /* SearchViewController.swift in Sources */,
+				1D80516A2793FF68007F2395 /* Charts.swift in Sources */,
 				1D12102A2736E8FF00B58B67 /* FinancialsModel.swift in Sources */,
 				1D79C48B27884BA600DC17CD /* ValidationState.swift in Sources */,
 				1DBF218627718B52007E426B /* EvaluationCondition.swift in Sources */,

@@ -173,7 +173,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     }
 }
 
-class BarState<Object: OpHLC & Plottable>: RenderState {
+class BarState<Object: Plottable>: RenderState {
     
     let data: [Object]
     let frame: Frame
@@ -190,7 +190,6 @@ class BarState<Object: OpHLC & Plottable>: RenderState {
     var path = Path()
     
     func updateState(index: Int) {
-        let green = data[index].close > data[index].open
         let x = X.get(index: index, frame: frame)
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         path.move(to: .init(x: x - frame.spacing(), y: y))

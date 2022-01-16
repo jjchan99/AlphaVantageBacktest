@@ -75,6 +75,10 @@ class CandleViewController: UIHostingController<AnyView> {
 //             \OHLCCloudElement.emptyKey : .init(count: OHLC.count, type: .candle, title: "daily", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min))
 //        ]
         
+        var RC = RenderClient(data: OHLC)
+        RC.add(title: "movingAverage", state: LineState(data: OHLC, frame: .init(count: OHLC.count, height: viewModel.height, width: viewModel.width, padding: viewModel.padding), mmr: .init(max: movingAverage.max, min: movingAverage.min), setKeyPath: \OHLCCloudElement.movingAverage[200]!))
+        
+        
         viewModel.chartsOutput = ChartLibraryGeneric.render(OHLC: OHLC, setItemsToPlot: [
             \OHLCCloudElement.movingAverage[200]! : .init(count: OHLC.count, type: .line(zero: false), title: "movingAverage", height: viewModel.height, width: viewModel.width, padding: viewModel.padding, max: max(movingAverage.max, high.max), min: min(movingAverage.min, low.min)),
              \OHLCCloudElement.volume : .init(count: OHLC.count, type: .bar(zero: false), title: "volume", height: viewModel.barHeight, width: viewModel.width, padding: viewModel.padding, max: tradingVolume.max, min: tradingVolume.min),

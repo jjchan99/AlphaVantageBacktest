@@ -43,3 +43,7 @@ extension OHLCCloudElement: CandlePointSpecified {
     static var itemsToPlot: [KeyPath<OHLCCloudElement, Double> : Specifications<Double>] = [:]
    
 }
+
+extension OHLCCloudElement: Plottable {
+    
+}

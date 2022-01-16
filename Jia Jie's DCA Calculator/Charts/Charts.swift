@@ -90,7 +90,6 @@ struct X {
 
 protocol Plottable {
     associatedtype T where T: CustomNumeric
-    static var keyPath: KeyPath<Self, T>? { get set }
 }
 
 class RenderClient<Object: Plottable> {
@@ -120,12 +119,13 @@ class LineState<Object: Plottable>: RenderState {
     let data: [Object]
     let frame: Frame
     let mmr: MMR<Object.T>
+    let keyPath: KeyPath<Object, Object.T>
     
-    init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath: KeyPath<Object, Object.T>) {
+    init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath keyPath: KeyPath<Object, Object.T>) {
         self.data = data
         self.frame = frame
         self.mmr = mmr
-        Object.keyPath = setKeyPath
+        self.keyPath = keyPath
     }
     
     var path = Path()
@@ -133,7 +133,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func updateState(index: Int) {
         let x = X.get(index: index, frame: frame)
-        let y = Y.get(point: data[index][keyPath: Object.keyPath!], mmr: mmr, frame: frame)
+        let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
         path.move(to: point)
         area.move(to: point)
@@ -145,12 +145,13 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     let data: [Object]
     let frame: Frame
     let mmr: MMR<Object.T>
+    let keyPath: KeyPath<Object, Object.T>
     
-    init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath: KeyPath<Object, Object.T>) {
+    init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath keyPath: KeyPath<Object, Object.T>) {
         self.data = data
         self.frame = frame
         self.mmr = mmr
-        Object.keyPath = setKeyPath
+        self.keyPath = keyPath
     }
     
     var stick = Path()

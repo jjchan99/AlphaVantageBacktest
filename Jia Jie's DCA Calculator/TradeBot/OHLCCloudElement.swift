@@ -44,6 +44,6 @@ extension OHLCCloudElement: CandlePointSpecified {
    
 }
 
-extension OHLCCloudElement: Plottable {
+extension OHLCCloudElement: Plottable, OpHLC {
     
 }

@@ -46,6 +46,7 @@ struct MMR<T: CustomNumeric> {
 
 protocol RenderState {
     func updateState(index: Int)
+    func view() -> AnyView
 }
 
 protocol OpHLC {
@@ -120,6 +121,7 @@ class LineState<Object: Plottable>: RenderState {
     let frame: Frame
     let mmr: MMR<Object.T>
     let keyPath: KeyPath<Object, Object.T>
+    let color: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
     
     init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath keyPath: KeyPath<Object, Object.T>) {
         self.data = data
@@ -138,6 +140,14 @@ class LineState<Object: Plottable>: RenderState {
         path.move(to: point)
         area.move(to: point)
     }
+    
+    func view() -> AnyView {
+        let copy = self
+        return AnyView(copy.path
+            .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
+            .fill(copy.color)
+        )
+    }
 }
 
 class CandleState<Object: OpHLC & Plottable>: RenderState {
@@ -146,6 +156,8 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     let frame: Frame
     let mmr: MMR<Object.T>
     let keyPath: KeyPath<Object, Object.T>
+    let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
+    let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
     
     init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath keyPath: KeyPath<Object, Object.T>) {
         self.data = data
@@ -154,10 +166,12 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
         self.keyPath = keyPath
     }
     
-    var stick = Path()
-    var body = Path()
+    var stick: [Path] = []
+    var body: [Path] = []
     
     func updateState(index: Int) {
+        var stick = Path()
+        var body = Path()
         let green = data[index].close > data[index].open
         let x = X.get(index: index, frame: frame)
         let y = Y.get(point: data[index], mmr: mmr, frame: frame)
@@ -169,7 +183,26 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
      
         stick.move(to: .init(x: x, y: y.high))
         stick.addLine(to: .init(x: x, y: y.low))
-      
+        
+        self.stick.append(stick)
+        self.body.append(body)
+    }
+    
+    func view() -> AnyView {
+        let copy = self
+        return AnyView(
+            ForEach(0..<copy.data.count) { index in
+                let color = copy.data[index].close > copy.data[index].open ? copy.green : copy.red
+                color
+                    .mask(copy.body[index])
+                copy.body[index]
+                    .strokedPath(StrokeStyle(lineWidth: (2.5), lineCap: .round, lineJoin: .round))
+                    .fill(color)
+                copy.stick[index]
+                    .strokedPath(StrokeStyle(lineWidth: (2.5), lineCap: .round, lineJoin: .round))
+                    .fill(color)
+            }
+        )
     }
 }
 
@@ -198,5 +231,13 @@ class BarState<Object: Plottable>: RenderState {
         path.addLine(to: .init(x: x - frame.spacing(), y: frame.height))
         path.addLine(to: .init(x: x - frame.spacing(), y: y))
         path.closeSubpath()
+    }
+    
+    func view() -> AnyView {
+        let copy = self
+        return AnyView(
+        Color.gray
+            .mask(copy.path)
+        )
     }
 }

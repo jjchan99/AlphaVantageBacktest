@@ -77,6 +77,9 @@ class CandleViewController: UIHostingController<AnyView> {
         
         var RC = RenderClient(data: OHLC)
         RC.add(title: "movingAverage", state: LineState(data: OHLC, frame: .init(count: OHLC.count, height: viewModel.height, width: viewModel.width, padding: viewModel.padding), mmr: .init(max: movingAverage.max, min: movingAverage.min), setKeyPath: \OHLCCloudElement.movingAverage[200]!))
+        RC.add(title: "dailyTicker", state: CandleState(data: OHLC, frame: .init(count: OHLC.count, height: viewModel.height, width: viewModel.width, padding: viewModel.padding), mmr: .init(max: high.max, min: low.min), setKeyPath: \OHLCCloudElement.movingAverage[200]!))
+        RC.add(title: "volume", state: BarState(data: OHLC, frame: .init(count: OHLC.count, height: viewModel.height, width: viewModel.width, padding: viewModel.padding), mmr: .init(max: tradingVolume.max, min: tradingVolume.min), setKeyPath: \OHLCCloudElement.volume))
+        RC.startRender()
         
         
         viewModel.chartsOutput = ChartLibraryGeneric.render(OHLC: OHLC, setItemsToPlot: [

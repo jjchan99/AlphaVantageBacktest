@@ -191,6 +191,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     func view() -> AnyView {
         let copy = self
         return AnyView(
+            ZStack {
             ForEach(0..<copy.data.count) { index in
                 let color = copy.data[index].close > copy.data[index].open ? copy.green : copy.red
                 color
@@ -201,6 +202,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
                 copy.stick[index]
                     .strokedPath(StrokeStyle(lineWidth: (2.5), lineCap: .round, lineJoin: .round))
                     .fill(color)
+            }
             }
         )
     }

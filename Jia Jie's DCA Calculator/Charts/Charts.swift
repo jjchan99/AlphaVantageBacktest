@@ -172,3 +172,32 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
       
     }
 }
+
+class BarState<Object: OpHLC & Plottable>: RenderState {
+    
+    let data: [Object]
+    let frame: Frame
+    let mmr: MMR<Object.T>
+    let keyPath: KeyPath<Object, Object.T>
+    
+    init(data: [Object], frame: Frame, mmr: MMR<Object.T>, setKeyPath keyPath: KeyPath<Object, Object.T>) {
+        self.data = data
+        self.frame = frame
+        self.mmr = mmr
+        self.keyPath = keyPath
+    }
+    
+    var path = Path()
+    
+    func updateState(index: Int) {
+        let green = data[index].close > data[index].open
+        let x = X.get(index: index, frame: frame)
+        let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
+        path.move(to: .init(x: x - frame.spacing(), y: y))
+        path.addLine(to: .init(x: x + frame.spacing(), y: y))
+        path.addLine(to: .init(x: x + frame.spacing(), y: frame.height))
+        path.addLine(to: .init(x: x - frame.spacing(), y: frame.height))
+        path.addLine(to: .init(x: x - frame.spacing(), y: y))
+        path.closeSubpath()
+    }
+}

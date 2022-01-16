@@ -21,28 +21,12 @@ struct CandleView: View {
  
     var body: some View {
         ZStack {
-        if viewModel.chartsOutput != nil {
+        if viewModel.RC != nil {
             
             VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
               
-                ZStack {
-                    ForEach(0..<viewModel.chartsOutput!.candles["daily"]!.count, id: \.self) { idx in
-                        let candles = viewModel.chartsOutput!.candles["daily"]!
-                        let color: Color = candles[idx].data.green() ? green : red
-                
-                color
-                    .mask(candles[idx].body)
-                candles[idx].body
-                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                    .fill(color)
-                candles[idx].stick
-                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                    .fill(color)
-                
-                
-                }
-          
+            viewModel.RC!.render["daily"]!.view()
             MovingAverageView().environmentObject(viewModel)
                     
             BackgroundView().environmentObject(viewModel)
@@ -60,14 +44,12 @@ struct CandleView: View {
                     .environmentObject(viewModel)
                 )
             }
-        } else {
-            Text("Nothing to show...")
         }
         }
        
        
-    }
 }
+
 
 extension AnyTransition {
     static var moveAndFade: AnyTransition {

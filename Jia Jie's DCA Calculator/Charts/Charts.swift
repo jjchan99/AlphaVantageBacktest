@@ -93,8 +93,26 @@ protocol Plottable {
     static var keyPath: KeyPath<Self, T>? { get set }
 }
 
-class RenderClient {
+class RenderClient<Object: Plottable> {
+    let data: [Object]
     
+    init(data: [Object]) {
+        self.data = data
+    }
+    
+    var render: [String: RenderState] = [:]
+    
+    func add(title: String, state: RenderState) {
+        render[title] = state
+    }
+    
+    func startRender() {
+        for (index, data) in data.enumerated() {
+            for (_, state) in render {
+                state.updateState(index: index)
+            }
+        }
+    }
 }
 
 class LineState<Object: Plottable>: RenderState {

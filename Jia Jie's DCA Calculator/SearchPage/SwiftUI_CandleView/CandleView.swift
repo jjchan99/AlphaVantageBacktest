@@ -26,8 +26,8 @@ struct CandleView: View {
             VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
               
-            viewModel.RC!.render["daily"]!.view()
-            MovingAverageView().environmentObject(viewModel)
+            viewModel.RC!.render["dailyTicker"]!.view()
+            viewModel.RC!.render["movingAverage"]!.view()
                     
             BackgroundView().environmentObject(viewModel)
                 
@@ -38,11 +38,11 @@ struct CandleView: View {
                 .position(y: viewModel.height * 2)
             }
 
-            TradingVolumeView().environmentObject(viewModel)
-                .frame(width: viewModel.width, height: viewModel.height)
-                .overlay(CandleIndicatorView()
-                    .environmentObject(viewModel)
-                )
+//            TradingVolumeView().environmentObject(viewModel)
+//                .frame(width: viewModel.width, height: viewModel.height)
+//                .overlay(CandleIndicatorView()
+//                    .environmentObject(viewModel)
+//                )
             }
         }
         }

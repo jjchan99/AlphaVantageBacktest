@@ -14,7 +14,7 @@ import Combine
 class CandleViewController: UIHostingController<AnyView> {
     
     let symbol: String
-    let viewModel = CandleViewModel<OHLCCloudElement>()
+    let viewModel = CandleViewModel()
     var hc: UIHostingController<AnyView>?
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?

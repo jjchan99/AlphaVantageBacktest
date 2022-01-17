@@ -37,13 +37,6 @@ struct OHLCCloudElement {
     var emptyKey: Double = 0
 }
 
-extension OHLCCloudElement: CandlePointSpecified {
-    typealias T = Double
-    
-    static var itemsToPlot: [KeyPath<OHLCCloudElement, Double> : Specifications<Double>] = [:]
-   
-}
-
 extension OHLCCloudElement: Plottable, OpHLC {
-    
+    typealias T = Double
 }

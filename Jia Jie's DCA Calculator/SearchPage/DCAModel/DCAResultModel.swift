@@ -57,7 +57,4 @@ public struct DCAResult: CustomStringConvertible, Identifiable, MonthSpecified {
     }
 }
 
-extension DCAResult: ChartPointSpecified {
-    typealias T = Double
-    static var itemsToPlot: [KeyPath<DCAResult, Double> : Specifications<Double>] = [:]
-}
+

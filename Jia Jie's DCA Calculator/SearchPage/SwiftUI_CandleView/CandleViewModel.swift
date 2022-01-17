@@ -15,11 +15,7 @@ enum CandleMode: CaseIterable {
     case months6
 }
 
-class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
-    
-    init() {}
-    
-    @Published var sorted: [T]?
+class CandleViewModel: ObservableObject {
     
     let height: CGFloat = .init(350).hScaled()
     let width: CGFloat = .init(420).wScaled()
@@ -31,19 +27,15 @@ class CandleViewModel<T: CandlePointSpecified>: ObservableObject {
 //        indicator = .init(height: height, width: width, dataToDisplay: charts!.candles)
 //    }}
     
-    @Published var specifications: Specifications<T.T>?
-    
-    @Published var chartsOutput: CandleLibraryOutput<T>?
-    
     @Published var selectedIndex: Int?
     
     @Published var modeChanged: ((CandleMode) -> ())?
     
-    @Published var indicator: CandleIndicator<OHLCCloudElement>?
-    
-    @Published var singleCandleRenderer: SingleCandleRenderer?
+//    @Published var singleCandleRenderer: SingleCandleRenderer?
     
     @Published var RC: RenderClient<OHLCCloudElement>?
+    
+    @Published var indicator: CandleIndicator?
     
     lazy var padding: CGFloat = 0.05 * width
     

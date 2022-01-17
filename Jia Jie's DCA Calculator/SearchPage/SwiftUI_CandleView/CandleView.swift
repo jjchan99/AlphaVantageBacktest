@@ -26,10 +26,11 @@ struct CandleView: View {
             
             VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
-              
+             
+                ZStack {
             viewModel.RC!.render["dailyTicker"]!.view()
             viewModel.RC!.render["movingAverage"]!.view()
-                    
+                }
                 
             viewModel.RC!.render["volume"]!.view()
             SingleCandleView()

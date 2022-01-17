@@ -11,9 +11,8 @@ import SwiftUI
 
 class PageCoordinator: NSObject, Coordinator {
     
-    var parentCoordinator: NavigationCoordinator?
+    weak var parentCoordinator: NavigationCoordinator?
     var navigationController: UINavigationController
-    var childCoordinators: [Coordinator] = []
     
     //MARK: DEPENDENCIES
     var rawDataDaily: Daily!
@@ -34,8 +33,8 @@ class PageCoordinator: NSObject, Coordinator {
         let vc = CandleViewController(symbol: symbol)
         let coordinator = GraphManager(sorted: rawDataDaily.sorted!)
         vc.coordinator = coordinator
-        childCoordinators.append(coordinator)
-        navigationController.pushViewController(CandleViewController(symbol: symbol), animated: true)
+        parentCoordinator!.childCoordinators.append(coordinator)
+        navigationController.pushViewController(vc, animated: true)
     }
     
     

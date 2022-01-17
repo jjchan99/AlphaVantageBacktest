@@ -19,9 +19,7 @@ class CandleViewController: UIHostingController<AnyView> {
     var subscribers = Set<AnyCancellable>()
     var daily: Daily?
     var sorted: [(key: String, value: TimeSeriesDaily)]?
-    weak var coordinator: GraphManager? { didSet {
-        print("What the fuck")
-    }}
+    weak var coordinator: GraphManager? 
     
     init(symbol: String) {
         self.symbol = symbol

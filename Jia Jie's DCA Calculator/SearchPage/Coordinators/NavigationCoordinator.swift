@@ -10,7 +10,9 @@ import UIKit
 import Combine
 
 class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
-    var childCoordinators: [Coordinator] = []
+    var childCoordinators: [Coordinator] = [] { didSet {
+        print("Y'all be TRIFFLIN'")
+    }}
     
     var rawDataDaily: Daily?
     
@@ -63,7 +65,7 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
         if navigationController.viewControllers.contains(fromViewController) { return }
         
         //MARK: VIEWCONTROLLER WAS POPPED
-        if let vc = fromViewController as? PageViewController {
+        if let vc = fromViewController as? CandleViewController {
             childDidExit(vc.coordinator)
         } else {
             fatalError() //MARK: Fatal Error

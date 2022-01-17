@@ -106,12 +106,13 @@ class RenderClient<Object: Plottable> {
         render[title] = state
     }
     
-    func startRender() {
+    func startRender(completion: () -> Void) {
         for (index, data) in data.enumerated() {
             for (_, state) in render {
                 state.updateState(index: index)
             }
         }
+        completion()
     }
 }
 
@@ -192,7 +193,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
         let copy = self
         return AnyView(
             ZStack {
-            ForEach(0..<copy.data.count) { index in
+                ForEach(0..<copy.data.count, id: \.self) { index in
                 let color = copy.data[index].close > copy.data[index].open ? copy.green : copy.red
                 color
                     .mask(copy.body[index])

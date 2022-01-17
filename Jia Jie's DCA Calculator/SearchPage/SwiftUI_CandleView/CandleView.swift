@@ -21,6 +21,7 @@ struct CandleView: View {
  
     var body: some View {
         ZStack {
+        BackgroundView().environmentObject(viewModel)
         if viewModel.RC != nil {
             
             VStack(spacing: 0) {
@@ -29,7 +30,6 @@ struct CandleView: View {
             viewModel.RC!.render["dailyTicker"]!.view()
             viewModel.RC!.render["movingAverage"]!.view()
                     
-            BackgroundView().environmentObject(viewModel)
                 
             viewModel.RC!.render["volume"]!.view()
             SingleCandleView()

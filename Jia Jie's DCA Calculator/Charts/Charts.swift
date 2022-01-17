@@ -153,6 +153,8 @@ class LineState<Object: Plottable>: RenderState {
 
 class CandleState<Object: OpHLC & Plottable>: RenderState {
     
+   
+    
     let data: [Object]
     let frame: Frame
     let mmr: MMR<Object.T>
@@ -198,10 +200,10 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
                 color
                     .mask(copy.body[index])
                 copy.body[index]
-                    .strokedPath(StrokeStyle(lineWidth: (2.5), lineCap: .round, lineJoin: .round))
+                        .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
                     .fill(color)
                 copy.stick[index]
-                    .strokedPath(StrokeStyle(lineWidth: (2.5), lineCap: .round, lineJoin: .round))
+                        .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
                     .fill(color)
             }
             }

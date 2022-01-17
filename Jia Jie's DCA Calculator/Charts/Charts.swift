@@ -144,7 +144,8 @@ class LineState<Object: Plottable>: RenderState {
     
     func view() -> AnyView {
         let copy = self
-        return AnyView(copy.path
+        return AnyView(
+            copy.path
             .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
             .fill(copy.color)
         )

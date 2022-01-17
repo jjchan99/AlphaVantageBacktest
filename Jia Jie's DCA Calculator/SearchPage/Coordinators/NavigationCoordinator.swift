@@ -11,7 +11,7 @@ import Combine
 
 class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelegate {
     var childCoordinators: [Coordinator] = [] { didSet {
-        print("Y'all be TRIFFLIN'")
+        print(childCoordinators)
     }}
     
     var rawDataDaily: Daily?
@@ -33,7 +33,6 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
     
     func start(name: String, symbol: String, type: String) {
        let child = PageCoordinator(navigationController: navigationController)
-       childCoordinators.append(child)
        child.parentCoordinator = self
        child.name = name
        child.symbol = symbol
@@ -50,7 +49,7 @@ class NavigationCoordinator: NSObject, Coordinator, UINavigationControllerDelega
                 Log.queue(action: "Child successfully exited")
                 break
             } else {
-                fatalError()
+                continue
             }
         }
         

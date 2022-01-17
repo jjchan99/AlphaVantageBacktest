@@ -15,9 +15,6 @@ protocol OHLCManager {
 
 class GraphManager: NSObject, OHLCManager, Coordinator {
     
-    deinit {
-        print("WHAT IN THE FUCK JUST HAPPENED")
-    }
     func iterate() {
         for idx in 0..<sorted.count {
             let iterations = idx

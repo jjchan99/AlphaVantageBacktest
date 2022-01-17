@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CandleModeView: View {
-    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
+    @EnvironmentObject var viewModel: CandleViewModel
     
     var body: some View {
   

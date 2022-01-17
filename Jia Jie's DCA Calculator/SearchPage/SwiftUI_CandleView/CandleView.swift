@@ -9,65 +9,49 @@ import Foundation
 import SwiftUI
 
 struct CandleView: View {
-    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
+    @EnvironmentObject var viewModel: CandleViewModel
     
     let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
     let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
     
-    func scaleFactor(_ a: CGFloat) -> CGFloat {
-        let sf = a / (CGFloat(viewModel.chartsOutput!.candles["daily"]!.count) / 5)
-        return sf < 1 ? 1 : sf
-    }
+//    func scaleFactor(_ a: CGFloat) -> CGFloat {
+//        let sf = a / (CGFloat(viewModel.chartsOutput!.candles["daily"]!.count) / 5)
+//        return sf < 1 ? 1 : sf
+//    }
  
     var body: some View {
         ZStack {
-        if viewModel.chartsOutput != nil {
+        BackgroundView().environmentObject(viewModel)
+        if viewModel.RC != nil {
             
             VStack(spacing: 0) {
             CandleModeView().environmentObject(viewModel)
-              
+             
                 ZStack {
-                    ForEach(0..<viewModel.chartsOutput!.candles["daily"]!.count, id: \.self) { idx in
-                        let candles = viewModel.chartsOutput!.candles["daily"]!
-                        let color: Color = candles[idx].data.green() ? green : red
-                
-                color
-                    .mask(candles[idx].body)
-                candles[idx].body
-                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                    .fill(color)
-                candles[idx].stick
-                    .strokedPath(StrokeStyle(lineWidth: scaleFactor(2.5), lineCap: .round, lineJoin: .round))
-                    .fill(color)
-                
-                
+            viewModel.RC!.render["dailyTicker"]!.view()
+            viewModel.RC!.render["movingAverage"]!.view()
                 }
-          
-            MovingAverageView().environmentObject(viewModel)
-                    
-            BackgroundView().environmentObject(viewModel)
                 
-                    
-            SingleCandleView()
-                .environmentObject(viewModel)
-                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
-                .position(y: viewModel.height * 2)
+            viewModel.RC!.render["volume"]!.view()
+//            SingleCandleView()
+//                .environmentObject(viewModel)
+//                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
+//                .position(y: viewModel.height * 2)
             }
 
-            TradingVolumeView().environmentObject(viewModel)
-                .frame(width: viewModel.width, height: viewModel.height)
-                .overlay(CandleIndicatorView()
-                    .environmentObject(viewModel)
-                )
+//            TradingVolumeView().environmentObject(viewModel)
+//                .frame(width: viewModel.width, height: viewModel.height)
+//                .overlay(CandleIndicatorView()
+//                    .environmentObject(viewModel)
+//                )
+            
             }
-        } else {
-            Text("Nothing to show...")
         }
         }
        
        
-    }
 }
+
 
 extension AnyTransition {
     static var moveAndFade: AnyTransition {

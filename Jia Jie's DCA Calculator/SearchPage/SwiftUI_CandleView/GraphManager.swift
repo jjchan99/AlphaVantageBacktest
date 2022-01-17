@@ -14,6 +14,7 @@ protocol OHLCManager {
 
 
 class GraphManager: NSObject, OHLCManager, Coordinator {
+    
     func iterate() {
         for idx in 0..<sorted.count {
             let iterations = idx

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CandleIndicatorView: View {
     
-    @EnvironmentObject var viewModel: CandleViewModel<OHLCCloudElement>
+    @EnvironmentObject var viewModel: CandleViewModel
     @State var offset: CGFloat = 0
     
     var body: some View {
@@ -27,7 +27,7 @@ struct CandleIndicatorView: View {
         .gesture(DragGesture(minimumDistance: 0)
                     .onChanged({ gesture in
                         let x = gesture.location.x
-                        guard let data = viewModel.chartsOutput!.candles["daily"] else { return }
+                        let data = viewModel.RC!.data
                         let lowerBound: CGFloat = 0
                         let upperBound = viewModel.width * CGFloat(data.count) / CGFloat(data.count + 1)
                         guard x >= lowerBound && x <= upperBound else { return }

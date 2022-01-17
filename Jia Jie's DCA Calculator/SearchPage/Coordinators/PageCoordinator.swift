@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class PageCoordinator: NSObject, Coordinator {
     
@@ -30,34 +31,11 @@ class PageCoordinator: NSObject, Coordinator {
     }
 
     func start(name: String, symbol: String, type: String) {
-        dailyToMonthlyHandler = .init(daily: rawDataDaily)
-        let calculatorCoordinator = CalculatorCoordinator(navigationController: navigationController)
-        calculatorCoordinator.parentCoordinator = self
-        calculatorCoordinator.populatePickerData()
-        childCoordinators.append(calculatorCoordinator)
-        
-        let calculatorVC = CalculatorViewController(name: name, symbol: symbol, type: type)
-        calculatorVC.view.backgroundColor = .white
-        calculatorVC.navigationItem.largeTitleDisplayMode = .never
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.setValue(true, forKey: "hidesShadow")
-        calculatorVC.coordinator = calculatorCoordinator
-        calculatorVC.dateView.datePicker.delegate = calculatorCoordinator
-        
-        let pageVC = PageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: .none)
-        pageVC.coordinator = self
-        let financialsVC = FinancialsViewController(symbol: symbol)
-        let candleVC = CandleViewController(symbol: symbol)
-        
-        
-        let candleCoordinator = GraphManager(sorted: rawDataDaily.sorted!)
-        childCoordinators.append(candleCoordinator as! Coordinator)
-        candleVC.coordinator = candleCoordinator
-        candleVC.daily = rawDataDaily
-        candleVC.sorted = rawDataDaily.sorted!
-        pageVC.setViewControllers([candleVC], direction: .forward, animated: false) { _ in }
-        pageVC.collection = [candleVC, calculatorVC, financialsVC]
-        navigationController.pushViewController(pageVC, animated: false)
+        let vc = CandleViewController(symbol: symbol)
+        let coordinator = GraphManager(sorted: rawDataDaily.sorted!)
+        vc.coordinator = coordinator
+        childCoordinators.append(coordinator)
+        navigationController.pushViewController(CandleViewController(symbol: symbol), animated: true)
     }
     
     

@@ -49,6 +49,10 @@ class ChartTest: XCTestCase {
         let y2 = Y.get(point: 7.5, mmr: mmr, frame: frame)
         XCTAssert(y1 > y2)
     }
+    
+    func testAllNegative() throws {
+        mmr = .init(max: , min: )
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

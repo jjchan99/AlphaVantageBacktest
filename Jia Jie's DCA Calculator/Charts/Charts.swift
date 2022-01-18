@@ -37,6 +37,12 @@ extension Frame {
 }
 
 struct MMR<T: CustomNumeric> {
+    init?(max: T, min: T) {
+        guard max > min else { return nil }
+        self.max = max
+        self.min = min
+    }
+    
     let max: T
     let min: T
     var range: T {

@@ -17,6 +17,7 @@ class ChartTest: XCTestCase {
     var sut: [Double] = [3.5, 7.5, 10, 7.5, 3.5]
     var state: RenderState!
     let frame: Frame = .init(count: 5, height: Dimensions.height, width: Dimensions.width, padding: 0.1 * Dimensions.width)
+    let mmr: MMR = .init(max: 10, min: 3.5)
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -27,10 +28,22 @@ class ChartTest: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
+    
+    func reverse(y: CGFloat) -> CGFloat {
+        let share = y / frame.height
+        let deviation = share * mmr.range
+        let point = mmr.max - deviation
+        return point
+    }
 
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        var y = Y.get(point: 10, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, 0)
+        y = Y.get(point: 3.5, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, Dimensions.height)
+        XCTAssertEqual(reverse(y: y), 3.5)
     }
 
     func testPerformanceExample() throws {

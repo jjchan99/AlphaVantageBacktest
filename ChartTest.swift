@@ -59,7 +59,17 @@ class ChartTest: XCTestCase {
         let y1 = Y.get(point: -4.5, mmr: mmr, frame: frame)
         let y2 = Y.get(point: -7.5, mmr: mmr, frame: frame)
         XCTAssert(y2 > y1)
-        
+    }
+    
+    func testPositiveNegative() throws {
+        mmr = .init(max: 4, min: -4)!
+        var y = Y.get(point: -4, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, Dimensions.height)
+        y = Y.get(point: 4, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, 0)
+        let y1 = Y.get(point: 2.5, mmr: mmr, frame: frame)
+        let y2 = Y.get(point: -2.5, mmr: mmr, frame: frame)
+        XCTAssert(y2 > y1)
     }
 
     func testPerformanceExample() throws {

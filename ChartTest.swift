@@ -17,11 +17,11 @@ class ChartTest: XCTestCase {
     var sut: [Double] = [3.5, 4.5, 10, 7.5, 3.5]
     var state: RenderState!
     var frame: Frame = .init(count: 5, height: Dimensions.height, width: Dimensions.width, padding: 0.1 * Dimensions.width)
-    var mmr: MMR = .init(max: 10, min: 3.5)
+    var mmr: MMR = .init(max: 10, min: 3.5)!
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        state = LineState(data: sut, frame: frame, mmr: .init(max: sut.max()!, min: sut.min()!), setKeyPath: \Double.self)
+        state = LineState(data: sut, frame: frame, mmr: .init(max: sut.max()!, min: sut.min()!)!, setKeyPath: \Double.self)
         
     }
 
@@ -51,7 +51,15 @@ class ChartTest: XCTestCase {
     }
     
     func testAllNegative() throws {
-        mmr = .init(max: , min: )
+        mmr = .init(max: -3.5, min: -10)!
+        var y = Y.get(point: -10, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, Dimensions.height)
+        y = Y.get(point: -3.5, mmr: mmr, frame: frame)
+        XCTAssertEqual(y, 0)
+        let y1 = Y.get(point: -4.5, mmr: mmr, frame: frame)
+        let y2 = Y.get(point: -7.5, mmr: mmr, frame: frame)
+        XCTAssert(y2 > y1)
+        
     }
 
     func testPerformanceExample() throws {

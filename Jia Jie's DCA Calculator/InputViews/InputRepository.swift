@@ -13,11 +13,17 @@ class InputRepository: ObservableObject {
         print(entryTriggers)
     }}
     
-    @Published private(set) var entryTrade: [String: EvaluationCondition] = [:]
+    @Published private(set) var entryTrade: [String: EvaluationCondition] = [:] { didSet {
+        print(entryTrade)
+    }}
     
-    @Published private(set) var exitTriggers: [String: EvaluationCondition] = [:]
+    @Published private(set) var exitTriggers: [String: EvaluationCondition] = [:] { didSet {
+        print(exitTriggers)
+    }}
     
-    @Published private(set) var exitTrade: [String: EvaluationCondition] = [:]
+    @Published private(set) var exitTrade: [String: EvaluationCondition] = [:] { didSet {
+        print(exitTrade)
+    }}
     
    
     

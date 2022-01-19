@@ -45,7 +45,7 @@ class InputViewModel: ObservableObject {
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let keysAtSection0: [String] = ["MA", "BB" , "RSI"]
-    let keysAtSection1: [String] = ["PL", "LT" , "HP"]
+    let keysAtSection1: [String] = ["PT", "LT" , "HP"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
@@ -148,12 +148,12 @@ extension InputViewModel {
             transitionState(state: BB())
         case "RSI":
             transitionState(state: RSI())
-        case "stopOrder":
+        case "LT":
             transitionState(state: MA())
-        case "exitTrigger":
-            transitionState(state: MA())
-        case "profitTarget":
-            transitionState(state: MA())
+        case "HP":
+            transitionState(state: HP())
+        case "PT":
+            transitionState(state: PT())
         case "MAOperation":
             transitionState(state: MACrossover())
         default:
@@ -169,8 +169,8 @@ extension InputViewModel {
             transitionState(state: BB())
         case "RSI":
             transitionState(state: RSI())
-        case "PL":
-            transitionState(state: MA())
+        case "PT":
+            transitionState(state: PT())
         case "LT":
             transitionState(state: MA())
         case "HP":

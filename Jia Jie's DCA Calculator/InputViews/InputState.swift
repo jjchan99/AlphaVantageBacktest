@@ -13,7 +13,7 @@ class InputState: ObservableObject {
     private static var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
     var selectedWindowIdx: Int = 0 { didSet {
-        Log.queue(action: "selected window: \(selectedWindowIdx)")
+//        Log.queue(action: "selected window: \(selectedWindowIdx)")
     }}
     
     var anotherSelectedWindowIdx: Int = 0 { didSet {
@@ -22,10 +22,10 @@ class InputState: ObservableObject {
     
     var selectedPositionIdx: Int = 0 { didSet {
 //        validationState = updateValidationState()
-        Log.queue(action: "selected POSITION: \(selectedPositionIdx)")
+//        Log.queue(action: "selected POSITION: \(selectedPositionIdx)")
     }}
     var selectedPercentage: Double = 0 { didSet {
-//        Log.queue(action: "selected percentage: \(selectedPercentage)")
+        Log.queue(action: "selected percentage: \(selectedPercentage)")
 //        validationState = updateValidationState()
     }}
     

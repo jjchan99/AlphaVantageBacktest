@@ -8,8 +8,8 @@
 import Foundation
 import CloudKit
 
-class LedgerManager {
-    var entries: [LedgerRecord] = []
+class TimelineManager {
+    var entries: [TimelineRecord] = []
     
     func append(description: String, context: ContextObject, condition: EvaluationCondition) {
         let deltaShares = condition.enterOrExit == .enter ? context.tb.account.cash / context.mostRecent.close : -1 * context.account.accumulatedShares
@@ -18,7 +18,7 @@ class LedgerManager {
     }
 }
 
-struct LedgerRecord {
+struct TimelineRecord {
 
     init(description: String, stamp: String, deltaCash: Double, deltaShares: Double) {
         self.description = description

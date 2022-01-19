@@ -41,7 +41,7 @@ class ContextObject {
         self.tb = tb
     }
     
-    var lm = LedgerManager()
+    var tm = TimelineManager()
     var account: Account
     var tb: TradeBot
     
@@ -227,7 +227,7 @@ extension TBTemplateMethod {
     func templateMethod() {
         
         let passed: (EvaluationCondition) -> Void = { condition in
-            context.lm.append(description: "Passed", context: self.context, condition: condition)
+            context.tm.append(description: "Passed", context: self.context, condition: condition)
         }
         
         for condition in context.tb.conditions {

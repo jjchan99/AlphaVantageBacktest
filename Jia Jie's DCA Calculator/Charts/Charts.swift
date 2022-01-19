@@ -80,10 +80,15 @@ struct Y {
         let high = point.high
         let low = point.low
         let close = point.close
-        let yOpen = (abs(cgf(open - mmr.max)) / cgf(mmr.range)) * frame.height
-        let yHigh = (abs(cgf(high - mmr.max)) / cgf(mmr.range)) * frame.height
-        let yLow = (abs(cgf(low - mmr.max)) / cgf(mmr.range)) * frame.height
-        let yClose = (abs(cgf(close - mmr.max)) / cgf(mmr.range)) * frame.height
+//        let yOpen = (abs(cgf(open - mmr.max)) / cgf(mmr.range)) * frame.height
+//        let yHigh = (abs(cgf(high - mmr.max)) / cgf(mmr.range)) * frame.height
+//        let yLow = (abs(cgf(low - mmr.max)) / cgf(mmr.range)) * frame.height
+//        let yClose = (abs(cgf(close - mmr.max)) / cgf(mmr.range)) * frame.height
+        
+        let yOpen = get(point: open, mmr: mmr, frame: frame)
+        let yHigh = get(point: high, mmr: mmr, frame: frame)
+        let yLow = get(point: low, mmr: mmr, frame: frame)
+        let yClose = get(point: close, mmr: mmr, frame: frame)
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }

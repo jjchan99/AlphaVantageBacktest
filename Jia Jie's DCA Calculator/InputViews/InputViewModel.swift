@@ -149,7 +149,7 @@ extension InputViewModel {
         case "RSI":
             transitionState(state: RSI())
         case "LT":
-            transitionState(state: MA())
+            transitionState(state: LT())
         case "HP":
             transitionState(state: HP())
         case "PT":
@@ -172,7 +172,7 @@ extension InputViewModel {
         case "PT":
             transitionState(state: PT())
         case "LT":
-            transitionState(state: MA())
+            transitionState(state: LT())
         case "HP":
             transitionState(state: HP())
         case "MAOperation":

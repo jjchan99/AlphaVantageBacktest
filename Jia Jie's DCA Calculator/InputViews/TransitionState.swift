@@ -413,3 +413,54 @@ class PT: IdxPathState {
     
     
 }
+
+class LT: IdxPathState {
+    private(set) weak var context: InputViewModel!
+    
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
+    
+    func getCondition() -> EvaluationCondition {
+        EvaluationCondition(technicalIndicator: .lossTarget(value: context.inputState.selectedPercentage * 1000000 / 100), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+    }
+    
+    func restoreInputs() {
+        let dict = context.getDict()
+        
+        if let input = dict["PT"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .profitTarget(value: let percentage):
+                context.inputState.set(selectedPercentage: percentage)
+            default:
+                fatalError()
+            }
+        }
+    }
+    
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Text(""))
+    }
+    
+    func body() -> AnyView {
+        AnyView(
+           v()
+        )
+    }
+    
+    struct v: View {
+        @EnvironmentObject var context: InputViewModel
+        var body: some View {
+            Section {
+                Slider(value: $context.inputState.selectedPercentage, in: 0...100)
+            } header: {
+                Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
+            }
+        }
+    }
+    
+    var title: String = "Profit Target"
+    
+    
+}

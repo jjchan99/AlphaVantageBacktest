@@ -143,14 +143,16 @@ class InputViewModel: ObservableObject {
         case .profitTarget(value: let value):
             return "Profit above \(value)%"
         case .RSI(period: let period, value: let value):
-            return "\(period) period RSI \(condition.aboveOrBelow) value"
+            return "\(period) period RSI \(condition.aboveOrBelow) \(value)"
         case .bollingerBands(percentage: let percentage):
-            return "Close \(condition.aboveOrBelow) \(percentage) percent B"
+            let formatted = (percentage * 100).twoDecimalPlaceString
+            return "Close \(condition.aboveOrBelow) \(formatted) percent B"
         case .movingAverageOperation(period1: let period1, period2: let period2):
             return "\(period1) day moving average \(condition.aboveOrBelow) \(period2) day moving average"
         default:
             return "Donald Trump"
         }
+        
     }
 }
 

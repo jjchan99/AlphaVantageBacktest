@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct EvaluationCondition: CloudKitInterchangeable, CloudChild {
+struct EvaluationCondition: CloudKitInterchangeable, CloudChild, Hashable {
     
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double

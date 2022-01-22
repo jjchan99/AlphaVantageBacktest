@@ -31,14 +31,14 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTriggers.values), id: \.self) { condition in
                             HStack {
-                                Text(vm.keyTitle(condition: vm.repo.entryTriggers[key]!))
+                                Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.entryTriggers[key]!)
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
+struct EvaluationCondition: CloudKitInterchangeable, CloudChild {
     
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
@@ -50,11 +50,7 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     let aboveOrBelow: AboveOrBelow
     let enterOrExit: EnterOrExit
     var andCondition: [EvaluationCondition] = []
-    
-    var description: String {
-        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(enterOrExit)"
-    }
-    
+ 
     var validationMessage: String {
         switch self.technicalIndicator {
         case .movingAverage:

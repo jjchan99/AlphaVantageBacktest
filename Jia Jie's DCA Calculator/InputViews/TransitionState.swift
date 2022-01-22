@@ -178,7 +178,7 @@ class BB: IdxPathState {
         let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: context.inputState.selectedPercentage * 0.01), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
         return condition
     }
-    
+   
     func restoreInputs() {
         let dict = context.getDict()
         
@@ -424,6 +424,7 @@ class LT: IdxPathState {
     func getCondition() -> EvaluationCondition {
         EvaluationCondition(technicalIndicator: .lossTarget(value: context.inputState.selectedPercentage * 1000000 / 100), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
     }
+
     
     func restoreInputs() {
         let dict = context.getDict()

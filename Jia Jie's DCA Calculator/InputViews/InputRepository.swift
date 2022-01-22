@@ -25,7 +25,7 @@ class InputRepository: ObservableObject {
         print(exitTrade)
     }}
     
-   
+    
     
     func getKey(for condition: EvaluationCondition) -> String {
         switch condition.technicalIndicator {

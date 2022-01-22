@@ -6,7 +6,7 @@
 //
 
 import Foundation
-enum TechnicalIndicators: Hashable, CustomStringConvertible {
+enum TechnicalIndicators: Hashable {
 
     case movingAverage(period: Int),
          bollingerBands(percentage: Double),
@@ -15,27 +15,7 @@ enum TechnicalIndicators: Hashable, CustomStringConvertible {
          profitTarget(value: Double),
          holdingPeriod(value: Int),
          movingAverageOperation(period1: Int, period2: Int)
-
-    var description: String {
-        switch self {
-        case let .movingAverage(period: period):
-            return ("\(period) day moving average")
-        case let .bollingerBands(percentage: percentage):
-            return ("bollingerBand percent")
-        case let .RSI(period: period, value: value):
-            return "\(period) period RSI"
-        case .lossTarget(value: let value):
-            return "exit at loss"
-        case .profitTarget(value: let value):
-            return "exit at profit"
-        case .holdingPeriod(value: let value):
-            return "exit date"
-        case .movingAverageOperation:
-            return ""
-        }
-    }
     
-
     var rawValue: Double {
         switch self {
         case let .movingAverage(period: period):

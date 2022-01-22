@@ -33,7 +33,7 @@ struct InputFormView: View {
                             
                             ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: vm.repo.entryTriggers[key]!))
 
                             Spacer()
                                 Button("Edit") {

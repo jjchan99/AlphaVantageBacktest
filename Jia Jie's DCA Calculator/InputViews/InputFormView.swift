@@ -71,12 +71,12 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTrade.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: condition))
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.entryTrade[key])
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

@@ -34,7 +34,7 @@ class InputViewModel: ObservableObject {
     @Published var selectedDictIndex: Int = 0
     @Published var selectedTabIndex: Int = 0 { willSet {
         if newValue == 1 {
-            transitionState(key: "MAOperation")
+            transitionState(key: "MACrossover")
         } else if newValue == 0 {
             transitionState(key: "MA")
         } else {
@@ -171,7 +171,7 @@ extension InputViewModel {
             transitionState(state: HP())
         case "PT":
             transitionState(state: PT())
-        case "MAOperation":
+        case "MACrossover":
             transitionState(state: MACrossover())
         default:
             fatalError()
@@ -192,7 +192,7 @@ extension InputViewModel {
             transitionState(state: LT())
         case "HP":
             transitionState(state: HP())
-        case "MAOperation":
+        case "MACrossover":
             transitionState(state: MACrossover())
         default:
             fatalError()

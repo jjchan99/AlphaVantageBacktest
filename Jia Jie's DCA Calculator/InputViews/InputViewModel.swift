@@ -17,7 +17,9 @@ class InputViewModel: ObservableObject {
     
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
+    
     @Published var inputState = InputState()
+    
     var indexPathState: IdxPathState!
     @Published var validationState = ValidationState()
     
@@ -89,9 +91,10 @@ class InputViewModel: ObservableObject {
         }
     }
     
-    func updateValidationState() -> Bool {
+    func updateValidationState() {
        let condition = indexPathState.getCondition()
-       return validate(condition: condition, action: nil)
+       let vs = validate(condition: condition, action: nil) && indexPathState.validate()
+       validationState.set(validationState: vs, validationMessage: "Chris Bumstead")
     }
     
     func actionOnSet() {

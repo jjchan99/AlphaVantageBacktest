@@ -27,7 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navCoordinator = NavigationCoordinator(navigationController: navController)
         navCoordinator!.pushSearchViewController()
         let homeViewController = CloudKitViewController()
-        
+        viewModel.inputState.inputStateDidChange = { [unowned self] in
+            self.viewModel.updateValidationState()
+        }
         let inputViewController = UIHostingController(rootView: AnyView(
             InputFormView()
                 .environmentObject(viewModel)

@@ -16,6 +16,12 @@ protocol IdxPathState: AnyObject {
     var title: String { get }
 }
 
+extension IdxPathState {
+    func validate() -> Bool {
+        return true
+    }
+}
+
 class MA: IdxPathState {
     private(set) weak var context: InputViewModel!
     
@@ -225,6 +231,25 @@ class BB: IdxPathState {
         })
     }
     
+    func validate() -> Bool {
+        let type = context.repo.getDict(index: context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        let previouslySetCondition = dict["BB"]
+        switch previouslySetCondition?.technicalIndicator {
+        case .bollingerBands(percentage: let percentage):
+            switch previouslySetCondition?.aboveOrBelow {
+            case .priceAbove:
+                return context.inputState.selectedPercentage > percentage
+            case .priceBelow:
+                return context.inputState.selectedPercentage < percentage
+            case .none:
+                fatalError()
+            }
+        default:
+            fatalError()
+        }
+        return true
+    }
 }
 
 class RSI: IdxPathState {

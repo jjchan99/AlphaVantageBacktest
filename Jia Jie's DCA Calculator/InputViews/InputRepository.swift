@@ -120,11 +120,12 @@ struct InputValidation {
         guard first.aboveOrBelow != second.aboveOrBelow else {
             return .failure(ValidationError.clashingCondition)
         }
-        if _validate(first, second) {
-            return .success(true)
-        } else {
-            return .failure(ValidationError.clashingCondition)
-        }
+//        if _validate(first, second) {
+//            return .success(true)
+//        } else {
+//            return .failure(ValidationError.clashingCondition)
+//        }
+        return .success(true)
     }
     
     private static func _validate(_ first: EvaluationCondition, _ second: EvaluationCondition) -> Bool {

@@ -81,7 +81,7 @@ struct SelectorView: View {
         }
     }
         .onAppear {
-        
+            vm.selectedDictIndex = self.selectedDictIndex
         }
     }
     

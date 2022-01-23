@@ -74,6 +74,7 @@ struct InputFormView: View {
                             ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
+                                    .font(.caption)
                             Spacer()
                                 Button("Edit") {
                                     vm.transitionState(condition: condition)

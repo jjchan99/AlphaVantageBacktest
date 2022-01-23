@@ -23,11 +23,9 @@ class InputState: ObservableObject {
     }}
     
     var selectedPositionIdx: Int = 0 { didSet {
-//        validationState = updateValidationState()
-//        Log.queue(action: "selected POSITION: \(selectedPositionIdx)")
+        inputStateDidChange!()
     }}
     var selectedPercentage: Double = 0 { didSet {
-        Log.queue(action: "selected percentage: \(selectedPercentage)")
         inputStateDidChange!()
     }}
     

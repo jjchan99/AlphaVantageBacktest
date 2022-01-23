@@ -13,12 +13,13 @@ protocol IdxPathState: AnyObject {
     func setContext(context: InputViewModel)
     func sectionBottomHalfHeader() -> AnyView
     func body() -> AnyView
+    func validate() -> Result<Bool, Error>
     var title: String { get }
 }
 
 extension IdxPathState {
-    func validate() -> Result<String, Error> {
-        return true
+    func validate() -> Result<Bool, Error> {
+        return .success(true)
     }
 }
 
@@ -232,16 +233,16 @@ class BB: IdxPathState {
     }
     
     func validate() -> Result<Bool, Error> {
-        let type = context.repo.getDict(index: context.selectedDictIndex)
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex - 2)
         let dict = context.repo.get(dict: type)
         let previouslySetCondition = dict["BB"]
         switch previouslySetCondition?.technicalIndicator {
         case .bollingerBands(percentage: let percentage):
             switch previouslySetCondition?.aboveOrBelow {
             case .priceAbove:
-                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
-            case .priceBelow:
                 return context.inputState.selectedPercentage < percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
+            case .priceBelow:
+                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
             case .none:
                 fatalError()
             }

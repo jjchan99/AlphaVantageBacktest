@@ -233,21 +233,21 @@ class BB: IdxPathState {
     }
     
     func validate() -> Result<Bool, Error> {
-        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex - 2)
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
         let dict = context.repo.get(dict: type)
-        let previouslySetCondition = dict["BB"]
-        switch previouslySetCondition?.technicalIndicator {
+        guard let previouslySetCondition = dict["BB"] else {
+            return .success(true)
+        }
+        switch previouslySetCondition.technicalIndicator {
         case .bollingerBands(percentage: let percentage):
-            switch previouslySetCondition?.aboveOrBelow {
+            switch previouslySetCondition.aboveOrBelow {
             case .priceAbove:
                 return context.inputState.selectedPercentage < percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
             case .priceBelow:
-                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
-            case .none:
-                fatalError()
+                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Breon Ansley"))
             }
         default:
-            fatalError()
+            break
         }
         return .success(true)
     }

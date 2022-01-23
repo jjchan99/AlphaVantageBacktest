@@ -98,10 +98,6 @@ class InputViewModel: ObservableObject {
            let error = error as! InputValidation.ValidationError
            validationState.set(validationState: false, validationMessage: error.message())
        }
-        
-        
-//       let vs = validate(condition: condition, action: nil) && indexPathState.validate()
-//       validationState.set(validationState: vs, validationMessage: "Chris Bumstead")
     }
     
     func actionOnSet() {

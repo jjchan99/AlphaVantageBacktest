@@ -17,7 +17,7 @@ protocol IdxPathState: AnyObject {
 }
 
 extension IdxPathState {
-    func validate() -> Bool {
+    func validate() -> Result<String, Error> {
         return true
     }
 }
@@ -231,7 +231,7 @@ class BB: IdxPathState {
         })
     }
     
-    func validate() -> Bool {
+    func validate() -> Result<Bool, Error> {
         let type = context.repo.getDict(index: context.selectedDictIndex)
         let dict = context.repo.get(dict: type)
         let previouslySetCondition = dict["BB"]
@@ -239,16 +239,16 @@ class BB: IdxPathState {
         case .bollingerBands(percentage: let percentage):
             switch previouslySetCondition?.aboveOrBelow {
             case .priceAbove:
-                return context.inputState.selectedPercentage > percentage
+                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
             case .priceBelow:
-                return context.inputState.selectedPercentage < percentage
+                return context.inputState.selectedPercentage < percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
             case .none:
                 fatalError()
             }
         default:
             fatalError()
         }
-        return true
+        return .success(true)
     }
 }
 

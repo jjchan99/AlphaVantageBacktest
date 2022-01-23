@@ -71,7 +71,7 @@ class InputViewModel: ObservableObject {
    
     
     //MARK: - INDEXPATH OPERATIONS
-    func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
+    func validate(condition: EvaluationCondition) -> Bool {
         
         let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
         let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
@@ -81,20 +81,28 @@ class InputViewModel: ObservableObject {
         
         switch (validationResult, validationResult2) {
         case (.success, .success):
-            if let action = action {
-                action(condition)
-            }
             return true
         default:
-            validationState.set(validationMessage: previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage)
             return false
         }
     }
     
     func updateValidationState() {
        let condition = indexPathState.getCondition()
-       let vs = validate(condition: condition, action: nil) && indexPathState.validate()
-       validationState.set(validationState: vs, validationMessage: "Chris Bumstead")
+       let genericValidation = validate(condition: condition)
+       let specificValidation = indexPathState.validate()
+       guard genericValidation else { return }
+       switch specificValidation {
+       case .success:
+           validationState.set(validationState: true)
+       case .failure(let error):
+           let error = error as! InputValidation.ValidationError
+           validationState.set(validationState: false, validationMessage: error.message())
+       }
+        
+        
+//       let vs = validate(condition: condition, action: nil) && indexPathState.validate()
+//       validationState.set(validationState: vs, validationMessage: "Chris Bumstead")
     }
     
     func actionOnSet() {

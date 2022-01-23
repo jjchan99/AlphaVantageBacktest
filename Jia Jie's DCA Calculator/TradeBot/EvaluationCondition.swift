@@ -50,23 +50,4 @@ struct EvaluationCondition: CloudKitInterchangeable, CloudChild, Hashable {
     let aboveOrBelow: AboveOrBelow
     let enterOrExit: EnterOrExit
     var andCondition: [EvaluationCondition] = []
- 
-    var validationMessage: String {
-        switch self.technicalIndicator {
-        case .movingAverage:
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator."
-        case .bollingerBands(percentage: let percentage):
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .RSI(_, let percentage):
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .lossTarget:
-            return ""
-        case .profitTarget:
-            return ""
-        case .holdingPeriod:
-            return ""
-        case .movingAverageOperation(period1: let period1, period2: let period2):
-            return ""
-        }
-    }
 }

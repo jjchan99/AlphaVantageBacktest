@@ -242,9 +242,9 @@ class BB: IdxPathState {
         case .bollingerBands(percentage: let percentage):
             switch previouslySetCondition.aboveOrBelow {
             case .priceAbove:
-                return context.inputState.selectedPercentage < percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
+                return context.inputState.selectedPercentage < percentage * 100 ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
             case .priceBelow:
-                return context.inputState.selectedPercentage > percentage ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Breon Ansley"))
+                return context.inputState.selectedPercentage > percentage * 100 ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Breon Ansley"))
             }
         default:
             break

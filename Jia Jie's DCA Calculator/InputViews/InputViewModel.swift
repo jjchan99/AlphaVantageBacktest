@@ -91,6 +91,10 @@ class InputViewModel: ObservableObject {
        let condition = indexPathState.getCondition()
        let genericValidation = validate(condition: condition)
        let specificValidation = indexPathState.validate()
+       guard genericValidation else {
+           validationState.set(validationState: false, validationMessage: "Jia Jie Chan")
+           return
+       }
        switch specificValidation {
        case .success:
            validationState.set(validationState: true)

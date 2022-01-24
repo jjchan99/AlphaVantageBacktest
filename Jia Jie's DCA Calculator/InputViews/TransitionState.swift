@@ -238,13 +238,16 @@ class BB: IdxPathState {
         guard let previouslySetCondition = dict["BB"] else {
             return .success(true)
         }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
         switch previouslySetCondition.technicalIndicator {
         case .bollingerBands(percentage: let percentage):
             switch previouslySetCondition.aboveOrBelow {
             case .priceAbove:
-                return context.inputState.selectedPercentage < percentage * 100 ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Chris Bumstead"))
+                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
             case .priceBelow:
-                return context.inputState.selectedPercentage > percentage * 100 ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Breon Ansley"))
+                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
             }
         default:
             break

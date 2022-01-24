@@ -90,6 +90,18 @@ class MA: IdxPathState {
         })
     }
     
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        guard let previouslySetCondition = dict["MA"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
+    }
+    
 }
 
 class MACrossover: IdxPathState {
@@ -171,6 +183,24 @@ class MACrossover: IdxPathState {
         })
     }
     
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        
+        guard context.inputState.selectedWindowIdx != context.inputState.anotherSelectedWindowIdx else {
+            return .failure(ValidationState.ValidationError.clashingCondition(message: "Welcome to Chick-fil-a can I get uhh"))
+        }
+        
+        guard let previouslySetCondition = dict["MACrossover"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+  
+        
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
+    }
 }
 
 class BB: IdxPathState {
@@ -327,6 +357,18 @@ class RSI: IdxPathState {
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
         })
+    }
+    
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        guard let previouslySetCondition = dict["RSI"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
     }
     
 }

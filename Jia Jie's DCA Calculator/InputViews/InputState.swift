@@ -16,10 +16,12 @@ class InputState: ObservableObject {
     
     var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        inputStateDidChange!()
     }}
     
     var anotherSelectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        inputStateDidChange!()
     }}
     
     var selectedPositionIdx: Int = 0 { didSet {

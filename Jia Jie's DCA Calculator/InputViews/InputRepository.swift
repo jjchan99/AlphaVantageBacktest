@@ -108,35 +108,6 @@ class InputRepository: ObservableObject {
     }
 }
 
-struct InputValidation {
-
-    
-    public enum ValidationError: Error {
-        case clashingCondition(message: String)
-        
-        func message() -> String {
-            switch self {
-            case .clashingCondition(message: let message):
-                return message
-            }
-        }
-    }
-    
-    static func validate(_ first: EvaluationCondition?, _ second: EvaluationCondition) -> Result<Bool, Error> {
-        guard let first = first else { return .success(true) }
-        guard first.aboveOrBelow != second.aboveOrBelow else {
-            return .failure(ValidationError.clashingCondition(message: "asdasd"))
-        }
-//        if _validate(first, second) {
-//            return .success(true)
-//        } else {
-//            return .failure(ValidationError.clashingCondition)
-//        }
-        return .success(true)
-    }
-}
-
-
 
 
 

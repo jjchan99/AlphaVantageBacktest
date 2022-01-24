@@ -71,22 +71,6 @@ class InputViewModel: ObservableObject {
    
     
     //MARK: - INDEXPATH OPERATIONS
-    func validate(condition: EvaluationCondition) -> Bool {
-        
-        let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
-        let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
-        
-        let validationResult = InputValidation.validate(previouslySetTriggerCondition, condition)
-        let validationResult2 = InputValidation.validate(previouslySetTradeCondition, condition)
-        
-        switch (validationResult, validationResult2) {
-        case (.success, .success):
-            return true
-        default:
-            return false
-        }
-    }
-    
     func updateValidationState() {
        let condition = indexPathState.getCondition()
        let validation = indexPathState.validate()
@@ -94,7 +78,7 @@ class InputViewModel: ObservableObject {
        case .success:
            validationState.set(validationState: true)
        case .failure(let error):
-           let error = error as! InputValidation.ValidationError
+           let error = error as! ValidationState.ValidationError
            validationState.set(validationState: false, validationMessage: error.message())
        }
     }

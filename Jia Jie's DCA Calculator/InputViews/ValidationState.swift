@@ -9,6 +9,17 @@ import Foundation
 import SwiftUI
 
 class ValidationState: ObservableObject {
+    public enum ValidationError: Error {
+        case clashingCondition(message: String)
+        
+        func message() -> String {
+            switch self {
+            case .clashingCondition(message: let message):
+                return message
+            }
+        }
+    }
+    
     private(set) var validationState: Bool = true
     
     private(set)var validationMessage: String = ""

@@ -245,9 +245,9 @@ class BB: IdxPathState {
         case .bollingerBands(percentage: let percentage):
             switch previouslySetCondition.aboveOrBelow {
             case .priceAbove:
-                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
+                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
             case .priceBelow:
-                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ? .success(true) : .failure(InputValidation.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
+                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
             }
         default:
             break

@@ -94,4 +94,21 @@ struct PopupView: View {
     }
 }
 
-
+struct CustomSheet<Content: View>: View {
+    
+    let content: () -> Content
+    @Binding var height: CGFloat
+    @State private var animationAmount = 1.0
+    
+    init(height: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+        self._height = height
+    }
+    
+    var body: some View {
+        content()
+            .offset(y: height)
+            .animation(.spring(), value: animationAmount)
+            .edgesIgnoringSafeArea(.all)
+    }
+}

@@ -74,7 +74,9 @@ struct PopupView: View {
                 
                 Form {
                 vm.indexPathState.body()
+                if vm.indexPathState as? PT == nil && vm.indexPathState as? LT == nil && vm.indexPathState as? HP == nil {
                 sectionBottomHalf()
+                }
                 }
                 setButton()
                 Spacer()

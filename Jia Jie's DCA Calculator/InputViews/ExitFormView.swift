@@ -23,13 +23,14 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTriggers.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.exitTriggers.values), id: \.self) { condition in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: condition))
+                                    .font(.caption)
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.exitTriggers[key]!)
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -60,12 +61,13 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTrade.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.exitTrade.values), id: \.self) { condition in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: condition))
+                                    .font(.caption)
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.exitTrade[key])
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

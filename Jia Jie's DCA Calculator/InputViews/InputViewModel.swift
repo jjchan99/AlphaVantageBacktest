@@ -134,7 +134,7 @@ class InputViewModel: ObservableObject {
         case .profitTarget(value: let value):
             return "Profit above \(value)%"
         case .RSI(period: let period, value: let value):
-            return "\(period) period RSI \(condition.aboveOrBelow) \(value)"
+            return "\(period) period RSI \(condition.aboveOrBelow) \(value * 100)"
         case .bollingerBands(percentage: let percentage):
             let formatted = (percentage * 100).twoDecimalPlaceString
             return "Close \(condition.aboveOrBelow) \(formatted) percent B"

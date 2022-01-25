@@ -197,8 +197,6 @@ class MACrossover: IdxPathState {
         
         let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
         
-  
-        
         return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
     }
 }
@@ -296,7 +294,7 @@ class RSI: IdxPathState {
     
     func getCondition() -> EvaluationCondition {
         
-        let condition = EvaluationCondition(technicalIndicator: .RSI(period: context.inputState.stepperValue, value: context.inputState.selectedPercentage), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
+        let condition = EvaluationCondition(technicalIndicator: .RSI(period: context.inputState.stepperValue, value: context.inputState.selectedPercentage * 0.01), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
         return condition
     }
     
@@ -308,7 +306,7 @@ class RSI: IdxPathState {
                 let i = input.technicalIndicator
                 switch i {
                 case .RSI(period: let period, value: let percentage):
-                    context.inputState.set(selectedPercentage: percentage, stepperValue: period)
+                    context.inputState.set(selectedPercentage: percentage * 100, stepperValue: period)
                 default:
                     fatalError()
                 }
@@ -333,10 +331,10 @@ class RSI: IdxPathState {
     var body: some View {
         Section {
             
-            Slider(value: $context.inputState.selectedPercentage, in: 0...1)
+            Slider(value: $context.inputState.selectedPercentage, in: 0...100)
       
         } header: {
-            Text("RSI threshold: \(context.inputState.selectedPercentage * 100, specifier: "%.0f")%")
+            Text("RSI threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
         }
         
         Section {
@@ -368,7 +366,22 @@ class RSI: IdxPathState {
         
         let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
         
-        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
+        switch previouslySetCondition.technicalIndicator {
+        case .RSI(period: _, value: let percentage):
+            switch previouslySetCondition.aboveOrBelow {
+            case .priceAbove:
+                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ?
+                    .success(true) :
+                    .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
+            case .priceBelow:
+                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ?
+                    .success(true) :
+                    .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
+            }
+        default:
+            break
+        }
+        return .success(true)
     }
     
 }

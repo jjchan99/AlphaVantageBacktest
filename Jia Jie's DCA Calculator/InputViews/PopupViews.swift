@@ -94,21 +94,36 @@ struct PopupView: View {
     }
 }
 
-struct CustomSheet<Content: View>: View {
-    
-    let content: () -> Content
+extension View {
+    func customSheet<Content: View>(height: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        return self
+            .overlay(
+                CustomSheetVCR(height: height, content: content())
+            )
+    }
+}
+
+struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     @Binding var height: CGFloat
-    @State private var animationAmount = 1.0
+    let content: Content
+    let controller: UIViewController = {
+       let c = UIViewController()
+       c.view.backgroundColor = .clear
+       return c
+    }()
     
-    init(height: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) {
-        self.content = content
-        self._height = height
+    func makeUIViewController(context: Context) -> UIViewController {
+        return controller
     }
     
-    var body: some View {
-        content()
-            .offset(y: height)
-            .animation(.spring(), value: animationAmount)
-            .edgesIgnoringSafeArea(.all)
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        if height != Dimensions.height {
+            let hc = UIHostingController(rootView: content)
+            
+            uiViewController.present(hc, animated: true) {
+                
+            }
+            
+        }
     }
 }

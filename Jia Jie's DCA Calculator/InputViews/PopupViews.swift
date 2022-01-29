@@ -97,9 +97,9 @@ struct PopupView: View {
 extension View {
     func customSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
         return self
-            .overlay(
-                CustomSheetVCR(isPresented: isPresented, content: content())
-            )
+        .background(
+            CustomSheetVCR(isPresented: isPresented, content: content())
+        )
     }
 }
 

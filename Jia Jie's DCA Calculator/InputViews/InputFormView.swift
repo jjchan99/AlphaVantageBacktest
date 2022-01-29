@@ -44,9 +44,6 @@ struct InputFormView: View {
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
-                                }
                             }
                         }
                         .onDelete { _ in }
@@ -80,9 +77,6 @@ struct InputFormView: View {
                                     vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
-                                }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
                                 }
                             }
                         }
@@ -126,6 +120,10 @@ struct InputFormView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .customSheet(isPresented: $isPresented) {
+                        PopupView(shouldPopToRootView: $isActive, entryForm: false)
+                            .environmentObject(vm)
+        }
      
     }
 }

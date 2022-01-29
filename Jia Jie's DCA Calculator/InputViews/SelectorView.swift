@@ -80,9 +80,12 @@ struct SelectorView: View {
             Text(vm.entry ? "" : "Custom targets")
         }
     }
-        .onAppear {
-            vm.selectedDictIndex = self.selectedDictIndex
-        }
+    .customSheet(isPresented: $isPresented) {
+           Text("Welcome")
+    }
+    .onAppear {
+        vm.selectedDictIndex = self.selectedDictIndex
+    }
     }
     
 }

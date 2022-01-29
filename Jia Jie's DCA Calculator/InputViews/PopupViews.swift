@@ -95,16 +95,16 @@ struct PopupView: View {
 }
 
 extension View {
-    func customSheet<Content: View>(height: Binding<CGFloat>, @ViewBuilder content: @escaping () -> Content) -> some View {
+    func customSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
         return self
             .overlay(
-                CustomSheetVCR(height: height, content: content())
+                CustomSheetVCR(isPresented: isPresented, content: content())
             )
     }
 }
 
 struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
-    @Binding var height: CGFloat
+    @Binding var isPresented: Bool
     let content: Content
     let controller: UIViewController = {
        let c = UIViewController()
@@ -117,13 +117,29 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        if height != Dimensions.height {
-            let hc = UIHostingController(rootView: content)
+        if isPresented {
+            let hc = CustomSheetController(rootView: content)
             
             uiViewController.present(hc, animated: true) {
-                
+                DispatchQueue.main.async {
+                    isPresented.toggle()
+                }
             }
             
         }
+    }
+}
+
+class CustomSheetController<Content: View>: UIHostingController<Content> {
+    
+    override func viewDidLoad() {
+        if let pc = presentationController as? UISheetPresentationController {
+            pc.detents = [
+                .medium(),
+                .large()
+            ]
+            
+        }
+        
     }
 }

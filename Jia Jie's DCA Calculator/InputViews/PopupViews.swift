@@ -143,6 +143,6 @@ class CustomSheetController<Content: View>: UIHostingController<Content>, UIView
 
 class CustomSizePresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
-        return CGRect(x: 0, y: Dimensions.height * 0.5, width: Dimensions.width, height: Dimensions.height * 0.5)
+        return CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
     }
 }

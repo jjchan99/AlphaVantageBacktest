@@ -119,6 +119,8 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if isPresented {
             let hc = CustomSheetController(rootView: content)
+            hc.modalPresentationStyle = .custom
+            hc.transitioningDelegate = hc
             
             uiViewController.present(hc, animated: true) {
                 DispatchQueue.main.async {
@@ -130,16 +132,17 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     }
 }
 
-class CustomSheetController<Content: View>: UIHostingController<Content> {
-    
-    override func viewDidLoad() {
-        if let pc = presentationController as? UISheetPresentationController {
-            pc.detents = [
-                .medium(),
-                .large()
-            ]
-            
-        }
+class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
         
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return CustomSizePresentationController(presentedViewController: presented, presenting: presentingViewController)
+    }
+    
+    
+}
+
+class CustomSizePresentationController: UIPresentationController {
+    override var frameOfPresentedViewInContainerView: CGRect {
+        return CGRect(x: 0, y: Dimensions.height * 0.5, width: Dimensions.width, height: Dimensions.height * 0.5)
     }
 }

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct InputFormView: View {
     @EnvironmentObject var vm: InputViewModel
+    @EnvironmentObject var repo: InputRepository
+    
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
@@ -31,18 +33,16 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTriggers.values), id: \.self) { condition in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: condition))
+                                    .font(.caption)
 
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.entryTriggers[key]!)
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
-                                }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
                                 }
                             }
                         }
@@ -68,17 +68,15 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTrade.keys), id: \.self) { key in
+                            ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
                             HStack {
-                                Text(key)
+                                Text(vm.keyTitle(condition: condition))
+                                    .font(.caption)
                             Spacer()
                                 Button("Edit") {
-                                    vm.transitionState(condition: vm.repo.entryTrade[key])
+                                    vm.transitionState(condition: condition)
                                     vm.restoreInputs()
                                     isPresented = true
-                                }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
                                 }
                             }
                         }
@@ -122,6 +120,10 @@ struct InputFormView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .customSheet(isPresented: $isPresented) {
+                        PopupView(shouldPopToRootView: $isActive, entryForm: false)
+                            .environmentObject(vm)
+        }
      
     }
 }

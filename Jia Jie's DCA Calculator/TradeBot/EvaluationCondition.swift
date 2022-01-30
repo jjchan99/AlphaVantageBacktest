@@ -8,7 +8,7 @@
 import Foundation
 import CloudKit
 
-struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, CloudChild {
+struct EvaluationCondition: CloudKitInterchangeable, CloudChild, Hashable {
     
     init?(record: CKRecord) {
         let technicalIndicatorRawValue = record["technicalIndicator"] as! Double
@@ -50,27 +50,4 @@ struct EvaluationCondition: CloudKitInterchangeable, CustomStringConvertible, Cl
     let aboveOrBelow: AboveOrBelow
     let enterOrExit: EnterOrExit
     var andCondition: [EvaluationCondition] = []
-    
-    var description: String {
-        "Evaluation conditions: check whether the close price is \(aboveOrBelow) the \(technicalIndicator) ___ (which will be fed in). Then \(enterOrExit)"
-    }
-    
-    var validationMessage: String {
-        switch self.technicalIndicator {
-        case .movingAverage:
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator."
-        case .bollingerBands(percentage: let percentage):
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .RSI(_, let percentage):
-            return "Condition clash: Set ticker \(aboveOrBelow.opposingDescription) indicator and \(aboveOrBelow.opposingDescription) \((percentage * 100).zeroDecimalPlaceString)% threshold."
-        case .lossTarget:
-            return ""
-        case .profitTarget:
-            return ""
-        case .holdingPeriod:
-            return ""
-        case .movingAverageOperation(period1: let period1, period2: let period2):
-            return ""
-        }
-    }
 }

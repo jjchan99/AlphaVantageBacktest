@@ -47,7 +47,7 @@ public struct SlidingTabView : View {
     
     public init(selection: Binding<Int>,
                 tabs: [String],
-                font: Font = .callout,
+                font: Font = .footnote,
                 animation: Animation = .spring(),
                 selectionBarColor: Color = Color(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)),
                 inactiveTabColor: Color = Color(#colorLiteral(red: 0.9586906126, green: 0.9586906126, blue: 0.9586906126, alpha: 1)),

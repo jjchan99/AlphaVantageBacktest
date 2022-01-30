@@ -74,7 +74,9 @@ struct PopupView: View {
                 
                 Form {
                 vm.indexPathState.body()
+                if vm.indexPathState as? PT == nil && vm.indexPathState as? LT == nil && vm.indexPathState as? HP == nil {
                 sectionBottomHalf()
+                }
                 }
                 setButton()
                 Spacer()
@@ -92,4 +94,49 @@ struct PopupView: View {
     }
 }
 
+extension View {
+    func customSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        return self
+        .background(
+            CustomSheetVCR(isPresented: isPresented, content: content())
+        )
+    }
+}
 
+struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
+    @Binding var isPresented: Bool
+    let content: Content
+    let controller: UIViewController = {
+       let c = UIViewController()
+       c.view.backgroundColor = .clear
+       return c
+    }()
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        if isPresented {
+            let hc = CustomSheetController(rootView: content)
+            hc.modalPresentationStyle = .custom
+            hc.transitioningDelegate = hc
+            
+            uiViewController.present(hc, animated: true) {
+                DispatchQueue.main.async {
+                    isPresented.toggle()
+                }
+            }
+            
+        }
+    }
+}
+
+class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
+        
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, isDismissable: true)
+    }
+    
+    
+}

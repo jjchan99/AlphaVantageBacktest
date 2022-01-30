@@ -12,21 +12,23 @@ class InputState: ObservableObject {
     private static var window: [Int] = [20, 50, 100, 200]
     private static var position: [AboveOrBelow] = [.priceAbove, .priceBelow]
     
+    var inputStateDidChange: (() -> Void)?
+    
     var selectedWindowIdx: Int = 0 { didSet {
-        Log.queue(action: "selected window: \(selectedWindowIdx)")
+//        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        inputStateDidChange!()
     }}
     
     var anotherSelectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
+        inputStateDidChange!()
     }}
     
     var selectedPositionIdx: Int = 0 { didSet {
-//        validationState = updateValidationState()
-        Log.queue(action: "selected POSITION: \(selectedPositionIdx)")
+        inputStateDidChange!()
     }}
     var selectedPercentage: Double = 0 { didSet {
-//        Log.queue(action: "selected percentage: \(selectedPercentage)")
-//        validationState = updateValidationState()
+        inputStateDidChange!()
     }}
     
     var stepperValue: Int = 2

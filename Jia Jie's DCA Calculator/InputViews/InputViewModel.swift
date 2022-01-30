@@ -17,7 +17,9 @@ class InputViewModel: ObservableObject {
     
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
+    
     @Published var inputState = InputState()
+    
     var indexPathState: IdxPathState!
     @Published var validationState = ValidationState()
     
@@ -34,7 +36,7 @@ class InputViewModel: ObservableObject {
     @Published var selectedDictIndex: Int = 0
     @Published var selectedTabIndex: Int = 0 { willSet {
         if newValue == 1 {
-            transitionState(key: "MAOperation")
+            transitionState(key: "MACrossover")
         } else if newValue == 0 {
             transitionState(key: "MA")
         } else {
@@ -45,7 +47,7 @@ class InputViewModel: ObservableObject {
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let keysAtSection0: [String] = ["MA", "BB" , "RSI"]
-    let keysAtSection1: [String] = ["PL", "LT" , "HP"]
+    let keysAtSection1: [String] = ["PT", "LT" , "HP"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
     let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
@@ -69,36 +71,25 @@ class InputViewModel: ObservableObject {
    
     
     //MARK: - INDEXPATH OPERATIONS
-    func validate(condition: EvaluationCondition, action: ((EvaluationCondition) -> (Void))?) -> Bool {
-        
-        let previouslySetTriggerCondition = entry ? repo.exitTriggers[repo.getKey(for: condition)] : repo.entryTriggers[repo.getKey(for: condition)]
-        let previouslySetTradeCondition = entry ? repo.exitTrade[repo.getKey(for: condition)] : repo.entryTrade[repo.getKey(for: condition)]
-        
-        let validationResult = InputValidation.validate(previouslySetTriggerCondition, condition)
-        let validationResult2 = InputValidation.validate(previouslySetTradeCondition, condition)
-        
-        switch (validationResult, validationResult2) {
-        case (.success, .success):
-            if let action = action {
-                action(condition)
-            }
-            return true
-        default:
-            validationState.set(validationMessage: previouslySetTriggerCondition?.validationMessage ?? previouslySetTradeCondition!.validationMessage)
-            return false
-        }
-    }
-    
-    func updateValidationState() -> Bool {
+    func updateValidationState() {
        let condition = indexPathState.getCondition()
-       return validate(condition: condition, action: nil)
+       let validation = indexPathState.validate()
+       switch validation {
+       case .success:
+           validationState.set(validationState: true)
+       case .failure(let error):
+           let error = error as! ValidationState.ValidationError
+           validationState.set(validationState: false, validationMessage: error.message())
+       }
     }
     
     func actionOnSet() {
+       
         let condition = indexPathState.getCondition()
         let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
         let action = repo.getAction(dict: dict)
         action(condition)
+        
     }
     
     func compile() {
@@ -135,6 +126,25 @@ class InputViewModel: ObservableObject {
     func getEnterOrExit() -> EnterOrExit {
         return entry ? .enter : .exit
     }
+    
+    func keyTitle(condition: EvaluationCondition) -> String {
+        switch condition.technicalIndicator {
+        case .movingAverage(period: let period):
+            return "Close \(condition.aboveOrBelow) \(period) day moving average"
+        case .profitTarget(value: let value):
+            return "Profit above \(value)%"
+        case .RSI(period: let period, value: let value):
+            return "\(period) period RSI \(condition.aboveOrBelow) \(value * 100)"
+        case .bollingerBands(percentage: let percentage):
+            let formatted = (percentage * 100).twoDecimalPlaceString
+            return "Close \(condition.aboveOrBelow) \(formatted) percent B"
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return "\(period1) day moving average \(condition.aboveOrBelow) \(period2) day moving average"
+        default:
+            return "Donald Trump"
+        }
+        
+    }
 }
 
 extension InputViewModel {
@@ -148,13 +158,13 @@ extension InputViewModel {
             transitionState(state: BB())
         case "RSI":
             transitionState(state: RSI())
-        case "stopOrder":
-            transitionState(state: MA())
-        case "exitTrigger":
-            transitionState(state: MA())
-        case "profitTarget":
-            transitionState(state: MA())
-        case "MAOperation":
+        case "LT":
+            transitionState(state: LT())
+        case "HP":
+            transitionState(state: HP())
+        case "PT":
+            transitionState(state: PT())
+        case "MACrossover":
             transitionState(state: MACrossover())
         default:
             fatalError()
@@ -169,13 +179,13 @@ extension InputViewModel {
             transitionState(state: BB())
         case "RSI":
             transitionState(state: RSI())
-        case "PL":
-            transitionState(state: MA())
+        case "PT":
+            transitionState(state: PT())
         case "LT":
-            transitionState(state: MA())
+            transitionState(state: LT())
         case "HP":
             transitionState(state: HP())
-        case "MAOperation":
+        case "MACrossover":
             transitionState(state: MACrossover())
         default:
             fatalError()

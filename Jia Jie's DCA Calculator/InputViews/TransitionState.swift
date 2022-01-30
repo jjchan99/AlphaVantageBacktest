@@ -13,7 +13,14 @@ protocol IdxPathState: AnyObject {
     func setContext(context: InputViewModel)
     func sectionBottomHalfHeader() -> AnyView
     func body() -> AnyView
+    func validate() -> Result<Bool, Error>
     var title: String { get }
+}
+
+extension IdxPathState {
+    func validate() -> Result<Bool, Error> {
+        return .success(true)
+    }
 }
 
 class MA: IdxPathState {
@@ -81,6 +88,18 @@ class MA: IdxPathState {
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
         })
+    }
+    
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        guard let previouslySetCondition = dict["MA"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
     }
     
 }
@@ -164,6 +183,22 @@ class MACrossover: IdxPathState {
         })
     }
     
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        
+        guard context.inputState.selectedWindowIdx != context.inputState.anotherSelectedWindowIdx else {
+            return .failure(ValidationState.ValidationError.clashingCondition(message: "Welcome to Chick-fil-a can I get uhh"))
+        }
+        
+        guard let previouslySetCondition = dict["MACrossover"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
+    }
 }
 
 class BB: IdxPathState {
@@ -178,7 +213,7 @@ class BB: IdxPathState {
         let condition = EvaluationCondition(technicalIndicator: .bollingerBands(percentage: context.inputState.selectedPercentage * 0.01), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
         return condition
     }
-    
+   
     func restoreInputs() {
         let dict = context.getDict()
         
@@ -225,6 +260,28 @@ class BB: IdxPathState {
         })
     }
     
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        guard let previouslySetCondition = dict["BB"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        switch previouslySetCondition.technicalIndicator {
+        case .bollingerBands(percentage: let percentage):
+            switch previouslySetCondition.aboveOrBelow {
+            case .priceAbove:
+                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
+            case .priceBelow:
+                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
+            }
+        default:
+            break
+        }
+        return .success(true)
+    }
 }
 
 class RSI: IdxPathState {
@@ -237,7 +294,7 @@ class RSI: IdxPathState {
     
     func getCondition() -> EvaluationCondition {
         
-        let condition = EvaluationCondition(technicalIndicator: .RSI(period: context.inputState.stepperValue, value: context.inputState.selectedPercentage), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
+        let condition = EvaluationCondition(technicalIndicator: .RSI(period: context.inputState.stepperValue, value: context.inputState.selectedPercentage * 0.01), aboveOrBelow: context.inputState.getPosition(), enterOrExit: context.getEnterOrExit(), andCondition: [])!
         return condition
     }
     
@@ -249,7 +306,7 @@ class RSI: IdxPathState {
                 let i = input.technicalIndicator
                 switch i {
                 case .RSI(period: let period, value: let percentage):
-                    context.inputState.set(selectedPercentage: percentage, stepperValue: period)
+                    context.inputState.set(selectedPercentage: percentage * 100, stepperValue: period)
                 default:
                     fatalError()
                 }
@@ -274,10 +331,10 @@ class RSI: IdxPathState {
     var body: some View {
         Section {
             
-            Slider(value: $context.inputState.selectedPercentage, in: 0...1)
+            Slider(value: $context.inputState.selectedPercentage, in: 0...100)
       
         } header: {
-            Text("RSI threshold: \(context.inputState.selectedPercentage * 100, specifier: "%.0f")%")
+            Text("RSI threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
         }
         
         Section {
@@ -298,6 +355,33 @@ class RSI: IdxPathState {
             Text(" \(context.inputState.selectedPositionIdx == 0 ? "above" : "below") ").foregroundColor(.red) +
             Text("indicator")
         })
+    }
+    
+    func validate() -> Result<Bool, Error> {
+        let type = context.repo.getDict(index: context.entry ? context.selectedDictIndex + 2 : context.selectedDictIndex)
+        let dict = context.repo.get(dict: type)
+        guard let previouslySetCondition = dict["RSI"] else {
+            return .success(true)
+        }
+        
+        let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
+        
+        switch previouslySetCondition.technicalIndicator {
+        case .RSI(period: _, value: let percentage):
+            switch previouslySetCondition.aboveOrBelow {
+            case .priceAbove:
+                return context.inputState.selectedPercentage < percentage * 100 && genericValidation ?
+                    .success(true) :
+                    .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold below \(percentage * 100)"))
+            case .priceBelow:
+                return context.inputState.selectedPercentage > percentage * 100 && genericValidation ?
+                    .success(true) :
+                    .failure(ValidationState.ValidationError.clashingCondition(message: "Conditional clash: Set threshold above \(percentage * 100)"))
+            }
+        default:
+            break
+        }
+        return .success(true)
     }
     
 }
@@ -363,4 +447,105 @@ class HP: IdxPathState {
     }
 }
 
+class PT: IdxPathState {
+    private(set) weak var context: InputViewModel!
+    
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
+    
+    func getCondition() -> EvaluationCondition {
+        EvaluationCondition(technicalIndicator: .profitTarget(value: context.inputState.selectedPercentage * 0.01), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+    }
+    
+    func restoreInputs() {
+        let dict = context.getDict()
+        
+        if let input = dict["PT"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .profitTarget(value: let percentage):
+                context.inputState.set(selectedPercentage: percentage)
+            default:
+                fatalError()
+            }
+        }
+    }
+    
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Text(""))
+    }
+    
+    func body() -> AnyView {
+        AnyView(
+           v()
+        )
+    }
+    
+    struct v: View {
+        @EnvironmentObject var context: InputViewModel
+        var body: some View {
+            Section {
+                Slider(value: $context.inputState.selectedPercentage, in: 0...100)
+            } header: {
+                Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
+            }
+        }
+    }
+    
+    var title: String = "Profit Target"
+    
+    
+}
 
+class LT: IdxPathState {
+    private(set) weak var context: InputViewModel!
+    
+    func setContext(context: InputViewModel) {
+        self.context = context
+    }
+    
+    func getCondition() -> EvaluationCondition {
+        EvaluationCondition(technicalIndicator: .lossTarget(value: context.inputState.selectedPercentage * 1000000 / 100), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+    }
+
+    
+    func restoreInputs() {
+        let dict = context.getDict()
+        
+        if let input = dict["PT"] {
+            let i = input.technicalIndicator
+            switch i {
+            case .profitTarget(value: let percentage):
+                context.inputState.set(selectedPercentage: percentage)
+            default:
+                fatalError()
+            }
+        }
+    }
+    
+    func sectionBottomHalfHeader() -> AnyView {
+        AnyView(Text(""))
+    }
+    
+    func body() -> AnyView {
+        AnyView(
+           v()
+        )
+    }
+    
+    struct v: View {
+        @EnvironmentObject var context: InputViewModel
+        var body: some View {
+            Section {
+                Slider(value: $context.inputState.selectedPercentage, in: 0...100)
+            } header: {
+                Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
+            }
+        }
+    }
+    
+    var title: String = "Profit Target"
+    
+    
+}

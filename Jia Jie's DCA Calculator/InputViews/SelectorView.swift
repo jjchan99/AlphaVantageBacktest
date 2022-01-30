@@ -24,8 +24,8 @@ struct SelectorView: View {
         Section {
             List(vm.entry ? 0..<vm.entryTitleFrame[0].count : 0..<vm.exitTitleFrame[0].count, id: \.self) { idx in
                 Button() {
-                    isPresented = true
                     vm.transitionState(key: vm.keysAtSection0[idx])
+                    isPresented = true
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -41,9 +41,7 @@ struct SelectorView: View {
                 }
                 .frame(height: 0.1 * Dimensions.height)
                 }
-                .sheet(isPresented: $isPresented) {
-                    PopupView(shouldPopToRootView: self.$rootIsActive, entryForm: true)
-                }
+          
                 .foregroundColor(.black)
                 
             }
@@ -53,8 +51,8 @@ struct SelectorView: View {
         Section {
             List(vm.entry ? 0..<vm.entryTitleFrame[1].count : 0..<vm.exitTitleFrame[1].count, id: \.self) { idx in
                 Button() {
-                    isPresented = true
                     vm.transitionState(key: vm.keysAtSection1[idx])
+                    isPresented = true
                 } label: {
                 HStack {
                     Image(systemName: "dollarsign.circle")
@@ -70,9 +68,6 @@ struct SelectorView: View {
                 }
                 .frame(height: 0.1 * Dimensions.height)
                 }
-                .sheet(isPresented: $isPresented) {
-                    PopupView(shouldPopToRootView: self.$rootIsActive, entryForm: true)
-                }
                 .foregroundColor(.black)
                 
             }
@@ -80,9 +75,13 @@ struct SelectorView: View {
             Text(vm.entry ? "" : "Custom targets")
         }
     }
-        .onAppear {
-        
-        }
+    .onAppear {
+        vm.selectedDictIndex = self.selectedDictIndex
+    }
+    .customSheet(isPresented: $isPresented) {
+        PopupView(shouldPopToRootView: self.$rootIsActive, entryForm: true)
+            .environmentObject(vm)
+    }
     }
     
 }

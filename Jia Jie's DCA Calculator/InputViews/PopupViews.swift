@@ -135,7 +135,9 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
 class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
         
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, isDismissable: true)
+        return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, frame:
+            CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
+        )
     }
     
     

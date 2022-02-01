@@ -118,7 +118,7 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if isPresented {
-            let hc = CustomSheetController(rootView: content)
+            let hc = CustomSheetController(rootView: content, frame: CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75))
             hc.modalPresentationStyle = .custom
             hc.transitioningDelegate = hc
             
@@ -134,9 +134,10 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
 
 class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
     
-    let frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
+    var frame: CGRect
     
-    override init(rootView: Content) {
+    init(rootView: Content, frame: CGRect) {
+        self.frame = frame
         super.init(rootView: rootView)
     }
     

@@ -95,17 +95,20 @@ struct PopupView: View {
 }
 
 extension View {
-    func customSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+    func customSheet<Content: View>(isPresented: Binding<Bool>, frame: CGRect, @ViewBuilder content: @escaping () -> Content) -> some View {
         return self
         .background(
-            CustomSheetVCR(isPresented: isPresented, content: content())
+            CustomSheetVCR(isPresented: isPresented, frame: frame, content: content())
         )
     }
 }
 
 struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     @Binding var isPresented: Bool
+    let frame: CGRect
     let content: Content
+  
+    
     let controller: UIViewController = {
        let c = UIViewController()
        c.view.backgroundColor = .clear
@@ -118,7 +121,7 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if isPresented {
-            let hc = CustomSheetController(rootView: content, frame: CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75))
+            let hc = CustomSheetController(rootView: content, frame: self.frame)
             hc.modalPresentationStyle = .custom
             hc.transitioningDelegate = hc
             

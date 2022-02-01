@@ -78,7 +78,7 @@ struct SelectorView: View {
     .onAppear {
         vm.selectedDictIndex = self.selectedDictIndex
     }
-    .customSheet(isPresented: $isPresented) {
+    .customSheet(isPresented: $isPresented, frame: CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)) {
         PopupView(shouldPopToRootView: self.$rootIsActive, entryForm: true)
             .environmentObject(vm)
     }

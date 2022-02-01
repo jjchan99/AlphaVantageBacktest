@@ -133,10 +133,20 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
 }
 
 class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
-        
+    
+    let frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
+    
+    override init(rootView: Content) {
+        super.init(rootView: rootView)
+    }
+    
+    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, frame:
-            CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
+           frame
         )
     }
     

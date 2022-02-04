@@ -15,6 +15,7 @@ protocol IdxPathState: AnyObject {
     func body() -> AnyView
     func validate() -> Result<Bool, Error>
     var title: String { get }
+    var frame: CGRect { get }
 }
 
 extension IdxPathState {
@@ -101,6 +102,8 @@ class MA: IdxPathState {
         
         return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
     
 }
 
@@ -199,6 +202,8 @@ class MACrossover: IdxPathState {
         
         return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
 }
 
 class BB: IdxPathState {
@@ -282,6 +287,8 @@ class BB: IdxPathState {
         }
         return .success(true)
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }
 
 class RSI: IdxPathState {
@@ -384,6 +391,8 @@ class RSI: IdxPathState {
         return .success(true)
     }
     
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
+    
 }
 
 class HP: IdxPathState {
@@ -445,6 +454,8 @@ class HP: IdxPathState {
     }
         }
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }
 
 class PT: IdxPathState {
@@ -495,6 +506,7 @@ class PT: IdxPathState {
     
     var title: String = "Profit Target"
     
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
     
 }
 
@@ -547,5 +559,5 @@ class LT: IdxPathState {
     
     var title: String = "Profit Target"
     
-    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }

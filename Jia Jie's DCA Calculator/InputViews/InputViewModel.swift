@@ -14,6 +14,7 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
+    @Published var frame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
     
     //MARK: - STATE CONTAINERS
     var repo = InputRepository()
@@ -26,6 +27,7 @@ class InputViewModel: ObservableObject {
     private func transitionState(state: IdxPathState) {
         self.indexPathState = state
         state.setContext(context: self)
+        self.frame = state.frame
     }
     
     init() {

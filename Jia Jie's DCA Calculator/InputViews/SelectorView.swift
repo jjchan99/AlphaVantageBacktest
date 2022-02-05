@@ -77,6 +77,10 @@ struct SelectorView: View {
     }
     .onAppear {
         vm.selectedDictIndex = self.selectedDictIndex
+        vm.selector.toggle()
+    }
+    .onDisappear {
+        vm.selector.toggle()
     }
     .customSheet(isPresented: $isPresented, frame: vm.frame) {
         PopupView(shouldPopToRootView: self.$rootIsActive, entryForm: true)

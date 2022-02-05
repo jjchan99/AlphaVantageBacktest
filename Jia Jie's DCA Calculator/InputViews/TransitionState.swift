@@ -41,7 +41,7 @@ class MA: IdxPathState {
     func restoreInputs() {
         let dict = context.getDict()
         
-        guard let input = dict["MA"] else { fatalError() }
+        guard let input = dict["MA"] else { return }
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -145,7 +145,7 @@ class MACrossover: IdxPathState {
             }
         }
         
-        context.selectedTabIndex = 1
+//        context.selectedTabIndex = 1
      }
     
     func body() -> AnyView {

@@ -36,7 +36,8 @@ class InputViewModel: ObservableObject {
     
     @Published var entry: Bool = true
     @Published var selectedDictIndex: Int = 0
-    @Published var selectedTabIndex: Int = 0 { willSet {
+    @Published var selectedTabIndex: Int = 0 {
+        willSet {
         if newValue == 1 {
             transitionState(key: "MACrossover")
         } else if newValue == 0 {
@@ -44,7 +45,12 @@ class InputViewModel: ObservableObject {
         } else {
             fatalError()
         }
-    }}
+        }
+        
+        didSet {
+            inputState.reset()
+        }
+    }
     
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]

@@ -144,6 +144,8 @@ class MACrossover: IdxPathState {
               
             }
         }
+        
+        context.selectedTabIndex = 1
      }
     
     func body() -> AnyView {
@@ -391,7 +393,7 @@ class RSI: IdxPathState {
         return .success(true)
     }
     
-    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.35, width: Dimensions.width, height: Dimensions.height * 0.65)
     
 }
 

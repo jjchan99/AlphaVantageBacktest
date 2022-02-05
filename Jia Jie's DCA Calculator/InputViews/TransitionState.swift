@@ -127,6 +127,7 @@ class MACrossover: IdxPathState {
             let i = input.technicalIndicator
             switch i {
             case .movingAverageOperation(period1: let period1, period2: let period2):
+                print("period1: \(period1), period2: \(period2)")
                 context.inputState.set(selectedWindowIdx: context.inputState.getIndex(window: period1), anotherSelectedWindowIdx: context.inputState.getIndex(window: period2)!)
             default:
                 fatalError()

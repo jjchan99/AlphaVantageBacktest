@@ -62,8 +62,8 @@ class InputState: ObservableObject {
             self.stepperValue = stepperValue
         }
         
-        if let selectedWindowIdx = selectedWindowIdx {
-            self.selectedWindowIdx = selectedWindowIdx
+        if let anotherSelectedWindowIdx = anotherSelectedWindowIdx {
+            self.anotherSelectedWindowIdx = anotherSelectedWindowIdx
         }
         
         if let selectedPositionIdx = selectedPositionIdx {

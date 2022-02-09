@@ -146,7 +146,7 @@ class MACrossover: IdxPathState {
             }
         }
         
-//        context.selectedTabIndex = 1
+        context._sti = 1
      }
     
     func body() -> AnyView {
@@ -177,6 +177,11 @@ class MACrossover: IdxPathState {
             .pickerStyle(SegmentedPickerStyle())
         } header: {
             Text("Select Second Period")
+        }
+        .onAppear {
+            if !context.selector {
+                context.indexPathState.restoreInputs()
+            }
         }
     }
     }

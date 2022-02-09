@@ -37,6 +37,10 @@ class InputViewModel: ObservableObject {
     @Published var entry: Bool = true
     @Published var selector: Bool = false
     @Published var selectedDictIndex: Int = 0
+    @Published var _sti: Int = 0 { didSet {
+        selectedTabIndex = _sti
+    }}
+    
     @Published var selectedTabIndex: Int = 0 {
         willSet {
         if newValue == 1 {
@@ -49,7 +53,9 @@ class InputViewModel: ObservableObject {
         }
         
         didSet {
-            selector ? inputState.reset() : indexPathState.restoreInputs()
+            if selector {
+                inputState.reset()
+            }
         }
     }
     

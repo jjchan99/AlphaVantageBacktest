@@ -94,29 +94,24 @@ final class SheetModalPresentationController: UIPresentationController {
     
     // MARK: Private Properties
         
-    private let isDismissable: Bool
+    private let isDismissable: Bool = true
     private let interactor = UIPercentDrivenInteractiveTransition()
     private let dimmingView = UIView()
     private var propertyAnimator: UIViewPropertyAnimator!
     private var isInteractive = false
+    private let frame: CGRect
     
 //    private let topOffset = UIApplication.statusBarHeight + 20
 
     // MARK: Public Properties
     
-    override var frameOfPresentedViewInContainerView: CGRect {
-        return CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
-    }
-        
-    // MARK: Initializers
-    
-    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?,
-         isDismissable: Bool) {
-        self.isDismissable = isDismissable
-        
+    init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?, frame: CGRect) {
+        self.frame = frame
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
-        
-//        registerForKeyboardNotifications()
+    }
+    
+    override var frameOfPresentedViewInContainerView: CGRect {
+        return frame
     }
     
     // MARK: Public Methods

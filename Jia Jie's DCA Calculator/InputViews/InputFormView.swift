@@ -120,7 +120,7 @@ struct InputFormView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .customSheet(isPresented: $isPresented) {
+        .customSheet(isPresented: $isPresented, frame: vm.frame) {
                         PopupView(shouldPopToRootView: $isActive, entryForm: false)
                             .environmentObject(vm)
         }

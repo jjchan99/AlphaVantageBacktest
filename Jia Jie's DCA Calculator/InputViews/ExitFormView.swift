@@ -34,9 +34,6 @@ struct ExitFormView: View {
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
-                                }
                             }
                         }
                         .onDelete { _ in }
@@ -71,9 +68,6 @@ struct ExitFormView: View {
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
-                                .sheet(isPresented: $isPresented) {
-                                    PopupView(shouldPopToRootView: self.$isActive, entryForm: false)
-                                }
                             }
                         }
 
@@ -102,6 +96,10 @@ struct ExitFormView: View {
             .onAppear {
                 vm.resetInputs()
                 vm.entry = false
+            }
+            .customSheet(isPresented: $isPresented, frame: vm.frame) {
+                            PopupView(shouldPopToRootView: $isActive, entryForm: false)
+                                .environmentObject(vm)
             }
      
     }

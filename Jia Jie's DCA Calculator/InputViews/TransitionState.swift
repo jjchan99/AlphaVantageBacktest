@@ -15,6 +15,7 @@ protocol IdxPathState: AnyObject {
     func body() -> AnyView
     func validate() -> Result<Bool, Error>
     var title: String { get }
+    var frame: CGRect { get }
 }
 
 extension IdxPathState {
@@ -40,7 +41,7 @@ class MA: IdxPathState {
     func restoreInputs() {
         let dict = context.getDict()
         
-        guard let input = dict["MA"] else { fatalError() }
+        guard let input = dict["MA"] else { return }
             let i = input.technicalIndicator
             switch i {
             case .movingAverage(period: let period):
@@ -102,6 +103,8 @@ class MA: IdxPathState {
         return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
     }
     
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
+    
 }
 
 class MACrossover: IdxPathState {
@@ -124,6 +127,7 @@ class MACrossover: IdxPathState {
             let i = input.technicalIndicator
             switch i {
             case .movingAverageOperation(period1: let period1, period2: let period2):
+                print("period1: \(period1), period2: \(period2)")
                 context.inputState.set(selectedWindowIdx: context.inputState.getIndex(window: period1), anotherSelectedWindowIdx: context.inputState.getIndex(window: period2)!)
             default:
                 fatalError()
@@ -141,6 +145,8 @@ class MACrossover: IdxPathState {
               
             }
         }
+        
+        context._sti = 1
      }
     
     func body() -> AnyView {
@@ -172,6 +178,11 @@ class MACrossover: IdxPathState {
         } header: {
             Text("Select Second Period")
         }
+        .onAppear {
+            if !context.selector {
+                context.indexPathState.restoreInputs()
+            }
+        }
     }
     }
     
@@ -199,6 +210,8 @@ class MACrossover: IdxPathState {
         
         return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
 }
 
 class BB: IdxPathState {
@@ -282,6 +295,8 @@ class BB: IdxPathState {
         }
         return .success(true)
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }
 
 class RSI: IdxPathState {
@@ -384,6 +399,8 @@ class RSI: IdxPathState {
         return .success(true)
     }
     
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.35, width: Dimensions.width, height: Dimensions.height * 0.65)
+    
 }
 
 class HP: IdxPathState {
@@ -445,6 +462,8 @@ class HP: IdxPathState {
     }
         }
     }
+    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }
 
 class PT: IdxPathState {
@@ -495,6 +514,7 @@ class PT: IdxPathState {
     
     var title: String = "Profit Target"
     
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
     
 }
 
@@ -547,5 +567,5 @@ class LT: IdxPathState {
     
     var title: String = "Profit Target"
     
-    
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
 }

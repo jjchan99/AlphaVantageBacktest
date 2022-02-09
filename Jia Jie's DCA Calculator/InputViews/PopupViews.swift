@@ -95,17 +95,20 @@ struct PopupView: View {
 }
 
 extension View {
-    func customSheet<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+    func customSheet<Content: View>(isPresented: Binding<Bool>, frame: CGRect, @ViewBuilder content: @escaping () -> Content) -> some View {
         return self
         .background(
-            CustomSheetVCR(isPresented: isPresented, content: content())
+            CustomSheetVCR(isPresented: isPresented, frame: frame, content: content())
         )
     }
 }
 
 struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     @Binding var isPresented: Bool
+    let frame: CGRect
     let content: Content
+  
+    
     let controller: UIViewController = {
        let c = UIViewController()
        c.view.backgroundColor = .clear
@@ -118,7 +121,7 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
         if isPresented {
-            let hc = CustomSheetController(rootView: content)
+            let hc = CustomSheetController(rootView: content, frame: self.frame)
             hc.modalPresentationStyle = .custom
             hc.transitioningDelegate = hc
             
@@ -133,9 +136,22 @@ struct CustomSheetVCR<Content: View>: UIViewControllerRepresentable {
 }
 
 class CustomSheetController<Content: View>: UIHostingController<Content>, UIViewControllerTransitioningDelegate {
-        
+    
+    var frame: CGRect
+    
+    init(rootView: Content, frame: CGRect) {
+        self.frame = frame
+        super.init(rootView: rootView)
+    }
+    
+    @MainActor @objc required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, isDismissable: true)
+        return SheetModalPresentationController(presentedViewController: presented, presenting: presentingViewController, frame:
+           frame
+        )
     }
     
     

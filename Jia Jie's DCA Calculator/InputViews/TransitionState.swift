@@ -183,6 +183,9 @@ class MACrossover: IdxPathState {
                 context.indexPathState.restoreInputs()
             }
         }
+        .onDisappear {
+            context.inputState.reset()
+        }
     }
     }
     

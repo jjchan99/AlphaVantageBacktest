@@ -90,6 +90,7 @@ struct PopupView: View {
             if entryForm {
                 vm.resetInputs()
             }
+            vm.selectedTabIndex = 0
         }
     }
 }

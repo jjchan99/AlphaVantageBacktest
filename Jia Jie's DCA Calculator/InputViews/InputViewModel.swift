@@ -50,6 +50,9 @@ class InputViewModel: ObservableObject {
         } else {
             fatalError()
         }
+            if selector {
+                inputState.reset()
+            }
         }
     }
     

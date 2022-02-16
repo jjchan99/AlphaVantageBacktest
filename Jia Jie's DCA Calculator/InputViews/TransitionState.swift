@@ -466,7 +466,7 @@ class HP: IdxPathState {
         }
     }
     
-    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.55, width: Dimensions.width, height: Dimensions.height * 0.45)
 }
 
 class PT: IdxPathState {
@@ -517,7 +517,7 @@ class PT: IdxPathState {
     
     var title: String = "Profit Target"
     
-    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.65, width: Dimensions.width, height: Dimensions.height * 0.35)
     
 }
 
@@ -568,7 +568,7 @@ class LT: IdxPathState {
         }
     }
     
-    var title: String = "Profit Target"
+    var title: String = "Loss Limit"
     
-    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.45, width: Dimensions.width, height: Dimensions.height * 0.55)
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.65, width: Dimensions.width, height: Dimensions.height * 0.35)
 }

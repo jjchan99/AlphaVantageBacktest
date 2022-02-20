@@ -410,7 +410,7 @@ class HP: IdxPathState {
     private(set) weak var context: InputViewModel!
     
     func getCondition() -> EvaluationCondition {
-        EvaluationCondition(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        EvaluationCondition(technicalIndicator: .holdingPeriod(value: context.inputState.stepperValue), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
     }
     
     func restoreInputs() {

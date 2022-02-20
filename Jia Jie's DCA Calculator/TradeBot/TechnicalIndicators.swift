@@ -39,7 +39,7 @@ enum TechnicalIndicators: Hashable {
         
         switch rawValue {
         case let x where x >= 10000000:
-            return holdingPeriod(value: Int(rawValue))
+            return holdingPeriod(value: Int(rawValue - 10000000))
             
         case let x where x >= 1000000:
             return .lossTarget(value: rawValue - 1000000)

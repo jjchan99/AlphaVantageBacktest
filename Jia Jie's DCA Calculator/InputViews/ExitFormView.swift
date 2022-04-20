@@ -89,6 +89,16 @@ struct ExitFormView: View {
                         }
                         .isDetailLink(false)
                     }
+                    
+                    Section {
+                        NavigationLink {
+                          BuildView()
+                                .environmentObject(vm)
+                        } label: {
+                         Text("Review and Build")
+                        }
+                    }
+
                 }
             .navigationTitle("Exit strategy")
             .toolbar {

@@ -105,6 +105,7 @@
 		1DEE65D1274171F8009F1C96 /* DailyOHLCHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */; };
 		1DF3B7EF27761EDE00411D0A /* LedgerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF3B7EE27761EDE00411D0A /* LedgerManager.swift */; };
 		1DF696D9274E57AC00261EB6 /* MovingAverageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */; };
+		1DF7941E28109DAE00EA3194 /* BuildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7941D28109DAE00EA3194 /* BuildView.swift */; };
 		1DFBD22D2774D0BB00E44F11 /* Backtest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFBD22C2774D0BB00E44F11 /* Backtest.swift */; };
 		1DFDEC3E275A1F8D00776CA8 /* BotAccountCorodinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */; };
 		1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF278C276AF22000FCAE6D /* DateManager.swift */; };
@@ -232,6 +233,7 @@
 		1DEE65D0274171F8009F1C96 /* DailyOHLCHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyOHLCHandler.swift; sourceTree = "<group>"; };
 		1DF3B7EE27761EDE00411D0A /* LedgerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerManager.swift; sourceTree = "<group>"; };
 		1DF696D8274E57AC00261EB6 /* MovingAverageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovingAverageModel.swift; sourceTree = "<group>"; };
+		1DF7941D28109DAE00EA3194 /* BuildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildView.swift; sourceTree = "<group>"; };
 		1DFBD22C2774D0BB00E44F11 /* Backtest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backtest.swift; sourceTree = "<group>"; };
 		1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotAccountCorodinator.swift; sourceTree = "<group>"; };
 		1DFF278C276AF22000FCAE6D /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
@@ -502,6 +504,7 @@
 				1D351A73277C9D280089E9F2 /* InputRepository.swift */,
 				1DCBBE3E276BA16D0079D5CA /* InputFormView.swift */,
 				1DA75DA72780D168006AE390 /* ExitFormView.swift */,
+				1DF7941D28109DAE00EA3194 /* BuildView.swift */,
 				1D9A3BC1277B3F2800FDEA24 /* SelectorView.swift */,
 				1DC58887276CB39300046591 /* PopupViews.swift */,
 				1DD1AD5627A6EF1200CA4D60 /* PresentationController.swift */,
@@ -723,6 +726,7 @@
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
 				1D79C48D27889C4700DC17CD /* TransitionState.swift in Sources */,
 				1D12102D2736F98100B58B67 /* FinancialsViewModel.swift in Sources */,
+				1DF7941E28109DAE00EA3194 /* BuildView.swift in Sources */,
 				1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */,
 				1D273F2B27788DE200B44BFE /* TechnicalIndicators.swift in Sources */,
 				1DC3C9DD273BB98F00900600 /* DailyModel.swift in Sources */,

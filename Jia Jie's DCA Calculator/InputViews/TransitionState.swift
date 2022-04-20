@@ -440,33 +440,17 @@ class HP: IdxPathState {
     @EnvironmentObject var context: InputViewModel
         var body: some View {
     Section {
-    TextField("Enter number of days", text: Binding(
-        get: { String(context.inputState.stepperValue) },
-        set: { context.inputState.stepperValue = Int($0) ?? 0 }
-    ))
-            .textFieldStyle(.plain)
-        .frame(width: 0.2 * Dimensions.width)
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                HStack {
-                Button {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                } label: {
-                    Text("Done")
-                }
-                Spacer()
-                }
-            }
+        HStack {
+        Text("\(context.inputState.stepperValue)")
+        Stepper("", value: $context.inputState.stepperValue, in: 2...14)
         }
-        .keyboardType(.numberPad)
-        .padding()
     } header: {
         Text("Enter number of days")
     }
         }
     }
     
-    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.55, width: Dimensions.width, height: Dimensions.height * 0.45)
+    var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.65, width: Dimensions.width, height: Dimensions.height * 0.35)
 }
 
 class PT: IdxPathState {
@@ -487,7 +471,7 @@ class PT: IdxPathState {
             let i = input.technicalIndicator
             switch i {
             case .profitTarget(value: let percentage):
-                context.inputState.set(selectedPercentage: percentage)
+                context.inputState.set(selectedPercentage: percentage * 100)
             default:
                 fatalError()
             }
@@ -510,7 +494,7 @@ class PT: IdxPathState {
             Section {
                 Slider(value: $context.inputState.selectedPercentage, in: 0...100)
             } header: {
-                Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
+                Text("Set threshold: \(Int(context.inputState.selectedPercentage))%")
             }
         }
     }
@@ -529,7 +513,7 @@ class LT: IdxPathState {
     }
     
     func getCondition() -> EvaluationCondition {
-        EvaluationCondition(technicalIndicator: .lossTarget(value: context.inputState.selectedPercentage * 1000000 / 100), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
+        EvaluationCondition(technicalIndicator: .lossTarget(value: context.inputState.selectedPercentage * 0.01), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
     }
 
     
@@ -540,7 +524,7 @@ class LT: IdxPathState {
             let i = input.technicalIndicator
             switch i {
             case .profitTarget(value: let percentage):
-                context.inputState.set(selectedPercentage: percentage)
+                context.inputState.set(selectedPercentage: percentage * 100)
             default:
                 fatalError()
             }
@@ -563,7 +547,7 @@ class LT: IdxPathState {
             Section {
                 Slider(value: $context.inputState.selectedPercentage, in: 0...100)
             } header: {
-                Text("Set threshold: \(context.inputState.selectedPercentage, specifier: "%.0f")%")
+                Text("Set threshold: \(Int(context.inputState.selectedPercentage))%")
             }
         }
     }

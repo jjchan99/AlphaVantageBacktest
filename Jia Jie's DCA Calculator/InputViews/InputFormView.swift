@@ -41,6 +41,7 @@ struct InputFormView: View {
                             Spacer()
                                 Button("Edit") {
                                     vm.transitionState(condition: condition)
+                                    vm.selectedDictIndex = 0
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -75,6 +76,7 @@ struct InputFormView: View {
                             Spacer()
                                 Button("Edit") {
                                     vm.transitionState(condition: condition)
+                                    vm.selectedDictIndex = 1
                                     vm.restoreInputs()
                                     isPresented = true
                                 }

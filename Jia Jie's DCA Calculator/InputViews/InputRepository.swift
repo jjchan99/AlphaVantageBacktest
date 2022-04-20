@@ -25,8 +25,6 @@ class InputRepository: ObservableObject {
         print(exitTrade)
     }}
     
-    
-    
     func getKey(for condition: EvaluationCondition) -> String {
         switch condition.technicalIndicator {
         case .movingAverage:
@@ -36,7 +34,7 @@ class InputRepository: ObservableObject {
         case .RSI:
             return "RSI"
         case .lossTarget:
-            return "LL"
+            return "LT"
         case .holdingPeriod:
             return "HP"
         case .profitTarget:
@@ -57,6 +55,7 @@ class InputRepository: ObservableObject {
         case 3:
             return .exitTrade
         default:
+            print("index is: \(index)")
             fatalError()
         }
     }

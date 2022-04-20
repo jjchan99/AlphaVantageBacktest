@@ -29,7 +29,7 @@ enum TechnicalIndicators: Hashable {
         case .profitTarget(value: let value):
             return value + 2
         case .holdingPeriod(value: let value):
-            return Double(value)
+            return Double(10000000 + value)
         case .movingAverageOperation(period1: let period1, period2: let period2):
             return Double(Int("\(period1)\(period2)")!)
         }
@@ -39,7 +39,7 @@ enum TechnicalIndicators: Hashable {
         
         switch rawValue {
         case let x where x >= 10000000:
-            return holdingPeriod(value: Int(rawValue))
+            return holdingPeriod(value: Int(rawValue - 10000000))
             
         case let x where x >= 1000000:
             return .lossTarget(value: rawValue - 1000000)

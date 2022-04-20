@@ -31,6 +31,7 @@ struct ExitFormView: View {
                             Spacer()
                                 Button("Edit") {
                                     vm.transitionState(condition: condition)
+                                    vm.selectedDictIndex = 0
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -65,6 +66,7 @@ struct ExitFormView: View {
                             Spacer()
                                 Button("Edit") {
                                     vm.transitionState(condition: condition)
+                                    vm.selectedDictIndex = 1
                                     vm.restoreInputs()
                                     isPresented = true
                                 }
@@ -87,6 +89,16 @@ struct ExitFormView: View {
                         }
                         .isDetailLink(false)
                     }
+                    
+                    Section {
+                        NavigationLink {
+                          BuildView()
+                                .environmentObject(vm)
+                        } label: {
+                         Text("Review and Build")
+                        }
+                    }
+
                 }
             .navigationTitle("Exit strategy")
             .toolbar {

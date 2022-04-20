@@ -50,9 +50,6 @@ class InputViewModel: ObservableObject {
         } else {
             fatalError()
         }
-        }
-        
-        didSet {
             if selector {
                 inputState.reset()
             }
@@ -65,8 +62,8 @@ class InputViewModel: ObservableObject {
     let keysAtSection1: [String] = ["PT", "LT" , "HP"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
-    let titlesSection2: [String] = ["Profit Target", "Loss Target", "Define holding period"]
-    let descriptionSection2: [String] = ["Your account's net worth less invested funds", "Your account's net worth less invested funds", "Number of days to close a position when entry is triggered"]
+    let titlesSection2: [String] = ["Profit Target", "Loss Limit", "Define holding period"]
+    let descriptionSection2: [String] = ["Based on your account's net worth less invested funds", "Based on your account's net worth less invested funds", "Number of days to close a position when entry is triggered"]
     
     var entryTitleFrame: [[String]] {
         return [titles, []]
@@ -147,7 +144,8 @@ class InputViewModel: ObservableObject {
         case .movingAverage(period: let period):
             return "Close \(condition.aboveOrBelow) \(period) day moving average"
         case .profitTarget(value: let value):
-            return "Profit above \(value)%"
+            let value = value * 100
+            return "Profit exceeds \(Int(value))%"
         case .RSI(period: let period, value: let value):
             return "\(period) period RSI \(condition.aboveOrBelow) \(value * 100)"
         case .bollingerBands(percentage: let percentage):
@@ -155,8 +153,11 @@ class InputViewModel: ObservableObject {
             return "Close \(condition.aboveOrBelow) \(formatted) percent B"
         case .movingAverageOperation(period1: let period1, period2: let period2):
             return "\(period1) day moving average \(condition.aboveOrBelow) \(period2) day moving average"
-        default:
-            return "Donald Trump"
+        case .lossTarget(value: let value):
+            let value = value * 100
+            return "Loss does not exceed \(Int(value))%"
+        case .holdingPeriod(value: let value):
+            return "Exit trade \(value) days after entry trigger"
         }
         
     }

@@ -110,9 +110,11 @@ class InputViewModel: ObservableObject {
             for (_, andCondition) in repo.entryTrade {
                 //DO SOMETHING ABOUT IT
                 copy.andCondition.append(andCondition)
-                factory = factory
-                    .addCondition(copy)
         }
+            
+        factory = factory
+            .addCondition(copy)
+            
     }
         
         for (_ , conditions) in repo.exitTriggers {
@@ -124,7 +126,6 @@ class InputViewModel: ObservableObject {
                     .addCondition(copy)
         }
     }
-        
         return factory.build()
     }
     

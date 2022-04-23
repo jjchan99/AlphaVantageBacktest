@@ -100,7 +100,7 @@ class MA: IdxPathState {
         
         let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
         
-        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: ""))
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Strategy conflict"))
     }
     
     var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)
@@ -202,7 +202,7 @@ class MACrossover: IdxPathState {
         let dict = context.repo.get(dict: type)
         
         guard context.inputState.selectedWindowIdx != context.inputState.anotherSelectedWindowIdx else {
-            return .failure(ValidationState.ValidationError.clashingCondition(message: "Welcome to Chick-fil-a can I get uhh"))
+            return .failure(ValidationState.ValidationError.clashingCondition(message: "First period cannot be the same as second period"))
         }
         
         guard let previouslySetCondition = dict["MACrossover"] else {
@@ -211,7 +211,7 @@ class MACrossover: IdxPathState {
         
         let genericValidation = previouslySetCondition.aboveOrBelow == .priceAbove ? context.inputState.selectedPositionIdx == 1 : context.inputState.selectedPositionIdx == 0
         
-        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Wendy's"))
+        return genericValidation ? .success(true) : .failure(ValidationState.ValidationError.clashingCondition(message: "Strategy conflict"))
     }
     
     var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.25, width: Dimensions.width, height: Dimensions.height * 0.75)

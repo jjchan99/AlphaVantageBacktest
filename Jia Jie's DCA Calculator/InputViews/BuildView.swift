@@ -59,6 +59,14 @@ struct BuildView: View {
                     Text("Exit Trade")
                 }
             }
+            Button {
+                vm.build {
+                    Log.queue(action: "Upload success")
+                }
+            } label: {
+                Text("Build")
+            }
+
         }
         Spacer()
       

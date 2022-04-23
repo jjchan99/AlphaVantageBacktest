@@ -104,19 +104,34 @@ class InputViewModel: ObservableObject {
         
     }
     
-    func compile() {
-        for (key , conditions) in repo.entryTriggers {
+    func compile() -> TradeBot {
+        for (_ , conditions) in repo.entryTriggers {
+            var copy = conditions
             for (_, andCondition) in repo.entryTrade {
                 //DO SOMETHING ABOUT IT
+                copy.andCondition.append(andCondition)
+                factory = factory
+                    .addCondition(copy)
         }
     }
+        
+        for (_ , conditions) in repo.exitTriggers {
+            var copy = conditions
+            for (_, andCondition) in repo.exitTrade {
+                //DO SOMETHING ABOUT IT
+                copy.andCondition.append(andCondition)
+                factory = factory
+                    .addCondition(copy)
+        }
+    }
+        
+        return factory.build()
     }
     
-    func build() {
-        compile()
-        for (_, condition) in repo.entryTriggers {
-            factory = factory
-                .addCondition(condition)
+    func build(completion: @escaping () -> Void) {
+        let tb = compile()
+        BotAccountCoordinator.upload(tb: tb) {
+            completion()
         }
     }
     
@@ -208,5 +223,3 @@ extension InputViewModel {
         }
     }
 }
-
-

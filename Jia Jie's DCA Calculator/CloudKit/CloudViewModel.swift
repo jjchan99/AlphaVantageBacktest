@@ -24,7 +24,7 @@ struct CloudView: View {
         ZStack {
             VStack(spacing: 20) {
                 Button(action: {
-                    BotAccountCoordinator.upload() {
+                    BotAccountCoordinator.upload(tb: BotAccountCoordinator.specimen()) {
                         Log.queue(action: "Upload success")
                     }
                 }, label: {

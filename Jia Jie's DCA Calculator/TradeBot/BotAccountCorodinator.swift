@@ -133,15 +133,14 @@ Condition: \(condition). And condition: \(condition.andCondition)
                 .store(in: &BotAccountCoordinator.subs)
         }
     
-    static func upload(completion: @escaping () -> Void) {
-        let specimen = specimen()
+    static func upload(tb: TradeBot, completion: @escaping () -> Void) {
         
-        CloudKitUtility.add(item: specimen) { value in
-            CloudKitUtility.saveArray(array: specimen.conditions, for: specimen) { value in
+        CloudKitUtility.add(item: tb) { value in
+            CloudKitUtility.saveArray(array: tb.conditions, for: tb) { value in
                 let group = DispatchGroup()
-                for index in specimen.conditions.indices {
+                for index in tb.conditions.indices {
                     group.enter()
-                    CloudKitUtility.saveArray(array: specimen.conditions[index].andCondition, for: specimen.conditions[index]) { value in
+                    CloudKitUtility.saveArray(array: tb.conditions[index].andCondition, for: tb.conditions[index]) { value in
                         Log.queue(action: "AND condition uploaded")
                         group.leave()
                     }
@@ -187,8 +186,8 @@ class BotFactory {
         return self
     }
     
-//    func setAndCondition(value: EvaluationCondition, indexPath: Int) -> BotFactory {
-//        self.evaluationConditions[indexPath].andCondition = value
+//    func setAndCondition(value: EvaluationCondition) -> BotFactory {
+//        self.evaluationConditions.append(value)
 //        return self
 //    }
     

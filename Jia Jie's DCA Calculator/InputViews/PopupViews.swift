@@ -68,7 +68,7 @@ struct PopupView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
-                if vm.indexPathState as? MA != nil || vm.indexPathState as? MACrossover != nil {
+                if (vm.indexPathState as? MA != nil || vm.indexPathState as? MACrossover != nil) && self.entryForm {
                     SlidingTabView(selection: self.$vm.selectedTabIndex, tabs: ["Singular", "Crossover"])
                 }
                 

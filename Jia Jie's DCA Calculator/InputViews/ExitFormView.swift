@@ -16,6 +16,20 @@ struct ExitFormView: View {
     
     @State var section2active : Bool = false
     
+    func delete2(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.exitOr.sorted(by: >)[ndx]
+            vm.repo.exitOr.removeValue(forKey: item.key)
+        }
+    }
+    
+    func delete3(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.exitAnd.sorted(by: >)[ndx]
+            vm.repo.exitAnd.removeValue(forKey: item.key)
+        }
+    }
+    
     var body: some View {
        
                 Form {
@@ -37,7 +51,7 @@ struct ExitFormView: View {
                                 }
                             }
                         }
-                        .onDelete { _ in }
+                            .onDelete(perform: delete2)
 
                     }
                        
@@ -72,6 +86,7 @@ struct ExitFormView: View {
                                 }
                             }
                         }
+                            .onDelete(perform: delete3)
 
                     }
                        

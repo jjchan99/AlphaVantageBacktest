@@ -18,10 +18,17 @@ struct InputFormView: View {
     
     @State var section2active : Bool = false
     
-    func delete(at offsets: IndexSet){
+    func delete0(at offsets: IndexSet){
         if let ndx = offsets.first {
             let item = vm.repo.entryOr.sorted(by: >)[ndx]
             vm.repo.entryOr.removeValue(forKey: item.key)
+        }
+    }
+    
+    func delete1(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.entryAnd.sorted(by: >)[ndx]
+            vm.repo.entryAnd.removeValue(forKey: item.key)
         }
     }
     
@@ -54,7 +61,7 @@ struct InputFormView: View {
                                 }
                             }
                         }
-                        .onDelete(perform: delete)
+                        .onDelete(perform: delete0)
 
                     }
                        
@@ -89,6 +96,7 @@ struct InputFormView: View {
                                 }
                             }
                         }
+                            .onDelete(perform: delete1)
 
                     }
                        

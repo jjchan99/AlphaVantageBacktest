@@ -47,13 +47,13 @@ class InputRepository: ObservableObject {
     func getDict(index: Int) -> InputRepository.Dict {
         switch index {
         case 0:
-            return .entryAnd
-        case 1:
             return .entryOr
+        case 1:
+            return .entryAnd
         case 2:
-            return .exitAnd
-        case 3:
             return .exitOr
+        case 3:
+            return .exitAnd
         default:
             print("index is: \(index)")
             fatalError()

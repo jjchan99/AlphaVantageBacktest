@@ -216,7 +216,7 @@ struct EvaluationAlgorithm {
 }
 
 protocol TBTemplateMethod {
-    var context: ContextObject { get }
+    var context: ContextObject { get set }
     func templateMethod()
     func entrySuccess()
     func exitSuccess()

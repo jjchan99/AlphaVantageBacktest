@@ -69,7 +69,7 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)

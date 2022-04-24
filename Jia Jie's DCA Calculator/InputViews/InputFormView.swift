@@ -56,11 +56,11 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
-                                .navigationTitle("Entry Trigger")
+                                .navigationTitle("Add OR condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add trade setup") //AND POOL
+                            Text("Add OR condition") //AND POOL
                             }
                         }
                         .isDetailLink(false)
@@ -90,11 +90,11 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $section2active) {
                             SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
-                                .navigationTitle("Trade Condition")
+                                .navigationTitle("Add AND condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add trigger") //BASE
+                            Text("Add AND condition") //BASE
                             }
                         }
                         .isDetailLink(false)
@@ -104,7 +104,7 @@ struct InputFormView: View {
                         NavigationLink {
                          ExitFormView()
                         } label: {
-                         Text("Set exit triggers")
+                         Text("Proceed to exit strategy")
                         }
                     }
                     .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)

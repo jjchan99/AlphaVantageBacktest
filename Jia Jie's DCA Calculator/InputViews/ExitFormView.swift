@@ -46,11 +46,11 @@ struct ExitFormView: View {
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
-                                .navigationTitle("Exit Trigger")
+                                .navigationTitle("Add OR condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add exit trigger")
+                            Text("Add OR condition")
                             }
                         }
                         .isDetailLink(false)
@@ -80,11 +80,11 @@ struct ExitFormView: View {
                     } header: {
                         NavigationLink(isActive: $section2active) {
                             SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
-                                .navigationTitle("Exit Condition")
+                                .navigationTitle("Add AND condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add exit condition")
+                            Text("Add AND condition")
                             }
                         }
                         .isDetailLink(false)

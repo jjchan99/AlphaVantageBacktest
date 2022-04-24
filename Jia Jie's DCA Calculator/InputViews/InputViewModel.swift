@@ -104,7 +104,7 @@ class InputViewModel: ObservableObject {
         
     }
     
-    func compile() -> TradeBot {
+    func compileConditions() -> TradeBot {
         for (_ , conditions) in repo.entryTriggers {
             var copy = conditions
             for (_, andCondition) in repo.entryTrade {
@@ -130,7 +130,7 @@ class InputViewModel: ObservableObject {
     }
     
     func build(completion: @escaping () -> Void) {
-        let tb = compile()
+        let tb = compileConditions()
         BotAccountCoordinator.upload(tb: tb) {
             completion()
         }

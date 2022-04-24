@@ -14,6 +14,8 @@ class InputState: ObservableObject {
     
     var inputStateDidChange: (() -> Void)?
     
+    var long: Bool = true
+    
     var selectedWindowIdx: Int = 0 { didSet {
 //        Log.queue(action: "selected window: \(selectedWindowIdx)")
         inputStateDidChange!()

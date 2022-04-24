@@ -23,7 +23,7 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTriggers.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.exitOr.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -59,7 +59,7 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTrade.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.exitAnd.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)

@@ -13,50 +13,50 @@ struct BuildView: View {
     var body: some View {
         VStack {
             Section {
-            ForEach(Array(vm.repo.entryTriggers.values), id: \.self) { condition in
+            ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                 Text(vm.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
-                if !vm.repo.entryTriggers.isEmpty {
-                    Text("Entry AND conditions")
-                }
-            }
-            
-           
-            
-            Section {
-            ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
-                Text(vm.keyTitle(condition: condition))
-                    .font(.caption)
-            }
-            } header: {
-                if !vm.repo.entryTrade.isEmpty {
+                if !vm.repo.entryOr.isEmpty {
                     Text("Entry OR conditions")
                 }
             }
             
+           
+            
             Section {
-            ForEach(Array(vm.repo.exitTriggers.values), id: \.self) { condition in
+            ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                 Text(vm.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
-                if !vm.repo.exitTriggers.isEmpty {
-                    Text("Exit AND conditions")
+                if !vm.repo.entryAnd.isEmpty {
+                    Text("Entry AND conditions")
+                }
+            }
+            
+            Section {
+            ForEach(Array(vm.repo.exitOr.values), id: \.self) { condition in
+                Text(vm.keyTitle(condition: condition))
+                    .font(.caption)
+            }
+            } header: {
+                if !vm.repo.exitOr.isEmpty {
+                    Text("Exit OR conditions")
                 }
             }
             
            
             
             Section {
-            ForEach(Array(vm.repo.exitTrade.values), id: \.self) { condition in
+            ForEach(Array(vm.repo.exitAnd.values), id: \.self) { condition in
                 Text(vm.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
-                if !vm.repo.exitTrade.isEmpty {
-                    Text("Exit OR conditions")
+                if !vm.repo.exitAnd.isEmpty {
+                    Text("Exit AND conditions")
                 }
             }
             Button {

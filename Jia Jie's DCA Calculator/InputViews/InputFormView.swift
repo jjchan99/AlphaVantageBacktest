@@ -33,7 +33,7 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -69,7 +69,7 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -107,7 +107,7 @@ struct InputFormView: View {
                          Text("Proceed to exit strategy")
                         }
                     }
-                    .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)
+                    .disabled(vm.repo.entryOr.isEmpty && vm.repo.entryAnd.isEmpty)
                     
                 }
             .navigationTitle("Entry strategy")

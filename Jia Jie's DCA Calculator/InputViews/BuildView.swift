@@ -19,7 +19,7 @@ struct BuildView: View {
             }
             } header: {
                 if !vm.repo.entryTriggers.isEmpty {
-                    Text("Entry Setup")
+                    Text("Entry AND conditions")
                 }
             }
             
@@ -32,7 +32,7 @@ struct BuildView: View {
             }
             } header: {
                 if !vm.repo.entryTrade.isEmpty {
-                    Text("Entry Trade")
+                    Text("Entry OR conditions")
                 }
             }
             
@@ -43,7 +43,7 @@ struct BuildView: View {
             }
             } header: {
                 if !vm.repo.exitTriggers.isEmpty {
-                    Text("Exit Setup")
+                    Text("Exit AND conditions")
                 }
             }
             
@@ -56,7 +56,7 @@ struct BuildView: View {
             }
             } header: {
                 if !vm.repo.exitTrade.isEmpty {
-                    Text("Exit Trade")
+                    Text("Exit OR conditions")
                 }
             }
             Button {

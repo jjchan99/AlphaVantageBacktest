@@ -18,6 +18,13 @@ struct InputFormView: View {
     
     @State var section2active : Bool = false
     
+    func delete(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.entryOr.sorted(by: >)[ndx]
+            vm.repo.entryOr.removeValue(forKey: item.key)
+        }
+    }
+    
     var body: some View {
         NavigationView {
                 Form {
@@ -47,7 +54,7 @@ struct InputFormView: View {
                                 }
                             }
                         }
-                        .onDelete { _ in }
+                        .onDelete(perform: delete)
 
                     }
                        

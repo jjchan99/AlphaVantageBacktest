@@ -51,3 +51,9 @@ struct EvaluationCondition: CloudKitInterchangeable, CloudChild, Hashable {
     let enterOrExit: EnterOrExit
     var andCondition: [EvaluationCondition] = []
 }
+
+extension EvaluationCondition: Comparable {
+    static func < (lhs: EvaluationCondition, rhs: EvaluationCondition) -> Bool {
+        return lhs.technicalIndicator.rawValue < rhs.technicalIndicator.rawValue
+    }
+}

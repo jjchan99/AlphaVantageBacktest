@@ -9,19 +9,19 @@ import Foundation
 
 class InputRepository: ObservableObject {
     
-    @Published private(set) var entryAnd: [String: EvaluationCondition] = [:] { didSet {
+    @Published var entryAnd: [String: EvaluationCondition] = [:] { didSet {
         print(entryAnd)
     }}
     
-    @Published private(set) var entryOr: [String: EvaluationCondition] = [:] { didSet {
+    @Published var entryOr: [String: EvaluationCondition] = [:] { didSet {
         print(entryOr)
     }}
     
-    @Published private(set) var exitAnd: [String: EvaluationCondition] = [:] { didSet {
+    @Published var exitAnd: [String: EvaluationCondition] = [:] { didSet {
         print(exitAnd)
     }}
     
-    @Published private(set) var exitOr: [String: EvaluationCondition] = [:] { didSet {
+    @Published var exitOr: [String: EvaluationCondition] = [:] { didSet {
         print(exitOr)
     }}
     

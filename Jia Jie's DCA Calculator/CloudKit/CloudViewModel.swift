@@ -11,6 +11,7 @@ import Combine
 
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
+    var retrievals: TradeBot?
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
@@ -36,13 +37,23 @@ struct CloudView: View {
                         .sink { _ in
                             
                         } receiveValue: { tb in
-                            
+                            viewModel.retrievals = tb
                         }
                         .store(in: &viewModel.subscribers)
 
                 }, label: {
                     Text("Get the Parent.")
                 })
+                Button {
+                    if viewModel.retrievals != nil {
+                        BotAccountCoordinator.delete(tb: viewModel.retrievals!) {
+                        print("Delete success")
+                    }
+                    }
+                } label: {
+                    Text("Delete the tb")
+                }
+
             }
         }
         .frame(width: viewModel.width, height: viewModel.height)

@@ -152,6 +152,16 @@ Condition: \(condition). And condition: \(condition.andCondition)
             }
         }
     }
+    
+    static func delete(tb: TradeBot, completion: @escaping () -> Void) {
+        CloudKitUtility.delete(item: tb)
+            .sink { success in
+                completion()
+            } receiveValue: { success in
+                
+            }
+            .store(in: &BotAccountCoordinator.subs)
+    }
 }
 
 class BotFactory {

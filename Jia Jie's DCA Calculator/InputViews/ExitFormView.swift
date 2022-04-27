@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ExitFormView: View {
     @EnvironmentObject var vm: InputViewModel
+    @EnvironmentObject var repo: InputRepository
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false

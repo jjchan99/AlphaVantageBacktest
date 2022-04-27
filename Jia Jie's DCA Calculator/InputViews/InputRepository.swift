@@ -10,19 +10,19 @@ import Foundation
 class InputRepository: ObservableObject {
     
     @Published var entryAnd: [String: EvaluationCondition] = [:] { didSet {
-        print(entryAnd)
+        print("0: \(entryAnd)")
     }}
     
     @Published var entryOr: [String: EvaluationCondition] = [:] { didSet {
-        print(entryOr)
+        print("1: \(entryOr)")
     }}
     
     @Published var exitAnd: [String: EvaluationCondition] = [:] { didSet {
-        print(exitAnd)
+        print("2: \(exitAnd)")
     }}
     
     @Published var exitOr: [String: EvaluationCondition] = [:] { didSet {
-        print(exitOr)
+        print("3: \(exitOr)")
     }}
     
     func getKey(for condition: EvaluationCondition) -> String {

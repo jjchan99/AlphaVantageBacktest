@@ -118,6 +118,8 @@ struct InputFormView: View {
                     Section {
                         NavigationLink {
                          ExitFormView()
+                                .environmentObject(vm)
+                                .environmentObject(vm.repo)
                         } label: {
                          Text("Proceed to exit strategy")
                         }

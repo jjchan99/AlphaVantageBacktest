@@ -18,6 +18,20 @@ struct InputFormView: View {
     
     @State var section2active : Bool = false
     
+    func delete0(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.entryOr.sorted(by: >)[ndx]
+            vm.repo.entryOr.removeValue(forKey: item.key)
+        }
+    }
+    
+    func delete1(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.entryAnd.sorted(by: >)[ndx]
+            vm.repo.entryAnd.removeValue(forKey: item.key)
+        }
+    }
+    
     var body: some View {
         NavigationView {
                 Form {
@@ -33,7 +47,7 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTriggers.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -47,7 +61,7 @@ struct InputFormView: View {
                                 }
                             }
                         }
-                        .onDelete { _ in }
+                        .onDelete(perform: delete0)
 
                     }
                        
@@ -56,11 +70,11 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
-                                .navigationTitle("Entry Trigger")
+                                .navigationTitle("Add OR condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add trade setup") //AND POOL
+                            Text("Add OR condition") //AND POOL
                             }
                         }
                         .isDetailLink(false)
@@ -69,7 +83,7 @@ struct InputFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.entryTrade.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -82,6 +96,7 @@ struct InputFormView: View {
                                 }
                             }
                         }
+                            .onDelete(perform: delete1)
 
                     }
                        
@@ -90,11 +105,11 @@ struct InputFormView: View {
                     } header: {
                         NavigationLink(isActive: $section2active) {
                             SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
-                                .navigationTitle("Trade Condition")
+                                .navigationTitle("Add AND condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add trigger") //BASE
+                            Text("Add AND condition") //BASE
                             }
                         }
                         .isDetailLink(false)
@@ -103,11 +118,13 @@ struct InputFormView: View {
                     Section {
                         NavigationLink {
                          ExitFormView()
+                                .environmentObject(vm)
+                                .environmentObject(vm.repo)
                         } label: {
-                         Text("Set exit triggers")
+                         Text("Proceed to exit strategy")
                         }
                     }
-                    .disabled(vm.repo.entryTriggers.isEmpty && vm.repo.entryTrade.isEmpty)
+                    .disabled(vm.repo.entryOr.isEmpty && vm.repo.entryAnd.isEmpty)
                     
                 }
             .navigationTitle("Entry strategy")

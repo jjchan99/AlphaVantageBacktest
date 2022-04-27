@@ -10,11 +10,26 @@ import SwiftUI
 
 struct ExitFormView: View {
     @EnvironmentObject var vm: InputViewModel
+    @EnvironmentObject var repo: InputRepository
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
     
     @State var section2active : Bool = false
+    
+    func delete2(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.exitOr.sorted(by: >)[ndx]
+            vm.repo.exitOr.removeValue(forKey: item.key)
+        }
+    }
+    
+    func delete3(at offsets: IndexSet){
+        if let ndx = offsets.first {
+            let item = vm.repo.exitAnd.sorted(by: >)[ndx]
+            vm.repo.exitAnd.removeValue(forKey: item.key)
+        }
+    }
     
     var body: some View {
        
@@ -23,7 +38,7 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTriggers.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.exitOr.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -37,7 +52,7 @@ struct ExitFormView: View {
                                 }
                             }
                         }
-                        .onDelete { _ in }
+                            .onDelete(perform: delete2)
 
                     }
                        
@@ -46,11 +61,11 @@ struct ExitFormView: View {
                     } header: {
                         NavigationLink(isActive: $isActive) {
                             SelectorView(rootIsActive: self.$isActive, selectedDictIndex: 0)
-                                .navigationTitle("Exit Trigger")
+                                .navigationTitle("Add OR condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add exit trigger")
+                            Text("Add OR condition")
                             }
                         }
                         .isDetailLink(false)
@@ -59,7 +74,7 @@ struct ExitFormView: View {
                     Section {
                         List {
                             
-                            ForEach(Array(vm.repo.exitTrade.values), id: \.self) { condition in
+                            ForEach(Array(vm.repo.exitAnd.values), id: \.self) { condition in
                             HStack {
                                 Text(vm.keyTitle(condition: condition))
                                     .font(.caption)
@@ -72,6 +87,7 @@ struct ExitFormView: View {
                                 }
                             }
                         }
+                            .onDelete(perform: delete3)
 
                     }
                        
@@ -80,11 +96,11 @@ struct ExitFormView: View {
                     } header: {
                         NavigationLink(isActive: $section2active) {
                             SelectorView(rootIsActive: self.$section2active, selectedDictIndex: 1)
-                                .navigationTitle("Exit Condition")
+                                .navigationTitle("Add AND condition")
                         } label: {
                             HStack {
                             Image(systemName: "plus")
-                            Text("Add exit condition")
+                            Text("Add AND condition")
                             }
                         }
                         .isDetailLink(false)

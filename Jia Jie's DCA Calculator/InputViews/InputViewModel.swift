@@ -104,10 +104,10 @@ class InputViewModel: ObservableObject {
         
     }
     
-    func compile() -> TradeBot {
-        for (_ , conditions) in repo.entryTriggers {
+    func compileConditions() -> TradeBot {
+        for (_ , conditions) in repo.entryOr {
             var copy = conditions
-            for (_, andCondition) in repo.entryTrade {
+            for (_, andCondition) in repo.entryAnd {
                 //DO SOMETHING ABOUT IT
                 copy.andCondition.append(andCondition)
         }
@@ -117,9 +117,9 @@ class InputViewModel: ObservableObject {
             
     }
         
-        for (_ , conditions) in repo.exitTriggers {
+        for (_ , conditions) in repo.exitOr {
             var copy = conditions
-            for (_, andCondition) in repo.exitTrade {
+            for (_, andCondition) in repo.exitAnd {
                 //DO SOMETHING ABOUT IT
                 copy.andCondition.append(andCondition)
                 factory = factory
@@ -130,7 +130,7 @@ class InputViewModel: ObservableObject {
     }
     
     func build(completion: @escaping () -> Void) {
-        let tb = compile()
+        let tb = compileConditions()
         BotAccountCoordinator.upload(tb: tb) {
             completion()
         }

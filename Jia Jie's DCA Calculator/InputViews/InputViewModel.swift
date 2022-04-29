@@ -131,6 +131,9 @@ class InputViewModel: ObservableObject {
     
     func build(completion: @escaping () -> Void) {
         let tb = compileConditions()
+        if tb.conditions.count == 0 {
+            fatalError()
+        }
         BotAccountCoordinator.upload(tb: tb) {
             completion()
         }

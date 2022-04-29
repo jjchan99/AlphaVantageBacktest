@@ -87,6 +87,41 @@ Condition: \(condition). And condition: \(condition.andCondition)
             .store(in: &BotAccountCoordinator.subs)
     }
     
+    static private func fetchAllBots(completion: @escaping ([TradeBot]) -> Void) {
+        let predicate: NSPredicate = NSPredicate(value: true)
+        CloudKitUtility.fetch(predicate: predicate, recordType: "TradeBot")
+            .sink { result in
+                switch result {
+                case .failure(let error):
+                   print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { (value: [TradeBot]) in
+                switch value.first == nil {
+                case true:
+                       return
+                case false:
+                    let group = DispatchGroup()
+                    var retrievals: [TradeBot] = []
+                    for _ in value {
+                        group.enter()
+                    }
+                    for tb in value {
+                        fetchConditions(for: tb) { tradeBot in
+                            retrievals.append(tradeBot)
+                            group.leave()
+                        }
+                    }
+                    group.wait()
+                    completion(retrievals)
+                }
+            }
+            .store(in: &BotAccountCoordinator.subs)
+    }
+    
+    
+    
     static private func fetchAndConditions(parent: EvaluationCondition, completion: @escaping ([EvaluationCondition]) -> Void) {
           CloudKitUtility.fetchChildren(parent: parent, children: "EvaluationCondition")
             .sink { result in

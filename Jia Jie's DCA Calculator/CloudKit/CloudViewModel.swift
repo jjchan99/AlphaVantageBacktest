@@ -74,6 +74,7 @@ struct CloudView: View {
                             .sink { _ in
             
                             } receiveValue: { tb in
+                                viewModel.retrievals.removeAll()
                                 viewModel.retrievals.append(contentsOf: tb)
                             }
                             .store(in: &viewModel.subscribers)

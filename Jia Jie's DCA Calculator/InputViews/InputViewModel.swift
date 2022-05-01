@@ -105,6 +105,9 @@ class InputViewModel: ObservableObject {
     }
     
     func compileConditions() -> TradeBot {
+        //RESET
+        factory = BotFactory()
+        
         for (_ , conditions) in repo.entryOr {
             var copy = conditions
             for (_, andCondition) in repo.entryAnd {

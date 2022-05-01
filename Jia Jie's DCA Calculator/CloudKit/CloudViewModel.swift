@@ -11,7 +11,7 @@ import Combine
 
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
-    @Published var retrievals: TradeBot?
+    @Published var retrievals: [TradeBot] = []
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
@@ -56,8 +56,8 @@ struct CloudView: View {
                 NavigationView {
                 Form {
                     Section {
-                        if viewModel.retrievals != nil {
-                            Text("Something came up.")
+                        if viewModel.retrievals.count > 0 {
+                            Text("count is \(viewModel.retrievals.count)")
                         }
                     } header: {
                      Text("Suarez")
@@ -69,12 +69,12 @@ struct CloudView: View {
                     UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
                     UITableView.appearance().backgroundColor = #colorLiteral(red: 0.9586906126, green: 0.9586906126, blue: 0.9586906126, alpha: 1)
                     
-                    BotAccountCoordinator.fetchBot()
+                    BotAccountCoordinator.fetchAllBots()
                             .receive(on: DispatchQueue.main)
                             .sink { _ in
             
                             } receiveValue: { tb in
-                                viewModel.retrievals = tb
+                                viewModel.retrievals.append(contentsOf: tb)
                             }
                             .store(in: &viewModel.subscribers)
                 }

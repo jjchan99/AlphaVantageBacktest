@@ -63,6 +63,14 @@ Condition: \(condition). And condition: \(condition.andCondition)
             }
         }
     }
+    
+    static func fetchAllBots() -> Future<[TradeBot], Error> {
+        Future { promise in
+            fetchAllBots { (tb: [TradeBot]) in
+                promise(.success(tb))
+            }
+        }
+    }
 
     static private func fetchBot(completion: @escaping (TradeBot) -> Void) {
         let predicate: NSPredicate = NSPredicate(value: true)

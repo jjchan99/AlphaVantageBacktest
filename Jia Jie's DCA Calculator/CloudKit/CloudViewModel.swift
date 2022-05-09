@@ -56,11 +56,20 @@ struct CloudView: View {
                 NavigationView {
                 Form {
                     Section {
-                        if viewModel.retrievals.count > 0 {
-                            Text("count is \(viewModel.retrievals.count)")
+                        ForEach(0..<viewModel.retrievals.count) { index in
+                            VStack {
+                            Text("Strategy \(index)")
+                                ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
+                                    let condition = viewModel.retrievals[index].conditions[idx]
+                                    let keyTitle = InputViewModel.keyTitle(condition: condition)
+                                    condition.enterOrExit == .enter ?
+                                    Text("Enter when \(keyTitle)")
+                                    : Text("Exit when \(keyTitle)")
+                                    }
+                            }
                         }
                     } header: {
-                     Text("Suarez")
+                     
                     }
                 }
                 .navigationTitle("My strategy")
@@ -82,3 +91,4 @@ struct CloudView: View {
             }
         }
        
+

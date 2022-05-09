@@ -14,7 +14,7 @@ struct BuildView: View {
         VStack {
             Section {
             ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
-                Text(vm.keyTitle(condition: condition))
+                Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
@@ -27,7 +27,7 @@ struct BuildView: View {
             
             Section {
             ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
-                Text(vm.keyTitle(condition: condition))
+                Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
@@ -38,7 +38,7 @@ struct BuildView: View {
             
             Section {
             ForEach(Array(vm.repo.exitOr.values), id: \.self) { condition in
-                Text(vm.keyTitle(condition: condition))
+                Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {
@@ -51,7 +51,7 @@ struct BuildView: View {
             
             Section {
             ForEach(Array(vm.repo.exitAnd.values), id: \.self) { condition in
-                Text(vm.keyTitle(condition: condition))
+                Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
             }
             } header: {

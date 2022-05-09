@@ -40,7 +40,7 @@ struct ExitFormView: View {
                             
                             ForEach(Array(vm.repo.exitOr.values), id: \.self) { condition in
                             HStack {
-                                Text(vm.keyTitle(condition: condition))
+                                Text(InputViewModel.keyTitle(condition: condition))
                                     .font(.caption)
 
                             Spacer()
@@ -76,7 +76,7 @@ struct ExitFormView: View {
                             
                             ForEach(Array(vm.repo.exitAnd.values), id: \.self) { condition in
                             HStack {
-                                Text(vm.keyTitle(condition: condition))
+                                Text(InputViewModel.keyTitle(condition: condition))
                                     .font(.caption)
                             Spacer()
                                 Button("Edit") {

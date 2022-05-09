@@ -49,7 +49,7 @@ struct InputFormView: View {
                             
                             ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                             HStack {
-                                Text(vm.keyTitle(condition: condition))
+                                Text(InputViewModel.keyTitle(condition: condition))
                                     .font(.caption)
 
                             Spacer()
@@ -85,7 +85,7 @@ struct InputFormView: View {
                             
                             ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                             HStack {
-                                Text(vm.keyTitle(condition: condition))
+                                Text(InputViewModel.keyTitle(condition: condition))
                                     .font(.caption)
                             Spacer()
                                 Button("Edit") {

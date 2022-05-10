@@ -11,7 +11,7 @@ import Combine
 
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
-    @Published var retrievals: [TradeBot] = []
+    @Published var retrievals: [TradeBot] = [BotAccountCoordinator.specimen()]
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
@@ -55,10 +55,9 @@ struct CloudView: View {
 //                }
                 NavigationView {
                 Form {
+                    ForEach(0..<viewModel.retrievals.count) { index in
                     Section {
-                        ForEach(0..<viewModel.retrievals.count) { index in
                             VStack {
-                            Text("Strategy \(index)")
                                 ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
                                     let condition = viewModel.retrievals[index].conditions[idx]
                                     let keyTitle = InputViewModel.keyTitle(condition: condition)
@@ -68,8 +67,9 @@ struct CloudView: View {
                                     }
                             }
                         }
-                    } header: {
-                     
+                    header: {
+                        Text("Strategy \(index + 1)")
+                    }
                     }
                 }
                 .navigationTitle("My strategy")

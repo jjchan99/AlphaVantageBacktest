@@ -9,29 +9,29 @@ import Foundation
 import SwiftUI
 import Combine
 
+fileprivate func sort(for tb: TradeBot) -> TradeBot {
+    var tb = tb
+    tb.conditions = tb.conditions.sorted { arg1, arg2 in
+        arg1.enterOrExit == .enter ? true : false
+    }
+    return tb
+}
+
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
-    @Published var retrievals: [TradeBot] = [BotAccountCoordinator.specimen()]
-    {
-        didSet {
-            if retrievals.count > oldValue.count {
-                retrievals[retrievals.count - 1] = sort(for: retrievals.last!)
-            }
-        }
-    }
+    @Published var retrievals: [TradeBot] = [sort(for: BotAccountCoordinator.specimen())]
+//    {
+//        didSet {
+//            if retrievals.count > oldValue.count {
+//                retrievals[retrievals.count - 1] = sort(for: retrievals.last!)
+//            }
+//        }
+//    }
     
     let height: CGFloat = CGFloat(300).hScaled()
     let width: CGFloat = CGFloat(390).wScaled()
     @Published var daily: Daily?
     @Published var tb: TradeBot?
-    
-    private func sort(for tb: TradeBot) -> TradeBot {
-        var tb = tb
-        tb.conditions = tb.conditions.sorted { arg1, arg2 in
-            arg1.enterOrExit == .enter ? true : false
-        }
-        return tb
-    }
 }
 
 struct CloudView: View {

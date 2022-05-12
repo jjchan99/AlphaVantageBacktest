@@ -77,7 +77,9 @@ struct CloudView: View {
                                     let condition = viewModel.retrievals[index].conditions[idx]
                                     let keyTitle = InputViewModel.keyTitle(condition: condition)
                                     condition.enterOrExit == .enter ?
-                                    Text("Enter when \(keyTitle)")
+                                        idx == 0 ?
+                                        Text("Enter when \(keyTitle)")
+                                        : Text("or \(keyTitle)")
                                     : Text("Exit when \(keyTitle)")
                                     }
                             }

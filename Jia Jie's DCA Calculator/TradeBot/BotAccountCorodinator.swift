@@ -27,6 +27,8 @@ class BotAccountCoordinator {
         let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.5), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [BotFactory.copyCondition(exitTrigger)])!
 //
         let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 50), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [])!
+        
+        let condition0: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [exitTrigger])!
 //
 //        let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.7), aboveOrBelow: .priceAbove, buyOrSell: .sell, andCondition: [])!
         
@@ -39,6 +41,7 @@ class BotAccountCoordinator {
             .addCondition(conditionZ)
             .addCondition(conditionX)
             .addCondition(conditionY)
+            .addCondition(condition0)
             .setholdingPeriod(afterDays: -10)
             .build()
 //        print(f)

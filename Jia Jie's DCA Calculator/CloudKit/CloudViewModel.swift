@@ -80,7 +80,13 @@ struct CloudView: View {
                                         idx == 0 ?
                                         Text("Enter when \(keyTitle)")
                                         : Text("or \(keyTitle)")
-                                    : Text("Exit when \(keyTitle)")
+                                    :
+                                    
+                                    viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .exit ?
+                                       Text("or \(keyTitle)")
+                                       : Text("Exit when \(keyTitle)")
+                                    
+                                    
                                     }
                             }
                         }

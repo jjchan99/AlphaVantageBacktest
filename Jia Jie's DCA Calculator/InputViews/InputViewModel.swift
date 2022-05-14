@@ -105,6 +105,9 @@ class InputViewModel: ObservableObject {
     }
     
     func compileConditions() -> TradeBot {
+        //RESET
+        factory = BotFactory()
+        
         for (_ , conditions) in repo.entryOr {
             var copy = conditions
             for (_, andCondition) in repo.entryAnd {
@@ -158,28 +161,6 @@ class InputViewModel: ObservableObject {
         return entry ? .enter : .exit
     }
     
-    func keyTitle(condition: EvaluationCondition) -> String {
-        switch condition.technicalIndicator {
-        case .movingAverage(period: let period):
-            return "Close \(condition.aboveOrBelow) \(period) day moving average"
-        case .profitTarget(value: let value):
-            let value = value * 100
-            return "Profit exceeds \(Int(value))%"
-        case .RSI(period: let period, value: let value):
-            return "\(period) period RSI \(condition.aboveOrBelow) \(value * 100)"
-        case .bollingerBands(percentage: let percentage):
-            let formatted = (percentage * 100).twoDecimalPlaceString
-            return "Close \(condition.aboveOrBelow) \(formatted) percent B"
-        case .movingAverageOperation(period1: let period1, period2: let period2):
-            return "\(period1) day moving average \(condition.aboveOrBelow) \(period2) day moving average"
-        case .lossTarget(value: let value):
-            let value = value * 100
-            return "Loss does not exceed \(Int(value))%"
-        case .holdingPeriod(value: let value):
-            return "Exit trade \(value) days after entry trigger"
-        }
-        
-    }
 }
 
 extension InputViewModel {
@@ -224,6 +205,30 @@ extension InputViewModel {
             transitionState(state: MACrossover())
         default:
             fatalError()
+        }
+    }
+}
+
+extension InputViewModel {
+    static func keyTitle(condition: EvaluationCondition) -> String {
+        switch condition.technicalIndicator {
+        case .movingAverage(period: let period):
+            return "Close \(condition.aboveOrBelow) \(period) day moving average"
+        case .profitTarget(value: let value):
+            let value = value * 100
+            return "Profit exceeds \(Int(value))%"
+        case .RSI(period: let period, value: let value):
+            return "\(period) period RSI \(condition.aboveOrBelow) \(value * 100)"
+        case .bollingerBands(percentage: let percentage):
+            let formatted = (percentage * 100).twoDecimalPlaceString
+            return "Close \(condition.aboveOrBelow) \(formatted) percent B"
+        case .movingAverageOperation(period1: let period1, period2: let period2):
+            return "\(period1) day moving average \(condition.aboveOrBelow) \(period2) day moving average"
+        case .lossTarget(value: let value):
+            let value = value * 100
+            return "Loss does not exceed \(Int(value))%"
+        case .holdingPeriod(value: let value):
+            return "Exit trade \(value) days after entry trigger"
         }
     }
 }

@@ -80,13 +80,24 @@ struct CloudView: View {
                                         idx == 0 ?
                                         Text("Enter when \(keyTitle)")
                                         : Text("or \(keyTitle)")
+                            
                                     :
                                     
                                     viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .exit ?
                                        Text("or \(keyTitle)")
                                        : Text("Exit when \(keyTitle)")
                                     
-                                    
+                                    //MARK: DRAFT 
+                                    ForEach(0..<viewModel.retrievals[index].conditions[idx].andCondition.count) { indx in
+                                        
+                                        let andCond = viewModel.retrievals[index].conditions[idx].andCondition[indx]
+                                        let keyTitle = InputViewModel.keyTitle(condition: andCond)
+
+                                        indx == 0 ? Text("and \(keyTitle),") :
+                                        Text("\(keyTitle),")
+                                        
+                                    }
+                                
                                     }
                             }
                         }

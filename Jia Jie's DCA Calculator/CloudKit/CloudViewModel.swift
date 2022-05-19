@@ -36,78 +36,53 @@ class CloudViewModel: ObservableObject {
 
 struct CloudView: View {
     @EnvironmentObject var viewModel: CloudViewModel
+    
+    var stratView: some View {
+        ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
+        Section {
+                VStack {
+                    ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
+                        let condition = viewModel.retrievals[index].conditions[idx]
+                        let keyTitle = InputViewModel.keyTitle(condition: condition)
+                        condition.enterOrExit == .enter ?
+                            idx == 0 ?
+                            Text("Enter when \(keyTitle)")
+                            : Text("or \(keyTitle)")
+                
+                        :
+                        
+                        viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .exit ?
+                           Text("or \(keyTitle)")
+                           : Text("Exit when \(keyTitle)")
+                        
+                        //MARK: DRAFT
+                        ForEach(0..<viewModel.retrievals[index].conditions[idx].andCondition.count) { indx in
+                            
+                            let andCond = viewModel.retrievals[index].conditions[idx].andCondition[indx]
+                            let keyTitle = InputViewModel.keyTitle(condition: andCond)
+                            let firstExitIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .exit && viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .enter
+                            
+                            idx == 0 || firstExitIndex ?
+                              indx == 0 ? Text("and \(keyTitle),") :
+                              Text("\(keyTitle),")
+                            : Text("")
+                        }
+                        }
+                }
+            }
+        header: {
+            Text("Strategy \(index + 1)")
+        }
+        }
+    }
+    
     var body: some View {
-//        ZStack {
-//            VStack(spacing: 20) {
-//                Button(action: {
-//                    BotAccountCoordinator.upload(tb: BotAccountCoordinator.specimen()) {
-//                        Log.queue(action: "Upload success")
-//                    }
-//                }, label: {
-//                    Text("Click me")
-//                })
-//                Button(action: {
-//                    BotAccountCoordinator.fetchBot()
-//                        .receive(on: DispatchQueue.main)
-//                        .sink { _ in
-//
-//                        } receiveValue: { tb in
-//                            viewModel.retrievals = tb
-//                        }
-//                        .store(in: &viewModel.subscribers)
-//
-//                }, label: {
-//                    Text("Get the Parent.")
-//                })
-//                Button {
-//                    if viewModel.retrievals != nil {
-//                        BotAccountCoordinator.delete(tb: viewModel.retrievals!) {
-//                        print("Delete success")
-//                    }
-//                    }
-//                } label: {
-//                    Text("Delete the tb")
-//                }
                 NavigationView {
                 Form {
-                    ForEach(0..<viewModel.retrievals.count) { index in
-                    Section {
-                            VStack {
-                                ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
-                                    let condition = viewModel.retrievals[index].conditions[idx]
-                                    let keyTitle = InputViewModel.keyTitle(condition: condition)
-                                    condition.enterOrExit == .enter ?
-                                        idx == 0 ?
-                                        Text("Enter when \(keyTitle)")
-                                        : Text("or \(keyTitle)")
-                            
-                                    :
-                                    
-                                    viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .exit ?
-                                       Text("or \(keyTitle)")
-                                       : Text("Exit when \(keyTitle)")
-                                    
-                                    //MARK: DRAFT 
-                                    ForEach(0..<viewModel.retrievals[index].conditions[idx].andCondition.count) { indx in
-                                        
-                                        let andCond = viewModel.retrievals[index].conditions[idx].andCondition[indx]
-                                        let keyTitle = InputViewModel.keyTitle(condition: andCond)
-
-                                        indx == 0 ? Text("and \(keyTitle),") :
-                                        Text("\(keyTitle),")
-                                        
-                                    }
-                                
-                                    }
-                            }
-                        }
-                    header: {
-                        Text("Strategy \(index + 1)")
-                    }
+                     stratView
                     }
                 }
                 .navigationTitle("My strategy")
-                }
                 .onAppear {
                     UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
                     UITableView.appearance().backgroundColor = #colorLiteral(red: 0.9586906126, green: 0.9586906126, blue: 0.9586906126, alpha: 1)

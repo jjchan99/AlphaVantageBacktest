@@ -43,11 +43,12 @@ struct CloudView: View {
                     let keyTitle = InputViewModel.keyTitle(condition: andCond)
                     let lastIndex: Bool = idx == viewModel.retrievals[index].conditions.count - 1
                     let lastEntryIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .enter && viewModel.retrievals[index].conditions[idx + 1].enterOrExit == .exit
-                   
-                        
+                        let andCount = viewModel.retrievals[index].conditions[idx].andCondition.count
+                    
                     lastEntryIndex || lastIndex ?
-                      indx == 0 ? Text("and \(keyTitle),") :
-                      Text("\(keyTitle),")
+                        andCount - 1 == indx ?
+                        Text("\(keyTitle)")
+                        : Text("\(keyTitle),")
                     : Text("")
                        
                     }

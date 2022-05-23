@@ -46,6 +46,12 @@ struct CloudView: View {
                         let andCount = viewModel.retrievals[index].conditions[idx].andCondition.count
                     
                     lastEntryIndex || lastIndex ?
+                        indx == 0 ?
+                        Text("""
+                             AND
+                             \(keyTitle)
+                             """)
+                        :
                         andCount - 1 == indx ?
                         Text("\(keyTitle)")
                         : Text("\(keyTitle),")

@@ -47,15 +47,15 @@ struct CloudView: View {
                     
                     lastEntryIndex || lastIndex ?
                         indx == 0 ?
-                        Text("""
+                        AnyView(Text("""
                              AND
                              \(keyTitle)
-                             """)
+                             """))
                         :
                         andCount - 1 == indx ?
-                        Text("\(keyTitle)")
-                        : Text("\(keyTitle),")
-                    : Text("")
+                        AnyView(Text("\(keyTitle)"))
+                        : AnyView(Text("\(keyTitle),"))
+                    : AnyView(EmptyView())
                        
                     }
     }
@@ -63,9 +63,8 @@ struct CloudView: View {
     var stratView: some View {
         return ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
         Section {
-         VStack {
          ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
-                        
+             
             let condition = viewModel.retrievals[index].conditions[idx]
             let keyTitle = InputViewModel.keyTitle(condition: condition)
                         
@@ -79,9 +78,6 @@ struct CloudView: View {
             : Text("Exit when \(keyTitle)")
             
             footer(index: index, idx: idx)
-             
-                        
-                    }
                 }
             }
         header: {

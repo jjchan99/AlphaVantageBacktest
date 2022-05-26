@@ -43,19 +43,21 @@ struct CloudView: View {
                     let keyTitle = InputViewModel.keyTitle(condition: andCond)
                     let lastIndex: Bool = idx == viewModel.retrievals[index].conditions.count - 1
                     let lastEntryIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .enter && viewModel.retrievals[index].conditions[idx + 1].enterOrExit == .exit
-                        let andCount = viewModel.retrievals[index].conditions[idx].andCondition.count
+                    let andCount = viewModel.retrievals[index].conditions[idx].andCondition.count
                     
                     lastEntryIndex || lastIndex ?
-                        indx == 0 ?
-                        AnyView(Text("""
-                             AND
-                             \(keyTitle)
-                             """))
-                        :
-                        andCount - 1 == indx ?
-                        AnyView(Text("\(keyTitle)"))
-                        : AnyView(Text("\(keyTitle),"))
+                        AnyView(
+                            Text("AND all conditions met:")
+                        )
+                        : AnyView(EmptyView())
+                        
+                    lastEntryIndex || lastIndex ?
+                        AnyView(
+                           Text(keyTitle)
+                        )
                     : AnyView(EmptyView())
+                            
+                        
                        
                     }
     }
@@ -65,17 +67,22 @@ struct CloudView: View {
         Section {
          ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
              
+             let firstExitIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .exit &&
+             viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .enter
+             
+             
+            idx == 0 ?
+            AnyView(Text("Enter under one of the following:"))
+             :
+             firstExitIndex ?
+             AnyView(Text("Exit under one of the following:"))
+             : AnyView(EmptyView())
+             
+             
             let condition = viewModel.retrievals[index].conditions[idx]
             let keyTitle = InputViewModel.keyTitle(condition: condition)
                         
-            condition.enterOrExit == .enter ?
-                idx == 0 ?
-                Text("Enter when \(keyTitle)")
-                : Text("or \(keyTitle)")
-            :
-            viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .exit ?
-            Text("or \(keyTitle)")
-            : Text("Exit when \(keyTitle)")
+            Text(keyTitle)
             
             footer(index: index, idx: idx)
                 }

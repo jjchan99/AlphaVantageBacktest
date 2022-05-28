@@ -415,6 +415,15 @@ class HP: IdxPathState {
     
     func restoreInputs() {
         let dict = context.getDict()
+        
+        if let cond = dict["HP"] {
+            switch cond.technicalIndicator {
+            case .holdingPeriod(value: let days):
+                context.inputState.set( stepperValue: days)
+            default:
+                return
+            }
+        }
     }
     
     func setContext(context: InputViewModel) {

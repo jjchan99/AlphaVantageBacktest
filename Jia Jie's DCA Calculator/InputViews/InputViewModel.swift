@@ -21,11 +21,12 @@ class InputViewModel: ObservableObject {
     
     @Published var inputState = InputState()
     
-    var indexPathState: IdxPathState! {
+    private(set) var indexPathState: IdxPathState! {
         didSet {
             print("indexPathState changed to \(indexPathState)")
         }
     }
+    
     @Published var validationState = ValidationState()
     
     private func transitionState(state: IdxPathState) {

@@ -21,7 +21,12 @@ class InputViewModel: ObservableObject {
     
     @Published var inputState = InputState()
     
-    var indexPathState: IdxPathState!
+    private(set) var indexPathState: IdxPathState! {
+        didSet {
+            print("indexPathState changed to \(indexPathState)")
+        }
+    }
+    
     @Published var validationState = ValidationState()
     
     private func transitionState(state: IdxPathState) {
@@ -84,7 +89,6 @@ class InputViewModel: ObservableObject {
     
     //MARK: - INDEXPATH OPERATIONS
     func updateValidationState() {
-       let condition = indexPathState.getCondition()
        let validation = indexPathState.validate()
        switch validation {
        case .success:
@@ -104,10 +108,7 @@ class InputViewModel: ObservableObject {
         
     }
     
-    func compileConditions() -> TradeBot {
-        //RESET
-        factory = BotFactory()
-        
+    func compileConditions() {
         for (_ , conditions) in repo.entryOr {
             var copy = conditions
             for (_, andCondition) in repo.entryAnd {
@@ -117,7 +118,6 @@ class InputViewModel: ObservableObject {
             
         factory = factory
             .addCondition(copy)
-            
     }
         
         for (_ , conditions) in repo.exitOr {
@@ -129,17 +129,22 @@ class InputViewModel: ObservableObject {
                     .addCondition(copy)
         }
     }
-        return factory.build()
     }
     
     func build(completion: @escaping () -> Void) {
-        let tb = compileConditions()
+        compileConditions()
+        let tb = factory
+                    .build()
         if tb.conditions.count == 0 {
             fatalError()
         }
         BotAccountCoordinator.upload(tb: tb) {
             completion()
         }
+        //RESET CONDITIONS
+        factory = factory
+                    .resetConditions()
+                    .resetHoldingPeriod()
     }
     
     func resetInputs() {

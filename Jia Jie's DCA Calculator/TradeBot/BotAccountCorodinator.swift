@@ -26,7 +26,7 @@ class BotAccountCoordinator {
         
         let conditionY: EvaluationCondition = .init(technicalIndicator: .RSI(period: 14, value: 0.5), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [BotFactory.copyCondition(exitTrigger)])!
 //
-        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 50), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [])!
+        let conditionX: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 50), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [BotFactory.copyCondition(exitTrigger)])!
         
         let condition0: EvaluationCondition = .init(technicalIndicator: .movingAverage(period: 200), aboveOrBelow: .priceBelow, enterOrExit: .enter, andCondition: [exitTrigger])!
 //
@@ -211,11 +211,11 @@ Condition: \(condition). And condition: \(condition.andCondition)
 }
 
 class BotFactory {
-    var budget: Double = 0
-    var cashBuyPercentage: Double = 0
-    var sharesSellPercentage: Double = 0
-    var evaluationConditions: [EvaluationCondition] = []
-    var holdingPeriod: Int?
+    private(set) var budget: Double = 0
+    private(set) var cashBuyPercentage: Double = 0
+    private(set) var sharesSellPercentage: Double = 0
+    private(set) var evaluationConditions: [EvaluationCondition] = []
+    private(set) var holdingPeriod: Int?
     
     func setBudget(_ value: Double) -> BotFactory {
         self.budget = value
@@ -250,6 +250,16 @@ class BotFactory {
     func build() -> TradeBot {
         let bot = TradeBot(account: .init(budget: budget, cash: budget, accumulatedShares: 0), conditions: evaluationConditions, holdingPeriod: holdingPeriod)
         return bot!
+    }
+    
+    func resetConditions() -> BotFactory {
+        self.evaluationConditions.removeAll()
+        return self
+    }
+    
+    func resetHoldingPeriod() -> BotFactory {
+        self.holdingPeriod = nil
+        return self 
     }
     
     static func copyCondition(_ e: EvaluationCondition) -> EvaluationCondition {

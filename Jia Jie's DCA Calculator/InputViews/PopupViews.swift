@@ -90,7 +90,12 @@ struct PopupView: View {
             if entryForm {
                 vm.resetInputs()
             }
+            if vm.indexPathState as? MA != nil || vm.indexPathState as? MACrossover != nil {
             vm.selectedTabIndex = 0
+            }
+        }
+        .onAppear {
+           
         }
     }
 }

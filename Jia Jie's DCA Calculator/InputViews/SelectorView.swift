@@ -25,6 +25,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[0].count : 0..<vm.exitTitleFrame[0].count, id: \.self) { idx in
                 Button() {
                     vm.transitionState(key: vm.keysAtSection0[idx])
+                    vm.updateValidationState()
                     isPresented = true
                 } label: {
                 HStack {
@@ -52,6 +53,7 @@ struct SelectorView: View {
             List(vm.entry ? 0..<vm.entryTitleFrame[1].count : 0..<vm.exitTitleFrame[1].count, id: \.self) { idx in
                 Button() {
                     vm.transitionState(key: vm.keysAtSection1[idx])
+                    vm.updateValidationState()
                     isPresented = true
                 } label: {
                 HStack {

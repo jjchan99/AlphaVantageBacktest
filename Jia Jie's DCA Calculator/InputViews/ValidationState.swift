@@ -20,7 +20,11 @@ class ValidationState: ObservableObject {
         }
     }
     
-    private(set) var validationState: Bool = true
+    private(set) var validationState: Bool = true {
+        didSet {
+            print("validation state changed to \(validationState)")
+        }
+    }
     
     private(set)var validationMessage: String = ""
     

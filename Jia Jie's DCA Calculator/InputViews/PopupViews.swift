@@ -94,6 +94,9 @@ struct PopupView: View {
             vm.selectedTabIndex = 0
             }
         }
+        .onAppear {
+           
+        }
     }
 }
 

@@ -19,7 +19,7 @@ fileprivate func sort(for tb: TradeBot) -> TradeBot {
 
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
-    @Published var retrievals: [TradeBot] = [sort(for: BotAccountCoordinator.specimen())]
+    @Published var retrievals: [TradeBot] = []
 //    {
 //        didSet {
 //            if retrievals.count > oldValue.count {
@@ -110,6 +110,9 @@ struct CloudView: View {
             
                             } receiveValue: { tb in
                                 viewModel.retrievals.removeAll()
+                                let tb = tb.map { each in
+                                    sort(for: each)
+                                }
                                 viewModel.retrievals.append(contentsOf: tb)
                             }
                             .store(in: &viewModel.subscribers)

@@ -63,7 +63,7 @@ struct CloudView: View {
     }
     
     var stratView: some View {
-        return ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
+        ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
         Section {
          ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
              
@@ -88,14 +88,32 @@ struct CloudView: View {
                 }
             }
         header: {
+            HStack {
             Text("Strategy \(index + 1)")
+                Spacer()
+                Button {
+                    BotAccountCoordinator.delete(tb: viewModel.retrievals[index]) {
+                        
+                    }
+                    viewModel.retrievals.remove(at: index)
+                } label: {
+                    HStack {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.red)
+                    Text("Delete")
+                        .foregroundColor(.red)
+                    }
+                }
+
+            }
         }
         }
+        
     }
     
     var body: some View {
                 NavigationView {
-                Form {
+                    List {
                      stratView
                     }
                 }

@@ -65,7 +65,7 @@ struct CloudView: View {
     var stratView: some View {
         ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
         Section {
-         ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
+            ForEach(0..<viewModel.retrievals[index].conditions.count, id: \.self) { idx in
              
              let firstExitIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .exit &&
              viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .enter

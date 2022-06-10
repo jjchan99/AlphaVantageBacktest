@@ -93,9 +93,8 @@ struct CloudView: View {
                 Spacer()
                 Button {
                     BotAccountCoordinator.delete(tb: viewModel.retrievals[index]) {
-                        
+                        viewModel.retrievals.remove(at: index)
                     }
-                    viewModel.retrievals.remove(at: index)
                 } label: {
                     HStack {
                         Image(systemName: "minus.circle.fill")

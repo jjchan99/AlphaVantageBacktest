@@ -125,9 +125,9 @@ class InputViewModel: ObservableObject {
             for (_, andCondition) in repo.exitAnd {
                 //DO SOMETHING ABOUT IT
                 copy.andCondition.append(andCondition)
-                factory = factory
-                    .addCondition(copy)
         }
+            factory = factory
+                .addCondition(copy)
     }
     }
     

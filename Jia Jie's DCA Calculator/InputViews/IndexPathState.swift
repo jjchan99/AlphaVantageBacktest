@@ -14,6 +14,8 @@ protocol IdxPathState: AnyObject {
     func sectionBottomHalfHeader() -> AnyView
     func body() -> AnyView
     func validate() -> Result<Bool, Error>
+    func actionOnSet()
+    var context: InputViewModel! { get }
     var title: String { get }
     var frame: CGRect { get }
 }
@@ -22,9 +24,17 @@ extension IdxPathState {
     func validate() -> Result<Bool, Error> {
         return .success(true)
     }
+    
+    func actionOnSet() {
+        let condition = getCondition()
+        let dict = context.repo.getDict(index: context.entry ? context.selectedDictIndex : context.selectedDictIndex + 2)
+        let action = context.repo.getAction(dict: dict)
+        action(condition)
+    }
 }
 
 class MA: IdxPathState {
+    
     private(set) weak var context: InputViewModel!
     
     func setContext(context: InputViewModel) {

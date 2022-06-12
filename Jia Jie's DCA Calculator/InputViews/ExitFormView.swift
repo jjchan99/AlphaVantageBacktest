@@ -113,6 +113,7 @@ struct ExitFormView: View {
                     } header: {
                         Button {
                             vm.transitionState(key: "HP")
+                            vm.updateValidationState()
                             section3active.toggle()
                         } label: {
                             HStack {

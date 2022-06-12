@@ -99,14 +99,14 @@ class InputViewModel: ObservableObject {
        }
     }
     
-    func actionOnSet() {
-       
-        let condition = indexPathState.getCondition()
-        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-        let action = repo.getAction(dict: dict)
-        action(condition)
-        
-    }
+//    func actionOnSet() {
+//       
+//        let condition = indexPathState.getCondition()
+//        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+//        let action = repo.getAction(dict: dict)
+//        action(condition)
+//        
+//    }
     
     func compileConditions() {
         for (_ , conditions) in repo.entryOr {

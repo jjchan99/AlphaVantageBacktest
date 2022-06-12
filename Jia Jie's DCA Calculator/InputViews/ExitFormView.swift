@@ -110,6 +110,7 @@ struct ExitFormView: View {
                     
                     Section {
                         if let condition = vm.repo.holdingPeriod {
+                            ForEach(0..<1) { _ in
                             HStack {
                             Text("Close trade \(vm.factory.holdingPeriod!) days after entry trigger")
                                 .font(.caption)
@@ -121,6 +122,10 @@ struct ExitFormView: View {
                                 } label: {
                                     Text("Edit")
                                 }
+                            }
+                            }
+                            .onDelete { _ in
+                                
                             }
                         }
                     } header: {

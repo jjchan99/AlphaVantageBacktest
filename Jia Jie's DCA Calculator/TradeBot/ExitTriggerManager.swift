@@ -8,8 +8,7 @@
 import Foundation
 import Combine
 
-struct ExitTriggerManager {
-    static var subs = Set<AnyCancellable>()
+struct HoldingPeriodManager {
     
     static func orUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
         var copy = tb.conditions
@@ -35,44 +34,6 @@ struct ExitTriggerManager {
                     break
                 }
             }
-        return copy
-    }
-    
-    static func resetAndExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
-        var copy = tb.conditions
-     
-        for (outerIndex, conditions) in tb.conditions.enumerated() {
-            guard conditions.enterOrExit == .exit else { continue }
-            for (index, andConditions) in conditions.andCondition.enumerated() {
-                switch andConditions.technicalIndicator {
-                case .holdingPeriod:
-                    copy[outerIndex].andCondition[index].technicalIndicator = .holdingPeriod(value: 99999999)
-                default:
-                    break
-            }
-            }
-        }
-      
-        return copy
-    }
-    
-    
-    static func andUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
-        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.holdingPeriod!))
-        let dateString = DateManager.string(fromDate: date)
-        let withoutNoise = DateManager.removeNoise(fromString: dateString)
-     
-        var copy = tb.conditions
-        
-        for (outerIndex, conditions) in tb.conditions.enumerated() {
-            guard conditions.enterOrExit == .exit else { continue }
-//            conditions.andCondition.append(exitTrigger)
-            for (index, andConditions) in conditions.andCondition.enumerated() where andConditions.technicalIndicator == .holdingPeriod(value: 99999999) {
-        
-                copy[outerIndex].andCondition[index].technicalIndicator = .holdingPeriod(value: Int(withoutNoise)!)
-            }
-        }
-        
         return copy
     }
     

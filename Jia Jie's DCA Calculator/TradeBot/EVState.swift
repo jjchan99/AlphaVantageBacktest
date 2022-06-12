@@ -264,24 +264,20 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
     func hook() {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
-            case holdingPeriod where holdingPeriod! >= 0:
-            context.tb.conditions = ExitTriggerManager.orUpload(tb: context.tb, context: context)
-            case holdingPeriod where holdingPeriod! < 0:
-            context.tb.conditions = ExitTriggerManager.andUpload(tb: context.tb, context: context)
-            default:
-              break
+        case .some:
+            context.tb.conditions = HoldingPeriodManager.orUpload(tb: context.tb, context: context)
+        case .none:
+             fatalError()
         }
     }
     
     func hook2() {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
-            case holdingPeriod where holdingPeriod! >= 0:
-            context.tb.conditions = ExitTriggerManager.resetOrExitTrigger(tb: context.tb)
-            case holdingPeriod where holdingPeriod! < 0:
-            context.tb.conditions = ExitTriggerManager.resetAndExitTrigger(tb: context.tb)
-            default:
-              break
+        case .some:
+            context.tb.conditions = HoldingPeriodManager.resetOrExitTrigger(tb: context.tb)
+        case .none:
+            fatalError()
         }
     }
 }

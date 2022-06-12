@@ -109,9 +109,19 @@ struct ExitFormView: View {
                     }
                     
                     Section {
-                        if vm.repo.holdingPeriod != nil {
+                        if let condition = vm.repo.holdingPeriod {
+                            HStack {
                             Text("Close trade \(vm.factory.holdingPeriod!) days after entry trigger")
                                 .font(.caption)
+                            Spacer()
+                                Button {
+                                    vm.transitionState(condition: condition)
+                                    vm.restoreInputs()
+                                    isPresented = true
+                                } label: {
+                                    Text("Edit")
+                                }
+                            }
                         }
                     } header: {
                         Button {

@@ -58,7 +58,7 @@
 		1D7927AA275B516D00DD2E6B /* OHLCCloudElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */; };
 		1D79C48727884ACF00DC17CD /* InputState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48627884ACF00DC17CD /* InputState.swift */; };
 		1D79C48B27884BA600DC17CD /* ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48A27884BA600DC17CD /* ValidationState.swift */; };
-		1D79C48D27889C4700DC17CD /* TransitionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48C27889C4700DC17CD /* TransitionState.swift */; };
+		1D79C48D27889C4700DC17CD /* IndexPathState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D79C48C27889C4700DC17CD /* IndexPathState.swift */; };
 		1D7AA68227907347008D3402 /* TBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7AA68127907347008D3402 /* TBTests.swift */; };
 		1D8021D226FF026D0004F668 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */; };
 		1D8021D426FF038A0004F668 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8021D326FF038A0004F668 /* NavigationCoordinator.swift */; };
@@ -185,7 +185,7 @@
 		1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHLCCloudElement.swift; sourceTree = "<group>"; };
 		1D79C48627884ACF00DC17CD /* InputState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputState.swift; sourceTree = "<group>"; };
 		1D79C48A27884BA600DC17CD /* ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationState.swift; sourceTree = "<group>"; };
-		1D79C48C27889C4700DC17CD /* TransitionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionState.swift; sourceTree = "<group>"; };
+		1D79C48C27889C4700DC17CD /* IndexPathState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPathState.swift; sourceTree = "<group>"; };
 		1D7AA68027907346008D3402 /* Jia Jie's DCA CalculatorTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Jia Jie's DCA CalculatorTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		1D7AA68127907347008D3402 /* TBTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBTests.swift; sourceTree = "<group>"; };
 		1D8021D126FF026D0004F668 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
@@ -498,7 +498,7 @@
 			isa = PBXGroup;
 			children = (
 				1D351A75277CD1020089E9F2 /* InputViewModel.swift */,
-				1D79C48C27889C4700DC17CD /* TransitionState.swift */,
+				1D79C48C27889C4700DC17CD /* IndexPathState.swift */,
 				1D79C48A27884BA600DC17CD /* ValidationState.swift */,
 				1D79C48627884ACF00DC17CD /* InputState.swift */,
 				1D351A73277C9D280089E9F2 /* InputRepository.swift */,
@@ -724,7 +724,7 @@
 				1DA32BF32756659500055702 /* BollingerBandsModel.swift in Sources */,
 				1D9A3BC2277B3F2800FDEA24 /* SelectorView.swift in Sources */,
 				1D9CF74C2745784A00D33DB8 /* SingleCandleView.swift in Sources */,
-				1D79C48D27889C4700DC17CD /* TransitionState.swift in Sources */,
+				1D79C48D27889C4700DC17CD /* IndexPathState.swift in Sources */,
 				1D12102D2736F98100B58B67 /* FinancialsViewModel.swift in Sources */,
 				1DF7941E28109DAE00EA3194 /* BuildView.swift in Sources */,
 				1DB5413626F1E857001FBC77 /* DCAResultModel.swift in Sources */,

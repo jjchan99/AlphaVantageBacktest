@@ -109,7 +109,11 @@ struct ExitFormView: View {
                     }
                     
                     Section {
-                       
+                        if let con = vm.repo.holdingPeriod {
+                            let keyTitle = InputViewModel.keyTitle(condition: con)
+                            Text(keyTitle)
+                                .font(.caption)
+                        }
                     } header: {
                         Button {
                             vm.transitionState(key: "HP")

@@ -420,7 +420,6 @@ class HP: IdxPathState {
     private(set) weak var context: InputViewModel!
     
     func getCondition() -> EvaluationCondition {
-        context.factory.setholdingPeriod(afterDays: context.inputState.stepperValue)
         return EvaluationCondition(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
     }
     
@@ -468,6 +467,11 @@ class HP: IdxPathState {
         Text("Enter number of days")
     }
         }
+    }
+    
+    func actionOnSet() {
+        context.factory = context.factory.setholdingPeriod(afterDays: context.inputState.stepperValue)
+        context.repo.holdingPeriod = getCondition()
     }
     
     var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.65, width: Dimensions.width, height: Dimensions.height * 0.35)

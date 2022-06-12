@@ -109,9 +109,8 @@ struct ExitFormView: View {
                     }
                     
                     Section {
-                        if let con = vm.repo.holdingPeriod {
-                            let keyTitle = InputViewModel.keyTitle(condition: con)
-                            Text(keyTitle)
+                        if vm.repo.holdingPeriod != nil {
+                            Text("Close trade \(vm.factory.holdingPeriod!) days after entry trigger")
                                 .font(.caption)
                         }
                     } header: {

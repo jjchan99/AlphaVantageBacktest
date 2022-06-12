@@ -14,6 +14,8 @@ protocol IdxPathState: AnyObject {
     func sectionBottomHalfHeader() -> AnyView
     func body() -> AnyView
     func validate() -> Result<Bool, Error>
+    func actionOnSet()
+    var context: InputViewModel! { get }
     var title: String { get }
     var frame: CGRect { get }
 }
@@ -22,9 +24,17 @@ extension IdxPathState {
     func validate() -> Result<Bool, Error> {
         return .success(true)
     }
+    
+    func actionOnSet() {
+        let condition = getCondition()
+        let dict = context.repo.getDict(index: context.entry ? context.selectedDictIndex : context.selectedDictIndex + 2)
+        let action = context.repo.getAction(dict: dict)
+        action(condition)
+    }
 }
 
 class MA: IdxPathState {
+    
     private(set) weak var context: InputViewModel!
     
     func setContext(context: InputViewModel) {
@@ -410,20 +420,12 @@ class HP: IdxPathState {
     private(set) weak var context: InputViewModel!
     
     func getCondition() -> EvaluationCondition {
-        context.factory.setholdingPeriod(afterDays: context.inputState.stepperValue)
         return EvaluationCondition(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .exit, andCondition: [])!
     }
     
     func restoreInputs() {
-        let dict = context.getDict()
-        
-        if let cond = dict["HP"] {
-            switch cond.technicalIndicator {
-            case .holdingPeriod(value: let days):
-                context.inputState.set( stepperValue: days)
-            default:
-                return
-            }
+        if let days = context.factory.holdingPeriod {
+            context.inputState.set( stepperValue: days)
         }
     }
     
@@ -458,6 +460,11 @@ class HP: IdxPathState {
         Text("Enter number of days")
     }
         }
+    }
+    
+    func actionOnSet() {
+        context.factory = context.factory.setholdingPeriod(afterDays: context.inputState.stepperValue)
+        context.repo.holdingPeriod = getCondition()
     }
     
     var frame: CGRect = CGRect(x: 0, y: Dimensions.height * 0.65, width: Dimensions.width, height: Dimensions.height * 0.35)

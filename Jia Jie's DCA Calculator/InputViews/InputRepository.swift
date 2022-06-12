@@ -25,6 +25,8 @@ class InputRepository: ObservableObject {
         print("3: \(exitOr)")
     }}
     
+    @Published var holdingPeriod: EvaluationCondition?
+    
     func getKey(for condition: EvaluationCondition) -> String {
         switch condition.technicalIndicator {
         case .movingAverage:

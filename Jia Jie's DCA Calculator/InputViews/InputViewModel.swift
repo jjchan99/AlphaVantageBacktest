@@ -64,11 +64,11 @@ class InputViewModel: ObservableObject {
     
     let titles: [String] = ["Moving Average", "Bollinger Bands®" , "Relative Strength Index"]
     let keysAtSection0: [String] = ["MA", "BB" , "RSI"]
-    let keysAtSection1: [String] = ["PT", "LT" , "HP"]
+    let keysAtSection1: [String] = ["PT", "LT"]
     let description: [String] = ["The stock's captured average change over a specified window", "The stock's upper and lower deviations", "Signals about bullish and bearish price momentum"]
     
-    let titlesSection2: [String] = ["Profit Target", "Loss Limit", "Define holding period"]
-    let descriptionSection2: [String] = ["Based on your account's net worth less invested funds", "Based on your account's net worth less invested funds", "Number of days to close a position when entry is triggered"]
+    let titlesSection2: [String] = ["Profit Target", "Loss Limit"]
+    let descriptionSection2: [String] = ["Based on your account's net worth less invested funds", "Based on your account's net worth less invested funds"]
     
     var entryTitleFrame: [[String]] {
         return [titles, []]
@@ -99,14 +99,14 @@ class InputViewModel: ObservableObject {
        }
     }
     
-    func actionOnSet() {
-       
-        let condition = indexPathState.getCondition()
-        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-        let action = repo.getAction(dict: dict)
-        action(condition)
-        
-    }
+//    func actionOnSet() {
+//       
+//        let condition = indexPathState.getCondition()
+//        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
+//        let action = repo.getAction(dict: dict)
+//        action(condition)
+//        
+//    }
     
     func compileConditions() {
         for (_ , conditions) in repo.entryOr {
@@ -125,9 +125,9 @@ class InputViewModel: ObservableObject {
             for (_, andCondition) in repo.exitAnd {
                 //DO SOMETHING ABOUT IT
                 copy.andCondition.append(andCondition)
-                factory = factory
-                    .addCondition(copy)
         }
+            factory = factory
+                .addCondition(copy)
     }
     }
     

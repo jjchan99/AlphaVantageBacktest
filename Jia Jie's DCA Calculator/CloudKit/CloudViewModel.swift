@@ -19,7 +19,7 @@ fileprivate func sort(for tb: TradeBot) -> TradeBot {
 
 class CloudViewModel: ObservableObject {
     var subscribers = Set<AnyCancellable>()
-    @Published var retrievals: [TradeBot] = [sort(for: BotAccountCoordinator.specimen())]
+    @Published var retrievals: [TradeBot] = []
 //    {
 //        didSet {
 //            if retrievals.count > oldValue.count {
@@ -63,9 +63,9 @@ struct CloudView: View {
     }
     
     var stratView: some View {
-        return ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
+        ForEach(0..<viewModel.retrievals.count, id: \.self) { index in
         Section {
-         ForEach(0..<viewModel.retrievals[index].conditions.count) { idx in
+            ForEach(0..<viewModel.retrievals[index].conditions.count, id: \.self) { idx in
              
              let firstExitIndex: Bool = viewModel.retrievals[index].conditions[idx].enterOrExit == .exit &&
              viewModel.retrievals[index].conditions[idx - 1].enterOrExit == .enter
@@ -88,14 +88,31 @@ struct CloudView: View {
                 }
             }
         header: {
+            HStack {
             Text("Strategy \(index + 1)")
+                Spacer()
+                Button {
+                    BotAccountCoordinator.delete(tb: viewModel.retrievals[index]) {
+                        viewModel.retrievals.remove(at: index)
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.red)
+                    Text("Delete")
+                        .foregroundColor(.red)
+                    }
+                }
+
+            }
         }
         }
+        
     }
     
     var body: some View {
                 NavigationView {
-                Form {
+                    List {
                      stratView
                     }
                 }
@@ -110,6 +127,9 @@ struct CloudView: View {
             
                             } receiveValue: { tb in
                                 viewModel.retrievals.removeAll()
+                                let tb = tb.map { each in
+                                    sort(for: each)
+                                }
                                 viewModel.retrievals.append(contentsOf: tb)
                             }
                             .store(in: &viewModel.subscribers)

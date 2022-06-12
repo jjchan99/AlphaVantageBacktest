@@ -17,6 +17,8 @@ struct ExitFormView: View {
     
     @State var section2active : Bool = false
     
+    @State var section3active : Bool = false
+    
     func delete2(at offsets: IndexSet){
         if let ndx = offsets.first {
             let item = vm.repo.exitOr.sorted(by: >)[ndx]
@@ -107,6 +109,39 @@ struct ExitFormView: View {
                     }
                     
                     Section {
+                        if let condition = vm.repo.holdingPeriod {
+                            ForEach(0..<1) { _ in
+                            HStack {
+                            Text("Close trade \(vm.factory.holdingPeriod!) days after entry trigger")
+                                .font(.caption)
+                            Spacer()
+                                Button {
+                                    vm.transitionState(condition: condition)
+                                    vm.restoreInputs()
+                                    isPresented = true
+                                } label: {
+                                    Text("Edit")
+                                }
+                            }
+                            }
+                            .onDelete { _ in
+                                
+                            }
+                        }
+                    } header: {
+                        Button {
+                            vm.transitionState(key: "HP")
+                            vm.updateValidationState()
+                            section3active.toggle()
+                        } label: {
+                            HStack {
+                            Image(systemName: "plus")
+                            Text("Set holding period")
+                            }
+                        }
+                    }
+                    
+                    Section {
                         NavigationLink {
                           BuildView()
                                 .environmentObject(vm)
@@ -128,6 +163,10 @@ struct ExitFormView: View {
             .customSheet(isPresented: $isPresented, frame: vm.frame) {
                             PopupView(shouldPopToRootView: $isActive, entryForm: false)
                                 .environmentObject(vm)
+            }
+            .customSheet(isPresented: $section3active, frame: vm.frame) {
+                PopupView(shouldPopToRootView: $isActive, entryForm: true)
+                    .environmentObject(vm)
             }
      
     }

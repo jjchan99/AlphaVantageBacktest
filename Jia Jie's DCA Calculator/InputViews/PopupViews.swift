@@ -52,7 +52,7 @@ struct PopupView: View {
             }
             .buttonStyle(.borderedProminent)
         Button("Set") {
-            vm.actionOnSet()
+            vm.indexPathState.actionOnSet()
             self.presentationMode.wrappedValue.dismiss()
             self.shouldPopToRootView = false
         }

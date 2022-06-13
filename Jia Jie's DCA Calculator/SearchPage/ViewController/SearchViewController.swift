@@ -44,7 +44,7 @@ class SearchViewController: UITableViewController {
         subscribeToSearchBarPublisher()
         overrideUserInterfaceStyle = .light
         
-        navigationItem.title = "DCA Calculator"
+        navigationItem.title = "Search the market"
         let backBarButtton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtton
         

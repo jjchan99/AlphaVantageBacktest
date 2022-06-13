@@ -14,6 +14,7 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
+    var factoryReset: (() -> Void)?
     @Published var frame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
     
     //MARK: - STATE CONTAINERS
@@ -99,15 +100,6 @@ class InputViewModel: ObservableObject {
        }
     }
     
-//    func actionOnSet() {
-//       
-//        let condition = indexPathState.getCondition()
-//        let dict = repo.getDict(index: entry ? selectedDictIndex : selectedDictIndex + 2)
-//        let action = repo.getAction(dict: dict)
-//        action(condition)
-//        
-//    }
-    
     func compileConditions() {
         for (_ , conditions) in repo.entryOr {
             var copy = conditions
@@ -129,6 +121,11 @@ class InputViewModel: ObservableObject {
             factory = factory
                 .addCondition(copy)
     }
+        
+        if let hpCondition = repo.holdingPeriod {
+        factory = factory
+            .addCondition(hpCondition)
+        }
     }
     
     func build(completion: @escaping () -> Void) {
@@ -141,10 +138,11 @@ class InputViewModel: ObservableObject {
         BotAccountCoordinator.upload(tb: tb) {
             completion()
         }
-        //RESET CONDITIONS
-        factory = factory
-                    .resetConditions()
-                    .resetHoldingPeriod()
+        //RESET CONDITIONS why not just re initizialize the vm?
+//        factory = factory
+//                    .resetConditions()
+//                    .resetHoldingPeriod()
+    factoryReset!()
     }
     
     func resetInputs() {

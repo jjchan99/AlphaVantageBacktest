@@ -9,7 +9,11 @@ import SwiftUI
 
 struct BuildView: View {
     @EnvironmentObject var vm: InputViewModel
+    @Binding var factoryReset: Bool
     
+    init(factoryReset: Binding<Bool>) {
+        self._factoryReset = factoryReset
+    }
     var body: some View {
         VStack {
             Section {
@@ -22,8 +26,6 @@ struct BuildView: View {
                     Text("Entry OR conditions")
                 }
             }
-            
-           
             
             Section {
             ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
@@ -62,6 +64,7 @@ struct BuildView: View {
             Button {
                 vm.build {
                     Log.queue(action: "Upload success")
+                    self.factoryReset = false
                 }
             } label: {
                 Text("Build")

@@ -14,6 +14,11 @@ struct ExitFormView: View {
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
+    @Binding var factoryReset: Bool
+    
+    init(factoryReset: Binding<Bool>) {
+        self._factoryReset = factoryReset
+    }
     
     @State var section2active : Bool = false
     
@@ -125,7 +130,8 @@ struct ExitFormView: View {
                             }
                             }
                             .onDelete { _ in
-                                
+                                vm.repo.holdingPeriod = nil
+                                vm.factory = vm.factory.resetHoldingPeriod()
                             }
                         }
                     } header: {
@@ -143,13 +149,15 @@ struct ExitFormView: View {
                     
                     Section {
                         NavigationLink {
-                          BuildView()
+                            BuildView(factoryReset: $factoryReset)
                                 .environmentObject(vm)
                         } label: {
                          Text("Review and Build")
                         }
                     }
-
+                    .disabled(
+                        vm.repo.entryOr.isEmpty || ( vm.repo.exitOr.isEmpty && vm.repo.holdingPeriod == nil )
+                    )
                 }
             .navigationTitle("Exit strategy")
             .toolbar {

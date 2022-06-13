@@ -15,7 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let tabBarController = TabViewController()
     let navController = UINavigationController()
     var navCoordinator: NavigationCoordinator?
-    var viewModel = InputViewModel()
+    var viewModel = InputViewModel() { didSet {
+        print("Scene Delegate Altered")
+    }}
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -30,6 +32,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         viewModel.inputState.inputStateDidChange = { [unowned self] in
             self.viewModel.updateValidationState()
         }
+        
+        
+        //DRAFT - NEEDS WORK 
+        viewModel.factoryReset = { [unowned self] in
+            self.viewModel = InputViewModel()
+            self.viewModel.inputState.inputStateDidChange = { [unowned self] in
+                self.viewModel.updateValidationState()
+            }
+            let vc = tabBarController.viewControllers![2] as? UIHostingController<AnyView>
+            vc!.rootView =  AnyView(InputFormView()
+                .environmentObject(viewModel)
+                .environmentObject(viewModel.repo)
+                                    )
+        }
+        
         let inputViewController = UIHostingController(rootView: AnyView(
             InputFormView()
                 .environmentObject(viewModel)

@@ -14,6 +14,11 @@ struct ExitFormView: View {
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
+    @Binding var factoryReset: Bool
+    
+    init(factoryReset: Binding<Bool>) {
+        self._factoryReset = factoryReset
+    }
     
     @State var section2active : Bool = false
     
@@ -144,7 +149,7 @@ struct ExitFormView: View {
                     
                     Section {
                         NavigationLink {
-                          BuildView()
+                            BuildView(factoryReset: $factoryReset)
                                 .environmentObject(vm)
                         } label: {
                          Text("Review and Build")

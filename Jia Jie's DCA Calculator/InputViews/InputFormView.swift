@@ -11,6 +11,7 @@ import SwiftUI
 struct InputFormView: View {
     @EnvironmentObject var vm: InputViewModel
     @EnvironmentObject var repo: InputRepository
+    @State var factoryReset: Bool = false
     
     @State private var isPresented: Bool = false
     @State var long: Bool = true
@@ -116,13 +117,14 @@ struct InputFormView: View {
                     }
                     
                     Section {
-                        NavigationLink {
-                         ExitFormView()
+                        NavigationLink(isActive: $factoryReset) {
+                            ExitFormView(factoryReset: $factoryReset)
                                 .environmentObject(vm)
                                 .environmentObject(vm.repo)
                         } label: {
                          Text("Proceed to exit strategy")
                         }
+                        .isDetailLink(false)
                     }
                     .disabled(vm.repo.entryOr.isEmpty
                               && vm.repo.entryAnd.isEmpty

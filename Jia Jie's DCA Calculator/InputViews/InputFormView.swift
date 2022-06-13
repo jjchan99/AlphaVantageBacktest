@@ -124,7 +124,12 @@ struct InputFormView: View {
                          Text("Proceed to exit strategy")
                         }
                     }
-                    .disabled(vm.repo.entryOr.isEmpty && vm.repo.entryAnd.isEmpty)
+                    .disabled(vm.repo.entryOr.isEmpty
+                              && vm.repo.entryAnd.isEmpty
+                              && vm.repo.exitAnd.isEmpty
+                              && vm.repo.exitOr.isEmpty
+                              && vm.repo.holdingPeriod == nil
+                    )
                     
                 }
             .navigationTitle("Entry strategy")

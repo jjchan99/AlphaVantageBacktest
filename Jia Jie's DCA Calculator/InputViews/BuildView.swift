@@ -23,8 +23,6 @@ struct BuildView: View {
                 }
             }
             
-           
-            
             Section {
             ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                 Text(InputViewModel.keyTitle(condition: condition))

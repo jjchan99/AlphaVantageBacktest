@@ -125,7 +125,8 @@ struct ExitFormView: View {
                             }
                             }
                             .onDelete { _ in
-                                
+                                vm.repo.holdingPeriod = nil
+                                vm.factory = vm.factory.resetHoldingPeriod()
                             }
                         }
                     } header: {
@@ -149,7 +150,9 @@ struct ExitFormView: View {
                          Text("Review and Build")
                         }
                     }
-
+                    .disabled(
+                        vm.repo.entryOr.isEmpty || ( vm.repo.exitOr.isEmpty && vm.repo.holdingPeriod == nil )
+                    )
                 }
             .navigationTitle("Exit strategy")
             .toolbar {

@@ -129,6 +129,11 @@ class InputViewModel: ObservableObject {
             factory = factory
                 .addCondition(copy)
     }
+        
+        if let hpCondition = repo.holdingPeriod {
+        factory = factory
+            .addCondition(hpCondition)
+        }
     }
     
     func build(completion: @escaping () -> Void) {

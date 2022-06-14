@@ -18,6 +18,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var viewModel = InputViewModel() { didSet {
         print("Scene Delegate Altered")
     }}
+    
+    lazy var factoryReset: () -> Void = { [unowned self] in
+        self.viewModel = InputViewModel()
+        self.viewModel.inputState.inputStateDidChange = { [unowned self] in
+            self.viewModel.updateValidationState()
+        }
+        let vc = tabBarController.viewControllers![2] as? UIHostingController<AnyView>
+        vc!.rootView =  AnyView(InputFormView()
+            .environmentObject(viewModel)
+            .environmentObject(viewModel.repo)
+                                )
+        self.viewModel.factoryReset = self.factoryReset
+    }
+    
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -35,17 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         //DRAFT - NEEDS WORK 
-        viewModel.factoryReset = { [unowned self] in
-            self.viewModel = InputViewModel()
-            self.viewModel.inputState.inputStateDidChange = { [unowned self] in
-                self.viewModel.updateValidationState()
-            }
-            let vc = tabBarController.viewControllers![2] as? UIHostingController<AnyView>
-            vc!.rootView =  AnyView(InputFormView()
-                .environmentObject(viewModel)
-                .environmentObject(viewModel.repo)
-                                    )
-        }
+        viewModel.factoryReset = self.factoryReset
         
         let inputViewController = UIHostingController(rootView: AnyView(
             InputFormView()

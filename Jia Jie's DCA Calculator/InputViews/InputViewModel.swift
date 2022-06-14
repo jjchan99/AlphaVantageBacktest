@@ -14,7 +14,11 @@ class InputViewModel: ObservableObject {
     let width: CGFloat = .init(375).wScaled()
     let height: CGFloat = .init(50).hScaled()
     var bot: TradeBot = BotAccountCoordinator.specimen()
-    var factoryReset: (() -> Void)?
+    var factoryReset: (() -> Void)? {
+        didSet {
+            print("Factory reset behaviour was set")
+        }
+    }
     @Published var frame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
     
     //MARK: - STATE CONTAINERS

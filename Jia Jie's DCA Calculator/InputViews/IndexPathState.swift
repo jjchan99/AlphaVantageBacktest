@@ -463,7 +463,7 @@ class HP: IdxPathState {
     }
     
     var title: String = "Define Holding Period"
-    
+
     
     struct v: View {
     @EnvironmentObject var context: InputViewModel
@@ -471,7 +471,7 @@ class HP: IdxPathState {
     Section {
         HStack {
         Text("\(context.inputState.stepperValue)")
-        Stepper("", value: $context.inputState.stepperValue, in: 2...14)
+            Stepper("", value: $context.inputState.stepperValue, in: 2...14)
         }
     } header: {
         Text("Enter number of days")

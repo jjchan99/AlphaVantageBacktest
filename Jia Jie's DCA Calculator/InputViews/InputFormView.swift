@@ -33,6 +33,42 @@ struct InputFormView: View {
         }
     }
     
+    var DCA: some View {
+        Section {
+            if let condition = vm.repo.holdingPeriod {
+                ForEach(0..<1) { _ in
+                HStack {
+                Text("Enter trade at regular \(vm.factory.holdingPeriod!)-day interval")
+                    .font(.caption)
+                Spacer()
+                    Button {
+                        vm.transitionState(condition: condition)
+                        vm.restoreInputs()
+                        isPresented = true
+                    } label: {
+                        Text("Edit")
+                    }
+                }
+                }
+                .onDelete { _ in
+                    vm.repo.holdingPeriod = nil
+                    vm.factory = vm.factory.resetHoldingPeriod()
+                }
+            }
+        } header: {
+            Button {
+                vm.transitionState(key: "DCA")
+                vm.updateValidationState()
+                isPresented = true
+            } label: {
+                HStack {
+                Image(systemName: "plus")
+                Text("Dollar-Cost Averaging")
+                }
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView {
                 Form {
@@ -115,6 +151,8 @@ struct InputFormView: View {
                         }
                         .isDetailLink(false)
                     }
+                    
+                    DCA
                     
                     Section {
                         NavigationLink(isActive: $factoryReset) {

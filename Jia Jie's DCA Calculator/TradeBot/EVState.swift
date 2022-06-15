@@ -265,7 +265,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
         case .some:
-            context.tb.conditions = HoldingPeriodManager.orUpload(tb: context.tb, context: context)
+            context.tb.conditions = HoldingPeriodManager.entryTriggered(tb: context.tb, context: context)
         case .none:
              fatalError()
         }
@@ -275,7 +275,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
         case .some:
-            context.tb.conditions = HoldingPeriodManager.resetOrExitTrigger(tb: context.tb)
+            context.tb.conditions = HoldingPeriodManager.resetPosition(tb: context.tb)
         case .none:
             fatalError()
         }

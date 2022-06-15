@@ -35,14 +35,14 @@ struct InputFormView: View {
     
     var DCA: some View {
         Section {
-            if let condition = vm.repo.holdingPeriod {
+            if vm.repo.holdingPeriod != nil {
                 ForEach(0..<1) { _ in
                 HStack {
-                Text("Enter trade at regular \(vm.factory.holdingPeriod!)-day interval")
+                Text("Enter trade at regular \(-vm.factory.holdingPeriod!)-day interval")
                     .font(.caption)
                 Spacer()
                     Button {
-                        vm.transitionState(condition: condition)
+                        vm.transitionState(key: "DCA")
                         vm.restoreInputs()
                         isPresented = true
                     } label: {

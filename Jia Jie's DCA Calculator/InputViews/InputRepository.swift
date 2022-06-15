@@ -37,9 +37,8 @@ class InputRepository: ObservableObject {
             return "RSI"
         case .lossTarget:
             return "LT"
-        case .holdingPeriod(let days):
-            let key = days > 0 ? "HP" : "DCA"
-            return key
+        case .holdingPeriod:
+            return "HP"
         case .profitTarget:
             return "PT"
         case .movingAverageOperation:

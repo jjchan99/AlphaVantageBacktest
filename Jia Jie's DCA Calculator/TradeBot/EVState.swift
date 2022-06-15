@@ -298,4 +298,15 @@ struct TBAlgorithmDCA: TBTemplateMethod {
     func exitSuccess() {
         fatalError()
     }
+    
+    func hook() {
+        let holdingPeriod = context.tb.holdingPeriod
+        switch holdingPeriod {
+        case .some:
+            context.tb.conditions = HoldingPeriodManager.DCAEntryTriggered(tb: context.tb, context: context)
+        case .none:
+             fatalError()
+        }
+    }
+    
 }

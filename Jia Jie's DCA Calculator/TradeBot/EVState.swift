@@ -232,7 +232,7 @@ extension TBTemplateMethod {
         
         for condition in context.tb.conditions {
             if EvaluationAlgorithm.check(context: context, condition: condition, passed: passed) {
-          context.account.cash == 0 ? exitSuccess() : entrySuccess()
+          context.account.cash <= 0 ? exitSuccess() : entrySuccess()
           condition.enterOrExit == .enter ? hook() : hook2()
             break
         } else {

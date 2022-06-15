@@ -16,6 +16,7 @@ struct InputFormView: View {
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
+    @State var DCAFormActive : Bool = false
     
     @State var section2active : Bool = false
     
@@ -59,7 +60,7 @@ struct InputFormView: View {
             Button {
                 vm.transitionState(key: "DCA")
                 vm.updateValidationState()
-                isPresented = true
+                DCAFormActive = true
             } label: {
                 HStack {
                 Image(systemName: "plus")
@@ -186,6 +187,10 @@ struct InputFormView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .customSheet(isPresented: $isPresented, frame: vm.frame) {
                         PopupView(shouldPopToRootView: $isActive, entryForm: false)
+                            .environmentObject(vm)
+        }
+        .customSheet(isPresented: $DCAFormActive, frame: vm.frame) {
+                        PopupView(shouldPopToRootView: $isActive, entryForm: true)
                             .environmentObject(vm)
         }
      

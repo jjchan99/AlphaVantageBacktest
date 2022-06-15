@@ -287,3 +287,15 @@ struct TBAlgorithmDefault: TBTemplateMethod {
     
     
 }
+
+struct TBAlgorithmDCA: TBTemplateMethod {
+    var context: ContextObject
+    
+    func entrySuccess() {
+        context.account.accumulatedShares += context.account.decrement(context.account.budget) / context.mostRecent.close
+    }
+    
+    func exitSuccess() {
+        fatalError()
+    }
+}

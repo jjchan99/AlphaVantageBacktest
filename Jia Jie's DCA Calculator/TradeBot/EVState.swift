@@ -232,7 +232,7 @@ extension TBTemplateMethod {
         
         for condition in context.tb.conditions {
             if EvaluationAlgorithm.check(context: context, condition: condition, passed: passed) {
-          context.account.cash == 0 ? exitSuccess() : entrySuccess()
+          context.account.cash <= 0 ? exitSuccess() : entrySuccess()
           condition.enterOrExit == .enter ? hook() : hook2()
             break
         } else {
@@ -265,7 +265,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
         case .some:
-            context.tb.conditions = HoldingPeriodManager.orUpload(tb: context.tb, context: context)
+            context.tb.conditions = HoldingPeriodManager.entryTriggered(tb: context.tb, context: context)
         case .none:
              fatalError()
         }
@@ -275,7 +275,7 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
         let holdingPeriod = context.tb.holdingPeriod
         switch holdingPeriod {
         case .some:
-            context.tb.conditions = HoldingPeriodManager.resetOrExitTrigger(tb: context.tb)
+            context.tb.conditions = HoldingPeriodManager.resetPosition(tb: context.tb)
         case .none:
             fatalError()
         }
@@ -285,5 +285,28 @@ struct TBAlgorithmHoldingPeriod: TBTemplateMethod {
 struct TBAlgorithmDefault: TBTemplateMethod {
     var context: ContextObject
     
+    
+}
+
+struct TBAlgorithmDCA: TBTemplateMethod {
+    var context: ContextObject
+    
+    func entrySuccess() {
+        context.account.accumulatedShares += context.account.decrement(context.account.budget) / context.mostRecent.close
+    }
+    
+    func exitSuccess() {
+        fatalError()
+    }
+    
+    func hook() {
+        let holdingPeriod = context.tb.holdingPeriod
+        switch holdingPeriod {
+        case .some:
+            context.tb.conditions = HoldingPeriodManager.DCAEntryTriggered(tb: context.tb, context: context)
+        case .none:
+             fatalError()
+        }
+    }
     
 }

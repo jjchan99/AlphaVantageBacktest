@@ -10,7 +10,7 @@ import Combine
 
 struct HoldingPeriodManager {
     
-    static func orUpload(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
+    static func entryTriggered(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
         var copy = tb.conditions
         let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.holdingPeriod!))
         let dateString = DateManager.string(fromDate: date)
@@ -23,7 +23,7 @@ struct HoldingPeriodManager {
         return copy
     }
     
-    static func resetOrExitTrigger(tb: TradeBot) -> [EvaluationCondition] {
+    static func resetPosition(tb: TradeBot) -> [EvaluationCondition] {
         var copy = tb.conditions
         for (index, condition) in tb.conditions.enumerated() {
                 guard condition.enterOrExit == .exit else { continue }
@@ -38,3 +38,24 @@ struct HoldingPeriodManager {
     }
     
 }
+
+extension HoldingPeriodManager {
+    static func DCAEntryTriggered(tb: TradeBot, context: ContextObject) -> [EvaluationCondition] {
+        var copy = tb.conditions
+        let date = DateManager.addDaysToDate(fromDate: DateManager.date(from: context.mostRecent.stamp), value: abs(tb.holdingPeriod!))
+        let dateString = DateManager.string(fromDate: date)
+        let withoutNoise = DateManager.removeNoise(fromString: dateString)
+        let entryTrigger = EvaluationCondition(technicalIndicator: .holdingPeriod(value: Int(withoutNoise)!), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
+        for (index, condition) in tb.conditions.enumerated() {
+            guard condition.enterOrExit == .enter else { continue }
+            switch condition.technicalIndicator {
+            case .holdingPeriod:
+                copy[index] = entryTrigger
+            default:
+                break
+            }
+        }
+        return copy
+    }
+}
+ 

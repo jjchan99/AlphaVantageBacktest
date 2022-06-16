@@ -71,7 +71,7 @@
 		1D88890126EFB501003B43CE /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88890026EFB501003B43CE /* GlobalVariables.swift */; };
 		1D88890326EFB79E003B43CE /* DCACalculatorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */; };
 		1D8D2B922792C6580027C9B3 /* TBMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D2B912792C6580027C9B3 /* TBMock.swift */; };
-		1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */; };
+		1D8DBDCF2770F39D00F1C120 /* HoldingPeriodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8DBDCE2770F39D00F1C120 /* HoldingPeriodManager.swift */; };
 		1D911E4E2732867300444991 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4D2732867300444991 /* TabViewController.swift */; };
 		1D911E502732878900444991 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E4F2732878900444991 /* CustomTabView.swift */; };
 		1D911E52273289BA00444991 /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D911E51273289BA00444991 /* TabViewModel.swift */; };
@@ -199,7 +199,7 @@
 		1D88890026EFB501003B43CE /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		1D88890226EFB79E003B43CE /* DCACalculatorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCACalculatorModel.swift; sourceTree = "<group>"; };
 		1D8D2B912792C6580027C9B3 /* TBMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TBMock.swift; sourceTree = "<group>"; };
-		1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitTriggerManager.swift; sourceTree = "<group>"; };
+		1D8DBDCE2770F39D00F1C120 /* HoldingPeriodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingPeriodManager.swift; sourceTree = "<group>"; };
 		1D911E4D2732867300444991 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		1D911E4F2732878900444991 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		1D911E51273289BA00444991 /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
@@ -290,7 +290,7 @@
 				1D34C002278470EA0006C8DA /* MovingAverageOperationDecoder.swift */,
 				1DF3B7EE27761EDE00411D0A /* LedgerManager.swift */,
 				1DBF218527718B52007E426B /* EvaluationCondition.swift */,
-				1D8DBDCE2770F39D00F1C120 /* ExitTriggerManager.swift */,
+				1D8DBDCE2770F39D00F1C120 /* HoldingPeriodManager.swift */,
 				1D7416AC2762890C00E9FD7C /* TradeAssistant.swift */,
 				1D7927A9275B516D00DD2E6B /* OHLCCloudElement.swift */,
 				1DFDEC3D275A1F8D00776CA8 /* BotAccountCorodinator.swift */,
@@ -732,7 +732,7 @@
 				1DC3C9DD273BB98F00900600 /* DailyModel.swift in Sources */,
 				1DC3C9D7273BB0F000900600 /* CandleViewModel.swift in Sources */,
 				1D1210282736E8CA00B58B67 /* FinancialsAPI.swift in Sources */,
-				1D8DBDCF2770F39D00F1C120 /* ExitTriggerManager.swift in Sources */,
+				1D8DBDCF2770F39D00F1C120 /* HoldingPeriodManager.swift in Sources */,
 				1D34C0072784BA850006C8DA /* SlidingTabView.swift in Sources */,
 				1D32802D2701C1AB00C60A6C /* Animations.swift in Sources */,
 				1DFF278D276AF22000FCAE6D /* DateManager.swift in Sources */,

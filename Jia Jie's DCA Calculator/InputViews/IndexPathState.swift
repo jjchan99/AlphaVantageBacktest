@@ -416,6 +416,23 @@ class RSI: IdxPathState {
     
 }
 
+class DCA: HP {
+    override func getCondition() -> EvaluationCondition {
+        return EvaluationCondition(technicalIndicator: .holdingPeriod(value: 99999999), aboveOrBelow: .priceAbove, enterOrExit: .enter, andCondition: [])!
+    }
+    
+    override func actionOnSet() {
+        context.factory = context.factory.setholdingPeriod(afterDays: -context.inputState.stepperValue)
+        context.repo.holdingPeriod = getCondition()
+    }
+    
+    override func restoreInputs() {
+        if let days = context.factory.holdingPeriod {
+            context.inputState.set( stepperValue: -days)
+        }
+    }
+}
+
 class HP: IdxPathState {
     private(set) weak var context: InputViewModel!
     
@@ -446,7 +463,7 @@ class HP: IdxPathState {
     }
     
     var title: String = "Define Holding Period"
-    
+
     
     struct v: View {
     @EnvironmentObject var context: InputViewModel
@@ -454,7 +471,7 @@ class HP: IdxPathState {
     Section {
         HStack {
         Text("\(context.inputState.stepperValue)")
-        Stepper("", value: $context.inputState.stepperValue, in: 2...14)
+            Stepper("", value: $context.inputState.stepperValue, in: 2...14)
         }
     } header: {
         Text("Enter number of days")

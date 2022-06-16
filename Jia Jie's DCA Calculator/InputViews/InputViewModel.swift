@@ -175,7 +175,7 @@ extension InputViewModel {
         guard let condition = condition else { return }
         let key = repo.getKey(for: condition)
         switch key {
-        case "MA":
+        case "MA": 
             transitionState(state: MA())
         case "BB":
             transitionState(state: BB())
@@ -210,6 +210,8 @@ extension InputViewModel {
             transitionState(state: HP())
         case "MACrossover":
             transitionState(state: MACrossover())
+        case "DCA":
+            transitionState(state: DCA())
         default:
             fatalError()
         }

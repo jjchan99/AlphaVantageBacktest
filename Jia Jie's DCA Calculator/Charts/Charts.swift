@@ -149,7 +149,12 @@ class LineState<Object: Plottable>: RenderState {
         let x = X.get(index: index, frame: frame)
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
+        if index > 0 {
+            path.addLine(to: point)
+            area.addLine(to: point)
+        }
         path.move(to: point)
+        print("path moved to \(point)")
         area.move(to: point)
     }
     
@@ -157,8 +162,8 @@ class LineState<Object: Plottable>: RenderState {
         let copy = self
         return AnyView(
             copy.path
-            .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
-            .fill(copy.color)
+                .strokedPath(StrokeStyle(lineWidth: 2.0, lineCap: .round, lineJoin: .round))
+                .fill(copy.color)
         )
     }
 }

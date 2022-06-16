@@ -16,6 +16,7 @@ struct InputFormView: View {
     @State private var isPresented: Bool = false
     @State var long: Bool = true
     @State var isActive : Bool = false
+    @State var DCAFormActive : Bool = false
     
     @State var section2active : Bool = false
     
@@ -30,6 +31,42 @@ struct InputFormView: View {
         if let ndx = offsets.first {
             let item = vm.repo.entryAnd.sorted(by: >)[ndx]
             vm.repo.entryAnd.removeValue(forKey: item.key)
+        }
+    }
+    
+    var DCA: some View {
+        Section {
+            if vm.repo.holdingPeriod != nil {
+                ForEach(0..<1) { _ in
+                HStack {
+                Text("Enter trade at regular \(-vm.factory.holdingPeriod!)-day interval")
+                    .font(.caption)
+                Spacer()
+                    Button {
+                        vm.transitionState(key: "DCA")
+                        vm.restoreInputs()
+                        isPresented = true
+                    } label: {
+                        Text("Edit")
+                    }
+                }
+                }
+                .onDelete { _ in
+                    vm.repo.holdingPeriod = nil
+                    vm.factory = vm.factory.resetHoldingPeriod()
+                }
+            }
+        } header: {
+            Button {
+                vm.transitionState(key: "DCA")
+                vm.updateValidationState()
+                DCAFormActive = true
+            } label: {
+                HStack {
+                Image(systemName: "plus")
+                Text("Dollar-Cost Averaging")
+                }
+            }
         }
     }
     
@@ -116,6 +153,8 @@ struct InputFormView: View {
                         .isDetailLink(false)
                     }
                     
+                    DCA
+                    
                     Section {
                         NavigationLink(isActive: $factoryReset) {
                             ExitFormView(factoryReset: $factoryReset)
@@ -148,6 +187,10 @@ struct InputFormView: View {
         .navigationViewStyle(StackNavigationViewStyle())
         .customSheet(isPresented: $isPresented, frame: vm.frame) {
                         PopupView(shouldPopToRootView: $isActive, entryForm: false)
+                            .environmentObject(vm)
+        }
+        .customSheet(isPresented: $DCAFormActive, frame: vm.frame) {
+                        PopupView(shouldPopToRootView: $isActive, entryForm: true)
                             .environmentObject(vm)
         }
      

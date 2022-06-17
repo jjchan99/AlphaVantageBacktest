@@ -162,7 +162,10 @@ struct InputFormView: View {
                     DCA
                         .disabled(
                             !vm.repo.entryOr.isEmpty
-                            || !vm.repo.entryAnd.isEmpty
+                                      || !vm.repo.entryAnd.isEmpty
+                                      || !vm.repo.exitAnd.isEmpty
+                                      || !vm.repo.exitOr.isEmpty
+                                      || vm.repo.holdingPeriod != nil
                         )
                     
                     Section {

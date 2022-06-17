@@ -17,22 +17,28 @@ struct BuildView: View {
     }
     
     var buildView: some View {
-        return VStack {
+        List {
+          
             Section {
+                
             ForEach(Array(vm.repo.entryOr.values), id: \.self) { condition in
                 Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
             }
+                
             } header: {
                 if !vm.repo.entryOr.isEmpty {
                     Text("Entry OR conditions")
                 }
             }
             
+            
             Section {
+               
             ForEach(Array(vm.repo.entryAnd.values), id: \.self) { condition in
                 Text(InputViewModel.keyTitle(condition: condition))
                     .font(.caption)
+            
             }
             } header: {
                 if !vm.repo.entryAnd.isEmpty {
@@ -70,8 +76,6 @@ struct BuildView: View {
             } label: {
                 Text("Build")
             }
-            
-            Spacer()
         }
         .navigationTitle(
         Text("Confirmation")

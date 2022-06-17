@@ -154,7 +154,6 @@ class LineState<Object: Plottable>: RenderState {
             area.addLine(to: point)
         }
         path.move(to: point)
-        print("path moved to \(point)")
         area.move(to: point)
     }
     
@@ -162,7 +161,7 @@ class LineState<Object: Plottable>: RenderState {
         let copy = self
         return AnyView(
             copy.path
-                .strokedPath(StrokeStyle(lineWidth: 2.0, lineCap: .round, lineJoin: .round))
+                .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
                 .fill(copy.color)
         )
     }
@@ -188,6 +187,10 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     
     var stick: [Path] = []
     var body: [Path] = []
+    
+    func scaledToDataCount(_ cgf: CGFloat) -> CGFloat {
+        cgf.wScaled() / (CGFloat(1) + (CGFloat(data.count) * CGFloat(0.01)))
+    }
     
     func updateState(index: Int) {
         var stick = Path()
@@ -217,10 +220,10 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
                 color
                     .mask(copy.body[index])
                 copy.body[index]
-                        .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+                        .strokedPath(StrokeStyle(lineWidth: copy.scaledToDataCount(2.5), lineCap: .round, lineJoin: .round))
                     .fill(color)
                 copy.stick[index]
-                        .strokedPath(StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+                        .strokedPath(StrokeStyle(lineWidth: copy.scaledToDataCount(2.5), lineCap: .round, lineJoin: .round))
                     .fill(color)
             }
             }

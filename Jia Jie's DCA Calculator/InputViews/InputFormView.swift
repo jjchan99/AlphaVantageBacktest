@@ -116,6 +116,9 @@ struct InputFormView: View {
                             }
                         }
                         .isDetailLink(false)
+                        .disabled(
+                            vm.repo.holdingPeriod != nil
+                        )
                     }
                     
                     Section {
@@ -151,17 +154,34 @@ struct InputFormView: View {
                             }
                         }
                         .isDetailLink(false)
+                        .disabled(
+                            vm.repo.holdingPeriod != nil
+                        )
                     }
                     
                     DCA
+                        .disabled(
+                            !vm.repo.entryOr.isEmpty
+                                      || !vm.repo.entryAnd.isEmpty
+                                      || !vm.repo.exitAnd.isEmpty
+                                      || !vm.repo.exitOr.isEmpty
+                                      || vm.repo.holdingPeriod != nil
+                        )
                     
                     Section {
                         NavigationLink(isActive: $factoryReset) {
-                            ExitFormView(factoryReset: $factoryReset)
+                            vm.repo.holdingPeriod == nil ?
+                            AnyView(
+                                ExitFormView(factoryReset: $factoryReset)
                                 .environmentObject(vm)
                                 .environmentObject(vm.repo)
+                                    )
+                            : AnyView(
+                                BuildView(factoryReset: $factoryReset)
+                                .environmentObject(vm)
+                                    )
                         } label: {
-                         Text("Proceed to exit strategy")
+                         Text("Proceed")
                         }
                         .isDetailLink(false)
                     }

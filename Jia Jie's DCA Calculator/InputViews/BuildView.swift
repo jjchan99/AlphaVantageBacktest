@@ -70,9 +70,12 @@ struct BuildView: View {
             } label: {
                 Text("Build")
             }
-
+            
+            Spacer()
         }
-        Spacer()
+        .navigationTitle(
+        Text("Confirmation")
+        )
     }
     
     var progressView: some View {

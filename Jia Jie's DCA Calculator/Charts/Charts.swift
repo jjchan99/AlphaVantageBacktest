@@ -9,6 +9,8 @@ import Foundation
 import CoreGraphics
 import SwiftUI
 
+//MARK: Render Client: This is similar to a composite with flat hierarchy.
+
 struct Frame {
     init(count: Int, height: CGFloat, width: CGFloat, padding: CGFloat) {
         self.height = height
@@ -51,10 +53,6 @@ struct MMR<T: CustomNumeric> {
 }
 
 protocol RenderState {
-    var data: [Plottable] { get }
-    var frame: Frame { get }
-    var mmr: MMR<Object.T> { get }
-    var keyPath: KeyPath<Object, Object.T> { get }
     func updateState(index: Int)
     func view() -> AnyView
 }
@@ -286,7 +284,7 @@ struct Draggable: ViewModifier {
                     .fill(.white)
                     .frame(width: 10, height: 10)
                 )
-                .position(x: state., y: Dimensions.height / 2)
+                .position(x: 0, y: Dimensions.height / 2)
                 .gesture(DragGesture().onChanged({ value in
                     print("X Drag gesture: \(value.location.x)")
                 })

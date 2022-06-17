@@ -266,3 +266,37 @@ class BarState<Object: Plottable>: RenderState {
         )
     }
 }
+
+struct Draggable: ViewModifier {
+    let state: RenderState
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+        
+            Circle()
+                .fill(Color.black)
+                .frame(width: 22, height: 22)
+                .overlay (
+                Circle()
+                    .fill(.white)
+                    .frame(width: 10, height: 10)
+                )
+                .gesture(DragGesture().onChanged({ value in
+                    print("X Drag gesture: \(value.location.x)")
+                })
+                
+                
+                
+                )
+        }
+    }
+}
+
+extension View {
+    func draggable(renderState: RenderState) -> some View {
+        modifier(
+            Draggable(state: renderState)
+        )
+    }
+}

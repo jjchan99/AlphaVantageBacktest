@@ -51,6 +51,10 @@ struct MMR<T: CustomNumeric> {
 }
 
 protocol RenderState {
+    var data: [Plottable] { get }
+    var frame: Frame { get }
+    var mmr: MMR<Object.T> { get }
+    var keyPath: KeyPath<Object, Object.T> { get }
     func updateState(index: Int)
     func view() -> AnyView
 }
@@ -282,9 +286,11 @@ struct Draggable: ViewModifier {
                     .fill(.white)
                     .frame(width: 10, height: 10)
                 )
+                .position(x: state., y: Dimensions.height / 2)
                 .gesture(DragGesture().onChanged({ value in
                     print("X Drag gesture: \(value.location.x)")
                 })
+                    
                 
                 
                 

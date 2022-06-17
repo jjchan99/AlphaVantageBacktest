@@ -9,6 +9,8 @@ import Foundation
 import CoreGraphics
 import SwiftUI
 
+//MARK: Render Client: This is similar to a composite with flat hierarchy.
+
 struct Frame {
     init(count: Int, height: CGFloat, width: CGFloat, padding: CGFloat) {
         self.height = height
@@ -263,6 +265,42 @@ class BarState<Object: Plottable>: RenderState {
         return AnyView(
         Color.gray
             .mask(copy.path)
+        )
+    }
+}
+
+struct Draggable: ViewModifier {
+    let state: RenderState
+    
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+        
+            Circle()
+                .fill(Color.black)
+                .frame(width: 22, height: 22)
+                .overlay (
+                Circle()
+                    .fill(.white)
+                    .frame(width: 10, height: 10)
+                )
+                .position(x: 0, y: Dimensions.height / 2)
+                .gesture(DragGesture().onChanged({ value in
+                    print("X Drag gesture: \(value.location.x)")
+                })
+                    
+                
+                
+                
+                )
+        }
+    }
+}
+
+extension View {
+    func draggable(renderState: RenderState) -> some View {
+        modifier(
+            Draggable(state: renderState)
         )
     }
 }

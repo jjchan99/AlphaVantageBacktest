@@ -53,6 +53,7 @@ struct MMR<T: CustomNumeric> {
 }
 
 protocol RenderState {
+    var frame: Frame { get }
     func updateState(index: Int)
     func view() -> AnyView
 }
@@ -271,6 +272,8 @@ class BarState<Object: Plottable>: RenderState {
 
 struct Draggable: ViewModifier {
     let state: RenderState
+    @State var xPos: CGFloat = 0
+    @State var yPos: CGFloat = 0
     
     func body(content: Content) -> some View {
         ZStack {
@@ -284,9 +287,10 @@ struct Draggable: ViewModifier {
                     .fill(.white)
                     .frame(width: 10, height: 10)
                 )
-                .position(x: 0, y: Dimensions.height / 2)
+                .position(x: xPos + state.frame.padding, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
-                    print("X Drag gesture: \(value.location.x)")
+//                    print("X Drag gesture: \(value.location.x)")
+                    xPos = value.location.x
                 })
                     
                 

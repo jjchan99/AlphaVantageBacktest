@@ -291,6 +291,8 @@ struct Draggable: ViewModifier {
                 .gesture(DragGesture().onChanged({ value in
 //                    print("X Drag gesture: \(value.location.x)")
                     xPos = value.location.x
+                    let sectionWidth: CGFloat = 1
+                    let index = floor(xPos / sectionWidth) - 1
                 })
                     
                 

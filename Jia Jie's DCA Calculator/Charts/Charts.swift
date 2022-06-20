@@ -58,8 +58,8 @@ protocol RenderState {
     func view() -> AnyView
 }
 
-protocol OpHLC {
-    associatedtype T where T: CustomNumeric
+protocol OpHLC: Plottable {
+//    associatedtype T where T: CustomNumeric
     var open: T { get }
     var high: T { get }
     var low: T { get }
@@ -105,6 +105,7 @@ struct X {
 
 protocol Plottable {
     associatedtype T where T: CustomNumeric
+    
 }
 
 class RenderClient<Object: Plottable> {
@@ -272,6 +273,9 @@ class BarState<Object: Plottable>: RenderState {
 
 struct Draggable: ViewModifier {
     let state: RenderState
+    
+    
+    
     @State var xPos: CGFloat = 0
     @State var yPos: CGFloat = 0
     
@@ -293,7 +297,7 @@ struct Draggable: ViewModifier {
                     xPos = value.location.x
                     let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
                     let index = floor(xPos / sectionWidth) - 1
-                    yPos = Y.get(point: data[index], mmr: state.mmr, frame: state.frame)
+//                    yPos = Y.get(point: data[index], mmr: state.mmr, frame: state.frame)
                 })
                     
                 

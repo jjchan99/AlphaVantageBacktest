@@ -37,6 +37,6 @@ struct OHLCCloudElement {
     var emptyKey: Double = 0
 }
 
-extension OHLCCloudElement: Plottable, OpHLC {
+extension OHLCCloudElement: OpHLC {
     typealias T = Double
 }

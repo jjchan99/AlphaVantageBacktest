@@ -33,7 +33,7 @@ struct CandleView: View {
                         .draggable(renderState: viewModel.RC!.render["movingAverage"]!)
                 }
                 
-            viewModel.RC!.render["volume"]!.view()
+//            viewModel.RC!.render["volume"]!.view()
 //            SingleCandleView()
 //                .environmentObject(viewModel)
 //                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)

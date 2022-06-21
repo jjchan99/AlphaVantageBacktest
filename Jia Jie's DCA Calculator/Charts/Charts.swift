@@ -18,7 +18,8 @@ struct Frame {
         self.padding = padding
     
         adjustedWidth = width - (2 * padding)
-        horizontalJumpPerIndex = adjustedWidth / CGFloat(count - 1)
+        horizontalJumpPerIndex = adjustedWidth / (count == 1 ? CGFloat(1) : CGFloat(count - 1))
+        print("horizontalJumpPerIndex: \(horizontalJumpPerIndex)")
     }
     
     let height: CGFloat
@@ -56,6 +57,17 @@ protocol RenderState {
     var frame: Frame { get }
     func updateState(index: Int)
     func view() -> AnyView
+    func getY(index: Int) -> CGFloat
+    func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat)
+}
+
+extension RenderState {
+    func getY(index: Int) -> CGFloat {
+        return 1
+    }
+    func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        return (1, 1, 1, 1)
+    }
 }
 
 protocol OpHLC: Plottable {
@@ -109,6 +121,7 @@ protocol Plottable {
 }
 
 class RenderClient<Object: Plottable> {
+    
     let data: [Object]
     
     init(data: [Object]) {
@@ -132,6 +145,9 @@ class RenderClient<Object: Plottable> {
 }
 
 class LineState<Object: Plottable>: RenderState {
+    func getY(index: Int) -> CGFloat {
+        Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
+    }
     
     let data: [Object]
     let frame: Frame
@@ -172,9 +188,10 @@ class LineState<Object: Plottable>: RenderState {
 }
 
 class CandleState<Object: OpHLC & Plottable>: RenderState {
-    
+    func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
+        Y.get(point: data[index], mmr: mmr, frame: frame)
+    }
    
-    
     let data: [Object]
     let frame: Frame
     let mmr: MMR<Object.T>
@@ -237,6 +254,10 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
 
 class BarState<Object: Plottable>: RenderState {
     
+    func getY(index: Int) -> CGFloat {
+        Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
+    }
+    
     let data: [Object]
     let frame: Frame
     let mmr: MMR<Object.T>
@@ -293,11 +314,14 @@ struct Draggable: ViewModifier {
                 )
                 .position(x: xPos + state.frame.padding, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
-//                    print("X Drag gesture: \(value.location.x)")
-                    xPos = value.location.x
+                    guard value.location.x >= state.frame.padding && value.location.x <= Dimensions.width - state.frame.padding else { return }
+                    print("xPos: \(value.location.x - state.frame.padding)")
                     let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
-                    let index = floor(xPos / sectionWidth) - 1
-//                    yPos = Y.get(point: data[index], mmr: state.mmr, frame: state.frame)
+                    let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
+                    print("index: \(index)")
+                    
+                    yPos = state.getY(index: index)
+                    xPos = value.location.x 
                 })
                     
                 

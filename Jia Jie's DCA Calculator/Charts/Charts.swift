@@ -56,7 +56,7 @@ struct MMR<T: CustomNumeric> {
 protocol RenderState {
     var frame: Frame { get }
     func updateState(index: Int)
-    func view() -> AnyView
+    func view() -> DraggableView
     func getY(index: Int) -> CGFloat
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat)
 }
@@ -177,13 +177,15 @@ class LineState<Object: Plottable>: RenderState {
         area.move(to: point)
     }
     
-    func view() -> AnyView {
+    func view() -> DraggableView {
         let copy = self
-        return AnyView(
+        return DraggableView(state: self) {
+            AnyView(
             copy.path
                 .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
                 .fill(copy.color)
-        )
+            )
+        }
     }
 }
 
@@ -232,9 +234,10 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
         self.body.append(body)
     }
     
-    func view() -> AnyView {
+    func view() -> DraggableView {
         let copy = self
-        return AnyView(
+        return DraggableView(state: self) {
+            AnyView(
             ZStack {
                 ForEach(0..<copy.data.count, id: \.self) { index in
                 let color = copy.data[index].close > copy.data[index].open ? copy.green : copy.red
@@ -248,8 +251,9 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
                     .fill(color)
             }
             }
-        )
+            )
     }
+}
 }
 
 class BarState<Object: Plottable>: RenderState {
@@ -283,12 +287,14 @@ class BarState<Object: Plottable>: RenderState {
         path.closeSubpath()
     }
     
-    func view() -> AnyView {
+    func view() -> DraggableView {
         let copy = self
-        return AnyView(
-        Color.gray
+        return DraggableView(state: self) {
+        AnyView(
+            Color.gray
             .mask(copy.path)
         )
+        }
     }
 }
 
@@ -335,10 +341,24 @@ struct Draggable: ViewModifier {
     }
 }
 
-extension View {
-    func draggable(renderState: RenderState) -> some View {
+extension DraggableView {
+    func draggable() -> some View {
         modifier(
-            Draggable(state: renderState)
+            Draggable(state: self.state)
         )
+    }
+}
+
+struct DraggableView: View {
+    
+    let state: RenderState
+    let content: () -> AnyView
+    init(state: RenderState, content: @escaping () -> AnyView) {
+        self.state = state
+        self.content = content
+    }
+    
+    var body: some View {
+        content()
     }
 }

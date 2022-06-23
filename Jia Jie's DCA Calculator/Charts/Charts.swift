@@ -320,8 +320,11 @@ struct Draggable: ViewModifier {
                     let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
                     print("index: \(index)")
                     
-                    yPos = state.getY(index: index)
-                    xPos = value.location.x 
+                    let y: CGFloat = state.getY(index: index)
+                    xPos = value.location.x
+                    
+                    let m = (state.getY(index: index + 1) - y)
+                    yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
                 })
                     
                 

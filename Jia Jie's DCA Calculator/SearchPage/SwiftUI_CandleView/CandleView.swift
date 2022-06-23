@@ -30,7 +30,7 @@ struct CandleView: View {
                 ZStack {
             viewModel.RC!.render["dailyTicker"]!.view()
             viewModel.RC!.render["movingAverage"]!.view()
-                        .draggable(renderState: viewModel.RC!.render["movingAverage"]!)
+                        .draggable()
                 }
                 
 //            viewModel.RC!.render["volume"]!.view()

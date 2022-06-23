@@ -302,6 +302,19 @@ struct Draggable: ViewModifier {
     let state: RenderState
     
     
+    func updateLocation(_ value: DragGesture.Value) {
+        guard value.location.x >= state.frame.padding && value.location.x <= Dimensions.width - state.frame.padding else { return }
+        print("xPos: \(value.location.x - state.frame.padding)")
+        let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
+        let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
+        print("index: \(index)")
+        
+        let y: CGFloat = state.getY(index: index)
+        xPos = value.location.x
+        
+        let m = (state.getY(index: index + 1) - y)
+        yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
+    }
     
     @State var xPos: CGFloat = 0
     @State var yPos: CGFloat = 0
@@ -320,17 +333,7 @@ struct Draggable: ViewModifier {
                 )
                 .position(x: xPos + state.frame.padding, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
-                    guard value.location.x >= state.frame.padding && value.location.x <= Dimensions.width - state.frame.padding else { return }
-                    print("xPos: \(value.location.x - state.frame.padding)")
-                    let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
-                    let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
-                    print("index: \(index)")
-                    
-                    let y: CGFloat = state.getY(index: index)
-                    xPos = value.location.x
-                    
-                    let m = (state.getY(index: index + 1) - y)
-                    yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
+                   updateLocation(value)
                 })
                     
                 

@@ -303,10 +303,11 @@ struct Draggable: ViewModifier {
     
     
     func updateLocation(_ value: DragGesture.Value) {
-        guard value.location.x >= state.frame.padding && value.location.x <= Dimensions.width - state.frame.padding else { return }
+        guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
         print("xPos: \(value.location.x - state.frame.padding)")
         let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
         let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
+        
         print("index: \(index)")
         
         let y: CGFloat = state.getY(index: index)

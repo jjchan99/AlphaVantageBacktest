@@ -90,6 +90,13 @@ struct Y {
         return scaled
     }
     
+    static func reverseGet<T: CustomNumeric>(scaled: CGFloat, mmr: MMR<T>, frame: Frame) -> CGFloat {
+        let share = scaled * frame.height
+        let deviation = share * cgf(mmr.range)
+        let point = deviation + cgf(mmr.max)
+        return point
+    }
+    
     static func get<T: OpHLC>(point: T, mmr: MMR<T.T>, frame: Frame) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
         let open = point.open
         let high = point.high
@@ -107,6 +114,8 @@ struct Y {
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }
+    
+    
 }
 
 struct X {
@@ -310,11 +319,19 @@ struct Draggable: ViewModifier {
         
         print("index: \(index)")
         
+//        guard index == 0 else {
+//            fatalError()
+//        }
+        
+    
+        
         let y: CGFloat = state.getY(index: index)
         xPos = value.location.x
         
         let m = (state.getY(index: index + 1) - y)
         yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
+        
+        
     }
     
     @State var xPos: CGFloat = 0

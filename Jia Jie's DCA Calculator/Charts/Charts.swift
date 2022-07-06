@@ -59,6 +59,7 @@ protocol RenderState {
     func view() -> DraggableView
     func getY(index: Int) -> CGFloat
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat)
+    func testVariance(index: Int)
 }
 
 extension RenderState {
@@ -67,6 +68,10 @@ extension RenderState {
     }
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
         return (1, 1, 1, 1)
+    }
+    
+    func testVariance(index: Int) {
+        
     }
 }
 
@@ -91,7 +96,7 @@ struct Y {
     }
     
     static func reverseGet<T: CustomNumeric>(scaled: CGFloat, mmr: MMR<T>, frame: Frame) -> CGFloat {
-        let share = scaled * frame.height
+        let share = scaled / frame.height
         let deviation = share * cgf(mmr.range)
         let point = deviation + cgf(mmr.max)
         return point
@@ -195,6 +200,16 @@ class LineState<Object: Plottable>: RenderState {
                 .fill(copy.color)
             )
         }
+    }
+    
+    func testVariance(index: Int) {
+        let scaled = Y.get(point: data[index][keyPath: self.keyPath], mmr: self.mmr, frame: self.frame)
+        let y = Y.reverseGet(scaled: scaled, mmr: self.mmr, frame: self.frame)
+        print("""
+              scaled: \(scaled)
+              reverseGet: \(y)
+              y: \(data[index][keyPath: self.keyPath])
+              """)
     }
 }
 
@@ -323,7 +338,7 @@ struct Draggable: ViewModifier {
 //            fatalError()
 //        }
         
-    
+        state.testVariance(index: index)
         
         let y: CGFloat = state.getY(index: index)
         xPos = value.location.x

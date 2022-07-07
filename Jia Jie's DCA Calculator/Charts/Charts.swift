@@ -98,8 +98,8 @@ struct Y {
     static func reverseGet<T: CustomNumeric>(scaled: CGFloat, mmr: MMR<T>, frame: Frame) -> CGFloat {
         let share = scaled / frame.height
         let deviation = share * cgf(mmr.range)
-        let point = deviation + cgf(mmr.max)
-        return point
+        let point = deviation - cgf(mmr.max)
+        return abs(point)
     }
     
     static func get<T: OpHLC>(point: T, mmr: MMR<T.T>, frame: Frame) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {

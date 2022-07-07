@@ -347,7 +347,7 @@ struct Draggable: ViewModifier {
         let m = (state.getY(index: index + 1) - y)
         yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
         
-        
+        //MARK: TO DO - Quadratic curve for draggable 
     }
     
     @State var xPos: CGFloat = 0

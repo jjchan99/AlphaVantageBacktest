@@ -59,6 +59,7 @@ protocol RenderState {
     func view() -> DraggableView
     func getY(index: Int) -> CGFloat
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat)
+    func testVariance(index: Int)
 }
 
 extension RenderState {
@@ -67,6 +68,10 @@ extension RenderState {
     }
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
         return (1, 1, 1, 1)
+    }
+    
+    func testVariance(index: Int) {
+        
     }
 }
 
@@ -79,7 +84,7 @@ protocol OpHLC: Plottable {
 }
 
 struct Y {
-    static private func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
+    static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
     
@@ -88,6 +93,13 @@ struct Y {
         let share = cgf(deviation / mmr.range)
         let scaled = share * frame.height
         return scaled
+    }
+    
+    static func reverseGet<T: CustomNumeric>(scaled: CGFloat, mmr: MMR<T>, frame: Frame) -> CGFloat {
+        let share = scaled / frame.height
+        let deviation = share * cgf(mmr.range)
+        let point = deviation - cgf(mmr.max)
+        return abs(point)
     }
     
     static func get<T: OpHLC>(point: T, mmr: MMR<T.T>, frame: Frame) -> (open: CGFloat, high: CGFloat, low: CGFloat, close: CGFloat) {
@@ -107,6 +119,8 @@ struct Y {
 //        print("yOpen: \(yOpen) yHigh: \(yHigh) yLow: \(yLow) yClose: \(yClose)")
         return ((yOpen, yHigh, yLow, yClose))
     }
+    
+    
 }
 
 struct X {
@@ -186,6 +200,17 @@ class LineState<Object: Plottable>: RenderState {
                 .fill(copy.color)
             )
         }
+    }
+    
+    func testVariance(index: Int) {
+        let scaled = Y.get(point: data[index][keyPath: self.keyPath], mmr: self.mmr, frame: self.frame)
+        let y = Y.reverseGet(scaled: scaled, mmr: self.mmr, frame: self.frame)
+        print("""
+              scaled: \(scaled)
+              reverseGet: \(y)
+              y: \(data[index][keyPath: self.keyPath])
+              variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
+              """)
     }
 }
 
@@ -302,6 +327,28 @@ struct Draggable: ViewModifier {
     let state: RenderState
     
     
+    func updateLocation(_ value: DragGesture.Value) {
+        guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
+        print("xPos: \(value.location.x - state.frame.padding)")
+        let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
+        let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
+        
+        print("index: \(index)")
+        
+//        guard index == 0 else {
+//            fatalError()
+//        }
+        
+        state.testVariance(index: index)
+        
+        let y: CGFloat = state.getY(index: index)
+        xPos = value.location.x
+        
+        let m = (state.getY(index: index + 1) - y)
+        yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
+        
+        //MARK: TO DO - Quadratic curve for draggable 
+    }
     
     @State var xPos: CGFloat = 0
     @State var yPos: CGFloat = 0
@@ -320,17 +367,7 @@ struct Draggable: ViewModifier {
                 )
                 .position(x: xPos + state.frame.padding, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
-                    guard value.location.x >= state.frame.padding && value.location.x <= Dimensions.width - state.frame.padding else { return }
-                    print("xPos: \(value.location.x - state.frame.padding)")
-                    let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
-                    let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
-                    print("index: \(index)")
-                    
-                    let y: CGFloat = state.getY(index: index)
-                    xPos = value.location.x
-                    
-                    let m = (state.getY(index: index + 1) - y)
-                    yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
+                   updateLocation(value)
                 })
                     
                 

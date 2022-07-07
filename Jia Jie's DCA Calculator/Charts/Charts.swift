@@ -84,7 +84,7 @@ protocol OpHLC: Plottable {
 }
 
 struct Y {
-    static private func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
+    static func cgf<T: CustomNumeric>(_ value: T) -> CGFloat {
         return CGFloat(fromNumeric: value)
     }
     
@@ -209,6 +209,7 @@ class LineState<Object: Plottable>: RenderState {
               scaled: \(scaled)
               reverseGet: \(y)
               y: \(data[index][keyPath: self.keyPath])
+              variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
               """)
     }
 }

@@ -205,12 +205,16 @@ class LineState<Object: Plottable>: RenderState {
     func testVariance(index: Int) {
         let scaled = Y.get(point: data[index][keyPath: self.keyPath], mmr: self.mmr, frame: self.frame)
         let y = Y.reverseGet(scaled: scaled, mmr: self.mmr, frame: self.frame)
-        print("""
-              scaled: \(scaled)
-              reverseGet: \(y)
-              y: \(data[index][keyPath: self.keyPath])
-              variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
-              """)
+        let variance = Y.cgf(data[index][keyPath: self.keyPath]) - y
+        guard variance < 0.01 else {
+            print("""
+                  scaled: \(scaled)
+                  reverseGet: \(y)
+                  y: \(data[index][keyPath: self.keyPath])
+                  variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
+                  """)
+        fatalError()
+        }
     }
 }
 
@@ -329,11 +333,11 @@ struct Draggable: ViewModifier {
     
     func updateLocation(_ value: DragGesture.Value) {
         guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
-        print("xPos: \(value.location.x - state.frame.padding)")
+//        print("xPos: \(value.location.x - state.frame.padding)")
         let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
         let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
         
-        print("index: \(index)")
+//        print("index: \(index)")
         
 //        guard index == 0 else {
 //            fatalError()

@@ -181,6 +181,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func updateState(index: Int) {
         let x = X.get(index: index, frame: frame)
+        print("xLineState: \(x)")
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
         if index > 0 {
@@ -205,12 +206,16 @@ class LineState<Object: Plottable>: RenderState {
     func testVariance(index: Int) {
         let scaled = Y.get(point: data[index][keyPath: self.keyPath], mmr: self.mmr, frame: self.frame)
         let y = Y.reverseGet(scaled: scaled, mmr: self.mmr, frame: self.frame)
-        print("""
-              scaled: \(scaled)
-              reverseGet: \(y)
-              y: \(data[index][keyPath: self.keyPath])
-              variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
-              """)
+        let variance = Y.cgf(data[index][keyPath: self.keyPath]) - y
+        guard variance < 0.01 else {
+            print("""
+                  scaled: \(scaled)
+                  reverseGet: \(y)
+                  y: \(data[index][keyPath: self.keyPath])
+                  variance: \(Y.cgf(data[index][keyPath: self.keyPath]) - y)
+                  """)
+        fatalError()
+        }
     }
 }
 
@@ -329,15 +334,17 @@ struct Draggable: ViewModifier {
     
     func updateLocation(_ value: DragGesture.Value) {
         guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
-        print("xPos: \(value.location.x - state.frame.padding)")
+//        print("xPos: \(value.location.x - state.frame.padding)")
         let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
         let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
         
-        print("index: \(index)")
+//        print("index: \(index)")
         
 //        guard index == 0 else {
 //            fatalError()
 //        }
+        
+        print("xPos: \(value.location.x)")
         
         state.testVariance(index: index)
         
@@ -347,7 +354,8 @@ struct Draggable: ViewModifier {
         let m = (state.getY(index: index + 1) - y)
         yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
         
-        //MARK: TO DO - Quadratic curve for draggable 
+        //MARK: TO DO - Quadratic curve for draggable
+        
     }
     
     @State var xPos: CGFloat = 0
@@ -365,7 +373,7 @@ struct Draggable: ViewModifier {
                     .fill(.white)
                     .frame(width: 10, height: 10)
                 )
-                .position(x: xPos + state.frame.padding, y: yPos)
+                .position(x: xPos, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
                    updateLocation(value)
                 })

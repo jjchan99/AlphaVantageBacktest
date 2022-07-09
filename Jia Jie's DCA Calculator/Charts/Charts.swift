@@ -181,6 +181,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func updateState(index: Int) {
         let x = X.get(index: index, frame: frame)
+        print("xLineState: \(x)")
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
         if index > 0 {
@@ -343,6 +344,8 @@ struct Draggable: ViewModifier {
 //            fatalError()
 //        }
         
+        print("xPos: \(value.location.x)")
+        
         state.testVariance(index: index)
         
         let y: CGFloat = state.getY(index: index)
@@ -351,7 +354,8 @@ struct Draggable: ViewModifier {
         let m = (state.getY(index: index + 1) - y)
         yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
         
-        //MARK: TO DO - Quadratic curve for draggable 
+        //MARK: TO DO - Quadratic curve for draggable
+        
     }
     
     @State var xPos: CGFloat = 0
@@ -369,7 +373,7 @@ struct Draggable: ViewModifier {
                     .fill(.white)
                     .frame(width: 10, height: 10)
                 )
-                .position(x: xPos + state.frame.padding, y: yPos)
+                .position(x: xPos, y: yPos)
                 .gesture(DragGesture().onChanged({ value in
                    updateLocation(value)
                 })

@@ -19,7 +19,7 @@ struct Frame {
     
         adjustedWidth = width - (2 * padding)
         horizontalJumpPerIndex = adjustedWidth / (count == 1 ? CGFloat(1) : CGFloat(count - 1))
-        print("horizontalJumpPerIndex: \(horizontalJumpPerIndex)")
+//        print("horizontalJumpPerIndex: \(horizontalJumpPerIndex)")
     }
     
     let height: CGFloat
@@ -181,7 +181,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func updateState(index: Int) {
         let x = X.get(index: index, frame: frame)
-        print("xLineState: \(x)")
+//        print("xLineState: \(x)")
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
         if index > 0 {
@@ -344,7 +344,7 @@ struct Draggable: ViewModifier {
 //            fatalError()
 //        }
         
-        print("xPos: \(value.location.x)")
+//        print("xPos: \(value.location.x)")
         
         state.testVariance(index: index)
         

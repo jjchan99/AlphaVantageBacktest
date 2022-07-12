@@ -375,11 +375,18 @@ struct Draggable: ViewModifier {
                 })
                 )
                 .onChange(of: id) { _ in
+                    print("new ID")
                     self.xPos = state.frame.padding
-                    self.yPos = 0
+                    let y: CGFloat = state.getY(index: 0)
+                    let m = (state.getY(index: 1) - y)
+                    self.yPos = CGFloat(m) * CGFloat(0).truncatingRemainder(dividingBy: 1) + y
+                    
                 }
                 .onAppear {
                     self.xPos = state.frame.padding
+                    let y: CGFloat = state.getY(index: 0)
+                    let m = (state.getY(index: 1) - y)
+                    self.yPos = CGFloat(m) * CGFloat(0).truncatingRemainder(dividingBy: 1) + y
                 }
         }
     }

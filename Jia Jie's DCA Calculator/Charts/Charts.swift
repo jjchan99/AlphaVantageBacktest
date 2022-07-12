@@ -331,7 +331,11 @@ class BarState<Object: Plottable>: RenderState {
     }
 }
 
-extension DraggableView {
+struct Draggable: ViewModifier {
+    let state: RenderState
+    @State var xPos: CGFloat = 0
+    @State var yPos: CGFloat = 0
+    var id: UUID
     
     func updateLocation(_ value: DragGesture.Value) {
         guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
@@ -353,9 +357,9 @@ extension DraggableView {
         
     }
     
-    var draggedView: some View {
+    func body(content: Content) -> some View {
         ZStack {
-            content()
+            content
         
             Circle()
                 .fill(Color.black)
@@ -382,12 +386,10 @@ extension DraggableView {
 }
 
 extension DraggableView {
-    func draggable() -> Self {
-        return DraggableView(state: self.state, canDrag: true, id: id) {
-            AnyView(
-              content()
-            )
-        }
+    func draggable() -> some View {
+       modifier(
+       Draggable(state: state, id: id)
+       )
     }
 }
 
@@ -395,21 +397,15 @@ struct DraggableView: View {
     
     let state: RenderState
     let content: () -> AnyView
-    var canDrag: Bool
     var id: UUID
     
-    @State var xPos: CGFloat = 0
-    @State var yPos: CGFloat = 0
-    
-    init(state: RenderState, canDrag: Bool = false, id: UUID, content: @escaping () -> AnyView) {
+    init(state: RenderState, id: UUID, content: @escaping () -> AnyView) {
         self.state = state
         self.content = content
-        self.canDrag = canDrag
         self.id = id
-        print("init")
     }
     
     var body: some View {
-        !canDrag ? content() : AnyView(draggedView)
+        content()
     }
 }

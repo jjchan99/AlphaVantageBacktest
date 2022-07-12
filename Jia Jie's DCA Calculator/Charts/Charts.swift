@@ -8,6 +8,7 @@
 import Foundation
 import CoreGraphics
 import SwiftUI
+import Combine
 
 //MARK: Render Client: This is similar to a composite with flat hierarchy.
 
@@ -19,7 +20,7 @@ struct Frame {
     
         adjustedWidth = width - (2 * padding)
         horizontalJumpPerIndex = adjustedWidth / (count == 1 ? CGFloat(1) : CGFloat(count - 1))
-        print("horizontalJumpPerIndex: \(horizontalJumpPerIndex)")
+//        print("horizontalJumpPerIndex: \(horizontalJumpPerIndex)")
     }
     
     let height: CGFloat
@@ -159,6 +160,7 @@ class RenderClient<Object: Plottable> {
 }
 
 class LineState<Object: Plottable>: RenderState {
+    
     func getY(index: Int) -> CGFloat {
         Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
     }
@@ -181,7 +183,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func updateState(index: Int) {
         let x = X.get(index: index, frame: frame)
-        print("xLineState: \(x)")
+//        print("xLineState: \(x)")
         let y = Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
         let point = CGPoint(x: x, y: y)
         if index > 0 {
@@ -194,7 +196,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
             AnyView(
             copy.path
                 .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
@@ -220,6 +222,7 @@ class LineState<Object: Plottable>: RenderState {
 }
 
 class CandleState<Object: OpHLC & Plottable>: RenderState {
+    
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
         Y.get(point: data[index], mmr: mmr, frame: frame)
     }
@@ -266,7 +269,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
             AnyView(
             ZStack {
                 ForEach(0..<copy.data.count, id: \.self) { index in
@@ -319,7 +322,7 @@ class BarState<Object: Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
         AnyView(
             Color.gray
             .mask(copy.path)
@@ -330,21 +333,17 @@ class BarState<Object: Plottable>: RenderState {
 
 struct Draggable: ViewModifier {
     let state: RenderState
-    
+    @State var xPos: CGFloat = 0
+    @State var yPos: CGFloat = 0
+    var id: UUID
     
     func updateLocation(_ value: DragGesture.Value) {
         guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
-//        print("xPos: \(value.location.x - state.frame.padding)")
+
         let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
         let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
         
-//        print("index: \(index)")
-        
-//        guard index == 0 else {
-//            fatalError()
-//        }
-        
-        print("xPos: \(value.location.x)")
+
         
         state.testVariance(index: index)
         
@@ -357,9 +356,6 @@ struct Draggable: ViewModifier {
         //MARK: TO DO - Quadratic curve for draggable
         
     }
-    
-    @State var xPos: CGFloat = 0
-    @State var yPos: CGFloat = 0
     
     func body(content: Content) -> some View {
         ZStack {
@@ -377,20 +373,30 @@ struct Draggable: ViewModifier {
                 .gesture(DragGesture().onChanged({ value in
                    updateLocation(value)
                 })
-                    
-                
-                
-                
                 )
+                .onChange(of: id) { _ in
+                    print("new ID")
+                    self.xPos = state.frame.padding
+                    let y: CGFloat = state.getY(index: 0)
+                    let m = (state.getY(index: 1) - y)
+                    self.yPos = CGFloat(m) * CGFloat(0).truncatingRemainder(dividingBy: 1) + y
+                    
+                }
+                .onAppear {
+                    self.xPos = state.frame.padding
+                    let y: CGFloat = state.getY(index: 0)
+                    let m = (state.getY(index: 1) - y)
+                    self.yPos = CGFloat(m) * CGFloat(0).truncatingRemainder(dividingBy: 1) + y
+                }
         }
     }
 }
 
 extension DraggableView {
     func draggable() -> some View {
-        modifier(
-            Draggable(state: self.state)
-        )
+       modifier(
+       Draggable(state: state, id: id)
+       )
     }
 }
 
@@ -398,9 +404,12 @@ struct DraggableView: View {
     
     let state: RenderState
     let content: () -> AnyView
-    init(state: RenderState, content: @escaping () -> AnyView) {
+    var id: UUID
+    
+    init(state: RenderState, id: UUID, content: @escaping () -> AnyView) {
         self.state = state
         self.content = content
+        self.id = id
     }
     
     var body: some View {

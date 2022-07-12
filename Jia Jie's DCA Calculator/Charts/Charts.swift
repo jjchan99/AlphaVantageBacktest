@@ -8,6 +8,7 @@
 import Foundation
 import CoreGraphics
 import SwiftUI
+import Combine
 
 //MARK: Render Client: This is similar to a composite with flat hierarchy.
 
@@ -159,6 +160,7 @@ class RenderClient<Object: Plottable> {
 }
 
 class LineState<Object: Plottable>: RenderState {
+    
     func getY(index: Int) -> CGFloat {
         Y.get(point: data[index][keyPath: keyPath], mmr: mmr, frame: frame)
     }
@@ -194,7 +196,7 @@ class LineState<Object: Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
             AnyView(
             copy.path
                 .strokedPath(StrokeStyle(lineWidth: 0.5, lineCap: .round, lineJoin: .round))
@@ -220,6 +222,7 @@ class LineState<Object: Plottable>: RenderState {
 }
 
 class CandleState<Object: OpHLC & Plottable>: RenderState {
+    
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat) {
         Y.get(point: data[index], mmr: mmr, frame: frame)
     }
@@ -266,7 +269,7 @@ class CandleState<Object: OpHLC & Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
             AnyView(
             ZStack {
                 ForEach(0..<copy.data.count, id: \.self) { index in
@@ -319,7 +322,7 @@ class BarState<Object: Plottable>: RenderState {
     
     func view() -> DraggableView {
         let copy = self
-        return DraggableView(state: self) {
+        return DraggableView(state: self, id: UUID()) {
         AnyView(
             Color.gray
             .mask(copy.path)
@@ -328,23 +331,15 @@ class BarState<Object: Plottable>: RenderState {
     }
 }
 
-struct Draggable: ViewModifier {
-    let state: RenderState
-    
+extension DraggableView {
     
     func updateLocation(_ value: DragGesture.Value) {
         guard value.location.x >= state.frame.padding && value.location.x <= state.frame.width - state.frame.padding else { return }
-//        print("xPos: \(value.location.x - state.frame.padding)")
+
         let sectionWidth: CGFloat = state.frame.horizontalJumpPerIndex
         let index = Int(floor((value.location.x - state.frame.padding) / sectionWidth))
         
-//        print("index: \(index)")
-        
-//        guard index == 0 else {
-//            fatalError()
-//        }
-        
-//        print("xPos: \(value.location.x)")
+
         
         state.testVariance(index: index)
         
@@ -358,12 +353,9 @@ struct Draggable: ViewModifier {
         
     }
     
-    @State var xPos: CGFloat = 0
-    @State var yPos: CGFloat = 0
-    
-    func body(content: Content) -> some View {
+    var draggedView: some View {
         ZStack {
-            content
+            content()
         
             Circle()
                 .fill(Color.black)
@@ -377,20 +369,25 @@ struct Draggable: ViewModifier {
                 .gesture(DragGesture().onChanged({ value in
                    updateLocation(value)
                 })
-                    
-                
-                
-                
                 )
+                .onChange(of: id) { _ in
+                    self.xPos = state.frame.padding
+                    self.yPos = 0
+                }
+                .onAppear {
+                    self.xPos = state.frame.padding
+                }
         }
     }
 }
 
 extension DraggableView {
-    func draggable() -> some View {
-        modifier(
-            Draggable(state: self.state)
-        )
+    func draggable() -> Self {
+        return DraggableView(state: self.state, canDrag: true, id: id) {
+            AnyView(
+              content()
+            )
+        }
     }
 }
 
@@ -398,12 +395,21 @@ struct DraggableView: View {
     
     let state: RenderState
     let content: () -> AnyView
-    init(state: RenderState, content: @escaping () -> AnyView) {
+    var canDrag: Bool
+    var id: UUID
+    
+    @State var xPos: CGFloat = 0
+    @State var yPos: CGFloat = 0
+    
+    init(state: RenderState, canDrag: Bool = false, id: UUID, content: @escaping () -> AnyView) {
         self.state = state
         self.content = content
+        self.canDrag = canDrag
+        self.id = id
+        print("init")
     }
     
     var body: some View {
-        content()
+        !canDrag ? content() : AnyView(draggedView)
     }
 }

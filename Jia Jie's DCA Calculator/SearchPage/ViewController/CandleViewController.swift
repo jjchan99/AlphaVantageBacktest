@@ -36,7 +36,6 @@ class CandleViewController: UIHostingController<AnyView> {
       
         //MARK: DICT CHANGES WILL NOT BE REFELCTED UNTIL VIEWDIDLOAD IS FINISHED. THREAD SAFETY MECHANISM
         viewModel.modeChanged = { [unowned self] mode in
-            print("You pressed the button")
             viewModel.selectedIndex = 0
             OHLC(mode: mode)
         }

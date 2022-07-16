@@ -61,6 +61,7 @@ protocol RenderState {
     func getY(index: Int) -> CGFloat
     func getY(index: Int) -> (CGFloat, CGFloat, CGFloat, CGFloat)
     func testVariance(index: Int)
+    func rawDataAtIndex(index: Int) -> Int
 }
 
 extension RenderState {
@@ -73,6 +74,10 @@ extension RenderState {
     
     func testVariance(index: Int) {
         
+    }
+    
+    func rawDataAtIndex(index: Int) -> Int {
+        return 1
     }
 }
 
@@ -176,6 +181,7 @@ class LineState<Object: Plottable>: RenderState {
         self.frame = frame
         self.mmr = mmr
         self.keyPath = keyPath
+        print("\(data)")
     }
     
     var path = Path()
@@ -192,6 +198,11 @@ class LineState<Object: Plottable>: RenderState {
         }
         path.move(to: point)
         area.move(to: point)
+    }
+    
+    func rawDataAtIndex(index: Int) -> Int {
+        let data = data[index][keyPath: self.keyPath]
+        return Int(fromNumeric: data)
     }
     
     func view() -> DraggableView {
@@ -346,7 +357,10 @@ struct Draggable: ViewModifier {
         state.testVariance(index: index)
         
         let y: CGFloat = state.getY(index: index)
+        
         xPos = value.location.x
+        
+        self.rawDataAtIndex = state.rawDataAtIndex(index: index)
         
         let m = (state.getY(index: index + 1) - y)
         yPos = CGFloat(m) * CGFloat(index).truncatingRemainder(dividingBy: 1) + y
@@ -354,6 +368,8 @@ struct Draggable: ViewModifier {
         //MARK: TO DO - Quadratic curve for draggable
         
     }
+    
+    @State var rawDataAtIndex: Int = 0
     
     func body(content: Content) -> some View {
         ZStack {
@@ -377,7 +393,20 @@ struct Draggable: ViewModifier {
                     let y: CGFloat = state.getY(index: 0)
                     let m = (state.getY(index: 1) - y)
                     self.yPos = CGFloat(m) * CGFloat(0).truncatingRemainder(dividingBy: 1) + y
+                    self.rawDataAtIndex = state.rawDataAtIndex(index: 0)
                 }
+            
+             Rectangle()
+                .clipShape(Capsule())
+                .frame(width: CGFloat(50).wScaled(), height: CGFloat(20).hScaled())
+                .position(x: xPos, y: yPos - CGFloat(25).hScaled())
+                .overlay(
+                    Text(
+                        "\(rawDataAtIndex)"
+                    )
+                    .foregroundColor(.white)
+                    .position(x: xPos, y: yPos - CGFloat(25).hScaled())
+                )
         }
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct CandleView: View {
-    @EnvironmentObject var viewModel: CandleViewModel
+    @EnvironmentObject var viewModel: CandleViewModel 
     
     let green: Color = .init(#colorLiteral(red: 0.1223538027, green: 0.7918281948, blue: 0.5171614195, alpha: 1))
     let red: Color = .init(#colorLiteral(red: 1, green: 0.001286943396, blue: 0.07415488759, alpha: 1))
@@ -39,6 +39,12 @@ struct CandleView: View {
 //                .environmentObject(viewModel)
 //                .frame(width: viewModel.width, height: viewModel.height, alignment: .center)
 //                .position(y: viewModel.height * 2)
+                Button {
+                    viewModel.backtest()
+                } label: {
+                    Rectangle()
+                        .frame(width: 100, height: 100)
+                }
             }
 
 //            TradingVolumeView().environmentObject(viewModel)

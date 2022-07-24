@@ -10,6 +10,7 @@ import Foundation
 struct Backtest {
     
     static func from(date: String, daily: Daily, bot: TradeBot) {
+        print("backtest started")
         let technicalManager = OHLCTechnicalManager()
         let context: ContextObject = .init(account: bot.account, tb: bot)
         var algo: TBTemplateMethod = bot.holdingPeriod == nil ? TBAlgorithmDefault(context: context) :

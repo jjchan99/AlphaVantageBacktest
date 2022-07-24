@@ -31,6 +31,7 @@ class PageCoordinator: NSObject, Coordinator {
 
     func start(name: String, symbol: String, type: String) {
         let vc = CandleViewController(symbol: symbol)
+        vc.daily = self.rawDataDaily
         let coordinator = GraphManager(sorted: rawDataDaily.sorted!)
         vc.coordinator = coordinator
         parentCoordinator!.childCoordinators.append(coordinator)

@@ -37,8 +37,17 @@ class CandleViewModel: ObservableObject {
     
     @Published var indicator: CandleIndicator?
     
+    @Published var daily: Daily? {
+        didSet {
+            print("daily set")
+        }
+    }
+    
     lazy var padding: CGFloat = 0.05 * width
     
+    func backtest() {
+        Backtest.from(date: "2022-01-01", daily: self.daily!, bot: BotAccountCoordinator.specimen())
+    }
 }
 
 

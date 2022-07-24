@@ -23,7 +23,9 @@ class CandleViewController: UIHostingController<AnyView> {
     
     init(symbol: String) {
         self.symbol = symbol
-        super.init(rootView: AnyView(CandleView().environmentObject(viewModel)))
+        super.init(rootView:
+                    AnyView(CandleView().environmentObject(viewModel))
+                           )
     }
     
     required init?(coder: NSCoder) {
@@ -39,10 +41,13 @@ class CandleViewController: UIHostingController<AnyView> {
             viewModel.selectedIndex = 0
             OHLC(mode: mode)
         }
+        
+        viewModel.daily = self.daily
         view.backgroundColor = .white
         overrideUserInterfaceStyle = .light
         
 //        testBot()
+        print("viewDidLoad()")
     }
     
 //    func testBot() {
